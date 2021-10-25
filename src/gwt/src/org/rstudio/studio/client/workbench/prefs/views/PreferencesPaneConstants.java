@@ -2,13 +2,13 @@ package org.rstudio.studio.client.workbench.prefs.views;
 
 /**
  * Interface to represent the constants contained in resource bundle:
- * 	'/home/scribs/code_git_backed/daaas/rstudio/rstudio-cascribner/src/gwt/src/org/rstudio/studio/client/workbench/prefs/views/PreferencesPaneConstants.properties'.
+ * 	'/home/scribs/code_git_backed/daaas/rstudio/rstudio-cascribner/src/gwt/src/org/rstudio/studio/client/workbench/prefs/views/PreferencesPaneConstants_en.properties'.
  */
 public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Constants {
-  
+
   /**
    * Translated "Other Languages".
-   * 
+   *
    * @return translated "Other Languages"
    */
   @DefaultStringValue("Other Languages")
@@ -17,7 +17,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Show Diagnostics".
-   * 
+   *
    * @return translated "Show Diagnostics"
    */
   @DefaultStringValue("Show Diagnostics")
@@ -26,7 +26,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "R Diagnostics".
-   * 
+   *
    * @return translated "R Diagnostics"
    */
   @DefaultStringValue("R Diagnostics")
@@ -35,7 +35,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "General".
-   * 
+   *
    * @return translated "General"
    */
   @DefaultStringValue("General")
@@ -43,17 +43,17 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
   String Editing_displayPanel();
 
   /**
-   * Translated "@enModify Keyboard Shortcuts...".
-   * 
-   * @return translated "@enModify Keyboard Shortcuts..."
+   * Translated "Modify Keyboard Shortcuts...".
+   *
+   * @return translated "Modify Keyboard Shortcuts..."
    */
-  @DefaultStringValue("@enModify Keyboard Shortcuts...")
+  @DefaultStringValue("Modify Keyboard Shortcuts...")
   @Key("Editing_editShortcuts")
   String Editing_editShortcuts();
 
   /**
    * Translated "Edit Snippets...".
-   * 
+   *
    * @return translated "Edit Snippets..."
    */
   @DefaultStringValue("Edit Snippets...")
@@ -62,7 +62,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Execution".
-   * 
+   *
    * @return translated "Execution"
    */
   @DefaultStringValue("Execution")
@@ -71,7 +71,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Completion Delay".
-   * 
+   *
    * @return translated "Completion Delay"
    */
   @DefaultStringValue("Completion Delay")
@@ -80,7 +80,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Other Languages".
-   * 
+   *
    * @return translated "Other Languages"
    */
   @DefaultStringValue("Other Languages")
@@ -89,7 +89,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Keyword and text-based completions are supported for several other languages including JavaScript, HTML, CSS, Python, and SQL.".
-   * 
+   *
    * @return translated "Keyword and text-based completions are supported for several other languages including JavaScript, HTML, CSS, Python, and SQL."
    */
   @DefaultStringValue("Keyword and text-based completions are supported for several other languages including JavaScript, HTML, CSS, Python, and SQL.")
@@ -98,7 +98,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "General".
-   * 
+   *
    * @return translated "General"
    */
   @DefaultStringValue("General")
@@ -107,7 +107,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Change...".
-   * 
+   *
    * @return translated "Change..."
    */
   @DefaultStringValue("Change...")
@@ -116,7 +116,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Auto-save".
-   * 
+   *
    * @return translated "Auto-save"
    */
   @DefaultStringValue("Auto-save")
@@ -125,7 +125,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Serialization".
-   * 
+   *
    * @return translated "Serialization"
    */
   @DefaultStringValue("Serialization")
@@ -134,7 +134,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "code_snippets".
-   * 
+   *
    * @return translated "code_snippets"
    */
   @DefaultStringValue("code_snippets")
@@ -143,7 +143,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Help on code snippets".
-   * 
+   *
    * @return translated "Help on code snippets"
    */
   @DefaultStringValue("Help on code snippets")
@@ -152,7 +152,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Snippets".
-   * 
+   *
    * @return translated "Snippets"
    */
   @DefaultStringValue("Snippets")
@@ -161,7 +161,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Editing".
-   * 
+   *
    * @return translated "Editing"
    */
   @DefaultStringValue("Editing")
@@ -170,7 +170,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Completion".
-   * 
+   *
    * @return translated "Completion"
    */
   @DefaultStringValue("Completion")
@@ -179,7 +179,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Diagnostics".
-   * 
+   *
    * @return translated "Diagnostics"
    */
   @DefaultStringValue("Diagnostics")
@@ -188,7 +188,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Display".
-   * 
+   *
    * @return translated "Display"
    */
   @DefaultStringValue("Display")
@@ -197,7 +197,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Editing".
-   * 
+   *
    * @return translated "Editing"
    */
   @DefaultStringValue("Editing")
@@ -206,7 +206,7 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
 
   /**
    * Translated "Saving".
-   * 
+   *
    * @return translated "Saving"
    */
   @DefaultStringValue("Saving")
@@ -231,4 +231,174 @@ public interface PreferencesPaneConstants extends com.google.gwt.i18n.client.Con
   @Key("Editing_header")
   String Editing_header();
 
+  /**
+   * Translated "No bindings available".
+   *
+   * @return translated "No bindings available"
+   */
+  @DefaultStringValue("No bindings available")
+  @Key("Editing_keyboard_shortcuts")
+  String Editing_keyboard_shortcuts();
+
+  /**
+   * Translated "Keyboard Shortcuts".
+   *
+   * @return translated "Keyboard Shortcuts"
+   */
+  @DefaultStringValue("Keyboard Shortcuts")
+  @Key("Editing_keyboard_text")
+  String Editing_keyboard_text();
+
+  /**
+   * Translated "Apply".
+   *
+   * @return translated "Apply"
+   */
+  @DefaultStringValue("Apply")
+  @Key("Editing_keyboard_apply")
+  String Editing_keyboard_apply();
+
+  /**
+   * Translated "All".
+   *
+   * @return translated "All"
+   */
+  @DefaultStringValue("All")
+  @Key("Editing_radio_all")
+  String Editing_radio_all();
+
+  /**
+   * Translated "Customized".
+   *
+   * @return translated "Customized"
+   */
+  @DefaultStringValue("Customized")
+  @Key("Editing_radio_customized")
+  String Editing_radio_customized();
+
+  /**
+   * Translated "Filter...".
+   *
+   * @return translated "Filter..."
+   */
+  @DefaultStringValue("Filter...")
+  @Key("Editing_filter_widget")
+  String Editing_filter_widget();
+
+  /**
+   * Translated "Reset...".
+   *
+   * @return translated "Reset..."
+   */
+  @DefaultStringValue("Reset...")
+  @Key("Editing_reset_text")
+  String Editing_reset_text();
+
+  /**
+   * Translated "Reset Keyboard Shortcuts".
+   *
+   * @return translated "Reset Keyboard Shortcuts"
+   */
+  @DefaultStringValue("Reset Keyboard Shortcuts")
+  @Key("Editing_global_display")
+  String Editing_global_display();
+
+  /**
+   * Translated "Are you sure you want to reset keyboard shortcuts to their default values? ".
+   *
+   * @return translated "Are you sure you want to reset keyboard shortcuts to their default values? "
+   */
+  @DefaultStringValue("Are you sure you want to reset keyboard shortcuts to their default values? ")
+  @Key("Editing_global_caption")
+  String Editing_global_caption();
+
+  /**
+   * Translated "This action cannot be undone.".
+   *
+   * @return translated "This action cannot be undone."
+   */
+  @DefaultStringValue("This action cannot be undone.")
+  @Key("Editing_global_message")
+  String Editing_global_message();
+
+  /**
+   * Translated "Resetting Keyboard Shortcuts...".
+   *
+   * @return translated "Resetting Keyboard Shortcuts..."
+   */
+  @DefaultStringValue("Resetting Keyboard Shortcuts...")
+  @Key("Editing_progress_message")
+  String Editing_progress_message();
+
+  /**
+   * Translated "Show:".
+   *
+   * @return translated "Show:"
+   */
+  @DefaultStringValue("Show:")
+  @Key("Editing_radio_label")
+  String Editing_radio_label();
+
+  /**
+   * Translated "Customizing Keyboard Shortcuts".
+   *
+   * @return translated "Customizing Keyboard Shortcuts"
+   */
+  @DefaultStringValue("Customizing Keyboard Shortcuts")
+  @Key("Editing_help_link")
+  String Editing_help_link();
+
+  /**
+   * Translated "Cancel".
+   *
+   * @return translated "Cancel"
+   */
+  @DefaultStringValue("Cancel")
+  @Key("Editing_cancel_shortcuts")
+  String Editing_cancel_shortcuts();
+
+  /**
+   * Translated "Edit Snippets".
+   *
+   * @return translated "Edit Snippets"
+   */
+  @DefaultStringValue("Edit Snippets")
+  @Key("Editing_edit_snippets_caption")
+  String Editing_edit_snippets_caption();
+
+  /**
+   * Translated "Save".
+   *
+   * @return translated "Save"
+   */
+  @DefaultStringValue("Save")
+  @Key("Editing_save_button_label")
+  String Editing_save_button_label();
+
+  /**
+   * Translated "Using Code Snippets".
+   *
+   * @return translated "Using Code Snippets"
+   */
+  @DefaultStringValue("Using Code Snippets")
+  @Key("Editing_snippet_helplink")
+  String Editing_snippet_helplink();
+
+  /**
+   * Translated "Options".
+   *
+   * @return translated "Options"
+   */
+  @DefaultStringValue("Options")
+  @Key("Options_menu_caption")
+  String Options_menu_caption();
+
+  /**
+   * Translated "Code".
+   *
+   * @return translated "Code"
+   */
+  @DefaultStringValue("Code")
+  @Key("codePaneLabel")
+  String codePaneLabel();
 }

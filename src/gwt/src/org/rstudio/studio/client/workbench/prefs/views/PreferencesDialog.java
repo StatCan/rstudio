@@ -70,7 +70,7 @@ public class PreferencesDialog extends PreferencesDialogBase<UserPrefs>
    {
       // i18n: Is this an enumeration or user text?
       // i18n: Is this related to how we select Panes (eg by enum or other ways)?
-      super("Options",
+      super(constants_.Options_menu_caption(),
             res.styles().panelContainer(),
             res.styles().panelContainerNoChooser(),
             true,
@@ -184,4 +184,5 @@ public class PreferencesDialog extends PreferencesDialogBase<UserPrefs>
    private final UserState state_;
    private final ApplicationQuit quit_;
    private final GlobalDisplay globalDisplay_;
+   private static final PreferencesPaneConstants constants_ = GWT.create(PreferencesPaneConstants.class);
 }

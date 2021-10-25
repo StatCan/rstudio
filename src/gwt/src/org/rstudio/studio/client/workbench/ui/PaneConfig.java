@@ -16,6 +16,7 @@ package org.rstudio.studio.client.workbench.ui;
 
 import com.google.gwt.core.client.JsArrayString;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.Debug;
 import org.rstudio.core.client.JsArrayUtil;
 import org.rstudio.core.client.StringUtil;
@@ -115,7 +116,7 @@ public class PaneConfig extends UserPrefsAccessor.Panes
       //       mis-labeled pane).  Need to figure this out and likely decouple the on-screen text from the internal
       //       pane labels
       return new String[] {"Environment", "History", "Files", "Plots", "Connections",
-                           "Packages", "Help", "Build", "VCS", "Tutorial", "Viewer",
+              "Packages", "Help", "Build", "VCS", "Tutorial", "Viewer",
                            "Presentations", "Presentation"};
    }
 
@@ -212,7 +213,7 @@ public class PaneConfig extends UserPrefsAccessor.Panes
       // Replace any obsoleted tabs in the config
       replaceObsoleteTabs(ts1);
       replaceObsoleteTabs(ts2);
-      
+
       // Presentation tab must always be at the end of the ts1 tabset (this
       // is so that activating it works even in the presence of optionally
       // visible tabs). This is normally an invariant but for a time during
@@ -230,11 +231,11 @@ public class PaneConfig extends UserPrefsAccessor.Panes
          }
          else
          {
-            Debug.logToConsole("Invaliding tabset config (Presentation index)");
+            Debug.logToConsole(constants_.validateAndAutoCorrect());
             return false;
          }
       }
-      
+
       // if we don't have Presentation2 then provide it (but keep Presentation last)
       if (!hasPresentation2(ts1) && !hasPresentation2(ts2))
       {
@@ -251,7 +252,7 @@ public class PaneConfig extends UserPrefsAccessor.Panes
 
       return true;
    }
-   
+
    private final boolean hasPresentation2(JsArrayString tabs)
    {
       for (int idx = 0; idx < tabs.length(); idx++)
@@ -333,4 +334,6 @@ public class PaneConfig extends UserPrefsAccessor.Panes
       // function remains to maintain the structure if validation needs to be added in the future.
      return true;
    }
+   private static final PaneConfigConstants constants_ = GWT.create(PaneConfigConstants.class);
+
 }

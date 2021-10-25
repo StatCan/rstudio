@@ -16,6 +16,7 @@ package org.rstudio.studio.client.workbench.prefs.views.zotero;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.widget.SelectWidget;
 import org.rstudio.studio.client.application.Desktop;
 import org.rstudio.studio.client.common.HelpLink;
@@ -28,6 +29,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import org.rstudio.studio.client.workbench.prefs.views.RMarkdownPreferencesPaneConstants;
 
 public class ZoteroConnectionWidget extends Composite
 {
@@ -38,10 +40,10 @@ public class ZoteroConnectionWidget extends Composite
       
       ArrayList<String> options = new ArrayList<>();
       // i18n: Enumerator, user facing text, or both?
-      options.add("(None)");
+      options.add(constants_.noneOption());
       if (!webOnly())
-         options.add("Local");
-      options.add("Web");
+         options.add(constants_.localOption());
+      options.add(constants_.webOption());
       
       ArrayList<String> values = new ArrayList<>();
       values.add(UserStateAccessor.ZOTERO_CONNECTION_TYPE_NONE);
@@ -50,7 +52,7 @@ public class ZoteroConnectionWidget extends Composite
       values.add(UserStateAccessor.ZOTERO_CONNECTION_TYPE_WEB);
 
       zoteroConnection_ = new SelectWidget(
-            "Zotero Library:",
+            constants_.zoteroLibLabel(),
             options.toArray(new String[] {}),
             values.toArray(new String[] {}),
             false,
@@ -63,7 +65,7 @@ public class ZoteroConnectionWidget extends Composite
       
       if (includeHelp)
       {
-         HelpLink zoteroHelp = new HelpLink("Using Zotero", "visual_markdown_editing-zotero", false);
+         HelpLink zoteroHelp = new HelpLink(constants_.zoteroHelpLink(), "visual_markdown_editing-zotero", false);
          zoteroHelp.addStyleName(res.styles().selectWidgetHelp());
          panel.add(zoteroHelp);
       }
@@ -93,6 +95,5 @@ public class ZoteroConnectionWidget extends Composite
    }
    
    private final SelectWidget zoteroConnection_;
-
-
+   private final RMarkdownPreferencesPaneConstants constants_ = GWT.create(RMarkdownPreferencesPaneConstants.class);
 }

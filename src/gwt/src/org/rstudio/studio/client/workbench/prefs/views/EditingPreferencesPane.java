@@ -119,9 +119,9 @@ public class EditingPreferencesPane extends PreferencesPane
       // translated shortcut value here as well (ctrl+enter doesn't HAVE to be the shortcut, although it is probably a
       // good guess).  Alternative could be to add the text here or in the preference's title.
       executionBehavior_ = new SelectWidget((Prefs.EnumValue) prefs_.executionBehavior(),
-            false,
-            true,
-            false);
+              false,
+              true,
+              false);
       executionBehavior_.getElement().getStyle().setMarginBottom(0, Unit.PX);
       editingPanel.add(executionBehavior_);
 
@@ -166,12 +166,12 @@ public class EditingPreferencesPane extends PreferencesPane
       displayPanel.add(checkboxPref(prefs_.enableTextDrag()));
       displayPanel.add(checkboxPref(prefs_.highlightRFunctionCalls()));
       displayPanel.add(extraSpaced(
-         checkboxPref(prefs_.rainbowParentheses(), false /* defaultSpace */)));
+              checkboxPref(prefs_.rainbowParentheses(), false /* defaultSpace */)));
 
       foldMode_ = new SelectWidget((Prefs.EnumValue) prefs_.foldStyle(),
-            false,
-            true,
-            false);
+              false,
+              true,
+              false);
 
       displayPanel.add(foldMode_);
 
@@ -193,42 +193,42 @@ public class EditingPreferencesPane extends PreferencesPane
 
       encodingValue_ = prefs_.defaultEncoding().getGlobalValue();
       savePanel.add(lessSpaced(encoding_ = new TextBoxWithButton(
-            prefs_.defaultEncoding().getTitle(),
+              prefs_.defaultEncoding().getTitle(),
             "", //$NON-NLS-1$
-            constants_.Editing_savePanel_action(),
-            null,
-            ElementIds.TextBoxButtonId.TEXT_ENCODING,
-            true,
-            new ClickHandler()
-            {
-               public void onClick(ClickEvent event)
-               {
-                  server_.iconvlist(new SimpleRequestCallback<IconvListResult>()
-                  {
-                     @Override
-                     public void onResponseReceived(IconvListResult response)
-                     {
-                        new ChooseEncodingDialog(
-                              response.getCommon(),
-                              response.getAll(),
-                              encodingValue_,
-                              true,
-                              false,
-                              new OperationWithInput<String>()
-                              {
-                                 public void execute(String encoding)
-                                 {
-                                    if (encoding == null)
-                                       return;
+              constants_.Editing_savePanel_action(),
+              null,
+              ElementIds.TextBoxButtonId.TEXT_ENCODING,
+              true,
+              new ClickHandler()
+              {
+                 public void onClick(ClickEvent event)
+                 {
+                    server_.iconvlist(new SimpleRequestCallback<IconvListResult>()
+                    {
+                       @Override
+                       public void onResponseReceived(IconvListResult response)
+                       {
+                          new ChooseEncodingDialog(
+                                  response.getCommon(),
+                                  response.getAll(),
+                                  encodingValue_,
+                                  true,
+                                  false,
+                                  new OperationWithInput<String>()
+                                  {
+                                     public void execute(String encoding)
+                                     {
+                                        if (encoding == null)
+                                           return;
 
-                                    setEncoding(encoding);
-                                 }
-                              }).showModal();
-                     }
-                  });
+                                        setEncoding(encoding);
+                                     }
+                                  }).showModal();
+                       }
+                    });
 
-               }
-            })));
+                 }
+              })));
       nudgeRight(encoding_);
       textBoxWithChooser(encoding_);
       spaced(encoding_);
@@ -238,9 +238,9 @@ public class EditingPreferencesPane extends PreferencesPane
       savePanel.add(checkboxPref(prefs.saveBeforeSourcing()));
       savePanel.add(checkboxPref(prefs_.autoSaveOnBlur()));
       autoSaveOnIdle_ = new SelectWidget((Prefs.EnumValue) prefs_.autoSaveOnIdle(),
-            false,
-            true,
-            false);
+              false,
+              true,
+              false);
       savePanel.add(autoSaveOnIdle_);
       autoSaveIdleMs_ = new SelectWidget(
          prefs.autoSaveIdleMs().getTitle(),
@@ -263,10 +263,10 @@ public class EditingPreferencesPane extends PreferencesPane
                 "4000", //$NON-NLS-1$
                 "5000", //$NON-NLS-1$
                 "10000" //$NON-NLS-1$
-            },
-            false,
-            true,
-            false);
+              },
+              false,
+              true,
+              false);
       savePanel.add(autoSaveIdleMs_);
 
       VerticalTabPanel completionPanel = new VerticalTabPanel(ElementIds.EDIT_COMPLETION_PREFS);
@@ -274,9 +274,9 @@ public class EditingPreferencesPane extends PreferencesPane
       completionPanel.add(headerLabel(constants_.Editing_completionPanel()));
 
       showCompletions_ = new SelectWidget((Prefs.EnumValue) prefs_.codeCompletion(),
-            false,
-            true,
-            false);
+              false,
+              true,
+              false);
 
       spaced(showCompletions_);
       completionPanel.add(showCompletions_);
@@ -290,20 +290,20 @@ public class EditingPreferencesPane extends PreferencesPane
          public void onChange(ChangeEvent event)
          {
             alwaysCompleteInConsole.setVisible(
-                   showCompletions_.getValue() == UserPrefs.CODE_COMPLETION_ALWAYS);
+                    showCompletions_.getValue() == UserPrefs.CODE_COMPLETION_ALWAYS);
 
          }
       });
 
       final CheckBox insertParensAfterFunctionCompletionsCheckbox =
-           checkboxPref(prefs.insertParensAfterFunctionCompletion());
+              checkboxPref(prefs.insertParensAfterFunctionCompletion());
 
       final CheckBox showSignatureTooltipsCheckbox =
-           checkboxPref(prefs.showFunctionSignatureTooltips());
+              checkboxPref(prefs.showFunctionSignatureTooltips());
 
       addEnabledDependency(
-            insertParensAfterFunctionCompletionsCheckbox,
-            showSignatureTooltipsCheckbox);
+              insertParensAfterFunctionCompletionsCheckbox,
+              showSignatureTooltipsCheckbox);
 
       completionPanel.add(insertParensAfterFunctionCompletionsCheckbox);
       completionPanel.add(showSignatureTooltipsCheckbox);
@@ -319,9 +319,9 @@ public class EditingPreferencesPane extends PreferencesPane
       completionPanel.add(otherLabel);
 
       showCompletionsOther_ = new SelectWidget((Prefs.EnumValue) prefs_.codeCompletionOther(),
-            false,
-            true,
-            false);
+              false,
+              true,
+              false);
       completionPanel.add(showCompletionsOther_);
 
       Label otherTip = new Label(constants_.Editing_otherTip());
@@ -334,9 +334,9 @@ public class EditingPreferencesPane extends PreferencesPane
       completionPanel.add(delayLabel);
 
       completionPanel.add(nudgeRightPlus(alwaysCompleteChars_ =
-          numericPref(1, 99, prefs.codeCompletionCharacters())));
+              numericPref(1, 99, prefs.codeCompletionCharacters())));
       completionPanel.add(nudgeRightPlus(alwaysCompleteDelayMs_ =
-          numericPref(0, 9999, prefs.codeCompletionDelay())));
+              numericPref(0, 9999, prefs.codeCompletionDelay())));
 
 
       VerticalTabPanel diagnosticsPanel = new VerticalTabPanel(ElementIds.EDIT_DIAGNOSTICS_PREFS);
@@ -365,16 +365,16 @@ public class EditingPreferencesPane extends PreferencesPane
 
       Label diagOtherLabel = headerLabel(constants_.Editing_diagOtherLabel());
       diagnosticsPanel.add(spacedBefore(diagOtherLabel));
-      diagnosticsPanel.add(checkboxPref("Show diagnostics for C/C++", prefs.showDiagnosticsCpp()));
-      diagnosticsPanel.add(checkboxPref("Show diagnostics for YAML", prefs.showDiagnosticsYaml()));
-      diagnosticsPanel.add(checkboxPref("Show diagnostics for JavaScript, HTML, and CSS", prefs.showDiagnosticsOther()));
+      diagnosticsPanel.add(checkboxPref(prefs.showDiagnosticsCpp()));
+      diagnosticsPanel.add(checkboxPref(prefs.showDiagnosticsYaml()));
+      diagnosticsPanel.add(checkboxPref(prefs.showDiagnosticsOther()));
 
       Label diagShowLabel = headerLabel(constants_.Editing_diagShowLabel());
       diagnosticsPanel.add(spacedBefore(diagShowLabel));
       diagnosticsPanel.add(checkboxPref(prefs.diagnosticsOnSave()));
       diagnosticsPanel.add(tight(checkboxPref(prefs.backgroundDiagnostics(), false /*defaultSpace*/)));
       diagnosticsPanel.add(indent(backgroundDiagnosticsDelayMs_ =
-            numericPref(0, 9999, prefs.backgroundDiagnosticsDelayMs())));
+              numericPref(0, 9999, prefs.backgroundDiagnosticsDelayMs())));
 
       HelpLink diagnosticsHelpLink = new DiagnosticsHelpLink();
       diagnosticsHelpLink.getElement().getStyle().setMarginTop(12, Unit.PX);
@@ -414,17 +414,17 @@ public class EditingPreferencesPane extends PreferencesPane
          disable(listener);
 
       speaker.addValueChangeHandler(
-            new ValueChangeHandler<Boolean>()
-            {
-               @Override
-               public void onValueChange(ValueChangeEvent<Boolean> event)
-               {
-                  if (event.getValue() == false)
-                     disable(listener);
-                  else
-                     enable(listener);
-               }
-            });
+              new ValueChangeHandler<Boolean>()
+              {
+                 @Override
+                 public void onValueChange(ValueChangeEvent<Boolean> event)
+                 {
+                    if (event.getValue() == false)
+                       disable(listener);
+                    else
+                       enable(listener);
+                 }
+              });
    }
 
    @Override
@@ -497,16 +497,16 @@ public class EditingPreferencesPane extends PreferencesPane
    public boolean validate()
    {
       return (!spacesForTab_.getValue() || tabWidth_.validate()) &&
-             (!showMargin_.getValue() || marginCol_.validate()) &&
-             alwaysCompleteChars_.validate() &&
-             alwaysCompleteDelayMs_.validate() &&
-             backgroundDiagnosticsDelayMs_.validate();
+              (!showMargin_.getValue() || marginCol_.validate()) &&
+              alwaysCompleteChars_.validate() &&
+              alwaysCompleteDelayMs_.validate() &&
+              backgroundDiagnosticsDelayMs_.validate();
    }
 
    @Override
    public String getName()
    {
-      return "Code"; //$NON-NLS-1$
+      return constants_.codePaneLabel();
    }
 
    private void setEncoding(String encoding)
