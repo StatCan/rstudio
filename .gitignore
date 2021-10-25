@@ -5,6 +5,7 @@ build-*/
 *_build/
 *-build-*/
 *_build_*/
+/run/
 qtcreator-build
 .DS_Store
 src/gwt/www/js/acesupport.js
@@ -27,7 +28,10 @@ NEWS.html
 CONTRIBUTING.html
 CMakeLists.txt.user
 .idea/
-.vscode/
+
+.vscode/*
+!.vscode/extensions.json
+
 **/\.tern-port
 .#*
 *.autosave

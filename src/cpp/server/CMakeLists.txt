@@ -26,8 +26,10 @@ set(SERVER_SOURCE_FILES
    ServerBrowser.cpp
    ServerErrorCategory.cpp
    ServerEval.cpp
+   ServerEnvVars.cpp
    ServerInit.cpp
    ServerLoginPages.cpp
+   ServerLogVars.cpp
    ServerMainOverlay.cpp
    ServerMeta.cpp
    ServerOffline.cpp
@@ -40,6 +42,7 @@ set(SERVER_SOURCE_FILES
    ServerSessionProxy.cpp
    ServerSessionProxyOverlay.cpp
    ServerSessionManager.cpp
+   ServerXdgVars.cpp
    auth/ServerAuthHandler.cpp
    auth/ServerAuthCommon.cpp
    auth/ServerSecureUriHandler.cpp
@@ -272,7 +275,8 @@ endif()
 # test files
 if (RSTUDIO_UNIT_TESTS_ENABLED)
 
-  set(SERVER_TEST_FILES)
+  set(SERVER_TEST_FILES
+     ServerEnvVarsTests.cpp)
 
   list(APPEND SERVER_SOURCE_FILES ${SERVER_TEST_FILES})
 

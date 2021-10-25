@@ -2,6 +2,8 @@
 
 setlocal
 
+call ..\tools\rstudio-tools.cmd
+
 set PATH=%CD%\tools;%PATH%
 
 set WGET_ARGS=-c --no-check-certificate
@@ -20,15 +22,18 @@ set OPENSSL_FILES=openssl-1.1.1i.zip
 set BOOST_FILES=boost-1.69.0-win-msvc141.zip
 set YAML_CPP_FILES=yaml-cpp-0.6.3.zip
 
-set PANDOC_VERSION=2.11.4
+set PANDOC_VERSION=2.14.2
 set PANDOC_NAME=pandoc-%PANDOC_VERSION%
 set PANDOC_FILE=%PANDOC_NAME%-windows-x86_64.zip
+
+set QUARTO_VERSION=0.2.229
+set QUARTO_FILE=quarto-%QUARTO_VERSION%-win.zip
 
 set LIBCLANG_VERSION=5.0.2
 set LIBCLANG_NAME=libclang-windows-%LIBCLANG_VERSION%
 set LIBCLANG_FILE=%LIBCLANG_NAME%.zip
 
-set NODE_VERSION=10.19.0
+set NODE_VERSION=%RSTUDIO_NODE_VERSION%
 set NODE_ROOT=node
 set NODE_SUBDIR=%NODE_ROOT%\%NODE_VERSION%
 set NODE_BASE_URL=https://nodejs.org/dist/v%NODE_VERSION%/
@@ -147,6 +152,18 @@ if not exist pandoc\%PANDOC_VERSION% (
   del %PANDOC_FILE%
   rmdir /s /q %PANDOC_NAME%
 )
+
+
+
+wget %WGET_ARGS% https://github.com/quarto-dev/quarto-cli/releases/download/v%QUARTO_VERSION%/%QUARTO_FILE%
+echo Unzipping Quarto %QUARTO_FILE%
+rmdir /s /q quarto
+mkdir quarto
+cd quarto
+unzip %UNZIP_ARGS% ..\%QUARTO_FILE%
+cd ..
+del %QUARTO_FILE%
+
 
 if not exist libclang\%LIBCLANG_VERSION% (
   wget %WGET_ARGS% "%BASEURL%%LIBCLANG_FILE%"

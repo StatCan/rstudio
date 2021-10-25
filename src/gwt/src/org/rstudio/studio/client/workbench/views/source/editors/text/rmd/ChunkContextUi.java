@@ -16,6 +16,7 @@ package org.rstudio.studio.client.workbench.views.source.editors.text.rmd;
 
 import java.util.Map;
 
+import com.google.gwt.dom.client.Element;
 import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.widget.Operation;
 import org.rstudio.studio.client.RStudioGinjector;
@@ -33,6 +34,7 @@ import org.rstudio.studio.client.workbench.views.source.editors.text.rmd.display
 import org.rstudio.studio.client.workbench.views.source.editors.text.rmd.display.DefaultChunkOptionsPopupPanel;
 import org.rstudio.studio.client.workbench.views.source.editors.text.rmd.display.SetupChunkOptionsPopupPanel;
 import org.rstudio.studio.client.workbench.views.source.editors.text.rmd.events.InterruptChunkEvent;
+import org.rstudio.studio.client.workbench.views.source.model.SourceDocument;
 
 import com.google.gwt.core.client.JsArrayString;
 
@@ -121,6 +123,28 @@ public abstract class ChunkContextUi implements ChunkContextToolbar.Host
          toolbar_.setEngine(engine);
       }
       toolbar_.setClassId(getLabel(row));
+      
+      syncOptions();
+   }
+   
+   public void syncOptions()
+   {
+      boolean showOptions = !outerEditor_.getExtendedFileType().equals(SourceDocument.XT_QUARTO_DOCUMENT);
+      toolbar_.setShowOptions(showOptions);
+   }
+
+   /**
+    * Get the HTML element hosting the toolbar.
+    *
+    * @return An HTML element, or null if the toolbar hasn't been created yet
+    */
+   public Element getElement()
+   {
+      if (toolbar_ == null)
+      {
+         return null;
+      }
+      return toolbar_.getElement();
    }
 
    // ChunkContextToolbar.Host implementation ---------------------------------

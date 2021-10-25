@@ -29,7 +29,7 @@
 #include <core/FileInfo.hpp>
 #include <core/Log.hpp>
 #include <core/Base64.hpp>
-#include <core/Hash.hpp>
+#include <shared_core/Hash.hpp>
 #include <core/Settings.hpp>
 #include <core/DateTime.hpp>
 #include <core/FileSerializer.hpp>
@@ -77,6 +77,7 @@
 
 #include <session/SessionConstants.hpp>
 #include <session/SessionContentUrls.hpp>
+#include <session/SessionQuarto.hpp>
 
 #include <session/prefs/UserPrefs.hpp>
 #include <session/prefs/UserState.hpp>
@@ -271,6 +272,8 @@ SEXP rs_enqueClientEvent(SEXP nameSEXP, SEXP dataSEXP)
          type = session::client_events::kEnvironmentChanged;
       else if (name == "command_callbacks_changed")
          type = session::client_events::kCommandCallbacksChanged;
+      else if (name == "console_activate")
+         type = session::client_events::kConsoleActivate;
 
       if (type != -1)
       {
@@ -345,6 +348,22 @@ SEXP rs_rstudioEdition()
 
 // get version
 SEXP rs_rstudioVersion()
+{
+   std::string numericVersion(RSTUDIO_VERSION_MAJOR);
+   numericVersion.append(".")
+      .append(RSTUDIO_VERSION_MINOR).append(".")
+      .append(RSTUDIO_VERSION_PATCH).append(".")
+      .append(boost::regex_replace(
+         std::string(RSTUDIO_VERSION_SUFFIX),
+         boost::regex("[a-zA-Z\\-+]"),
+         ""));
+
+   r::sexp::Protect rProtect;
+   return r::sexp::create(numericVersion, &rProtect);
+}
+
+// get long form version
+SEXP rs_rstudioLongVersion()
 {
    r::sexp::Protect rProtect;
    return r::sexp::create(std::string(RSTUDIO_VERSION), &rProtect);
@@ -542,6 +561,14 @@ SEXP rs_setRpcDelay(SEXP delayMsSEXP)
    int delayMs = r::sexp::asInteger(delayMsSEXP);
    rstudio::session::rpc::setRpcDelay(delayMs);
    return delayMsSEXP;
+}
+
+// Force background processing to occur; used during testing since the user is never idle during
+// headless test execution
+SEXP rs_performBackgroundProcessing(SEXP isIdle)
+{
+   onBackgroundProcessing(r::sexp::asLogical(isIdle));
+   return R_NilValue;
 }
 
 } // anonymous namespace
@@ -1138,16 +1165,48 @@ FilePath tempDir()
 
 FilePath findProgram(const std::string& name)
 {
-   std::string which;
-   Error error = r::exec::RFunction("Sys.which", name).call(&which);
-   if (error)
+   // Added isMainThread() test here to allow the console to run offline.
+   // On starting a terminal, it does 'which svn' and adds that dir to the
+   // path if it find one
+   // FUTURE: Can we always use findProgramOnPath? It will be a lot faster since R's
+   // version seems to fork a process to call the shell's 'which'
+   // Be careful of Windows there are two copies of the environment so
+   // R's env might be out of sync with rsession's PATH.
+   if (!r::exec::isMainThread())
    {
-      LOG_ERROR(error);
-      return FilePath();
+      FilePath resultPath;
+      Error error = system::findProgramOnPath(name, &resultPath);
+      if (error)
+      {
+         return FilePath();
+      }
+      return resultPath;
    }
    else
    {
-      return FilePath(which);
+      std::string which;
+      FilePath resultPath;
+
+      // For now, going to check both ways and log warnings if they don't match
+      Error error = r::exec::RFunction("Sys.which", name).call(&which);
+      Error dbgError = system::findProgramOnPath(name, &resultPath);
+      if (error)
+      {
+         LOG_ERROR(error);
+         return FilePath();
+      }
+      else
+      {
+         if (dbgError && which != "")
+         {
+            LOG_WARNING_MESSAGE("findProgramOnPath returns error: " + dbgError.asString() + " Sys.which returns: " + resultPath.getAbsolutePath());
+         }
+         else if (which != resultPath.getAbsolutePath())
+         {
+            LOG_WARNING_MESSAGE("findProgramOnPath returns wrong result: " + which + " != " + resultPath.getAbsolutePath());
+         }
+         return FilePath(which);
+      }
    }
 }
 
@@ -1298,6 +1357,29 @@ bool isTextFile(const FilePath& targetPath)
 
 #endif
 
+}
+
+void editFile(const core::FilePath& filePath, int lineNumber)
+{
+   // construct file system item (also tag with mime type) and position
+   json::Object fileJson = module_context::createFileSystemItem(filePath);
+   fileJson["mime_type"] = filePath.getMimeContentType();
+
+   json::Value positionJsonValue;
+   if (lineNumber >= 0)
+   {
+      json::Object positionJson;
+      positionJson["line"] = lineNumber;
+      positionJson["column"] = 1;
+      positionJsonValue = positionJson;
+   }
+
+   // fire event
+   json::Object eventJson;
+   eventJson["file"] = fileJson;
+   eventJson["position"] = positionJsonValue;
+   ClientEvent event(client_events::kFileEdit, eventJson);
+   module_context::enqueClientEvent(event);
 }
 
 Error rBinDir(core::FilePath* pRBinDirPath)
@@ -1691,6 +1773,14 @@ SEXP rs_base64decode(SEXP dataSEXP, SEXP binarySEXP)
       return r::sexp::create(output, &protect);
 }
 
+SEXP rs_htmlEscape(SEXP textSEXP, SEXP attributeSEXP)
+{
+   std::string escaped = string_utils::htmlEscape(r::sexp::safeAsString(textSEXP), 
+         r::sexp::asLogical(attributeSEXP));
+   r::sexp::Protect protect;
+   return r::sexp::create(escaped, &protect);
+}
+
 SEXP rs_resolveAliasedPath(SEXP pathSEXP)
 {
    std::string path = r::sexp::asUtf8String(pathSEXP);
@@ -1769,6 +1859,11 @@ std::string rHomeDir()
    return rVersionHome;
 }
 
+std::string rVersionModule()
+{
+   std::string module = system::getenv("RSTUDIO_R_MODULE");
+   return module;
+}
 
 r_util::ActiveSession& activeSession()
 {
@@ -1867,8 +1962,8 @@ Error sourceModuleRFileWithResult(const std::string& rSourceFile,
 
    // vanilla execution of a single expression
    std::vector<std::string> args;
-   args.push_back("--slave");
    args.push_back("--vanilla");
+   args.push_back("-s");
    args.push_back("-e");
 
    // build source command
@@ -2255,7 +2350,6 @@ Events& events()
    return instance;
 }
 
-
 core::system::ProcessSupervisor& processSupervisor()
 {
    static core::system::ProcessSupervisor instance;
@@ -2289,6 +2383,7 @@ FilePath sourceDiagnostics()
 }
    
 namespace {
+
 void beginRpcHandler(json::JsonRpcFunction function,
                      json::JsonRpcRequest request,
                      std::string asyncHandle)
@@ -2299,9 +2394,11 @@ void beginRpcHandler(json::JsonRpcFunction function,
       Error error = function(request, &response);
       BOOST_ASSERT(!response.hasAfterResponse());
       if (error)
-      {
          response.setError(error);
-      }
+      
+      if (!response.hasField(kEventsPending))
+         response.setField(kEventsPending, "false");
+      
       json::Object value;
       value["handle"] = asyncHandle;
       value["response"] = response.getRawResponse();
@@ -2311,6 +2408,7 @@ void beginRpcHandler(json::JsonRpcFunction function,
    CATCH_UNEXPECTED_EXCEPTION
 
 }
+
 } // anonymous namespace
 
 core::Error executeAsync(const json::JsonRpcFunction& function,
@@ -2508,11 +2606,11 @@ bool isPathViewAllowed(const FilePath& filePath)
       }
    }
 
-   // Check session option for explicitly whitelisted directories
-   std::string whitelistDirs = session::options().directoryViewWhitelist();
-   if (!whitelistDirs.empty())
+   // Check session option for explicitly allowed directories
+   std::string allowDirs = session::options().directoryViewAllowList();
+   if (!allowDirs.empty())
    {
-      std::vector<std::string> dirs = core::algorithm::split(whitelistDirs, ":");
+      std::vector<std::string> dirs = core::algorithm::split(allowDirs, ":");
       for (const auto& dir: dirs)
       {
          if (filePath.isWithin(FilePath(dir)))
@@ -2611,21 +2709,19 @@ bool isUserFile(const FilePath& filePath)
              return false;
       }
 
-      // if we are in a website project then screen the output dir
-      if (!module_context::websiteOutputDir().empty())
-      {
-         FilePath sitePath = projects::projectContext().buildTargetPath();
-         std::string siteRelative = filePath.getRelativePath(sitePath);
-         if (boost::algorithm::starts_with(
-                siteRelative, module_context::websiteOutputDir() + "/"))
+      // screen our various virtual environment directories + standard content ignores
+      FilePath projPath = projects::projectContext().directory();
+      std::vector<std::string> dirs({"packrat/", "renv/"});
+      const std::vector<FilePath>& ignoreDirs = module_context::ignoreContentDirs();
+      std::transform(ignoreDirs.begin(), ignoreDirs.end(), std::back_inserter(dirs),
+                     [&projPath](const FilePath& ignorePath) {
+         return ignorePath.getRelativePath(projPath) + "/";
+      });
+      std::string pkgRelative = filePath.getRelativePath(projPath);
+      for (const auto& dir : dirs) {
+         if (boost::algorithm::starts_with(pkgRelative, dir))
             return false;
       }
-
-      // screen the packrat directory
-      FilePath projPath = projects::projectContext().directory();
-      std::string pkgRelative = filePath.getRelativePath(projPath);
-      if (boost::algorithm::starts_with(pkgRelative, "packrat/"))
-         return false;
    }
 
    return true;
@@ -2802,6 +2898,44 @@ void checkXcodeLicense()
 #endif
 }
 
+std::vector<FilePath> ignoreContentDirs()
+{
+   std::vector<FilePath> ignoreDirs;
+   if (projects::projectContext().hasProject()) {
+      // python virtual environments
+      ignoreDirs = projects::projectContext().pythonEnvs();
+      quarto::QuartoConfig quartoConf = quarto::quartoConfig();
+      // quarto site output dir
+      if (quartoConf.is_project) {
+         FilePath quartoProjDir = module_context::resolveAliasedPath(quartoConf.project_dir);
+         ignoreDirs.push_back(quartoProjDir.completeChildPath(quartoConf.project_output_dir));
+         ignoreDirs.push_back(quartoProjDir.completeChildPath("_freeze"));
+      }
+      // rmarkdown site output dir
+      if (module_context::isWebsiteProject())
+      {
+         FilePath buildTargetPath = projects::projectContext().buildTargetPath();
+         std::string outputDir = module_context::websiteOutputDir();
+         if (!outputDir.empty())
+            ignoreDirs.push_back(buildTargetPath.completeChildPath(outputDir));
+         else
+            ignoreDirs.push_back(buildTargetPath);
+      }
+
+   }
+   return ignoreDirs;
+}
+
+bool isIgnoredContent(const core::FilePath& filePath,
+                      const std::vector<core::FilePath>& ignoreDirs)
+{
+   auto it = std::find_if(ignoreDirs.begin(), ignoreDirs.end(), [&filePath](const FilePath& dir) {
+      return dir.exists() && filePath.isWithin(dir);
+   });
+   return it != ignoreDirs.end();
+}
+
+
 std::string getActiveLanguage()
 {
    if (modules::reticulate::isReplActive())
@@ -2866,6 +3000,7 @@ Error initialize()
    RS_REGISTER_CALL_METHOD(rs_base64decode);
    RS_REGISTER_CALL_METHOD(rs_base64encode);
    RS_REGISTER_CALL_METHOD(rs_base64encodeFile);
+   RS_REGISTER_CALL_METHOD(rs_htmlEscape);
    RS_REGISTER_CALL_METHOD(rs_enqueClientEvent);
    RS_REGISTER_CALL_METHOD(rs_ensureFileHidden);
    RS_REGISTER_CALL_METHOD(rs_generateShortUuid);
@@ -2884,6 +3019,7 @@ Error initialize()
    RS_REGISTER_CALL_METHOD(rs_rstudioEdition);
    RS_REGISTER_CALL_METHOD(rs_rstudioProgramMode);
    RS_REGISTER_CALL_METHOD(rs_rstudioVersion);
+   RS_REGISTER_CALL_METHOD(rs_rstudioLongVersion);
    RS_REGISTER_CALL_METHOD(rs_rstudioReleaseName);
    RS_REGISTER_CALL_METHOD(rs_sessionModulePath);
    RS_REGISTER_CALL_METHOD(rs_setPersistentValue);
@@ -2893,6 +3029,7 @@ Error initialize()
    RS_REGISTER_CALL_METHOD(rs_threadSleep);
    RS_REGISTER_CALL_METHOD(rs_userPrompt);
    RS_REGISTER_CALL_METHOD(rs_setRpcDelay);
+   RS_REGISTER_CALL_METHOD(rs_performBackgroundProcessing);
 
    // initialize monitored scratch dir
    initializeMonitoredUserScratchDir();

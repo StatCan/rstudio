@@ -149,8 +149,19 @@ environment(.rs.Env[[".rs.addFunction"]]) <- .rs.Env
 .rs.addFunction("restoreGlobalEnvFromFile", function(path)
 {
    Encoding(path) <- "UTF-8"
-
-   status <- try(load(path, envir = .GlobalEnv), silent = TRUE)
+   
+   # avoid path encoding issues by moving to directory first
+   if (!file.exists(path))
+      return(paste(path, "does not exist"))
+   
+   owd <- setwd(dirname(path))
+   on.exit(setwd(owd), add = TRUE)
+   
+   status <- try(
+      load(basename(path), envir = .GlobalEnv),
+      silent = TRUE
+   )
+   
    if (!inherits(status, "try-error"))
       return("")
    
@@ -473,6 +484,15 @@ environment(.rs.Env[[".rs.addFunction"]]) <- .rs.Env
 
       .Call("rs_showFile", fileTitle, files[[i]], delete.file)
    }
+})
+
+.rs.addFunction("canonicalizePath", function(path, winslash = "/")
+{
+   file.path(
+      normalizePath(dirname(path), winslash = winslash, mustWork = FALSE),
+      basename(path),
+      fsep = winslash
+   )
 })
 
 # alias for normalizePath function
@@ -1204,6 +1224,13 @@ environment(.rs.Env[[".rs.addFunction"]]) <- .rs.Env
       action   = "append"
    )
       
+})
+
+.rs.addFunction("prependToPath", function(entry)
+{
+   oldPath <- Sys.getenv("PATH")
+   newPath <- paste(normalizePath(entry), oldPath, sep = .Platform$path.sep)
+   Sys.setenv(PATH = newPath)
 })
 
 .rs.addFunction("initTools", function()

@@ -201,7 +201,7 @@
                     "TabSet1",
                     "TabSet2",
                     "HiddenTabSet"],
-                "tabSet1": ["Environment", "History", "Connections", "Build", "VCS", "Tutorial", "Presentation"],
+                "tabSet1": ["Environment", "History", "Connections", "Build", "VCS", "Tutorial", "Presentations", "Presentation"],
                 "tabSet2": ["Files", "Plots", "Packages", "Help", "Viewer"],
                 "hiddenTabSet": [],
                 "console_left_on_top": false,
@@ -230,8 +230,8 @@
         },
         "auto_detect_indentation": {
             "type": "boolean",
-            "default": true,
-            "title": "Autodetect indentation in files",
+            "default": false,
+            "title": "Auto-detect indentation in files",
             "description": "When enabled, the indentation for documents not part of an RStudio project will be automatically detected."
         },
         "show_margin": {
@@ -386,11 +386,17 @@
             "title": "Show diagnostics in C++ code",
             "description": "Whether to show diagnostic messages for C++ code as you type."
         },
+        "show_diagnostics_yaml": {
+            "type": "boolean",
+            "default": true,
+            "title": "Show diagnostics in YAML code",
+            "description": "Whether to show diagnostic messages for YAML code as you type."
+        },
         "show_diagnostics_other": {
             "type": "boolean",
             "default": false,
             "title": "Show diagnostics in other languages",
-            "description": "Whether to show diagnostic messages for other types of code (not R or C++)."
+            "description": "Whether to show diagnostic messages for other types of code (not R, C++, or YAML)."
         },
         "style_diagnostics": {
             "type": "boolean",
@@ -565,7 +571,7 @@
         },
         "limit_visible_console": {
             "type": "boolean",
-            "default": true,
+            "default": false,
             "title": "Limit visible console output",
             "description": "Whether to only show a limited window of the total console output"
         },
@@ -641,12 +647,6 @@
             "title": "Source with echo by default",
             "description": "Whether to echo R code when sourcing it."
         },
-        "new_project_git_init": {
-            "type": "boolean",
-            "default": false,
-            "title": "Initialize new projects with Git",
-            "description": "Whether to initialize new projects with a Git repo by default."
-        },
         "default_sweave_engine": {
             "type": "string",
             "default": "Sweave",
@@ -719,18 +719,6 @@
             "default": true,
             "title": "Ignore words with numbers in spell check",
             "description": "Whether to ignore words with numbers in them when spell checking."
-        },
-        "max_spellcheck_words": {
-            "type": "integer",
-            "default": 500,
-            "title": "Maximum number of words to spell check",
-            "description": "The maximum number of spelling words to check at once."
-        },
-        "max_spellcheck_prefetch": {
-            "type": "integer",
-            "default": 20,
-            "title": "Number of words to prefetch for spell check",
-            "description": "The maximum number of spelling correction suggestions to prefetch."
         },
         "real_time_spellchecking": {
             "type": "boolean",
@@ -992,6 +980,12 @@
             "title": "Sort file names naturally in Files pane",
             "description": "Whether to sort file names naturally, so that e.g., file10.R comes after file9.R"
         },
+        "sync_files_pane_working_dir": {
+            "type": "boolean",
+            "default": false,
+            "title": "Synchronize the Files pane with the current working directory",
+            "description": "Whether to change the directory in the Files pane automatically when the working directory in R changes."
+        },
         "jobs_tab_visibility": {
             "type": "string",
             "enum": ["closed", "shown", "default"],
@@ -1012,14 +1006,14 @@
         },
         "busy_detection": {
             "type": "string",
-            "enum": ["always", "never", "whitelist"],
+            "enum": ["always", "never", "list"],
             "default": "always",
             "description": "How to detect busy status in the Terminal."
         },
-        "busy_whitelist": {
+        "busy_exclusion_list": {
             "type": "array",
             "default": ["tmux", "screen"],
-            "description": "A whitelist of apps that should not be considered busy in the Terminal."
+            "description": "A list of apps that should not be considered busy in the Terminal."
         },
         "knit_working_dir": {
             "type": "string",
@@ -1072,6 +1066,12 @@
             "default": false,
             "title": "Create a Git repo in new projects",
             "description": "Whether a git repo should be initialized inside new projects by default."
+        },
+        "new_proj_use_renv": {
+            "type": "boolean",
+            "default": false,
+            "title": "Create an renv environment in new projects",
+            "description": "Whether an renv environment should be created inside new projects by default."
         },
         "root_document": {
             "type": "string",
@@ -1222,6 +1222,10 @@
                 "label": {
                     "type": "string",
                     "description": "A free-form label for describing the R version."
+                },
+                "module": {
+                    "type": "string",
+                    "description": "The name of the environment module to load."
                 }
             },
             "description": "The R version to use by default."
@@ -1363,6 +1367,12 @@
             "default": false,
             "title": "Show margin in visual mode code blocks",
             "description": "Whether to show the margin guide in the visual mode code blocks."
+        },
+        "visual_markdown_code_editor_line_numbers": {
+            "type": "boolean",
+            "default": false,
+            "title": "Show line numbers in visual mode code blocks",
+            "description": "Whether to show line numbers in the code editors used in visual mode"
         },
         "visual_markdown_editing_font_size_points": {
             "type": "integer",
@@ -1512,6 +1522,30 @@
             "title": "Interval for requerying memory stats (seconds)",
             "type": "integer",
             "default": 10
+        },
+        "terminal_python_integration": {
+            "description": "Enable Python terminal hooks. When enabled, the RStudio-configured version of Python will be placed on the PATH.",
+            "title": "Enable terminal Python integration",
+            "type": "boolean",
+            "default": true
+        },
+        "session_protocol_debug": {
+            "description": "Enable session protocol debug logging showing all session requests and events",
+            "title": "Session protocol debug logging",
+            "type": "boolean",
+            "default": false
+        },
+        "python_project_environment_automatic_activate": {
+            "description": "When enabled, if the active project contains a Python virtual environment, then RStudio will automatically activate this environment on startup.",
+            "title": "Automatically activate project Python environments",
+            "type": "boolean",
+            "default": true
+        },
+        "check_null_external_pointers": {
+            "description": "When enabled, RStudio will detect R objects containing null external pointers when building the Environment pane, and avoid introspecting their contents further.",
+            "title": "Check values in the Environment pane for null external pointers",
+            "type": "boolean",
+            "default": false
         }
     }
 }

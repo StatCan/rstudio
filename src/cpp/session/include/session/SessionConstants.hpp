@@ -63,17 +63,24 @@
 #define kRunTestsSessionOption            "run-tests"
 #define kRunScriptSessionOption           "run-script"
 
+#define kVersionSessionOption             "version"
+
 #define kLimitSessionOption               "session-limit"
 #define kTimeoutSessionOption             "session-timeout-minutes"
 #define kTimeoutSuspendSessionOption      "session-timeout-suspend"
 #define kDisconnectedTimeoutSessionOption "session-disconnected-timeout-minutes"
-#define kSessionEnvVarSaveBlacklist       "session-env-var-save-blacklist"
+#define kSessionEphemeralEnvVars          "session-ephemeral-env-vars"
 #define kVerifySignaturesSessionOption    "verify-signatures"
 #define kStandaloneSessionOption          "standalone"
 #define kWwwAddressSessionOption          "www-address"
 #define kWwwPortSessionOption             "www-port"
 #define kWwwResusePorts                   "www-reuse-ports"
 #define kTerminalPortOption               "terminal-port"
+#define kSessionSuspendOnIncompleteStatement "session-suspend-on-incomplete-statement"
+#define kSessionAsyncRpcEnabled           "session-async-rpc-enabled"
+#define kSessionAsyncRpcTimeoutMs         "session-async-rpc-timeout-ms"
+#define kSessionHandleOfflineEnabled      "session-handle-offline-enabled"
+#define kSessionHandleOfflineTimeoutMs    "session-handle-offline-timeout-ms"
 
 #define kLauncherSessionOption            "launcher-session"
 
@@ -123,7 +130,8 @@
 #define kSessionTmpDirEnvVar       "RS_SESSION_TMP_DIR"
 #define kSessionTmpDir             "rstudio-rsession"
 
-#define kDefaultPandocPath         "bin/pandoc"
+#define kDefaultPandocPath         "bin/quarto/bin"
+#define kDefaultQuartoPath         "bin/quarto"
 #define kDefaultPostbackPath       "bin/postback/rpostback"
 #define kDefaultRsclangPath        "bin/rsclang"
 

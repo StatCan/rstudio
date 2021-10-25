@@ -16,30 +16,31 @@
 #
 
 if [ "$#" = "0" ]; then
-   echo "Usage: $0 [frameworks directory] [prefix]"
+   echo "Usage: $0 [frameworks directory] [prefix] [files]"
    exit 0
 fi
 
 DIR="$1"
 PREFIX="$2"
+FILES="$3"
 
 cd "$DIR"
-for FILE in *.dylib; do
+for FILE in ${FILES}; do
 
-   install_name_tool -id "${FILE}" "${FILE}" &> /dev/null
+   install_name_tool -id "${FILE}" "${FILE}"
 
    LIBPATHS=$( \
       otool -L "${FILE}" | \
       tail -n+2 | \
       cut -d' ' -f1 | \
       sed 's|\t||g' | \
-      grep 'homebrew'
+      grep -E 'homebrew|local'
    )
 
    for LIBPATH in ${LIBPATHS}; do
       OLD="${LIBPATH}"
       NEW="${PREFIX}/$(basename "${OLD}")"
-      install_name_tool -change "${OLD}" "${NEW}" "${FILE}" &> /dev/null
+      install_name_tool -change "${OLD}" "${NEW}" "${FILE}"
    done
 
 done

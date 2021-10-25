@@ -115,7 +115,7 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
             // i18n: This looks like an enumerator, but might also be shown to the user?  Find where this is defined
             //       and handle it accordingly
             if (module == "Presentation")
-               checkBox.setVisible(false);
+              checkBox.setVisible(false);
          }
 
          ScrollPanel scrollPanel = new ScrollPanelWithClick();
@@ -203,6 +203,7 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
 
       Toolbar columnToolbar = new Toolbar("Manage Column Display");
       columnToolbar.setStyleName(res_.styles().newSection());
+      columnToolbar.setHeight("20px");
 
       // i18n: Not sure where these show, but I think they're displayed?
       ToolbarButton addButton = new ToolbarButton(

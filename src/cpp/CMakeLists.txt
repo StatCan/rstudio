@@ -551,6 +551,9 @@ endif()
 if (RSTUDIO_DESKTOP)
    message(STATUS "Configured to build DESKTOP")
 endif()
+if (RSTUDIO_ELECTRON)
+   message(STATUS "Configured to build ELECTRON")
+endif()
 if(RSTUDIO_CONFIG_CORE_DEV)
    message(STATUS "Configured to build CORE_DEV")
 endif()
@@ -593,7 +596,7 @@ else()
       if(LIBR_FOUND AND RSTUDIO_VERIFY_R_VERSION)
          set(CMAKE_REQUIRED_INCLUDES ${LIBR_INCLUDE_DIRS})
          execute_process(
-             COMMAND "${LIBR_EXECUTABLE}" "--vanilla" "--slave" "-e" "cat(as.character(getRversion()))"
+             COMMAND "${LIBR_EXECUTABLE}" "--vanilla" "-s" "-e" "cat(as.character(getRversion()))"
              OUTPUT_VARIABLE LIBR_VERSION)
          if (LIBR_VERSION VERSION_LESS "3.0.1")
             message(FATAL_ERROR "Minimum R version (${RSTUDIO_R_MAJOR_VERSION_REQUIRED}.${RSTUDIO_R_MINOR_VERSION_REQUIRED}.${RSTUDIO_R_PATCH_VERSION_REQUIRED}) not found; detected version is ${LIBR_VERSION}")
@@ -608,12 +611,26 @@ else()
 
       # test runner script
       if(NOT WIN32)
-         configure_file(rstudio-tests.in ${CMAKE_CURRENT_BINARY_DIR}/rstudio-tests)
+
+         configure_file(
+            "${CMAKE_CURRENT_SOURCE_DIR}/rstudio-tests.in"
+            "${CMAKE_CURRENT_BINARY_DIR}/rstudio-tests"
+            @ONLY)
+
+         if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/rstudio-pro-tests.in")
+            configure_file(
+               "${CMAKE_CURRENT_SOURCE_DIR}/rstudio-pro-tests.in"
+               "${CMAKE_CURRENT_BINARY_DIR}/rstudio-pro-tests"
+               @ONLY)
+         endif()
+
       endif()
 
       # add desktop subprojects if we aren't building in server only mode
-      if(RSTUDIO_DESKTOP)
+      if(RSTUDIO_DESKTOP OR RSTUDIO_ELECTRON)
          add_subdirectory(diagnostics)
+      endif()
+      if(RSTUDIO_DESKTOP)
          add_subdirectory(desktop)
       endif()
 
@@ -622,7 +639,7 @@ else()
       add_subdirectory(session)
 
       # configure desktop files
-      if(RSTUDIO_DESKTOP)
+      if(RSTUDIO_DESKTOP OR RSTUDIO_ELECTRON)
          configure_file(conf/rdesktop-dev.conf ${CMAKE_CURRENT_BINARY_DIR}/conf/rdesktop-dev.conf)
          if(NOT WIN32)
             if(NOT APPLE)

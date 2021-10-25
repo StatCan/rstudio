@@ -52,8 +52,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "run_rprofile_on_resume", //$NON-NLS-1$
-         _constants.runRprofileOnResumeTitle(), 
-         _constants.runRprofileOnResumeDescription(), 
+         _constants.runRprofileOnResumeTitle(),
+         _constants.runRprofileOnResumeDescription(),
          false);
    }
 
@@ -64,8 +64,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "save_workspace", //$NON-NLS-1$
-         _constants.saveWorkspaceTitle(), 
-         _constants.saveWorkspaceDescription(), 
+         _constants.saveWorkspaceTitle(),
+         _constants.saveWorkspaceDescription(),
          new String[] {
             SAVE_WORKSPACE_ALWAYS,
             SAVE_WORKSPACE_NEVER,
@@ -86,8 +86,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "load_workspace", //$NON-NLS-1$
-         _constants.loadWorkspaceTitle(), 
-         _constants.loadWorkspaceDescription(), 
+         _constants.loadWorkspaceTitle(),
+         _constants.loadWorkspaceDescription(),
          true);
    }
 
@@ -98,8 +98,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "initial_working_directory", //$NON-NLS-1$
-         _constants.initialWorkingDirectoryTitle(), 
-         _constants.initialWorkingDirectoryDescription(), 
+         _constants.initialWorkingDirectoryTitle(),
+         _constants.initialWorkingDirectoryDescription(),
          "");
    }
 
@@ -110,8 +110,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return object(
          "cran_mirror", //$NON-NLS-1$
-         _constants.cranMirrorTitle(), 
-         _constants.cranMirrorDescription(), 
+         _constants.cranMirrorTitle(),
+         _constants.cranMirrorDescription(),
          null);
    }
 
@@ -152,8 +152,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "bioconductor_mirror_name", //$NON-NLS-1$
-         _constants.bioconductorMirrorNameTitle(), 
-         _constants.bioconductorMirrorNameDescription(), 
+         _constants.bioconductorMirrorNameTitle(),
+         _constants.bioconductorMirrorNameDescription(),
          // i18n: Enumerator, user facing text, or both?
          "Seattle (USA)");
    }
@@ -165,8 +165,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "bioconductor_mirror_url", //$NON-NLS-1$
-         _constants.bioconductorMirrorUrlTitle(), 
-         _constants.bioconductorMirrorUrlDescription(), 
+         _constants.bioconductorMirrorUrlTitle(),
+         _constants.bioconductorMirrorUrlDescription(),
          "http://www.bioconductor.org"); //$NON-NLS-1$
    }
 
@@ -177,8 +177,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "always_save_history", //$NON-NLS-1$
-         _constants.alwaysSaveHistoryTitle(), 
-         _constants.alwaysSaveHistoryDescription(), 
+         _constants.alwaysSaveHistoryTitle(),
+         _constants.alwaysSaveHistoryDescription(),
          true);
    }
 
@@ -189,8 +189,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "remove_history_duplicates", //$NON-NLS-1$
-         _constants.removeHistoryDuplicatesTitle(), 
-         _constants.removeHistoryDuplicatesDescription(), 
+         _constants.removeHistoryDuplicatesTitle(),
+         _constants.removeHistoryDuplicatesDescription(),
          false);
    }
 
@@ -201,8 +201,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_last_dot_value", //$NON-NLS-1$
-         _constants.showLastDotValueTitle(), 
-         _constants.showLastDotValueDescription(), 
+         _constants.showLastDotValueTitle(),
+         _constants.showLastDotValueDescription(),
          false);
    }
 
@@ -213,8 +213,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "line_ending_conversion", //$NON-NLS-1$
-         _constants.lineEndingConversionTitle(), 
-         _constants.lineEndingConversionDescription(), 
+         _constants.lineEndingConversionTitle(),
+         _constants.lineEndingConversionDescription(),
          new String[] {
             LINE_ENDING_CONVERSION_DEFAULT,
             LINE_ENDING_CONVERSION_WINDOWS,
@@ -240,8 +240,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "use_newlines_in_makefiles", //$NON-NLS-1$
-         _constants.useNewlinesInMakefilesTitle(), 
-         _constants.useNewlinesInMakefilesDescription(), 
+         _constants.useNewlinesInMakefilesTitle(),
+         _constants.useNewlinesInMakefilesDescription(),
          true);
    }
 
@@ -252,8 +252,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "windows_terminal_shell", //$NON-NLS-1$
-         _constants.windowsTerminalShellTitle(), 
-         _constants.windowsTerminalShellDescription(), 
+         _constants.windowsTerminalShellTitle(),
+         _constants.windowsTerminalShellDescription(),
          new String[] {
             WINDOWS_TERMINAL_SHELL_DEFAULT,
             WINDOWS_TERMINAL_SHELL_WIN_GIT_BASH,
@@ -285,8 +285,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "posix_terminal_shell", //$NON-NLS-1$
-         _constants.posixTerminalShellTitle(), 
-         _constants.posixTerminalShellDescription(), 
+         _constants.posixTerminalShellTitle(),
+         _constants.posixTerminalShellDescription(),
          new String[] {
             POSIX_TERMINAL_SHELL_DEFAULT,
             POSIX_TERMINAL_SHELL_BASH,
@@ -312,8 +312,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "custom_shell_command", //$NON-NLS-1$
-         _constants.customShellCommandTitle(), 
-         _constants.customShellCommandDescription(), 
+         _constants.customShellCommandTitle(),
+         _constants.customShellCommandDescription(),
          "");
    }
 
@@ -324,8 +324,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "custom_shell_options", //$NON-NLS-1$
-         _constants.customShellOptionsTitle(), 
-         _constants.customShellOptionsDescription(), 
+         _constants.customShellOptionsTitle(),
+         _constants.customShellOptionsDescription(),
          "");
    }
 
@@ -336,8 +336,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_line_numbers", //$NON-NLS-1$
-         _constants.showLineNumbersTitle(), 
-         _constants.showLineNumbersDescription(), 
+         _constants.showLineNumbersTitle(),
+         _constants.showLineNumbersDescription(),
          true);
    }
 
@@ -348,8 +348,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "highlight_selected_word", //$NON-NLS-1$
-         _constants.highlightSelectedWordTitle(), 
-         _constants.highlightSelectedWordDescription(), 
+         _constants.highlightSelectedWordTitle(),
+         _constants.highlightSelectedWordDescription(),
          true);
    }
 
@@ -360,8 +360,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "highlight_selected_line",
-         _constants.highlightSelectedLineTitle(), 
-         _constants.highlightSelectedLineDescription(), 
+         _constants.highlightSelectedLineTitle(),
+         _constants.highlightSelectedLineDescription(),
          false);
    }
 
@@ -372,8 +372,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return object(
          "panes", //$NON-NLS-1$
-         _constants.panesTitle(), 
-         _constants.panesDescription(), 
+         _constants.panesTitle(),
+         _constants.panesDescription(),
          null);
    }
 
@@ -393,7 +393,7 @@ public class UserPrefsAccessor extends Prefs
       }-*/;
 
       public final native JsArrayString getTabSet1() /*-{
-         return this && this.tabSet1 || ["Environment","History","Connections","Build","VCS","Tutorial","Presentation"];
+         return this && this.tabSet1 || ["Environment","History","Connections","Build","VCS","Tutorial","Presentations","Presentation"];
       }-*/;
 
       public final native JsArrayString getTabSet2() /*-{
@@ -425,8 +425,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "allow_source_columns", //$NON-NLS-1$
-         _constants.allowSourceColumnsTitle(), 
-         _constants.allowSourceColumnsDescription(), 
+         _constants.allowSourceColumnsTitle(),
+         _constants.allowSourceColumnsDescription(),
          true);
    }
 
@@ -437,8 +437,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "use_spaces_for_tab", //$NON-NLS-1$
-         _constants.useSpacesForTabTitle(), 
-         _constants.useSpacesForTabDescription(), 
+         _constants.useSpacesForTabTitle(),
+         _constants.useSpacesForTabDescription(),
          true);
    }
 
@@ -449,8 +449,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "num_spaces_for_tab", //$NON-NLS-1$
-         _constants.numSpacesForTabTitle(), 
-         _constants.numSpacesForTabDescription(), 
+         _constants.numSpacesForTabTitle(),
+         _constants.numSpacesForTabDescription(),
          2);
    }
 
@@ -460,10 +460,10 @@ public class UserPrefsAccessor extends Prefs
    public PrefValue<Boolean> autoDetectIndentation()
    {
       return bool(
-         "auto_detect_indentation", //$NON-NLS-1$
-         _constants.autoDetectIndentationTitle(), 
-         _constants.autoDetectIndentationDescription(), 
-         true);
+         "auto_detect_indentation",  //$NON-NLS-1$
+         "Auto-detect indentation in files",
+         "Whether to automatically detect indentation settings from file contents.",
+         false);
    }
 
    /**
@@ -473,8 +473,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_margin", //$NON-NLS-1$
-         _constants.showMarginTitle(), 
-         _constants.showMarginDescription(), 
+         _constants.showMarginTitle(),
+         _constants.showMarginDescription(),
          true);
    }
 
@@ -485,8 +485,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "blinking_cursor", //$NON-NLS-1$
-         _constants.blinkingCursorTitle(), 
-         _constants.blinkingCursorDescription(), 
+         _constants.blinkingCursorTitle(),
+         _constants.blinkingCursorDescription(),
          true);
    }
 
@@ -497,8 +497,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "margin_column", //$NON-NLS-1$
-         _constants.marginColumnTitle(), 
-         _constants.marginColumnDescription(), 
+         _constants.marginColumnTitle(),
+         _constants.marginColumnDescription(),
          80);
    }
 
@@ -509,8 +509,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_invisibles",
-         _constants.showInvisiblesTitle(), 
-         _constants.showInvisiblesDescription(), 
+         _constants.showInvisiblesTitle(),
+         _constants.showInvisiblesDescription(),
          false);
    }
 
@@ -521,8 +521,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_indent_guides",
-         _constants.showIndentGuidesTitle(), 
-         _constants.showIndentGuidesDescription(), 
+         _constants.showIndentGuidesTitle(),
+         _constants.showIndentGuidesDescription(),
          false);
    }
 
@@ -533,8 +533,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "continue_comments_on_newline", //$NON-NLS-1$
-         _constants.continueCommentsOnNewlineTitle(), 
-         _constants.continueCommentsOnNewlineDescription(), 
+         _constants.continueCommentsOnNewlineTitle(),
+         _constants.continueCommentsOnNewlineDescription(),
          false);
    }
 
@@ -545,8 +545,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "highlight_web_link", //$NON-NLS-1$
-         _constants.highlightWebLinkTitle(), 
-         _constants.highlightWebLinkDescription(), 
+         _constants.highlightWebLinkTitle(),
+         _constants.highlightWebLinkDescription(),
          true);
    }
 
@@ -557,8 +557,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "editor_keybindings", //$NON-NLS-1$
-         _constants.editorKeybindingsTitle(), 
-         _constants.editorKeybindingsDescription(), 
+         _constants.editorKeybindingsTitle(),
+         _constants.editorKeybindingsDescription(),
          new String[] {
             EDITOR_KEYBINDINGS_DEFAULT,
             EDITOR_KEYBINDINGS_VIM,
@@ -588,8 +588,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "insert_matching", //$NON-NLS-1$
-         _constants.insertMatchingTitle(), 
-         _constants.insertMatchingDescription(), 
+         _constants.insertMatchingTitle(),
+         _constants.insertMatchingDescription(),
          true);
    }
 
@@ -600,8 +600,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "insert_spaces_around_equals", //$NON-NLS-1$
-         _constants.insertSpacesAroundEqualsTitle(), 
-         _constants.insertSpacesAroundEqualsDescription(), 
+         _constants.insertSpacesAroundEqualsTitle(),
+         _constants.insertSpacesAroundEqualsDescription(),
          true);
    }
 
@@ -612,8 +612,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "insert_parens_after_function_completion", //$NON-NLS-1$
-         _constants.insertParensAfterFunctionCompletionTitle(), 
-         _constants.insertParensAfterFunctionCompletionDescription(), 
+         _constants.insertParensAfterFunctionCompletionTitle(),
+         _constants.insertParensAfterFunctionCompletionDescription(),
          true);
    }
 
@@ -624,8 +624,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "tab_multiline_completion", //$NON-NLS-1$
-         _constants.tabMultilineCompletionTitle(), 
-         _constants.tabMultilineCompletionDescription(), 
+         _constants.tabMultilineCompletionTitle(),
+         _constants.tabMultilineCompletionDescription(),
          false);
    }
 
@@ -636,8 +636,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "tab_completion", //$NON-NLS-1$
-         _constants.tabCompletionTitle(), 
-         _constants.tabCompletionDescription(), 
+         _constants.tabCompletionTitle(),
+         _constants.tabCompletionDescription(),
          true);
    }
 
@@ -648,8 +648,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_help_tooltip_on_idle", //$NON-NLS-1$
-         _constants.showHelpTooltipOnIdleTitle(), 
-         _constants.showHelpTooltipOnIdleDescription(), 
+         _constants.showHelpTooltipOnIdleTitle(),
+         _constants.showHelpTooltipOnIdleDescription(),
          false);
    }
 
@@ -660,8 +660,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "surround_selection", //$NON-NLS-1$
-         _constants.surroundSelectionTitle(), 
-         _constants.surroundSelectionDescription(), 
+         _constants.surroundSelectionTitle(),
+         _constants.surroundSelectionDescription(),
          new String[] {
             SURROUND_SELECTION_NEVER,
             SURROUND_SELECTION_QUOTES,
@@ -689,8 +689,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "enable_snippets", //$NON-NLS-1$
-         _constants.enableSnippetsTitle(), 
-         _constants.enableSnippetsDescription(), 
+         _constants.enableSnippetsTitle(),
+         _constants.enableSnippetsDescription(),
          true);
    }
 
@@ -701,8 +701,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "code_completion", //$NON-NLS-1$
-         _constants.codeCompletionTitle(), 
-         _constants.codeCompletionDescription(), 
+         _constants.codeCompletionTitle(),
+         _constants.codeCompletionDescription(),
          new String[] {
             CODE_COMPLETION_ALWAYS,
             CODE_COMPLETION_NEVER,
@@ -731,8 +731,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "code_completion_other", //$NON-NLS-1$
-         _constants.codeCompletionOtherTitle(), 
-         _constants.codeCompletionOtherDescription(), 
+         _constants.codeCompletionOtherTitle(),
+         _constants.codeCompletionOtherDescription(),
          new String[] {
             CODE_COMPLETION_OTHER_ALWAYS,
             CODE_COMPLETION_OTHER_TRIGGERED,
@@ -758,8 +758,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "console_code_completion", //$NON-NLS-1$
-         _constants.consoleCodeCompletionTitle(), 
-         _constants.consoleCodeCompletionDescription(), 
+         _constants.consoleCodeCompletionTitle(),
+         _constants.consoleCodeCompletionDescription(),
          true);
    }
 
@@ -770,8 +770,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "code_completion_delay", //$NON-NLS-1$
-         _constants.codeCompletionDelayTitle(), 
-         _constants.codeCompletionDelayDescription(), 
+         _constants.codeCompletionDelayTitle(),
+         _constants.codeCompletionDelayDescription(),
          250);
    }
 
@@ -782,8 +782,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "code_completion_characters", //$NON-NLS-1$
-         _constants.codeCompletionCharactersTitle(), 
-         _constants.codeCompletionCharactersDescription(), 
+         _constants.codeCompletionCharactersTitle(),
+         _constants.codeCompletionCharactersDescription(),
          3);
    }
 
@@ -794,8 +794,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_function_signature_tooltips", //$NON-NLS-1$
-         _constants.showFunctionSignatureTooltipsTitle(), 
-         _constants.showFunctionSignatureTooltipsDescription(), 
+         _constants.showFunctionSignatureTooltipsTitle(),
+         _constants.showFunctionSignatureTooltipsDescription(),
          true);
    }
 
@@ -806,8 +806,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_diagnostics_r", //$NON-NLS-1$
-         _constants.showDiagnosticsRTitle(), 
-         _constants.showDiagnosticsRDescription(), 
+         _constants.showDiagnosticsRTitle(),
+         _constants.showDiagnosticsRDescription(),
          true);
    }
 
@@ -818,20 +818,32 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_diagnostics_cpp", //$NON-NLS-1$
-         _constants.showDiagnosticsCppTitle(), 
-         _constants.showDiagnosticsCppDescription(), 
+         _constants.showDiagnosticsCppTitle(),
+         _constants.showDiagnosticsCppDescription(),
          true);
    }
 
    /**
-    * Whether to show diagnostic messages for other types of code (not R or C++).
+    * Whether to show diagnostic messages for YAML code as you type.
+    */
+   public PrefValue<Boolean> showDiagnosticsYaml()
+   {
+      return bool(
+         "show_diagnostics_yaml",
+         "Show diagnostics in YAML code",
+         "Whether to show diagnostic messages for YAML code as you type.",
+         true);
+   }
+
+   /**
+    * Whether to show diagnostic messages for other types of code (not R, C++, or YAML).
     */
    public PrefValue<Boolean> showDiagnosticsOther()
    {
       return bool(
          "show_diagnostics_other", //$NON-NLS-1$
-         _constants.showDiagnosticsOtherTitle(), 
-         _constants.showDiagnosticsOtherDescription(), 
+         "Show diagnostics in other languages", 
+         "Whether to show diagnostic messages for other types of code (not R, C++, or YAML).",
          false);
    }
 
@@ -842,8 +854,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "style_diagnostics", //$NON-NLS-1$
-         _constants.styleDiagnosticsTitle(), 
-         _constants.styleDiagnosticsDescription(), 
+         _constants.styleDiagnosticsTitle(),
+         _constants.styleDiagnosticsDescription(),
          false);
    }
 
@@ -854,8 +866,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "diagnostics_on_save", //$NON-NLS-1$
-         _constants.diagnosticsOnSaveTitle(), 
-         _constants.diagnosticsOnSaveDescription(), 
+         _constants.diagnosticsOnSaveTitle(),
+         _constants.diagnosticsOnSaveDescription(),
          true);
    }
 
@@ -866,8 +878,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "background_diagnostics", //$NON-NLS-1$
-         _constants.backgroundDiagnosticsTitle(), 
-         _constants.backgroundDiagnosticsDescription(), 
+         _constants.backgroundDiagnosticsTitle(),
+         _constants.backgroundDiagnosticsDescription(),
          true);
    }
 
@@ -878,8 +890,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "background_diagnostics_delay_ms", //$NON-NLS-1$
-         _constants.backgroundDiagnosticsDelayMsTitle(), 
-         _constants.backgroundDiagnosticsDelayMsDescription(), 
+         _constants.backgroundDiagnosticsDelayMsTitle(),
+         _constants.backgroundDiagnosticsDelayMsDescription(),
          2000);
    }
 
@@ -890,8 +902,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "diagnostics_in_r_function_calls", //$NON-NLS-1$
-         _constants.diagnosticsInRFunctionCallsTitle(), 
-         _constants.diagnosticsInRFunctionCallsDescription(), 
+         _constants.diagnosticsInRFunctionCallsTitle(),
+         _constants.diagnosticsInRFunctionCallsDescription(),
          true);
    }
 
@@ -902,8 +914,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "check_arguments_to_r_function_calls", //$NON-NLS-1$
-         _constants.checkArgumentsToRFunctionCallsTitle(), 
-         _constants.checkArgumentsToRFunctionCallsDescription(), 
+         _constants.checkArgumentsToRFunctionCallsTitle(),
+         _constants.checkArgumentsToRFunctionCallsDescription(),
          false);
    }
 
@@ -914,8 +926,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "check_unexpected_assignment_in_function_call", //$NON-NLS-1$
-         _constants.checkUnexpectedAssignmentInFunctionCallTitle(), 
-         _constants.checkUnexpectedAssignmentInFunctionCallDescription(), 
+         _constants.checkUnexpectedAssignmentInFunctionCallTitle(),
+         _constants.checkUnexpectedAssignmentInFunctionCallDescription(),
          false);
    }
 
@@ -926,8 +938,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "warn_if_no_such_variable_in_scope", //$NON-NLS-1$
-         _constants.warnIfNoSuchVariableInScopeTitle(), 
-         _constants.warnIfNoSuchVariableInScopeDescription(), 
+         _constants.warnIfNoSuchVariableInScopeTitle(),
+         _constants.warnIfNoSuchVariableInScopeDescription(),
          false);
    }
 
@@ -938,8 +950,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "warn_variable_defined_but_not_used", //$NON-NLS-1$
-         _constants.warnVariableDefinedButNotUsedTitle(), 
-         _constants.warnVariableDefinedButNotUsedDescription(), 
+         _constants.warnVariableDefinedButNotUsedTitle(),
+         _constants.warnVariableDefinedButNotUsedDescription(),
          false);
    }
 
@@ -950,8 +962,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "auto_discover_package_dependencies", //$NON-NLS-1$
-         _constants.autoDiscoverPackageDependenciesTitle(), 
-         _constants.autoDiscoverPackageDependenciesDescription(), 
+         _constants.autoDiscoverPackageDependenciesTitle(),
+         _constants.autoDiscoverPackageDependenciesDescription(),
          true);
    }
 
@@ -962,8 +974,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "auto_append_newline", //$NON-NLS-1$
-         _constants.autoAppendNewlineTitle(), 
-         _constants.autoAppendNewlineDescription(), 
+         _constants.autoAppendNewlineTitle(),
+         _constants.autoAppendNewlineDescription(),
          false);
    }
 
@@ -974,8 +986,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "strip_trailing_whitespace", //$NON-NLS-1$
-         _constants.stripTrailingWhitespaceTitle(), 
-         _constants.stripTrailingWhitespaceDescription(), 
+         _constants.stripTrailingWhitespaceTitle(),
+         _constants.stripTrailingWhitespaceDescription(),
          false);
    }
 
@@ -986,8 +998,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "restore_source_document_cursor_position", //$NON-NLS-1$
-         _constants.restoreSourceDocumentCursorPositionTitle(), 
-         _constants.restoreSourceDocumentCursorPositionDescription(), 
+         _constants.restoreSourceDocumentCursorPositionTitle(),
+         _constants.restoreSourceDocumentCursorPositionDescription(),
          true);
    }
 
@@ -998,8 +1010,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "reindent_on_paste", //$NON-NLS-1$
-         _constants.reindentOnPasteTitle(), 
-         _constants.reindentOnPasteDescription(), 
+         _constants.reindentOnPasteTitle(),
+         _constants.reindentOnPasteDescription(),
          true);
    }
 
@@ -1010,8 +1022,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "vertically_align_arguments_indent", //$NON-NLS-1$
-         _constants.verticallyAlignArgumentsIndentTitle(), 
-         _constants.verticallyAlignArgumentsIndentDescription(), 
+         _constants.verticallyAlignArgumentsIndentTitle(),
+         _constants.verticallyAlignArgumentsIndentDescription(),
          true);
    }
 
@@ -1022,8 +1034,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "soft_wrap_r_files", //$NON-NLS-1$
-         _constants.softWrapRFilesTitle(), 
-         _constants.softWrapRFilesDescription(), 
+         _constants.softWrapRFilesTitle(),
+         _constants.softWrapRFilesDescription(),
          false);
    }
 
@@ -1034,8 +1046,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "soft_wrap_rmd_files", //$NON-NLS-1$
-         _constants.softWrapRmdFilesTitle(), 
-         _constants.softWrapRmdFilesDescription(), 
+         _constants.softWrapRmdFilesTitle(),
+         _constants.softWrapRmdFilesDescription(),
          true);
    }
 
@@ -1046,8 +1058,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "focus_console_after_exec", //$NON-NLS-1$
-         _constants.focusConsoleAfterExecTitle(), 
-         _constants.focusConsoleAfterExecDescription(), 
+         _constants.focusConsoleAfterExecTitle(),
+         _constants.focusConsoleAfterExecDescription(),
          false);
    }
 
@@ -1058,8 +1070,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "fold_style", //$NON-NLS-1$
-         _constants.foldStyleTitle(), 
-         _constants.foldStyleDescription(), 
+         _constants.foldStyleTitle(),
+         _constants.foldStyleDescription(),
          new String[] {
             FOLD_STYLE_BEGIN_ONLY,
             FOLD_STYLE_BEGIN_AND_END
@@ -1082,8 +1094,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "save_before_sourcing", //$NON-NLS-1$
-         _constants.saveBeforeSourcingTitle(), 
-         _constants.saveBeforeSourcingDescription(), 
+         _constants.saveBeforeSourcingTitle(),
+         _constants.saveBeforeSourcingDescription(),
          true);
    }
 
@@ -1094,8 +1106,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "syntax_color_console", //$NON-NLS-1$
-         _constants.syntaxColorConsoleTitle(), 
-         _constants.syntaxColorConsoleDescription(), 
+         _constants.syntaxColorConsoleTitle(),
+         _constants.syntaxColorConsoleDescription(),
          false);
    }
 
@@ -1106,8 +1118,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "highlight_console_errors", //$NON-NLS-1$
-         _constants.highlightConsoleErrorsTitle(), 
-         _constants.highlightConsoleErrorsDescription(), 
+         _constants.highlightConsoleErrorsTitle(),
+         _constants.highlightConsoleErrorsDescription(),
          true);
    }
 
@@ -1118,8 +1130,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "scroll_past_end_of_document", //$NON-NLS-1$
-         _constants.scrollPastEndOfDocumentTitle(), 
-         _constants.scrollPastEndOfDocumentDescription(), 
+         _constants.scrollPastEndOfDocumentTitle(),
+         _constants.scrollPastEndOfDocumentDescription(),
          false);
    }
 
@@ -1130,8 +1142,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "highlight_r_function_calls", // $NON-NLS-1$
-         _constants.highlightRFunctionCallsTitle(), 
-         _constants.highlightRFunctionCallsDescription(), 
+         _constants.highlightRFunctionCallsTitle(),
+         _constants.highlightRFunctionCallsDescription(),
          false);
    }
 
@@ -1142,8 +1154,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "rainbow_parentheses", // $NON-NLS-1$
-         _constants.rainbowParenthesesTitle(), 
-         _constants.rainbowParenthesesDescription(), 
+         _constants.rainbowParenthesesTitle(),
+         _constants.rainbowParenthesesDescription(),
          false);
    }
 
@@ -1154,8 +1166,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "console_line_length_limit", // $NON-NLS-1$
-         _constants.consoleLineLengthLimitTitle(), 
-         _constants.consoleLineLengthLimitDescription(), 
+         _constants.consoleLineLengthLimitTitle(),
+         _constants.consoleLineLengthLimitDescription(),
          1000);
    }
 
@@ -1166,8 +1178,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "console_max_lines", // $NON-NLS-1$
-         _constants.consoleMaxLinesTitle(), 
-         _constants.consoleMaxLinesDescription(), 
+         _constants.consoleMaxLinesTitle(),
+         _constants.consoleMaxLinesDescription(),
          1000);
    }
 
@@ -1178,8 +1190,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "ansi_console_mode", // $NON-NLS-1$
-         _constants.ansiConsoleModeTitle(), 
-         _constants.ansiConsoleModeDescription(), 
+         _constants.ansiConsoleModeTitle(),
+         _constants.ansiConsoleModeDescription(),
          new String[] {
             ANSI_CONSOLE_MODE_OFF,
             ANSI_CONSOLE_MODE_ON,
@@ -1201,9 +1213,9 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "limit_visible_console", // $NON-NLS-1$
-         _constants.limitVisibleConsoleTitle(), 
-         _constants.limitVisibleConsoleDescription(), 
-         true);
+         _constants.limitVisibleConsoleTitle(),
+         _constants.limitVisibleConsoleDescription(),
+         false);
    }
 
    /**
@@ -1213,8 +1225,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_inline_toolbar_for_r_code_chunks", // $NON-NLS-1$
-         _constants.showInlineToolbarForRCodeChunksTitle(), 
-         _constants.showInlineToolbarForRCodeChunksDescription(), 
+         _constants.showInlineToolbarForRCodeChunksTitle(),
+         _constants.showInlineToolbarForRCodeChunksDescription(),
          true);
    }
 
@@ -1225,8 +1237,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "highlight_code_chunks", // $NON-NLS-1$
-         _constants.highlightCodeChunksTitle(), 
-         _constants.highlightCodeChunksDescription(), 
+         _constants.highlightCodeChunksTitle(),
+         _constants.highlightCodeChunksDescription(),
          true);
    }
 
@@ -1237,8 +1249,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "save_files_before_build", // $NON-NLS-1$
-         _constants.saveFilesBeforeBuildTitle(), 
-         _constants.saveFilesBeforeBuildDescription(), 
+         _constants.saveFilesBeforeBuildTitle(),
+         _constants.saveFilesBeforeBuildDescription(),
          false);
    }
 
@@ -1249,8 +1261,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return dbl(
          "font_size_points", //$NON-NLS-1$
-         _constants.fontSizePointsTitle(), 
-         _constants.fontSizePointsDescription(), 
+         _constants.fontSizePointsTitle(),
+         _constants.fontSizePointsDescription(),
          10.0);
    }
 
@@ -1261,8 +1273,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return dbl(
          "help_font_size_points", //$NON-NLS-1$
-         _constants.helpFontSizePointsTitle(), 
-         _constants.helpFontSizePointsDescription(), 
+         _constants.helpFontSizePointsTitle(),
+         _constants.helpFontSizePointsDescription(),
          10.0);
    }
 
@@ -1273,7 +1285,7 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "editor_theme", // $NON-NLS-1$
-         _constants.editorThemeTitle(), 
+         _constants.editorThemeTitle(),
          _constants.editorThemeDescription(),
          // i18n: Enumerator, user facing text, or both?  Might be both (probably somewhere tests for these?)
          "Textmate (default)");
@@ -1286,8 +1298,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "server_editor_font_enabled", // $NON-NLS-1$
-         _constants.serverEditorFontEnabledTitle(), 
-         _constants.serverEditorFontEnabledDescription(), 
+         _constants.serverEditorFontEnabledTitle(),
+         _constants.serverEditorFontEnabledDescription(),
          false);
    }
 
@@ -1298,7 +1310,7 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "server_editor_font", // $NON-NLS-1$
-         _constants.serverEditorFontTitle(), 
+         _constants.serverEditorFontTitle(),
          _constants.serverEditorFontDescription(),
          // i18n: Enumerator, user facing text, or both?  Might be both (probably somewhere tests for these?).
          //       Really only matters if "" is not the default
@@ -1312,8 +1324,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "default_encoding", // $NON-NLS-1$
-         _constants.defaultEncodingTitle(), 
-         _constants.defaultEncodingDescription(), 
+         _constants.defaultEncodingTitle(),
+         _constants.defaultEncodingDescription(),
          "");
    }
 
@@ -1324,8 +1336,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "toolbar_visible", // $NON-NLS-1$
-         _constants.toolbarVisibleTitle(), 
-         _constants.toolbarVisibleDescription(), 
+         _constants.toolbarVisibleTitle(),
+         _constants.toolbarVisibleDescription(),
          true);
    }
 
@@ -1336,9 +1348,9 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "default_project_location", // $NON-NLS-1$
-         _constants.defaultProjectLocationTitle(), 
+         _constants.defaultProjectLocationTitle(),
          _constants.defaultProjectLocationDescription(),
-         // i18n: Enumerator, user facing text, or both?  Might be both (probably somewhere tests for these?).  
+         // i18n: Enumerator, user facing text, or both?  Might be both (probably somewhere tests for these?).
          //       Only matters if default "" is changed
          "");
    }
@@ -1350,20 +1362,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "source_with_echo", // $NON-NLS-1$
-         _constants.sourceWithEchoTitle(), 
-         _constants.sourceWithEchoDescription(), 
-         false);
-   }
-
-   /**
-    * Whether to initialize new projects with a Git repo by default.
-    */
-   public PrefValue<Boolean> newProjectGitInit()
-   {
-      return bool(
-         "new_project_git_init", // $NON-NLS-1$
-         _constants.newProjectGitInitTitle(), 
-         _constants.newProjectGitInitDescription(), 
+         _constants.sourceWithEchoTitle(),
+         _constants.sourceWithEchoDescription(),
          false);
    }
 
@@ -1374,8 +1374,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "default_sweave_engine", // $NON-NLS-1$
-         _constants.defaultSweaveEngineTitle(), 
-         _constants.defaultSweaveEngineDescription(), 
+         _constants.defaultSweaveEngineTitle(),
+         _constants.defaultSweaveEngineDescription(),
          "Sweave"); //$NON-NLS-1$
    }
 
@@ -1386,8 +1386,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "default_latex_program", // $NON-NLS-1$
-         _constants.defaultLatexProgramTitle(), 
-         _constants.defaultLatexProgramDescription(), 
+         _constants.defaultLatexProgramTitle(),
+         _constants.defaultLatexProgramDescription(),
          "pdfLaTeX"); //$NON-NLS-1$
    }
 
@@ -1398,8 +1398,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "use_roxygen", // $NON-NLS-1$
-         _constants.useRoxygenTitle(), 
-         _constants.useRoxygenDescription(), 
+         _constants.useRoxygenTitle(),
+         _constants.useRoxygenDescription(),
          false);
    }
 
@@ -1410,8 +1410,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "use_dataimport", // $NON-NLS-1$
-         _constants.useDataimportTitle(), 
-         _constants.useDataimportDescription(), 
+         _constants.useDataimportTitle(),
+         _constants.useDataimportDescription(),
          true);
    }
 
@@ -1422,8 +1422,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "pdf_previewer", // $NON-NLS-1$
-         _constants.pdfPreviewerTitle(), 
-         _constants.pdfPreviewerDescription(), 
+         _constants.pdfPreviewerTitle(),
+         _constants.pdfPreviewerDescription(),
          new String[] {
             PDF_PREVIEWER_NONE,
             PDF_PREVIEWER_DEFAULT,
@@ -1449,8 +1449,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "always_enable_rnw_concordance", // $NON-NLS-1$
-         _constants.alwaysEnableRnwConcordanceTitle(), 
-         _constants.alwaysEnableRnwConcordanceDescription(), 
+         _constants.alwaysEnableRnwConcordanceTitle(),
+         _constants.alwaysEnableRnwConcordanceDescription(),
          true);
    }
 
@@ -1461,8 +1461,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "insert_numbered_latex_sections", // $NON-NLS-1$
-         _constants.insertNumberedLatexSectionsTitle(), 
-         _constants.insertNumberedLatexSectionsDescription(), 
+         _constants.insertNumberedLatexSectionsTitle(),
+         _constants.insertNumberedLatexSectionsDescription(),
          false);
    }
 
@@ -1473,8 +1473,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "spelling_dictionary_language", // $NON-NLS-1$
-         _constants.spellingDictionaryLanguageTitle(), 
-         _constants.spellingDictionaryLanguageDescription(), 
+         _constants.spellingDictionaryLanguageTitle(),
+         _constants.spellingDictionaryLanguageDescription(),
          "en_US");
    }
 
@@ -1485,8 +1485,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return object(
          "spelling_custom_dictionaries", //$NON-NLS-1$
-         _constants.spellingCustomDictionariesTitle(), 
-         _constants.spellingCustomDictionariesDescription(), 
+         _constants.spellingCustomDictionariesTitle(),
+         _constants.spellingCustomDictionariesDescription(),
          JsArrayUtil.createStringArray());
    }
 
@@ -1497,8 +1497,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "document_load_lint_delay", // $NON-NLS-1$
-         _constants.documentLoadLintDelayTitle(), 
-         _constants.documentLoadLintDelayDescription(), 
+         _constants.documentLoadLintDelayTitle(),
+         _constants.documentLoadLintDelayDescription(),
          5000);
    }
 
@@ -1509,8 +1509,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "ignore_uppercase_words", // $NON-NLS-1$
-         _constants.ignoreUppercaseWordsTitle(), 
-         _constants.ignoreUppercaseWordsDescription(), 
+         _constants.ignoreUppercaseWordsTitle(),
+         _constants.ignoreUppercaseWordsDescription(),
          true);
    }
 
@@ -1521,33 +1521,9 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "ignore_words_with_numbers", // $NON-NLS-1$
-         _constants.ignoreWordsWithNumbersTitle(), 
-         _constants.ignoreWordsWithNumbersDescription(), 
+         _constants.ignoreWordsWithNumbersTitle(),
+         _constants.ignoreWordsWithNumbersDescription(),
          true);
-   }
-
-   /**
-    * The maximum number of spelling words to check at once.
-    */
-   public PrefValue<Integer> maxSpellcheckWords()
-   {
-      return integer(
-         "max_spellcheck_words", // $NON-NLS-1$
-         _constants.maxSpellcheckWordsTitle(), 
-         _constants.maxSpellcheckWordsDescription(), 
-         500);
-   }
-
-   /**
-    * The maximum number of spelling correction suggestions to prefetch.
-    */
-   public PrefValue<Integer> maxSpellcheckPrefetch()
-   {
-      return integer(
-         "max_spellcheck_prefetch", // $NON-NLS-1$
-         _constants.maxSpellcheckPrefetchTitle(), 
-         _constants.maxSpellcheckPrefetchDescription(), 
-         20);
    }
 
    /**
@@ -1557,8 +1533,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "real_time_spellchecking", // $NON-NLS-1$
-         _constants.realTimeSpellcheckingTitle(), 
-         _constants.realTimeSpellcheckingDescription(), 
+         _constants.realTimeSpellcheckingTitle(),
+         _constants.realTimeSpellcheckingDescription(),
          true);
    }
 
@@ -1569,8 +1545,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "navigate_to_build_error", // $NON-NLS-1$
-         _constants.navigateToBuildErrorTitle(), 
-         _constants.navigateToBuildErrorDescription(), 
+         _constants.navigateToBuildErrorTitle(),
+         _constants.navigateToBuildErrorDescription(),
          true);
    }
 
@@ -1581,8 +1557,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "packages_pane_enabled", // $NON-NLS-1$
-         _constants.packagesPaneEnabledTitle(), 
-         _constants.packagesPaneEnabledDescription(), 
+         _constants.packagesPaneEnabledTitle(),
+         _constants.packagesPaneEnabledDescription(),
          true);
    }
 
@@ -1593,8 +1569,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "use_rcpp_template", // $NON-NLS-1$
-         _constants.useRcppTemplateTitle(), 
-         _constants.useRcppTemplateDescription(), 
+         _constants.useRcppTemplateTitle(),
+         _constants.useRcppTemplateDescription(),
          true);
    }
 
@@ -1605,8 +1581,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "restore_source_documents", // $NON-NLS-1$
-         _constants.restoreSourceDocumentsTitle(), 
-         _constants.restoreSourceDocumentsDescription(), 
+         _constants.restoreSourceDocumentsTitle(),
+         _constants.restoreSourceDocumentsDescription(),
          true);
    }
 
@@ -1617,8 +1593,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "handle_errors_in_user_code_only", // $NON-NLS-1$
-         _constants.handleErrorsInUserCodeOnlyTitle(), 
-         _constants.handleErrorsInUserCodeOnlyDescription(), 
+         _constants.handleErrorsInUserCodeOnlyTitle(),
+         _constants.handleErrorsInUserCodeOnlyDescription(),
          true);
    }
 
@@ -1629,8 +1605,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "auto_expand_error_tracebacks", // $NON-NLS-1$
-         _constants.autoExpandErrorTracebacksTitle(), 
-         _constants.autoExpandErrorTracebacksDescription(), 
+         _constants.autoExpandErrorTracebacksTitle(),
+         _constants.autoExpandErrorTracebacksDescription(),
          false);
    }
 
@@ -1641,8 +1617,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "check_for_updates", // $NON-NLS-1$
-         _constants.checkForUpdatesTitle(), 
-         _constants.checkForUpdatesDescription(), 
+         _constants.checkForUpdatesTitle(),
+         _constants.checkForUpdatesDescription(),
          true);
    }
 
@@ -1653,8 +1629,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_internal_functions", // $NON-NLS-1$
-         _constants.showInternalFunctionsTitle(), 
-         _constants.showInternalFunctionsDescription(), 
+         _constants.showInternalFunctionsTitle(),
+         _constants.showInternalFunctionsDescription(),
          false);
    }
 
@@ -1665,8 +1641,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "shiny_viewer_type", // $NON-NLS-1$
-         _constants.shinyViewerTypeTitle(), 
-         _constants.shinyViewerTypeDescription(), 
+         _constants.shinyViewerTypeTitle(),
+         _constants.shinyViewerTypeDescription(),
          new String[] {
             SHINY_VIEWER_TYPE_USER,
             SHINY_VIEWER_TYPE_NONE,
@@ -1691,8 +1667,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "shiny_background_jobs", // $NON-NLS-1$
-         _constants.shinyBackgroundJobsTitle(), 
-         _constants.shinyBackgroundJobsDescription(), 
+         _constants.shinyBackgroundJobsTitle(),
+         _constants.shinyBackgroundJobsDescription(),
          false);
    }
 
@@ -1703,8 +1679,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "plumber_viewer_type", // $NON-NLS-1$
-         _constants.plumberViewerTypeTitle(), 
-         _constants.plumberViewerTypeDescription(), 
+         _constants.plumberViewerTypeTitle(),
+         _constants.plumberViewerTypeDescription(),
          new String[] {
             PLUMBER_VIEWER_TYPE_USER,
             PLUMBER_VIEWER_TYPE_NONE,
@@ -1729,8 +1705,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "document_author", // $NON-NLS-1$
-         _constants.documentAuthorTitle(), 
-         _constants.documentAuthorDescription(), 
+         _constants.documentAuthorTitle(),
+         _constants.documentAuthorDescription(),
          "");
    }
 
@@ -1741,8 +1717,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "rmd_preferred_template_path", // $NON-NLS-1$
-         _constants.rmdPreferredTemplatePathTitle(), 
-         _constants.rmdPreferredTemplatePathDescription(), 
+         _constants.rmdPreferredTemplatePathTitle(),
+         _constants.rmdPreferredTemplatePathDescription(),
          "");
    }
 
@@ -1753,8 +1729,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "rmd_viewer_type", // $NON-NLS-1$
-         _constants.rmdViewerTypeTitle(), 
-         _constants.rmdViewerTypeDescription(), 
+         _constants.rmdViewerTypeTitle(),
+         _constants.rmdViewerTypeDescription(),
          new String[] {
             RMD_VIEWER_TYPE_WINDOW,
             RMD_VIEWER_TYPE_PANE,
@@ -1775,8 +1751,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_publish_diagnostics", // $NON-NLS-1$
-         _constants.showPublishDiagnosticsTitle(), 
-         _constants.showPublishDiagnosticsDescription(), 
+         _constants.showPublishDiagnosticsTitle(),
+         _constants.showPublishDiagnosticsDescription(),
          false);
    }
 
@@ -1787,8 +1763,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "publish_check_certificates", // $NON-NLS-1$
-         _constants.publishCheckCertificatesTitle(), 
-         _constants.publishCheckCertificatesDescription(), 
+         _constants.publishCheckCertificatesTitle(),
+         _constants.publishCheckCertificatesDescription(),
          true);
    }
 
@@ -1799,8 +1775,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "use_publish_ca_bundle", // $NON-NLS-1$
-         _constants.usePublishCaBundleTitle(), 
-         _constants.usePublishCaBundleDescription(), 
+         _constants.usePublishCaBundleTitle(),
+         _constants.usePublishCaBundleDescription(),
          false);
    }
 
@@ -1811,8 +1787,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "publish_ca_bundle", // $NON-NLS-1$
-         _constants.publishCaBundleTitle(), 
-         _constants.publishCaBundleDescription(), 
+         _constants.publishCaBundleTitle(),
+         _constants.publishCaBundleDescription(),
          "");
    }
 
@@ -1823,8 +1799,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "rmd_chunk_output_inline", // $NON-NLS-1$
-         _constants.rmdChunkOutputInlineTitle(), 
-         _constants.rmdChunkOutputInlineDescription(), 
+         _constants.rmdChunkOutputInlineTitle(),
+         _constants.rmdChunkOutputInlineDescription(),
          true);
    }
 
@@ -1835,8 +1811,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_doc_outline_rmd", // $NON-NLS-1$
-         _constants.showDocOutlineRmdTitle(), 
-         _constants.showDocOutlineRmdDescription(), 
+         _constants.showDocOutlineRmdTitle(),
+         _constants.showDocOutlineRmdDescription(),
          false);
    }
 
@@ -1847,8 +1823,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "auto_run_setup_chunk", // $NON-NLS-1$
-         _constants.autoRunSetupChunkTitle(), 
-         _constants.autoRunSetupChunkDescription(), 
+         _constants.autoRunSetupChunkTitle(),
+         _constants.autoRunSetupChunkDescription(),
          true);
    }
 
@@ -1859,8 +1835,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "hide_console_on_chunk_execute", // $NON-NLS-1$
-         _constants.hideConsoleOnChunkExecuteTitle(), 
-         _constants.hideConsoleOnChunkExecuteDescription(), 
+         _constants.hideConsoleOnChunkExecuteTitle(),
+         _constants.hideConsoleOnChunkExecuteDescription(),
          true);
    }
 
@@ -1871,8 +1847,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "execution_behavior", // $NON-NLS-1$
-         _constants.executionBehaviorTitle(), 
-         _constants.executionBehaviorDescription(), 
+         _constants.executionBehaviorTitle(),
+         _constants.executionBehaviorDescription(),
          new String[] {
             EXECUTION_BEHAVIOR_LINE,
             EXECUTION_BEHAVIOR_STATEMENT,
@@ -1899,8 +1875,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_terminal_tab", // $NON-NLS-1$
-         _constants.showTerminalTabTitle(), 
-         _constants.showTerminalTabDescription(), 
+         _constants.showTerminalTabTitle(),
+         _constants.showTerminalTabDescription(),
          true);
    }
 
@@ -1911,8 +1887,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "terminal_local_echo", // $NON-NLS-1$
-         _constants.terminalLocalEchoTitle(), 
-         _constants.terminalLocalEchoDescription(), 
+         _constants.terminalLocalEchoTitle(),
+         _constants.terminalLocalEchoDescription(),
          true);
    }
 
@@ -1923,8 +1899,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "terminal_websockets", // $NON-NLS-1$
-         _constants.terminalWebsocketsTitle(), 
-         _constants.terminalWebsocketsDescription(), 
+         _constants.terminalWebsocketsTitle(),
+         _constants.terminalWebsocketsDescription(),
          true);
    }
 
@@ -1935,8 +1911,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "terminal_close_behavior", // $NON-NLS-1$
-         _constants.terminalCloseBehaviorTitle(), 
-         _constants.terminalCloseBehaviorDescription(), 
+         _constants.terminalCloseBehaviorTitle(),
+         _constants.terminalCloseBehaviorDescription(),
          new String[] {
             TERMINAL_CLOSE_BEHAVIOR_ALWAYS,
             TERMINAL_CLOSE_BEHAVIOR_CLEAN,
@@ -1958,8 +1934,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "terminal_track_environment", // $NON-NLS-1$
-         _constants.terminalTrackEnvironmentTitle(), 
-         _constants.terminalTrackEnvironmentDescription(), 
+         _constants.terminalTrackEnvironmentTitle(),
+         _constants.terminalTrackEnvironmentDescription(),
          true);
    }
 
@@ -1970,8 +1946,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "terminal_bell_style", // $NON-NLS-1$
-         _constants.terminalBellStyleTitle(), 
-         _constants.terminalBellStyleDescription(), 
+         _constants.terminalBellStyleTitle(),
+         _constants.terminalBellStyleDescription(),
          new String[] {
             TERMINAL_BELL_STYLE_NONE,
             TERMINAL_BELL_STYLE_SOUND
@@ -1991,8 +1967,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "terminal_renderer", // $NON-NLS-1$
-         _constants.terminalRendererTitle(), 
-         _constants.terminalRendererDescription(), 
+         _constants.terminalRendererTitle(),
+         _constants.terminalRendererDescription(),
          new String[] {
             TERMINAL_RENDERER_CANVAS,
             TERMINAL_RENDERER_DOM
@@ -2012,8 +1988,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "terminal_weblinks", // $NON-NLS-1$
-         _constants.terminalWeblinksTitle(), 
-         _constants.terminalWeblinksDescription(), 
+         _constants.terminalWeblinksTitle(),
+         _constants.terminalWeblinksDescription(),
          true);
    }
 
@@ -2024,8 +2000,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_rmd_render_command", // $NON-NLS-1$
-         _constants.showRmdRenderCommandTitle(), 
-         _constants.showRmdRenderCommandDescription(), 
+         _constants.showRmdRenderCommandTitle(),
+         _constants.showRmdRenderCommandDescription(),
          false);
    }
 
@@ -2036,8 +2012,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "enable_text_drag", // $NON-NLS-1$
-         _constants.enableTextDragTitle(), 
-         _constants.enableTextDragDescription(), 
+         _constants.enableTextDragTitle(),
+         _constants.enableTextDragDescription(),
          true);
    }
 
@@ -2048,8 +2024,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_hidden_files", // $NON-NLS-1$
-         _constants.showHiddenFilesTitle(), 
-         _constants.showHiddenFilesDescription(), 
+         _constants.showHiddenFilesTitle(),
+         _constants.showHiddenFilesDescription(),
          false);
    }
 
@@ -2060,8 +2036,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return object(
          "always_shown_files", //$NON-NLS-1$
-         _constants.alwaysShownFilesTitle(), 
-         _constants.alwaysShownFilesDescription(), 
+         _constants.alwaysShownFilesTitle(),
+         _constants.alwaysShownFilesDescription(),
          JsArrayUtil.createStringArray(".build.yml", ".gitlab-ci.yml", ".travis.yml")); //$NON-NLS-1$
    }
 
@@ -2072,8 +2048,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return object(
          "always_shown_extensions", //$NON-NLS-1$
-         _constants.alwaysShownExtensionsTitle(), 
-         _constants.alwaysShownExtensionsDescription(), 
+         _constants.alwaysShownExtensionsTitle(),
+         _constants.alwaysShownExtensionsDescription(),
          JsArrayUtil.createStringArray(".circleci", ".gitattributes", ".github", ".gitignore", ".httr-oauth", ".r", ".rbuildignore", ".rdata", ".renvignore", ".renviron", ".rhistory", ".rprofile", ".ruserdata"));
    }
 
@@ -2084,9 +2060,21 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "sort_file_names_naturally", // $NON-NLS-1$
-         _constants.sortFileNamesNaturallyTitle(), 
-         _constants.sortFileNamesNaturallyDescription(), 
+         _constants.sortFileNamesNaturallyTitle(),
+         _constants.sortFileNamesNaturallyDescription(),
          true);
+   }
+
+   /**
+    * Whether to change the directory in the Files pane automatically when the working directory in R changes.
+    */
+   public PrefValue<Boolean> syncFilesPaneWorkingDir()
+   {
+      return bool(
+         "sync_files_pane_working_dir",
+         "Synchronize the Files pane with the current working directory",
+         "Whether to change the directory in the Files pane automatically when the working directory in R changes.",
+         false);
    }
 
    /**
@@ -2096,8 +2084,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "jobs_tab_visibility", // $NON-NLS-1$
-         _constants.jobsTabVisibilityTitle(), 
-         _constants.jobsTabVisibilityDescription(), 
+         _constants.jobsTabVisibilityTitle(),
+         _constants.jobsTabVisibilityDescription(),
          new String[] {
             JOBS_TAB_VISIBILITY_CLOSED,
             JOBS_TAB_VISIBILITY_SHOWN,
@@ -2119,8 +2107,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_launcher_jobs_tab", // $NON-NLS-1$
-         _constants.showLauncherJobsTabTitle(), 
-         _constants.showLauncherJobsTabDescription(), 
+         _constants.showLauncherJobsTabTitle(),
+         _constants.showLauncherJobsTabDescription(),
          true);
    }
 
@@ -2131,8 +2119,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "launcher_jobs_sort", // $NON-NLS-1$
-         _constants.launcherJobsSortTitle(), 
-         _constants.launcherJobsSortDescription(), 
+         _constants.launcherJobsSortTitle(),
+         _constants.launcherJobsSortDescription(),
          new String[] {
             LAUNCHER_JOBS_SORT_RECORDED,
             LAUNCHER_JOBS_SORT_STATE
@@ -2151,12 +2139,12 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "busy_detection", // $NON-NLS-1$
-         _constants.busyDetectionTitle(), 
-         _constants.busyDetectionDescription(), 
+         _constants.busyDetectionTitle(),
+         _constants.busyDetectionDescription(),
          new String[] {
             BUSY_DETECTION_ALWAYS,
             BUSY_DETECTION_NEVER,
-            BUSY_DETECTION_WHITELIST
+            BUSY_DETECTION_LIST
          },
          "always");
    }
@@ -2165,19 +2153,19 @@ public class UserPrefsAccessor extends Prefs
    //       above defaultValue must match these
    public final static String BUSY_DETECTION_ALWAYS = "always";
    public final static String BUSY_DETECTION_NEVER = "never";
-   public final static String BUSY_DETECTION_WHITELIST = "whitelist";
+   public final static String BUSY_DETECTION_LIST = "list";
 
    /**
-    * A whitelist of apps that should not be considered busy in the Terminal.
+    * A list of apps that should not be considered busy in the Terminal.
     */
-   public PrefValue<JsArrayString> busyWhitelist()
+   public PrefValue<JsArrayString> busyExclusionList()
    {
       return object(
-         "busy_whitelist", //$NON-NLS-1$
-         _constants.busyWhitelistTitle(), 
-         _constants.busyWhitelistDescription(),
-         // i18n: Enumerator, user facing text, or both?  Might be both (probably somewhere tests for these?).  Also note
-         //       above defaultValue must match these
+         "busy_exclusion_list", //$NON-NLS-1$
+         "",
+         "A list of apps that should not be considered busy in the Terminal.",
+         // i18n: Enumerator, user facing text, or both?  Might be both (probably somewhere tests for these?).
+         // Also note above defaultValue must match these
          JsArrayUtil.createStringArray("tmux", "screen"));
    }
 
@@ -2188,8 +2176,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "knit_working_dir", // $NON-NLS-1$
-         _constants.knitWorkingDirTitle(), 
-         _constants.knitWorkingDirDescription(), 
+         _constants.knitWorkingDirTitle(),
+         _constants.knitWorkingDirDescription(),
          new String[] {
             KNIT_WORKING_DIR_DEFAULT,
             KNIT_WORKING_DIR_CURRENT,
@@ -2211,8 +2199,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "doc_outline_show", // $NON-NLS-1$
-         _constants.docOutlineShowTitle(), 
-         _constants.docOutlineShowDescription(), 
+         _constants.docOutlineShowTitle(),
+         _constants.docOutlineShowDescription(),
          new String[] {
             DOC_OUTLINE_SHOW_SECTIONS_ONLY,
             DOC_OUTLINE_SHOW_SECTIONS_AND_CHUNKS,
@@ -2234,8 +2222,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "latex_preview_on_cursor_idle", // $NON-NLS-1$
-         _constants.latexPreviewOnCursorIdleTitle(), 
-         _constants.latexPreviewOnCursorIdleDescription(), 
+         _constants.latexPreviewOnCursorIdleTitle(),
+         _constants.latexPreviewOnCursorIdleDescription(),
          new String[] {
             LATEX_PREVIEW_ON_CURSOR_IDLE_NEVER,
             LATEX_PREVIEW_ON_CURSOR_IDLE_INLINE_ONLY,
@@ -2257,8 +2245,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "wrap_tab_navigation", // $NON-NLS-1$
-         _constants.wrapTabNavigationTitle(), 
-         _constants.wrapTabNavigationDescription(), 
+         _constants.wrapTabNavigationTitle(),
+         _constants.wrapTabNavigationDescription(),
          true);
    }
 
@@ -2269,8 +2257,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "global_theme", // $NON-NLS-1$
-         _constants.globalThemeTitle(), 
-         _constants.globalThemeDescription(), 
+         _constants.globalThemeTitle(),
+         _constants.globalThemeDescription(),
          new String[] {
             GLOBAL_THEME_CLASSIC,
             GLOBAL_THEME_DEFAULT,
@@ -2292,8 +2280,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "git_diff_ignore_whitespace", // $NON-NLS-1$
-         _constants.gitDiffIgnoreWhitespaceTitle(), 
-         _constants.gitDiffIgnoreWhitespaceDescription(), 
+         _constants.gitDiffIgnoreWhitespaceTitle(),
+         _constants.gitDiffIgnoreWhitespaceDescription(),
          false);
    }
 
@@ -2304,8 +2292,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "console_double_click_select", // $NON-NLS-1$
-         _constants.consoleDoubleClickSelectTitle(), 
-         _constants.consoleDoubleClickSelectDescription(), 
+         _constants.consoleDoubleClickSelectTitle(),
+         _constants.consoleDoubleClickSelectDescription(),
          false);
    }
 
@@ -2316,8 +2304,20 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "new_proj_git_init", // $NON-NLS-1$
-         _constants.newProjGitInitTitle(), 
-         _constants.newProjGitInitDescription(), 
+         _constants.newProjGitInitTitle(),
+         _constants.newProjGitInitDescription(),
+         false);
+   }
+
+   /**
+    * Whether an renv environment should be created inside new projects by default.
+    */
+   public PrefValue<Boolean> newProjUseRenv()
+   {
+      return bool(
+         "new_proj_use_renv",
+         "Create an renv environment in new projects",
+         "Whether an renv environment should be created inside new projects by default.",
          false);
    }
 
@@ -2328,8 +2328,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "root_document", // $NON-NLS-1$
-         _constants.rootDocumentTitle(), 
-         _constants.rootDocumentDescription(), 
+         _constants.rootDocumentTitle(),
+         _constants.rootDocumentDescription(),
          "");
    }
 
@@ -2340,8 +2340,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "show_user_home_page", // $NON-NLS-1$
-         _constants.showUserHomePageTitle(), 
-         _constants.showUserHomePageDescription(), 
+         _constants.showUserHomePageTitle(),
+         _constants.showUserHomePageDescription(),
          new String[] {
             SHOW_USER_HOME_PAGE_ALWAYS,
             SHOW_USER_HOME_PAGE_NEVER,
@@ -2363,8 +2363,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "reuse_sessions_for_project_links", // $NON-NLS-1$
-         _constants.reuseSessionsForProjectLinksTitle(), 
-         _constants.reuseSessionsForProjectLinksDescription(), 
+         _constants.reuseSessionsForProjectLinksTitle(),
+         _constants.reuseSessionsForProjectLinksDescription(),
          false);
    }
 
@@ -2375,8 +2375,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "vcs_enabled", // $NON-NLS-1$
-         _constants.vcsEnabledTitle(), 
-         _constants.vcsEnabledDescription(), 
+         _constants.vcsEnabledTitle(),
+         _constants.vcsEnabledDescription(),
          true);
    }
 
@@ -2387,8 +2387,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "vcs_autorefresh", // $NON-NLS-1$
-         _constants.vcsAutorefreshTitle(), 
-         _constants.vcsAutorefreshDescription(), 
+         _constants.vcsAutorefreshTitle(),
+         _constants.vcsAutorefreshDescription(),
          true);
    }
 
@@ -2399,8 +2399,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "git_exe_path", // $NON-NLS-1$
-         _constants.gitExePathTitle(), 
-         _constants.gitExePathDescription(), 
+         _constants.gitExePathTitle(),
+         _constants.gitExePathDescription(),
          "");
    }
 
@@ -2411,8 +2411,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "svn_exe_path", // $NON-NLS-1$
-         _constants.svnExePathTitle(), 
-         _constants.svnExePathDescription(), 
+         _constants.svnExePathTitle(),
+         _constants.svnExePathDescription(),
          "");
    }
 
@@ -2423,8 +2423,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "terminal_path", // $NON-NLS-1$
-         _constants.terminalPathTitle(), 
-         _constants.terminalPathDescription(), 
+         _constants.terminalPathTitle(),
+         _constants.terminalPathDescription(),
          "");
    }
 
@@ -2435,8 +2435,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "rsa_key_path", // $NON-NLS-1$
-         _constants.rsaKeyPathTitle(), 
-         _constants.rsaKeyPathDescription(), 
+         _constants.rsaKeyPathTitle(),
+         _constants.rsaKeyPathDescription(),
          "");
    }
 
@@ -2447,8 +2447,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "use_devtools", // $NON-NLS-1$
-         _constants.useDevtoolsTitle(), 
-         _constants.useDevtoolsDescription(), 
+         _constants.useDevtoolsTitle(),
+         _constants.useDevtoolsDescription(),
          true);
    }
 
@@ -2459,8 +2459,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "use_internet2", // $NON-NLS-1$
-         _constants.useInternet2Title(), 
-         _constants.useInternet2Description(), 
+         _constants.useInternet2Title(),
+         _constants.useInternet2Description(),
          true);
    }
 
@@ -2471,8 +2471,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "use_secure_download", // $NON-NLS-1$
-         _constants.useSecureDownloadTitle(), 
-         _constants.useSecureDownloadDescription(), 
+         _constants.useSecureDownloadTitle(),
+         _constants.useSecureDownloadDescription(),
          true);
    }
 
@@ -2483,8 +2483,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "cleanup_after_r_cmd_check", // $NON-NLS-1$
-         _constants.cleanupAfterRCmdCheckTitle(), 
-         _constants.cleanupAfterRCmdCheckDescription(), 
+         _constants.cleanupAfterRCmdCheckTitle(),
+         _constants.cleanupAfterRCmdCheckDescription(),
          true);
    }
 
@@ -2495,8 +2495,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "view_dir_after_r_cmd_check", // $NON-NLS-1$
-         _constants.viewDirAfterRCmdCheckTitle(), 
-         _constants.viewDirAfterRCmdCheckDescription(), 
+         _constants.viewDirAfterRCmdCheckTitle(),
+         _constants.viewDirAfterRCmdCheckDescription(),
          false);
    }
 
@@ -2507,8 +2507,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "hide_object_files", // $NON-NLS-1$
-         _constants.hideObjectFilesTitle(), 
-         _constants.hideObjectFilesDescription(), 
+         _constants.hideObjectFilesTitle(),
+         _constants.hideObjectFilesDescription(),
          true);
    }
 
@@ -2519,8 +2519,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "restore_last_project", // $NON-NLS-1$
-         _constants.restoreLastProjectTitle(), 
-         _constants.restoreLastProjectDescription(), 
+         _constants.restoreLastProjectTitle(),
+         _constants.restoreLastProjectDescription(),
          true);
    }
 
@@ -2531,8 +2531,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "project_safe_startup_seconds", // $NON-NLS-1$
-         _constants.projectSafeStartupSecondsTitle(), 
-         _constants.projectSafeStartupSecondsDescription(), 
+         _constants.projectSafeStartupSecondsTitle(),
+         _constants.projectSafeStartupSecondsDescription(),
          30);
    }
 
@@ -2543,8 +2543,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "use_tinytex", // $NON-NLS-1$
-         _constants.useTinytexTitle(), 
-         _constants.useTinytexDescription(), 
+         _constants.useTinytexTitle(),
+         _constants.useTinytexDescription(),
          false);
    }
 
@@ -2555,8 +2555,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "clean_texi2dvi_output", // $NON-NLS-1$
-         _constants.cleanTexi2dviOutputTitle(), 
-         _constants.cleanTexi2dviOutputDescription(), 
+         _constants.cleanTexi2dviOutputTitle(),
+         _constants.cleanTexi2dviOutputDescription(),
          true);
    }
 
@@ -2567,8 +2567,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "latex_shell_escape", // $NON-NLS-1$
-         _constants.latexShellEscapeTitle(), 
-         _constants.latexShellEscapeDescription(), 
+         _constants.latexShellEscapeTitle(),
+         _constants.latexShellEscapeDescription(),
          false);
    }
 
@@ -2579,8 +2579,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "restore_project_r_version", // $NON-NLS-1$
-         _constants.restoreProjectRVersionTitle(), 
-         _constants.restoreProjectRVersionDescription(), 
+         _constants.restoreProjectRVersionTitle(),
+         _constants.restoreProjectRVersionDescription(),
          true);
    }
 
@@ -2591,8 +2591,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "clang_verbose", // $NON-NLS-1$
-         _constants.clangVerboseTitle(), 
-         _constants.clangVerboseDescription(), 
+         _constants.clangVerboseTitle(),
+         _constants.clangVerboseDescription(),
          0);
    }
 
@@ -2603,8 +2603,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "submit_crash_reports", // $NON-NLS-1$
-         _constants.submitCrashReportsTitle(), 
-         _constants.submitCrashReportsDescription(), 
+         _constants.submitCrashReportsTitle(),
+         _constants.submitCrashReportsDescription(),
          true);
    }
 
@@ -2615,8 +2615,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return object(
          "default_r_version", //$NON-NLS-1$
-         _constants.defaultRVersionTitle(), 
-         _constants.defaultRVersionDescription(), 
+         _constants.defaultRVersionTitle(),
+         _constants.defaultRVersionDescription(),
          null);
    }
 
@@ -2636,6 +2636,10 @@ public class UserPrefsAccessor extends Prefs
          return this && this.label || "";
       }-*/;
 
+      public final native String getModule() /*-{
+         return this && this.module || "";
+      }-*/;
+
    }
 
    /**
@@ -2645,8 +2649,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "data_viewer_max_columns", // $NON-NLS-1$
-         _constants.dataViewerMaxColumnsTitle(), 
-         _constants.dataViewerMaxColumnsDescription(), 
+         _constants.dataViewerMaxColumnsTitle(),
+         _constants.dataViewerMaxColumnsDescription(),
          50);
    }
 
@@ -2657,8 +2661,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "enable_screen_reader", // $NON-NLS-1$
-         _constants.enableScreenReaderTitle(), 
-         _constants.enableScreenReaderDescription(), 
+         _constants.enableScreenReaderTitle(),
+         _constants.enableScreenReaderDescription(),
          false);
    }
 
@@ -2669,8 +2673,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "typing_status_delay_ms", // $NON-NLS-1$
-         _constants.typingStatusDelayMsTitle(), 
-         _constants.typingStatusDelayMsDescription(), 
+         _constants.typingStatusDelayMsTitle(),
+         _constants.typingStatusDelayMsDescription(),
          2000);
    }
 
@@ -2681,8 +2685,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "reduced_motion", // $NON-NLS-1$
-         _constants.reducedMotionTitle(), 
-         _constants.reducedMotionDescription(), 
+         _constants.reducedMotionTitle(),
+         _constants.reducedMotionDescription(),
          false);
    }
 
@@ -2693,8 +2697,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "tab_key_move_focus", // $NON-NLS-1$
-         _constants.tabKeyMoveFocusTitle(), 
-         _constants.tabKeyMoveFocusDescription(), 
+         _constants.tabKeyMoveFocusTitle(),
+         _constants.tabKeyMoveFocusDescription(),
          false);
    }
 
@@ -2705,8 +2709,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "find_panel_legacy_tab_sequence", // $NON-NLS-1$
-         _constants.findPanelLegacyTabSequenceTitle(), 
-         _constants.findPanelLegacyTabSequenceDescription(), 
+         _constants.findPanelLegacyTabSequenceTitle(),
+         _constants.findPanelLegacyTabSequenceDescription(),
          false);
    }
 
@@ -2717,8 +2721,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_focus_rectangles", // $NON-NLS-1$
-         _constants.showFocusRectanglesTitle(), 
-         _constants.showFocusRectanglesDescription(), 
+         _constants.showFocusRectanglesTitle(),
+         _constants.showFocusRectanglesDescription(),
          true);
    }
 
@@ -2729,8 +2733,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_panel_focus_rectangle", // $NON-NLS-1$
-         _constants.showPanelFocusRectangleTitle(), 
-         _constants.showPanelFocusRectangleDescription(), 
+         _constants.showPanelFocusRectangleTitle(),
+         _constants.showPanelFocusRectangleDescription(),
          false);
    }
 
@@ -2741,8 +2745,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "auto_save_on_idle", // $NON-NLS-1$
-         _constants.autoSaveOnIdleTitle(), 
-         _constants.autoSaveOnIdleDescription(), 
+         _constants.autoSaveOnIdleTitle(),
+         _constants.autoSaveOnIdleDescription(),
          new String[] {
             AUTO_SAVE_ON_IDLE_COMMIT,
             AUTO_SAVE_ON_IDLE_BACKUP,
@@ -2769,8 +2773,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "auto_save_idle_ms", // $NON-NLS-1$
-         _constants.autoSaveIdleMsTitle(), 
-         _constants.autoSaveIdleMsDescription(), 
+         _constants.autoSaveIdleMsTitle(),
+         _constants.autoSaveIdleMsDescription(),
          1000);
    }
 
@@ -2781,8 +2785,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "auto_save_on_blur", // $NON-NLS-1$
-         _constants.autoSaveOnBlurTitle(), 
-         _constants.autoSaveOnBlurDescription(), 
+         _constants.autoSaveOnBlurTitle(),
+         _constants.autoSaveOnBlurDescription(),
          false);
    }
 
@@ -2793,8 +2797,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "terminal_initial_directory", // $NON-NLS-1$
-         _constants.terminalInitialDirectoryTitle(), 
-         _constants.terminalInitialDirectoryDescription(), 
+         _constants.terminalInitialDirectoryTitle(),
+         _constants.terminalInitialDirectoryDescription(),
          new String[] {
             TERMINAL_INITIAL_DIRECTORY_PROJECT,
             TERMINAL_INITIAL_DIRECTORY_CURRENT,
@@ -2816,8 +2820,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "full_project_path_in_window_title", // $NON-NLS-1$
-         _constants.fullProjectPathInWindowTitleTitle(), 
-         _constants.fullProjectPathInWindowTitleDescription(), 
+         _constants.fullProjectPathInWindowTitleTitle(),
+         _constants.fullProjectPathInWindowTitleDescription(),
          false);
    }
 
@@ -2828,8 +2832,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "visual_markdown_editing_is_default", // $NON-NLS-1$
-         _constants.visualMarkdownEditingIsDefaultTitle(), 
-         _constants.visualMarkdownEditingIsDefaultDescription(), 
+         _constants.visualMarkdownEditingIsDefaultTitle(),
+         _constants.visualMarkdownEditingIsDefaultDescription(),
          false);
    }
 
@@ -2840,8 +2844,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "visual_markdown_editing_list_spacing", // $NON-NLS-1$
-         _constants.visualMarkdownEditingListSpacingTitle(), 
-         _constants.visualMarkdownEditingListSpacingDescription(), 
+         _constants.visualMarkdownEditingListSpacingTitle(),
+         _constants.visualMarkdownEditingListSpacingDescription(),
          new String[] {
             VISUAL_MARKDOWN_EDITING_LIST_SPACING_TIGHT,
             VISUAL_MARKDOWN_EDITING_LIST_SPACING_SPACED
@@ -2861,8 +2865,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "visual_markdown_editing_wrap", // $NON-NLS-1$
-         _constants.visualMarkdownEditingWrapTitle(), 
-         _constants.visualMarkdownEditingWrapDescription(), 
+         _constants.visualMarkdownEditingWrapTitle(),
+         _constants.visualMarkdownEditingWrapDescription(),
          new String[] {
             VISUAL_MARKDOWN_EDITING_WRAP_NONE,
             VISUAL_MARKDOWN_EDITING_WRAP_COLUMN,
@@ -2884,8 +2888,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "visual_markdown_editing_wrap_at_column", // $NON-NLS-1$
-         _constants.visualMarkdownEditingWrapAtColumnTitle(), 
-         _constants.visualMarkdownEditingWrapAtColumnDescription(), 
+         _constants.visualMarkdownEditingWrapAtColumnTitle(),
+         _constants.visualMarkdownEditingWrapAtColumnDescription(),
          72);
    }
 
@@ -2896,8 +2900,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "visual_markdown_editing_references_location", // $NON-NLS-1$
-         _constants.visualMarkdownEditingReferencesLocationTitle(), 
-         _constants.visualMarkdownEditingReferencesLocationDescription(), 
+         _constants.visualMarkdownEditingReferencesLocationTitle(),
+         _constants.visualMarkdownEditingReferencesLocationDescription(),
          new String[] {
             VISUAL_MARKDOWN_EDITING_REFERENCES_LOCATION_BLOCK,
             VISUAL_MARKDOWN_EDITING_REFERENCES_LOCATION_SECTION,
@@ -2919,8 +2923,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "visual_markdown_editing_canonical", // $NON-NLS-1$
-         _constants.visualMarkdownEditingCanonicalTitle(), 
-         _constants.visualMarkdownEditingCanonicalDescription(), 
+         _constants.visualMarkdownEditingCanonicalTitle(),
+         _constants.visualMarkdownEditingCanonicalDescription(),
          false);
    }
 
@@ -2931,8 +2935,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "visual_markdown_editing_max_content_width", // $NON-NLS-1$
-         _constants.visualMarkdownEditingMaxContentWidthTitle(), 
-         _constants.visualMarkdownEditingMaxContentWidthDescription(), 
+         _constants.visualMarkdownEditingMaxContentWidthTitle(),
+         _constants.visualMarkdownEditingMaxContentWidthDescription(),
          700);
    }
 
@@ -2943,8 +2947,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "visual_markdown_editing_show_doc_outline", // $NON-NLS-1$
-         _constants.visualMarkdownEditingShowDocOutlineTitle(), 
-         _constants.visualMarkdownEditingShowDocOutlineDescription(), 
+         _constants.visualMarkdownEditingShowDocOutlineTitle(),
+         _constants.visualMarkdownEditingShowDocOutlineDescription(),
          true);
    }
 
@@ -2955,8 +2959,20 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "visual_markdown_editing_show_margin", // $NON-NLS-1$
-         _constants.visualMarkdownEditingShowMarginTitle(), 
-         _constants.visualMarkdownEditingShowMarginDescription(), 
+         _constants.visualMarkdownEditingShowMarginTitle(),
+         _constants.visualMarkdownEditingShowMarginDescription(),
+         false);
+   }
+
+   /**
+    * Whether to show line numbers in the code editors used in visual mode
+    */
+   public PrefValue<Boolean> visualMarkdownCodeEditorLineNumbers()
+   {
+      return bool(
+         "visual_markdown_code_editor_line_numbers",
+         "Show line numbers in visual mode code blocks",
+         "Whether to show line numbers in the code editors used in visual mode",
          false);
    }
 
@@ -2967,8 +2983,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "visual_markdown_editing_font_size_points", // $NON-NLS-1$
-         _constants.visualMarkdownEditingFontSizePointsTitle(), 
-         _constants.visualMarkdownEditingFontSizePointsDescription(), 
+         _constants.visualMarkdownEditingFontSizePointsTitle(),
+         _constants.visualMarkdownEditingFontSizePointsDescription(),
          0);
    }
 
@@ -2979,8 +2995,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "visual_markdown_code_editor", // $NON-NLS-1$
-         _constants.visualMarkdownCodeEditorTitle(), 
-         _constants.visualMarkdownCodeEditorDescription(), 
+         _constants.visualMarkdownCodeEditorTitle(),
+         _constants.visualMarkdownCodeEditorDescription(),
          new String[] {
             VISUAL_MARKDOWN_CODE_EDITOR_ACE,
             VISUAL_MARKDOWN_CODE_EDITOR_CODEMIRROR
@@ -3000,8 +3016,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return object(
          "zotero_libraries", // $NON-NLS-1$
-         _constants.zoteroLibrariesTitle(), 
-         _constants.zoteroLibrariesDescription(), 
+         _constants.zoteroLibrariesTitle(),
+         _constants.zoteroLibrariesDescription(),
          JsArrayUtil.createStringArray("My Library"));
    }
 
@@ -3012,8 +3028,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "emoji_skintone", // $NON-NLS-1$
-         _constants.emojiSkintoneTitle(), 
-         _constants.emojiSkintoneDescription(), 
+         _constants.emojiSkintoneTitle(),
+         _constants.emojiSkintoneDescription(),
          new String[] {
             EMOJI_SKINTONE__NONE_,
             EMOJI_SKINTONE__DEFAULT_,
@@ -3043,8 +3059,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return object(
          "disabled_aria_live_announcements", // $NON-NLS-1$
-         _constants.disabledAriaLiveAnnouncementsTitle(), 
-         _constants.disabledAriaLiveAnnouncementsDescription(), 
+         _constants.disabledAriaLiveAnnouncementsTitle(),
+         _constants.disabledAriaLiveAnnouncementsDescription(),
          JsArrayUtil.createStringArray());
    }
 
@@ -3055,8 +3071,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "screenreader_console_announce_limit", // $NON-NLS-1$
-         _constants.screenreaderConsoleAnnounceLimitTitle(), 
-         _constants.screenreaderConsoleAnnounceLimitDescription(), 
+         _constants.screenreaderConsoleAnnounceLimitTitle(),
+         _constants.screenreaderConsoleAnnounceLimitDescription(),
          25);
    }
 
@@ -3067,8 +3083,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return object(
          "file_monitor_ignored_components", // $NON-NLS-1$
-         _constants.fileMonitorIgnoredComponentsTitle(), 
-         _constants.fileMonitorIgnoredComponentsDescription(), 
+         _constants.fileMonitorIgnoredComponentsTitle(),
+         _constants.fileMonitorIgnoredComponentsDescription(),
          JsArrayUtil.createStringArray());
    }
 
@@ -3079,8 +3095,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "install_pkg_deps_individually", // $NON-NLS-1$
-         _constants.installPkgDepsIndividuallyTitle(), 
-         _constants.installPkgDepsIndividuallyDescription(), 
+         _constants.installPkgDepsIndividuallyTitle(),
+         _constants.installPkgDepsIndividuallyDescription(),
          true);
    }
 
@@ -3091,8 +3107,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "graphics_backend", // $NON-NLS-1$
-         _constants.graphicsBackendTitle(), 
-         _constants.graphicsBackendDescription(), 
+         _constants.graphicsBackendTitle(),
+         _constants.graphicsBackendDescription(),
          new String[] {
             GRAPHICS_BACKEND_DEFAULT,
             GRAPHICS_BACKEND_CAIRO,
@@ -3120,8 +3136,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return enumeration(
          "graphics_antialiasing", // $NON-NLS-1$
-         _constants.graphicsAntialiasingTitle(), 
-         _constants.graphicsAntialiasingDescription(), 
+         _constants.graphicsAntialiasingTitle(),
+         _constants.graphicsAntialiasingDescription(),
          new String[] {
             GRAPHICS_ANTIALIASING_DEFAULT,
             GRAPHICS_ANTIALIASING_NONE,
@@ -3145,7 +3161,7 @@ public class UserPrefsAccessor extends Prefs
    {
       return object(
          "browser_fixed_width_fonts", // $NON-NLS-1$
-         _constants.browserFixedWidthFontsTitle(), 
+         _constants.browserFixedWidthFontsTitle(),
          _constants.browserFixedWidthFontsDescription(),
          // i18n: Is this user facing?  Also, for non-English, what happens here?
          JsArrayUtil.createStringArray("Andale Mono", "Bitstream Vera Sans Mono", "Cascadia Code", "Consolas", "Courier New", "Courier", "DejaVu Sans Mono", "Droid Sans Mono", "Fira Code", "Hack", "IBM Plex Mono", "Inconsolata", "JetBrains Mono", "Lucida Console", "Lucida Sans Typewriter", "Menlo", "Monaco", "Monoid", "Operator Mono", "Pragmata", "SF Mono", "Source Code Pro", "Vera Sans Mono", "Victor Mono", "Ubuntu Mono"));
@@ -3158,8 +3174,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "python_type", // $NON-NLS-1$
-         _constants.pythonTypeTitle(), 
-         _constants.pythonTypeDescription(), 
+         _constants.pythonTypeTitle(),
+         _constants.pythonTypeDescription(),
          "");
    }
 
@@ -3170,8 +3186,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "python_version", // $NON-NLS-1$
-         _constants.pythonVersionTitle(), 
-         _constants.pythonVersionDescription(), 
+         _constants.pythonVersionTitle(),
+         _constants.pythonVersionDescription(),
          "");
    }
 
@@ -3182,8 +3198,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return string(
          "python_path", // $NON-NLS-1$
-         _constants.pythonPathTitle(), 
-         _constants.pythonPathDescription(), 
+         _constants.pythonPathTitle(),
+         _constants.pythonPathDescription(),
          "");
    }
 
@@ -3194,8 +3210,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "save_retry_timeout", // $NON-NLS-1$
-         _constants.saveRetryTimeoutTitle(), 
-         _constants.saveRetryTimeoutDescription(), 
+         _constants.saveRetryTimeoutTitle(),
+         _constants.saveRetryTimeoutDescription(),
          15);
    }
 
@@ -3206,8 +3222,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "insert_native_pipe_operator", // $NON-NLS-1$
-         _constants.insertNativePipeOperatorTitle(), 
-         _constants.insertNativePipeOperatorDescription(), 
+         _constants.insertNativePipeOperatorTitle(),
+         _constants.insertNativePipeOperatorDescription(),
          false);
    }
 
@@ -3218,8 +3234,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "command_palette_mru", // $NON-NLS-1$
-         _constants.commandPaletteMruTitle(), 
-         _constants.commandPaletteMruDescription(), 
+         _constants.commandPaletteMruTitle(),
+         _constants.commandPaletteMruDescription(),
          true);
    }
 
@@ -3230,8 +3246,8 @@ public class UserPrefsAccessor extends Prefs
    {
       return bool(
          "show_memory_usage", // $NON-NLS-1$
-         _constants.showMemoryUsageTitle(), 
-         _constants.showMemoryUsageDescription(), 
+         _constants.showMemoryUsageTitle(),
+         _constants.showMemoryUsageDescription(),
          true);
    }
 
@@ -3242,9 +3258,57 @@ public class UserPrefsAccessor extends Prefs
    {
       return integer(
          "memory_query_interval_seconds", // $NON-NLS-1$
-         _constants.memoryQueryIntervalSecondsTitle(), 
-         _constants.memoryQueryIntervalSecondsDescription(), 
+         _constants.memoryQueryIntervalSecondsTitle(),
+         _constants.memoryQueryIntervalSecondsDescription(),
          10);
+   }
+
+   /**
+    * Enable Python terminal hooks. When enabled, the RStudio-configured version of Python will be placed on the PATH.
+    */
+   public PrefValue<Boolean> terminalPythonIntegration()
+   {
+      return bool(
+         "terminal_python_integration",
+         "Enable terminal Python integration",
+         "Enable Python terminal hooks. When enabled, the RStudio-configured version of Python will be placed on the PATH.",
+         true);
+   }
+
+   /**
+    * Enable session protocol debug logging showing all session requests and events
+    */
+   public PrefValue<Boolean> sessionProtocolDebug()
+   {
+      return bool(
+         "session_protocol_debug",
+         "Session protocol debug logging",
+         "Enable session protocol debug logging showing all session requests and events",
+         false);
+   }
+
+   /**
+    * When enabled, if the active project contains a Python virtual environment, then RStudio will automatically activate this environment on startup.
+    */
+   public PrefValue<Boolean> pythonProjectEnvironmentAutomaticActivate()
+   {
+      return bool(
+         "python_project_environment_automatic_activate",
+         "Automatically activate project Python environments",
+         "When enabled, if the active project contains a Python virtual environment, then RStudio will automatically activate this environment on startup.",
+         true);
+   }
+
+   /**
+    * When enabled, RStudio will detect R objects containing null external pointers when building the Environment pane, and avoid introspecting their contents further.
+    */
+   public PrefValue<Boolean> checkNullExternalPointers()
+   {
+      return bool(
+         "check_null_external_pointers",
+         "Check values in the Environment pane for null external pointers",
+         "When enabled, RStudio will detect R objects containing null external pointers when building the Environment pane, and avoid introspecting their contents further.",
+         false);
    }
 
    public void syncPrefs(String layer, JsObject source)
@@ -3345,6 +3409,8 @@ public class UserPrefsAccessor extends Prefs
          showDiagnosticsR().setValue(layer, source.getBool("show_diagnostics_r")); //$NON-NLS-1$
       if (source.hasKey("show_diagnostics_cpp")) //$NON-NLS-1$
          showDiagnosticsCpp().setValue(layer, source.getBool("show_diagnostics_cpp")); //$NON-NLS-1$
+      if (source.hasKey("show_diagnostics_yaml")) //$NON-NLS-1$
+         showDiagnosticsYaml().setValue(layer, source.getBool("show_diagnostics_yaml")); //$NON-NLS-1$
       if (source.hasKey("show_diagnostics_other")) //$NON-NLS-1$
          showDiagnosticsOther().setValue(layer, source.getBool("show_diagnostics_other")); //$NON-NLS-1$
       if (source.hasKey("style_diagnostics")) //$NON-NLS-1$
@@ -3429,8 +3495,6 @@ public class UserPrefsAccessor extends Prefs
          defaultProjectLocation().setValue(layer, source.getString("default_project_location")); //$NON-NLS-1$
       if (source.hasKey("source_with_echo")) //$NON-NLS-1$
          sourceWithEcho().setValue(layer, source.getBool("source_with_echo")); //$NON-NLS-1$
-      if (source.hasKey("new_project_git_init")) //$NON-NLS-1$
-         newProjectGitInit().setValue(layer, source.getBool("new_project_git_init")); //$NON-NLS-1$
       if (source.hasKey("default_sweave_engine")) //$NON-NLS-1$
          defaultSweaveEngine().setValue(layer, source.getString("default_sweave_engine")); //$NON-NLS-1$
       if (source.hasKey("default_latex_program")) //$NON-NLS-1$
@@ -3455,10 +3519,6 @@ public class UserPrefsAccessor extends Prefs
          ignoreUppercaseWords().setValue(layer, source.getBool("ignore_uppercase_words")); //$NON-NLS-1$
       if (source.hasKey("ignore_words_with_numbers")) //$NON-NLS-1$
          ignoreWordsWithNumbers().setValue(layer, source.getBool("ignore_words_with_numbers")); //$NON-NLS-1$
-      if (source.hasKey("max_spellcheck_words")) //$NON-NLS-1$
-         maxSpellcheckWords().setValue(layer, source.getInteger("max_spellcheck_words")); //$NON-NLS-1$
-      if (source.hasKey("max_spellcheck_prefetch")) //$NON-NLS-1$
-         maxSpellcheckPrefetch().setValue(layer, source.getInteger("max_spellcheck_prefetch")); //$NON-NLS-1$
       if (source.hasKey("real_time_spellchecking")) //$NON-NLS-1$
          realTimeSpellchecking().setValue(layer, source.getBool("real_time_spellchecking")); //$NON-NLS-1$
       if (source.hasKey("navigate_to_build_error")) //$NON-NLS-1$
@@ -3535,6 +3595,8 @@ public class UserPrefsAccessor extends Prefs
          alwaysShownExtensions().setValue(layer, source.getObject("always_shown_extensions")); //$NON-NLS-1$
       if (source.hasKey("sort_file_names_naturally")) //$NON-NLS-1$
          sortFileNamesNaturally().setValue(layer, source.getBool("sort_file_names_naturally")); //$NON-NLS-1$
+      if (source.hasKey("sync_files_pane_working_dir")) //$NON-NLS-1$
+         syncFilesPaneWorkingDir().setValue(layer, source.getBool("sync_files_pane_working_dir")); //$NON-NLS-1$
       if (source.hasKey("jobs_tab_visibility")) //$NON-NLS-1$
          jobsTabVisibility().setValue(layer, source.getString("jobs_tab_visibility")); //$NON-NLS-1$
       if (source.hasKey("show_launcher_jobs_tab")) //$NON-NLS-1$
@@ -3543,8 +3605,8 @@ public class UserPrefsAccessor extends Prefs
          launcherJobsSort().setValue(layer, source.getString("launcher_jobs_sort")); //$NON-NLS-1$
       if (source.hasKey("busy_detection")) //$NON-NLS-1$
          busyDetection().setValue(layer, source.getString("busy_detection")); //$NON-NLS-1$
-      if (source.hasKey("busy_whitelist")) //$NON-NLS-1$
-         busyWhitelist().setValue(layer, source.getObject("busy_whitelist")); //$NON-NLS-1$
+      if (source.hasKey("busy_exclusion_list")) //$NON-NLS-1$
+         busyExclusionList().setValue(layer, source.getObject("busy_exclusion_list")); //$NON-NLS-1$
       if (source.hasKey("knit_working_dir")) //$NON-NLS-1$
          knitWorkingDir().setValue(layer, source.getString("knit_working_dir")); //$NON-NLS-1$
       if (source.hasKey("doc_outline_show")) //$NON-NLS-1$
@@ -3561,6 +3623,8 @@ public class UserPrefsAccessor extends Prefs
          consoleDoubleClickSelect().setValue(layer, source.getBool("console_double_click_select")); //$NON-NLS-1$
       if (source.hasKey("new_proj_git_init")) //$NON-NLS-1$
          newProjGitInit().setValue(layer, source.getBool("new_proj_git_init")); //$NON-NLS-1$
+      if (source.hasKey("new_proj_use_renv")) //$NON-NLS-1$
+         newProjUseRenv().setValue(layer, source.getBool("new_proj_use_renv")); //$NON-NLS-1$
       if (source.hasKey("root_document")) //$NON-NLS-1$
          rootDocument().setValue(layer, source.getString("root_document")); //$NON-NLS-1$
       if (source.hasKey("show_user_home_page")) //$NON-NLS-1$
@@ -3647,12 +3711,14 @@ public class UserPrefsAccessor extends Prefs
          visualMarkdownEditingReferencesLocation().setValue(layer, source.getString("visual_markdown_editing_references_location")); //$NON-NLS-1$
       if (source.hasKey("visual_markdown_editing_canonical")) //$NON-NLS-1$
          visualMarkdownEditingCanonical().setValue(layer, source.getBool("visual_markdown_editing_canonical")); //$NON-NLS-1$
-      if (source.hasKey("visual_markdown_editing_max_content_width")) //$NON-NLS-1$
+      if (source.hasKey("visual_markdown_editing_max_content_width"))
          visualMarkdownEditingMaxContentWidth().setValue(layer, source.getInteger("visual_markdown_editing_max_content_width")); //$NON-NLS-1$
       if (source.hasKey("visual_markdown_editing_show_doc_outline")) //$NON-NLS-1$
          visualMarkdownEditingShowDocOutline().setValue(layer, source.getBool("visual_markdown_editing_show_doc_outline")); //$NON-NLS-1$
       if (source.hasKey("visual_markdown_editing_show_margin")) //$NON-NLS-1$
          visualMarkdownEditingShowMargin().setValue(layer, source.getBool("visual_markdown_editing_show_margin")); //$NON-NLS-1$
+      if (source.hasKey("visual_markdown_code_editor_line_numbers")) //$NON-NLS-1$
+         visualMarkdownCodeEditorLineNumbers().setValue(layer, source.getBool("visual_markdown_code_editor_line_numbers")); //$NON-NLS-1$
       if (source.hasKey("visual_markdown_editing_font_size_points")) //$NON-NLS-1$
          visualMarkdownEditingFontSizePoints().setValue(layer, source.getInteger("visual_markdown_editing_font_size_points")); //$NON-NLS-1$
       if (source.hasKey("visual_markdown_code_editor")) //$NON-NLS-1$
@@ -3691,6 +3757,14 @@ public class UserPrefsAccessor extends Prefs
          showMemoryUsage().setValue(layer, source.getBool("show_memory_usage")); //$NON-NLS-1$
       if (source.hasKey("memory_query_interval_seconds")) //$NON-NLS-1$
          memoryQueryIntervalSeconds().setValue(layer, source.getInteger("memory_query_interval_seconds")); //$NON-NLS-1$
+      if (source.hasKey("terminal_python_integration")) //$NON-NLS-1$
+         terminalPythonIntegration().setValue(layer, source.getBool("terminal_python_integration")); //$NON-NLS-1$
+      if (source.hasKey("session_protocol_debug")) //$NON-NLS-1$
+         sessionProtocolDebug().setValue(layer, source.getBool("session_protocol_debug")); //$NON-NLS-1$
+      if (source.hasKey("python_project_environment_automatic_activate")) //$NON-NLS-1$
+         pythonProjectEnvironmentAutomaticActivate().setValue(layer, source.getBool("python_project_environment_automatic_activate")); //$NON-NLS-1$
+      if (source.hasKey("check_null_external_pointers")) //$NON-NLS-1$
+         checkNullExternalPointers().setValue(layer, source.getBool("check_null_external_pointers")); //$NON-NLS-1$
    }
    public List<PrefValue<?>> allPrefs()
    {
@@ -3743,6 +3817,7 @@ public class UserPrefsAccessor extends Prefs
       prefs.add(showFunctionSignatureTooltips());
       prefs.add(showDiagnosticsR());
       prefs.add(showDiagnosticsCpp());
+      prefs.add(showDiagnosticsYaml());
       prefs.add(showDiagnosticsOther());
       prefs.add(styleDiagnostics());
       prefs.add(diagnosticsOnSave());
@@ -3785,7 +3860,6 @@ public class UserPrefsAccessor extends Prefs
       prefs.add(toolbarVisible());
       prefs.add(defaultProjectLocation());
       prefs.add(sourceWithEcho());
-      prefs.add(newProjectGitInit());
       prefs.add(defaultSweaveEngine());
       prefs.add(defaultLatexProgram());
       prefs.add(useRoxygen());
@@ -3798,8 +3872,6 @@ public class UserPrefsAccessor extends Prefs
       prefs.add(documentLoadLintDelay());
       prefs.add(ignoreUppercaseWords());
       prefs.add(ignoreWordsWithNumbers());
-      prefs.add(maxSpellcheckWords());
-      prefs.add(maxSpellcheckPrefetch());
       prefs.add(realTimeSpellchecking());
       prefs.add(navigateToBuildError());
       prefs.add(packagesPaneEnabled());
@@ -3838,11 +3910,12 @@ public class UserPrefsAccessor extends Prefs
       prefs.add(alwaysShownFiles());
       prefs.add(alwaysShownExtensions());
       prefs.add(sortFileNamesNaturally());
+      prefs.add(syncFilesPaneWorkingDir());
       prefs.add(jobsTabVisibility());
       prefs.add(showLauncherJobsTab());
       prefs.add(launcherJobsSort());
       prefs.add(busyDetection());
-      prefs.add(busyWhitelist());
+      prefs.add(busyExclusionList());
       prefs.add(knitWorkingDir());
       prefs.add(docOutlineShow());
       prefs.add(latexPreviewOnCursorIdle());
@@ -3851,6 +3924,7 @@ public class UserPrefsAccessor extends Prefs
       prefs.add(gitDiffIgnoreWhitespace());
       prefs.add(consoleDoubleClickSelect());
       prefs.add(newProjGitInit());
+      prefs.add(newProjUseRenv());
       prefs.add(rootDocument());
       prefs.add(showUserHomePage());
       prefs.add(reuseSessionsForProjectLinks());
@@ -3897,6 +3971,7 @@ public class UserPrefsAccessor extends Prefs
       prefs.add(visualMarkdownEditingMaxContentWidth());
       prefs.add(visualMarkdownEditingShowDocOutline());
       prefs.add(visualMarkdownEditingShowMargin());
+      prefs.add(visualMarkdownCodeEditorLineNumbers());
       prefs.add(visualMarkdownEditingFontSizePoints());
       prefs.add(visualMarkdownCodeEditor());
       prefs.add(zoteroLibraries());
@@ -3916,6 +3991,10 @@ public class UserPrefsAccessor extends Prefs
       prefs.add(commandPaletteMru());
       prefs.add(showMemoryUsage());
       prefs.add(memoryQueryIntervalSeconds());
+      prefs.add(terminalPythonIntegration());
+      prefs.add(sessionProtocolDebug());
+      prefs.add(pythonProjectEnvironmentAutomaticActivate());
+      prefs.add(checkNullExternalPointers());
       return prefs;
    }
    

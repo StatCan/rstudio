@@ -64,6 +64,24 @@ public interface NewProjectResources extends ClientBundle
 
    @Source("svnIconLarge_2x.png")
    ImageResource svnIconLarge2x();
+   
+   @Source("quartoIcon_2x.png")
+   ImageResource quartoIcon2x();
+
+   @Source("quartoIconLarge_2x.png")
+   ImageResource quartoIconLarge2x();
+   
+   @Source("quartoBookIcon_2x.png")
+   ImageResource quartoBookIcon2x();
+
+   @Source("quartoBookIconLarge_2x.png")
+   ImageResource quartoBookIconLarge2x();
+   
+   @Source("quartoWebsiteIcon_2x.png")
+   ImageResource quartoWebsiteIcon2x();
+
+   @Source("quartoWebsiteIconLarge_2x.png")
+   ImageResource quartoWebsiteIconLarge2x();
 
    @Source("plumberAppIcon_2x.png")
    ImageResource plumberAppIcon2x();
@@ -82,6 +100,9 @@ public interface NewProjectResources extends ClientBundle
       String codeFilesListButton();
       String codeFilesListBox();
       String invalidPkgName();
+      String quartoProjectTypeSelect();
+      String quartoEngineSelect();
+      String quartoVenvPackages();
    }
 
    @Source("NewProjectWizard.css")

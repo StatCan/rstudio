@@ -156,6 +156,7 @@ import org.rstudio.studio.client.workbench.views.source.editors.text.events.Undo
 import org.rstudio.studio.client.workbench.views.source.editors.text.rmd.ChunkDefinition;
 import org.rstudio.studio.client.workbench.views.source.editors.text.rmd.TextEditingTargetNotebook;
 import org.rstudio.studio.client.workbench.views.source.editors.text.spelling.SpellingDoc;
+import org.rstudio.studio.client.workbench.views.source.editors.text.yaml.YamlCompletionManager;
 import org.rstudio.studio.client.workbench.views.source.events.CollabEditStartParams;
 import org.rstudio.studio.client.workbench.views.source.events.RecordNavigationPositionEvent;
 import org.rstudio.studio.client.workbench.views.source.events.SaveFileEvent;
@@ -767,6 +768,11 @@ public class AceEditor implements DocDisplay,
    {
       behavior_ = behavior;
    }
+   
+   public EditorBehavior getEditorBehavior()
+   {
+      return behavior_;
+   }
 
    @Override
    public void setRnwCompletionContext(RnwCompletionContext rnwContext)
@@ -843,7 +849,7 @@ public class AceEditor implements DocDisplay,
                // Markdown completion manager
                if (fileType_.isMarkdown() || fileType_.isRmd())
                {
-                  managers.put(DocumentMode.Mode.MARKDOWN, new MarkdownCompletionManager(
+                  managers.put(DocumentMode.Mode.MARKDOWN, MarkdownCompletionManager.create(
                         editor,
                         new CompletionPopupPanel(),
                         server_,
@@ -853,7 +859,7 @@ public class AceEditor implements DocDisplay,
                // Python completion manager
                if (fileType_.isPython() || fileType_.isRmd())
                {
-                  managers.put(DocumentMode.Mode.PYTHON, new PythonCompletionManager(
+                  managers.put(DocumentMode.Mode.PYTHON, PythonCompletionManager.create(
                         editor,
                         new CompletionPopupPanel(),
                         server_,
@@ -872,7 +878,7 @@ public class AceEditor implements DocDisplay,
                // SQL completion manager
                if (fileType_.isSql() || fileType_.isRmd())
                {
-                  managers.put(DocumentMode.Mode.SQL, new SqlCompletionManager(
+                  managers.put(DocumentMode.Mode.SQL, SqlCompletionManager.create(
                         editor,
                         new CompletionPopupPanel(),
                         server_,
@@ -882,11 +888,23 @@ public class AceEditor implements DocDisplay,
                // Stan completion manager
                if (fileType_.isStan() || fileType_.isRmd())
                {
-                  managers.put(DocumentMode.Mode.STAN, new StanCompletionManager(
+                  managers.put(DocumentMode.Mode.STAN, StanCompletionManager.create(
                         editor,
                         new CompletionPopupPanel(),
                         server_,
                         context_));
+               }
+               
+               // Yaml completion manager
+               if (fileType_.isYaml() || fileType_.isRmd() || 
+                   (behavior_ == EditorBehavior.AceBehaviorEmbedded && (fileType_.isR() || fileType_.isPython())))
+               {
+                  managers.put(DocumentMode.Mode.YAML, YamlCompletionManager.create(
+                       editor, 
+                       new CompletionPopupPanel(), 
+                       server_, 
+                       context_
+                  ));
                }
             }
          };
@@ -2872,9 +2890,9 @@ public class AceEditor implements DocDisplay,
    }
 
    @Override
-   public boolean isCursorInSingleLineString()
+   public boolean isCursorInSingleLineString(boolean allowInComment)
    {
-      return StringUtil.isEndOfLineInRStringState(getCurrentLineUpToCursor());
+      return StringUtil.isEndOfLineInRStringState(getCurrentLineUpToCursor(), allowInComment);
    }
 
    public void gotoPageUp()

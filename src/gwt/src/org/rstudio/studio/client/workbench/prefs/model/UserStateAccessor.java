@@ -49,8 +49,8 @@ public class UserStateAccessor extends Prefs
    {
       return string(
          "context_id", // $NON-NLS-1$
-         _constants.contextIdTitle(), 
-         _constants.contextIdDescription(), 
+         _constants.contextIdTitle(),
+         _constants.contextIdDescription(),
          "");
    }
 
@@ -61,8 +61,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "auto_created_profile",
-         _constants.autoCreatedProfileTitle(), 
-         _constants.autoCreatedProfileDescription(), 
+         _constants.autoCreatedProfileTitle(),
+         _constants.autoCreatedProfileDescription(),
          false);
    }
 
@@ -73,8 +73,8 @@ public class UserStateAccessor extends Prefs
    {
       return object(
          "theme", // $NON-NLS-1$
-         _constants.themeTitle(), 
-         _constants.themeDescription(), 
+         _constants.themeTitle(),
+         _constants.themeDescription(),
          null);
    }
 
@@ -103,8 +103,8 @@ public class UserStateAccessor extends Prefs
    {
       return string(
          "default_project_location", // $NON-NLS-1$
-         _constants.defaultProjectLocationTitle(), 
-         _constants.defaultProjectLocationDescription(), 
+         _constants.defaultProjectLocationTitle(),
+         _constants.defaultProjectLocationDescription(),
          "");
    }
 
@@ -115,8 +115,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "clear_hidden",
-         _constants.clearHiddenTitle(), 
-         _constants.clearHiddenDescription(), 
+         _constants.clearHiddenTitle(),
+         _constants.clearHiddenDescription(),
          true);
    }
 
@@ -127,8 +127,8 @@ public class UserStateAccessor extends Prefs
    {
       return object(
          "export_plot_options", // $NON-NLS-1$
-         _constants.exportPlotOptionsTitle(), 
-         _constants.exportPlotOptionsDescription(), 
+         _constants.exportPlotOptionsTitle(),
+         _constants.exportPlotOptionsDescription(),
          null);
    }
 
@@ -169,8 +169,8 @@ public class UserStateAccessor extends Prefs
    {
       return object(
          "export_viewer_options", // $NON-NLS-1$
-         _constants.exportViewerOptionsTitle(), 
-         _constants.exportViewerOptionsDescription(), 
+         _constants.exportViewerOptionsTitle(),
+         _constants.exportViewerOptionsDescription(),
          null);
    }
 
@@ -211,8 +211,8 @@ public class UserStateAccessor extends Prefs
    {
       return object(
          "save_plot_as_pdf_options", // $NON-NLS-1$
-         _constants.savePlotAsPdfOptionsTitle(), 
-         _constants.savePlotAsPdfOptionsDescription(), 
+         _constants.savePlotAsPdfOptionsTitle(),
+         _constants.savePlotAsPdfOptionsDescription(),
          null);
    }
 
@@ -249,8 +249,8 @@ public class UserStateAccessor extends Prefs
    {
       return object(
          "compile_r_notebook_prefs", // $NON-NLS-1$
-         _constants.compileRNotebookPrefsTitle(), 
-         _constants.compileRNotebookPrefsDescription(), 
+         _constants.compileRNotebookPrefsTitle(),
+         _constants.compileRNotebookPrefsDescription(),
          null);
    }
 
@@ -275,8 +275,8 @@ public class UserStateAccessor extends Prefs
    {
       return object(
          "compile_r_markdown_notebook_prefs", // $NON-NLS-1$
-         _constants.compileRMarkdownNotebookPrefsTitle(), 
-         _constants.compileRMarkdownNotebookPrefsDescription(), 
+         _constants.compileRMarkdownNotebookPrefsTitle(),
+         _constants.compileRMarkdownNotebookPrefsDescription(),
          null);
    }
 
@@ -297,8 +297,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "show_publish_ui",
-         _constants.showPublishUiTitle(), 
-         _constants.showPublishUiDescription(), 
+         _constants.showPublishUiTitle(),
+         _constants.showPublishUiDescription(),
          true);
    }
 
@@ -309,8 +309,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "enable_rsconnect_publish_ui",
-         _constants.enableRsconnectPublishUiTitle(), 
-         _constants.enableRsconnectPublishUiDescription(), 
+         _constants.enableRsconnectPublishUiTitle(),
+         _constants.enableRsconnectPublishUiDescription(),
          true);
    }
 
@@ -321,8 +321,8 @@ public class UserStateAccessor extends Prefs
    {
       return object(
          "publish_account", // $NON-NLS-1$
-         _constants.publishAccountTitle(), 
-         _constants.publishAccountDescription(), 
+         _constants.publishAccountTitle(),
+         _constants.publishAccountDescription(),
          null);
    }
 
@@ -347,8 +347,8 @@ public class UserStateAccessor extends Prefs
    {
       return integer(
          "document_outline_width", // $NON-NLS-1$
-         _constants.documentOutlineWidthTitle(), 
-         _constants.documentOutlineWidthDescription(), 
+         _constants.documentOutlineWidthTitle(),
+         _constants.documentOutlineWidthDescription(),
          110);
    }
 
@@ -359,8 +359,8 @@ public class UserStateAccessor extends Prefs
    {
       return enumeration(
          "connect_via", // $NON-NLS-1$
-         _constants.connectViaTitle(), 
-         _constants.connectViaDescription(), 
+         _constants.connectViaTitle(),
+         _constants.connectViaDescription(),
          new String[] {
             CONNECT_VIA_CONNECT_R_CONSOLE,
             CONNECT_VIA_CONNECT_NEW_R_SCRIPT,
@@ -382,8 +382,8 @@ public class UserStateAccessor extends Prefs
    {
       return enumeration(
          "error_handler_type", // $NON-NLS-1$
-         _constants.errorHandlerTypeTitle(), 
-         _constants.errorHandlerTypeDescription(), 
+         _constants.errorHandlerTypeTitle(),
+         _constants.errorHandlerTypeDescription(),
          new String[] {
             ERROR_HANDLER_TYPE_MESSAGE,
             ERROR_HANDLER_TYPE_TRACEBACK,
@@ -407,8 +407,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "using_mingw_gcc49",
-         _constants.usingMingwGcc49Title(), 
-         _constants.usingMingwGcc49Description(), 
+         _constants.usingMingwGcc49Title(),
+         _constants.usingMingwGcc49Description(),
          false);
    }
 
@@ -419,8 +419,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "visual_mode_confirmed",
-         _constants.visualModeConfirmedTitle(), 
-         _constants.visualModeConfirmedDescription(), 
+         _constants.visualModeConfirmedTitle(),
+         _constants.visualModeConfirmedDescription(),
          false);
    }
 
@@ -431,8 +431,8 @@ public class UserStateAccessor extends Prefs
    {
       return enumeration(
          "bibliography_default_type", // $NON-NLS-1$
-         _constants.bibliographyDefaultTypeTitle(), 
-         _constants.bibliographyDefaultTypeDescription(), 
+         _constants.bibliographyDefaultTypeTitle(),
+         _constants.bibliographyDefaultTypeDescription(),
          new String[] {
             BIBLIOGRAPHY_DEFAULT_TYPE_BIB,
             BIBLIOGRAPHY_DEFAULT_TYPE_YAML,
@@ -452,8 +452,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "citation_default_in_text",
-         _constants.citationDefaultInTextTitle(), 
-         _constants.citationDefaultInTextDescription(), 
+         _constants.citationDefaultInTextTitle(),
+         _constants.citationDefaultInTextDescription(),
          false);
    }
 
@@ -464,8 +464,8 @@ public class UserStateAccessor extends Prefs
    {
       return enumeration(
          "zotero_connection_type", // $NON-NLS-1$
-         _constants.zoteroConnectionTypeTitle(), 
-         _constants.zoteroConnectionTypeDescription(), 
+         _constants.zoteroConnectionTypeTitle(),
+         _constants.zoteroConnectionTypeDescription(),
          new String[] {
             ZOTERO_CONNECTION_TYPE_AUTO,
             ZOTERO_CONNECTION_TYPE_NONE,
@@ -487,8 +487,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "zotero_use_better_bibtex",
-         _constants.zoteroUseBetterBibtexTitle(), 
-         _constants.zoteroUseBetterBibtexDescription(), 
+         _constants.zoteroUseBetterBibtexTitle(),
+         _constants.zoteroUseBetterBibtexDescription(),
          false);
    }
 
@@ -499,8 +499,8 @@ public class UserStateAccessor extends Prefs
    {
       return string(
          "zotero_api_key", // $NON-NLS-1$
-         _constants.zoteroApiKeyTitle(), 
-         _constants.zoteroApiKeyDescription(), 
+         _constants.zoteroApiKeyTitle(),
+         _constants.zoteroApiKeyDescription(),
          "");
    }
 
@@ -511,9 +511,21 @@ public class UserStateAccessor extends Prefs
    {
       return string(
          "zotero_data_dir", // $NON-NLS-1$
-         _constants.zoteroDataDirTitle(), 
-         _constants.zoteroDataDirDescription(), 
+         _constants.zoteroDataDirTitle(),
+         _constants.zoteroDataDirDescription(),
          "");
+   }
+
+   /**
+    * Sync source editor to Quarto website preview navigation.
+    */
+   public PrefValue<Boolean> quartoWebsiteSyncEditor()
+   {
+      return bool(
+         "quarto_website_sync_editor",
+         "Quarto Website Sync Editor",
+         "Sync source editor to Quarto website preview navigation.",
+         false);
    }
 
    public void syncPrefs(String layer, JsObject source)
@@ -566,6 +578,8 @@ public class UserStateAccessor extends Prefs
          zoteroApiKey().setValue(layer, source.getString("zotero_api_key")); //$NON-NLS-1$
       if (source.hasKey("zotero_data_dir")) //$NON-NLS-1$
          zoteroDataDir().setValue(layer, source.getString("zotero_data_dir")); //$NON-NLS-1$
+      if (source.hasKey("quarto_website_sync_editor")) //$NON-NLS-1$
+         quartoWebsiteSyncEditor().setValue(layer, source.getBool("quarto_website_sync_editor")); //$NON-NLS-1$
    }
    public List<PrefValue<?>> allPrefs()
    {
@@ -594,6 +608,7 @@ public class UserStateAccessor extends Prefs
       prefs.add(zoteroUseBetterBibtex());
       prefs.add(zoteroApiKey());
       prefs.add(zoteroDataDir());
+      prefs.add(quartoWebsiteSyncEditor());
       return prefs;
    }
    

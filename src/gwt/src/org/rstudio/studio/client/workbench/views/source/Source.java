@@ -100,6 +100,7 @@ import org.rstudio.studio.client.events.ReplaceRangesEvent;
 import org.rstudio.studio.client.events.ReplaceRangesEvent.ReplacementData;
 import org.rstudio.studio.client.palette.model.CommandPaletteEntryProvider;
 import org.rstudio.studio.client.palette.model.CommandPaletteEntrySource;
+import org.rstudio.studio.client.quarto.QuartoHelper;
 import org.rstudio.studio.client.events.SetSelectionRangesEvent;
 import org.rstudio.studio.client.server.ServerError;
 import org.rstudio.studio.client.server.ServerRequestCallback;
@@ -154,6 +155,7 @@ import org.rstudio.studio.client.workbench.views.source.events.DocTabDragInitiat
 import org.rstudio.studio.client.workbench.views.source.events.DocTabDragStartedEvent;
 import org.rstudio.studio.client.workbench.views.source.events.DocWindowChangedEvent;
 import org.rstudio.studio.client.workbench.views.source.events.EditPresentationSourceEvent;
+import org.rstudio.studio.client.workbench.views.source.events.EditPresentation2SourceEvent;
 import org.rstudio.studio.client.workbench.views.source.events.ScrollToPositionEvent;
 import org.rstudio.studio.client.workbench.views.source.events.XRefNavigationEvent;
 import org.rstudio.studio.client.workbench.views.source.events.EnsureVisibleSourceWindowEvent;
@@ -209,6 +211,7 @@ public class Source implements InsertSourceEvent.Handler,
                                RequestDocumentCloseEvent.Handler,
                                ScrollToPositionEvent.Handler,
                                EditPresentationSourceEvent.Handler,
+                               EditPresentation2SourceEvent.Handler,
                                XRefNavigationEvent.Handler,
                                NewDocumentWithCodeEvent.Handler,
                                MouseNavigateEvent.Handler,
@@ -313,6 +316,7 @@ public class Source implements InsertSourceEvent.Handler,
       commands_.newSourceDoc().setEnabled(true);
 
       events_.addHandler(EditPresentationSourceEvent.TYPE, this);
+      events_.addHandler(EditPresentation2SourceEvent.TYPE, this);
       events_.addHandler(FileEditEvent.TYPE, this);
       events_.addHandler(InsertSourceEvent.TYPE, this);
       events_.addHandler(ShowContentEvent.TYPE, this);
@@ -1093,6 +1097,29 @@ public class Source implements InsertSourceEvent.Handler,
       else
          columnManager_.newRMarkdownV1Doc();
    }
+   
+   @Handler
+   public void onNewQuartoDoc()
+   {
+      // if we are in a quarto website or book project just create a 
+      // blank document with only a title
+      if (QuartoHelper.isQuartoWebsiteConfig(session_.getSessionInfo().getQuartoConfig()))
+      {
+         String contents = "---\ntitle: \"Untitled\"\n---\n\n";
+         columnManager_.newDoc(FileTypeRegistry.QUARTO, contents, null);
+      }
+      else
+      {
+         columnManager_.newQuartoDoc();
+      }
+   }
+   
+   @Handler
+   public void onNewQuartoPres()
+   {
+      columnManager_.newQuartoPres();
+   }
+   
 
    private void doNewRShinyApp(NewShinyWebApplication.Result result)
    {
@@ -1876,6 +1903,28 @@ public class Source implements InsertSourceEvent.Handler,
                }
          });
    }
+   
+   @Override
+   public void onEditPresentation2Source(EditPresentation2SourceEvent event)
+   {
+      TextFileType fileType = fileTypeRegistry_.getTextTypeForFile(event.getSourceFile());
+      
+      columnManager_.openFile(
+            event.getSourceFile(),
+            fileType,
+            (final EditingTarget editor) ->
+            {
+               // NOTE: we defer execution here as otherwise we might attempt navigation
+               // before the underlying Ace editor has been fully initialized
+               Scheduler.get().scheduleDeferred(() ->
+               {
+                  TextEditingTarget target = (TextEditingTarget) editor;
+                  target.navigateToPresentationEditorLocation(event.getLocation());
+               });
+            });
+     
+      
+   }
 
    @Override
    public void onXRefNavigation(XRefNavigationEvent event)
@@ -2211,7 +2260,7 @@ public class Source implements InsertSourceEvent.Handler,
       {
          FileSystemItem file = event.getFile();
          file.setFocusOnNavigate(true);
-         fileTypeRegistry_.editFile(file);
+         fileTypeRegistry_.editFile(file, event.getFilePosition());
       }
    }
 
@@ -3143,4 +3192,5 @@ public class Source implements InsertSourceEvent.Handler,
    public final static int TYPE_UNTITLED    = 1;
    public final static int OPEN_INTERACTIVE = 0;
    public final static int OPEN_REPLAY      = 1;
+  
 }

@@ -27,7 +27,7 @@
 #include <core/Exec.hpp>
 #include <shared_core/Error.hpp>
 #include <shared_core/FilePath.hpp>
-#include <core/Hash.hpp>
+#include <shared_core/Hash.hpp>
 #include <core/FileSerializer.hpp>
 #include <core/FileUtils.hpp>
 #include <core/RegexUtils.hpp>
@@ -41,6 +41,7 @@
 #include <r/RSexp.hpp>
 #include <r/RRoutines.hpp>
 #include <r/session/RSession.hpp>
+#include <r/RExec.hpp>
 
 #include <session/SessionModuleContext.hpp>
 #include <session/projects/SessionProjects.hpp>
@@ -985,6 +986,22 @@ Error rename(const FilePath& from, const FilePath& to)
    return error;
 }
 
+core::Error detectExtendedType(const core::FilePath& filePath, std::string* pExtendedType)
+{
+   std::string id;
+   Error error = source_database::getId(filePath, &id);
+   if (error)
+      return error;
+
+   boost::shared_ptr<SourceDocument> pDoc(new SourceDocument);
+   error = source_database::get(id, pDoc);
+   if (error)
+      return error;
+
+   *pExtendedType = module_context::events().onDetectSourceExtendedType(pDoc);
+   return Success();
+}
+
 namespace {
 
 void onQuit()
@@ -1033,6 +1050,11 @@ void onRemoveAll()
 
 SEXP rs_getDocumentProperties(SEXP pathSEXP, SEXP includeContentsSEXP)
 {
+   if (!r::exec::isMainThread())
+   {
+      LOG_ERROR_MESSAGE("rs_getDocumentProperties called from non main thread");
+      return R_NilValue;
+   }
    Error error;
    FilePath path = module_context::resolveAliasedPath(r::sexp::safeAsString(pathSEXP));
    bool includeContents = r::sexp::asLogical(includeContentsSEXP);
@@ -1041,7 +1063,6 @@ SEXP rs_getDocumentProperties(SEXP pathSEXP, SEXP includeContentsSEXP)
    error = source_database::getId(path, &id);
    if (error)
    {
-      LOG_ERROR(error);
       return R_NilValue;
    }
 
@@ -1057,6 +1078,20 @@ SEXP rs_getDocumentProperties(SEXP pathSEXP, SEXP includeContentsSEXP)
    SEXP object = pDoc->toRObject(&protect, includeContents);
    return object;
 }
+
+SEXP rs_detectExtendedType(SEXP pathSEXP)
+{
+   FilePath path = module_context::resolveAliasedPath(r::sexp::safeAsString(pathSEXP));
+
+   std::string extendedType;
+   Error error = source_database::detectExtendedType(path, &extendedType);
+   if (error)
+      return R_NilValue;
+
+   r::sexp::Protect protect;
+   return r::sexp::create(extendedType, &protect);
+}
+
 
 } // anonymous namespace
 
@@ -1074,6 +1109,7 @@ Error initialize()
       return error;
 
    RS_REGISTER_CALL_METHOD(rs_getDocumentProperties, 2);
+   RS_REGISTER_CALL_METHOD(rs_detectExtendedType, 1);
 
    events().onDocUpdated.connect(onDocUpdated);
    events().onDocRemoved.connect(onDocRemoved);

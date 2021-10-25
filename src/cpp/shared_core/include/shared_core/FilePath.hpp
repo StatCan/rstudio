@@ -118,6 +118,17 @@ public:
 #endif
 
    /**
+    * @brief Constructor.
+    *
+    * @param in_absolutePath    The string representation of the path.
+    */
+   explicit FilePath(const char* in_absolutePath);
+
+#ifdef _WIN32
+   explicit FilePath(const wchar_t* in_absolutePath);
+#endif
+
+   /**
     * @brief Comparison operator. File paths are equal if their absolute representations are equal.
     *
     * @param in_other   The file path to compare with this file path.
@@ -723,7 +734,9 @@ public:
    /**
     * @brief Checks if a file can be written to by opening the file.
     *
-    * To be successful, the file must already exist on the system.
+    * To be successful, the file must be a regular file (not a directory, etc.) and already exist on
+    * the system.
+    *
     * If write access is not absolutely necessary, use isWriteable instead.
     *
     * @return Success if file can be written to; system error otherwise (e.g. EPERM, ENOENT, etc.)

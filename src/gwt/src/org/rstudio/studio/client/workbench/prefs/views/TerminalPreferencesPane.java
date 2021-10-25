@@ -97,6 +97,7 @@ public class TerminalPreferencesPane extends PreferencesPane
       general.add(terminalShell_);
       terminalShell_.setEnabled(false);
       terminalShell_.addChangeHandler(event -> manageCustomShellControlVisibility());
+      terminalShell_.addChangeHandler(event -> managePythonIntegrationControlVisibility());
 
       // custom shell exe path chooser
       Command onShellExePathChosen = new Command()
@@ -104,6 +105,8 @@ public class TerminalPreferencesPane extends PreferencesPane
          @Override
          public void execute()
          {
+            managePythonIntegrationControlVisibility();
+            
             if (BrowseCap.isWindowsDesktop())
             {
                String shellExePath = customShellChooser_.getText();
@@ -139,8 +142,19 @@ public class TerminalPreferencesPane extends PreferencesPane
       customShellOptions_.setEnabled(false);
       customShellOptionsLabel_ = new FormLabel("Custom shell command-line options:", customShellOptions_);
       general.add(spacedBefore(customShellOptionsLabel_));
-      general.add(customShellOptions_);
-
+      general.add(spaced(customShellOptions_));
+      
+      
+      chkPythonIntegration_ = checkboxPref(
+            "Enable Python integration",
+            prefs_.terminalPythonIntegration());
+      
+      chkPythonIntegration_.setTitle(
+            "When enabled, the active version of Python will be placed on the PATH for new terminal sessions. " +
+            "Only bash and zsh are supported.");
+      
+      general.add(chkPythonIntegration_);
+      
       Label perfLabel = headerLabel("Connection");
       perfLabel.getElement().getStyle().setMarginTop(8, Unit.PX);
       general.add(perfLabel);
@@ -223,13 +237,13 @@ public class TerminalPreferencesPane extends PreferencesPane
          closing.add(busyMode_);
          busyMode_.setEnabled(false);
          busyMode_.addChangeHandler(event -> manageBusyModeControlVisibility());
-         busyWhitelist_ = new TextBox();
-         DomUtils.disableSpellcheck(busyWhitelist_);
-         busyWhitelist_.setWidth(textboxWidth);
-         busyWhitelistLabel_ = new FormLabel("Don't ask before killing:", busyWhitelist_);
-         closing.add(busyWhitelistLabel_);
-         closing.add(busyWhitelist_);
-         busyWhitelist_.setEnabled(false);
+         busyExclusionList_ = new TextBox();
+         DomUtils.disableSpellcheck(busyExclusionList_);
+         busyExclusionList_.setWidth(textboxWidth);
+         busyExclusionListLabel_ = new FormLabel("Don't ask before killing:", busyExclusionList_);
+         closing.add(busyExclusionListLabel_);
+         closing.add(busyExclusionList_);
+         busyExclusionList_.setEnabled(false);
       }
 
       DialogTabLayoutPanel tabPanel = new DialogTabLayoutPanel("Terminal");
@@ -305,7 +319,7 @@ public class TerminalPreferencesPane extends PreferencesPane
          busyMode_.getListBox().clear();
          busyMode_.addChoice("Always", UserPrefs.BUSY_DETECTION_ALWAYS);
          busyMode_.addChoice("Never", UserPrefs.BUSY_DETECTION_NEVER);
-         busyMode_.addChoice("Always except for whitelist", UserPrefs.BUSY_DETECTION_WHITELIST);
+         busyMode_.addChoice("Always except for list", UserPrefs.BUSY_DETECTION_LIST);
          busyMode_.setEnabled(true);
 
          prefs_.busyDetection().getValue();
@@ -317,25 +331,25 @@ public class TerminalPreferencesPane extends PreferencesPane
             }
          }
 
-         List<String> whitelistArray = JsArrayUtil.fromJsArrayString(
-               prefs_.busyWhitelist().getValue());
+         List<String> exclusionArray = JsArrayUtil.fromJsArrayString(
+               prefs_.busyExclusionList().getValue());
 
-         StringBuilder whitelist = new StringBuilder();
-         for (String entry: whitelistArray)
+         StringBuilder exclusionList = new StringBuilder();
+         for (String entry: exclusionArray)
          {
             if (entry.trim().isEmpty())
             {
                continue;
             }
-            if (whitelist.length() > 0)
+            if (exclusionList.length() > 0)
             {
-               whitelist.append(" ");
+               exclusionList.append(" ");
             }
-            whitelist.append(entry.trim());
+            exclusionList.append(entry.trim());
          }
 
-         busyWhitelist_.setText(whitelist.toString());
-         busyWhitelist_.setEnabled(true);
+         busyExclusionList_.setText(exclusionList.toString());
+         busyExclusionList_.setEnabled(true);
 
          manageBusyModeControlVisibility();
       }
@@ -358,7 +372,7 @@ public class TerminalPreferencesPane extends PreferencesPane
 
       if (haveBusyDetectionPref())
       {
-         prefs_.busyWhitelist().setGlobalValue(StringUtil.split(busyWhitelist_.getText(), " "));
+         prefs_.busyExclusionList().setGlobalValue(StringUtil.split(busyExclusionList_.getText(), " "));
          prefs_.busyDetection().setGlobalValue(selectedBusyMode());
       }
 
@@ -415,6 +429,44 @@ public class TerminalPreferencesPane extends PreferencesPane
       customShellOptionsLabel_.setVisible(customEnabled);
       customShellOptions_.setVisible(customEnabled);
    }
+   
+   private boolean pythonIntegrationSupported()
+   {
+      String shell = terminalShell_.getValue();
+      if (StringUtil.equals(shell, "bash") ||
+          StringUtil.equals(shell, "zsh"))
+      {
+         return true;
+      }
+      
+      if (StringUtil.equals(shell, "custom"))
+      {
+         String shellPath = customShellChooser_.getText();
+         if (shellPath.endsWith("bash") ||
+             shellPath.endsWith("zsh") ||
+             shellPath.endsWith("bash.exe") ||
+             shellPath.endsWith("zsh.exe"))
+         {
+            return true;
+         }
+      }
+      
+      return false;
+   }
+   
+   private void managePythonIntegrationControlVisibility()
+   {
+      if (pythonIntegrationSupported())
+      {
+         chkPythonIntegration_.setEnabled(true);
+         chkPythonIntegration_.setVisible(true);
+      }
+      else
+      {
+         chkPythonIntegration_.setEnabled(false);
+         chkPythonIntegration_.setVisible(false);
+      }
+   }
 
    private String selectedBusyMode()
    {
@@ -424,9 +476,9 @@ public class TerminalPreferencesPane extends PreferencesPane
 
    private void manageBusyModeControlVisibility()
    {
-      boolean whitelistEnabled = selectedBusyMode() == UserPrefs.BUSY_DETECTION_WHITELIST;
-      busyWhitelistLabel_.setVisible(whitelistEnabled);
-      busyWhitelist_.setVisible(whitelistEnabled);
+      boolean exclusionListEnabled = selectedBusyMode() == UserPrefs.BUSY_DETECTION_LIST;
+      busyExclusionListLabel_.setVisible(exclusionListEnabled);
+      busyExclusionList_.setVisible(exclusionListEnabled);
    }
 
    private void addTextBoxChooser(Panel panel, String textWidth, FormLabel captionLabel, TextBoxWithButton chooser)
@@ -457,11 +509,12 @@ public class TerminalPreferencesPane extends PreferencesPane
    private final CheckBox chkHardwareAcceleration_;
    private final CheckBox chkAudibleBell_;
    private final CheckBox chkWebLinks_;
+   private final CheckBox chkPythonIntegration_;
 
    private SelectWidget autoClosePref_;
    private SelectWidget busyMode_;
-   private FormLabel busyWhitelistLabel_;
-   private TextBox busyWhitelist_;
+   private FormLabel busyExclusionListLabel_;
+   private TextBox busyExclusionList_;
 
    // Injected ----
    private final UserPrefs prefs_;

@@ -137,10 +137,10 @@ void deferredRestoreNewSession()
       Error error = restoreGlobalEnvFromFile(path, &errMessage);
       if (error)
       {
-         ::REprintf(
-                  "WARNING: Failed to restore workspace from '%s' "
-                  "(an internal error occurred)\n",
-                  aliasedPath.c_str());
+         std::cerr << "WARNING: Failed to restore workspace from "
+                   << "'" << aliasedPath << "'"
+                   << " (an internal error occurred)"
+                   << std::endl;
          LOG_ERROR(error);
       }
       else if (!errMessage.empty())
@@ -150,14 +150,15 @@ void deferredRestoreNewSession()
             << "'" << aliasedPath << "'" << std::endl
             << "Reason: " << errMessage << std::endl;
          std::string message = ss.str();
-         
-         ::REprintf("%s\n", message.c_str());
+
+         std::cerr << message << std::endl;
          LOG_ERROR_MESSAGE(message);
       }
       else
       {
-         const char* fmt = "[Workspace loaded from %s]\n\n";
-         Rprintf(fmt, aliasedPath.c_str());
+         std::cout << "[Workspace loaded from " << aliasedPath << "]"
+                   << std::endl
+                   << std::endl;
       }
    }
 
@@ -348,22 +349,30 @@ Error initialize()
    error = r::sourceManager().sourceLocal(optionsFilePath);
    if (error)
       return error;
-
-   // server specific R options options
+   
+   // set server options
+#ifdef __linux__
    if (utils::isServerMode())
    {
-#ifndef __APPLE__
-      FilePath serverOptionsFilePath = utils::rSourcePath().completePath(
-         "ServerOptions.R");
-      return r::sourceManager().sourceLocal(serverOptionsFilePath);
-#else
-      return Success();
+      FilePath serverOptionsFilePath =
+            utils::rSourcePath().completePath("ServerOptions.R");
+      
+      Error error = r::sourceManager().sourceLocal(serverOptionsFilePath);
+      if (error)
+         return error;
+   }
 #endif
-   }
-   else
-   {
-      return Success();
-   }
+   
+   // now run hooks for those waiting for session to be fully initialized
+   if (rCallbacks().initComplete)
+      rCallbacks().initComplete();
+   
+   // run tests if configured to do so
+   // (note that the callback will exit the process after tests have been run)
+   if (rCallbacks().runTests)
+      rCallbacks().runTests();
+   
+   return Success();
 }
 
 void ensureDeserialized()

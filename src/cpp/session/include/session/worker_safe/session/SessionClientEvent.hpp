@@ -208,6 +208,9 @@ extern const int kRStudioApiRequest;
 extern const int kDocumentCloseAllNoSave;
 extern const int kMemoryUsageChanged;
 extern const int kCommandCallbacksChanged;
+extern const int kConsoleActivate;
+extern const int kJobsActivate;
+extern const int kPresentationPreview;
 }
    
 class ClientEvent

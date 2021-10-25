@@ -113,6 +113,14 @@
    engine <- tolower(Sys.getenv("MPLENGINE"))
    if (engine %in% c("", "qt5agg"))
       Sys.setenv(MPLENGINE = "tkAgg")
+   
+   # update default version of Python to be used when reticulate is laoded
+   .rs.registerPackageLoadHook("reticulate", function(...)
+   {
+      python <- .rs.readUiPref("python_path")
+      .rs.reticulate.usePython(python)
+   })
+   
 })
 
 .rs.addFunction("reticulate.onPythonInitialized", function()
@@ -1260,30 +1268,44 @@
    #
    # TODO: this might fit more naturally as a helper class
    # in the reticulate package
-   pydoc <- reticulate::import("pydoc", convert = TRUE)
-   objects <- reticulate::py_run_string("
+   #
+   # NOTE: we explicitly use `py_run_string(..., local = FALSE)` to avoid
+   # issues with reticulate 1.20 -- normally we'd just update the version
+   # of reticulate on CRAN, but because R 4.1.0 was just published a number
+   # of people will only be able to install the reticulate 1.20 binary and
+   # so it behooves us to support that version for now
+   reticulate::py_run_string("
 
 # Create HTML documentation object
-import pydoc
-html = pydoc.HTMLDoc()
+def _rstudio_html_generator_():
+   import pydoc
+   html = pydoc.HTMLDoc()
 
-# Override the heading function
-def _heading(title, fgcol, bgcol, extra = ''):
-   return '''
-<table width=\"100%%\" cellspacing=0 cellpadding=2 border=0 summary=\"heading\">
-<tr><td><h2>%s</h2></td></tr>
-</table>
-   ''' % (title)
-
-html.heading = _heading
-", local = TRUE)
+   # Override the heading function
+   def _heading(title, fgcol, bgcol, extra = ''):
+      return '''
+   <table width=\"100%%\" cellspacing=0 cellpadding=2 border=0 summary=\"heading\">
+   <tr><td><h2>%s</h2></td></tr>
+   </table>
+      ''' % (title)
    
-   html <- objects$html
+   html.heading = _heading
+   return html
+", local = FALSE)
    
-   if (inherits(resolved, "numpy.ufunc"))
-      page <- html$page(paste("numpy function", name), html$docroutine(resolved, name))
-   else
-      page <- html$page(pydoc$describe(resolved), html$document(resolved, name))
+   # create html object, then remove generator function
+   main <- reticulate::import_main(convert = TRUE)
+   generator <- reticulate::py_to_r(reticulate::py_get_attr(main, "_rstudio_html_generator_"))
+   html <- generator()
+   reticulate::py_del_attr(main, "_rstudio_html_generator_")
+   
+   # generate page (handle numpy specially)
+   page <- if (inherits(resolved, "numpy.ufunc")) {
+      html$page(paste("numpy function", name), html$docroutine(resolved, name))
+   } else {
+      pydoc <- reticulate::import("pydoc", convert = TRUE)
+      html$page(pydoc$describe(resolved), html$document(resolved, name))
+   }
    
    # remove hard-coded background colors for rows
    page <- gsub("\\s?bgcolor=\"#[0-9a-fA-F]{6}\"", "", page, perl = TRUE)
@@ -1962,6 +1984,12 @@ html.heading = _heading
    if (reticulate::py_available(initialize = FALSE))
       return(FALSE)
    
+   # if we're working in an renv project that is already
+   # managing the default version of python, then do nothing
+   renvPython <- Sys.getenv("RENV_PYTHON", unset = NA)
+   if (!is.na(renvPython))
+      return(FALSE)
+
    # ok, request use of Python
    reticulate::use_python(python, required = TRUE)
 })
@@ -2008,26 +2036,36 @@ options(reticulate.repl.teardown = function()
 
 # Attempts to infer the current Python interpreter used by reticulate
 .rs.addFunction("inferReticulatePython", function() {
+   
    # Use existing RETICULATE_PYTHON if set
-   env_value <- Sys.getenv("RETICULATE_PYTHON")
-   if (nzchar(env_value)) {
-      return(env_value)
+   python <- Sys.getenv("RETICULATE_PYTHON", unset = NA)
+   if (!is.na(python))
+      return(python)
+   
+   # if reticulate is already loaded, check and see if it's already
+   # configured to use a particular copy of Python
+   loaded <-
+      "reticulate" %in% loadedNamespaces() &&
+      reticulate::py_available(initialize = FALSE)
+   
+   if (loaded) {
+      config <- reticulate::py_config()
+      return(config$python)
    }
 
-   # If the reticulate package is installed, we can ask it what it's using
+   # if the user has configured RStudio to use a particular version
+   # of Python, then use that
+   python <- .rs.readUiPref("python_path")
+   if (!is.null(python))
+      return(path.expand(python))
+   
+   # if reticulate is installed, then try to load it and ask what
+   # version of Python it would choose to bind to.
+   #
+   # TODO: we might want to avoid loading reticulate if possible here?
    if (.rs.isPackageInstalled("reticulate")) {
-      if (reticulate::py_available(initialize = FALSE)) {
-         # Python is available/initialized; use it
-         py_config <- reticulate::py_config()
-         if (!is.null(py_config) && !is.null(py_config$python)) {
-            return(py_config$python)
-         }
-      } 
-
-      # Couldn't find initialized Python; attempt to discover it
-
-      # First, turn off Miniconda support in reticulate so that it doesn't 
-      # prompt the user to install it during Python version discovery
+      
+      # avoid miniconda prompts
       prev_miniconda <- Sys.getenv("RETICULATE_MINICONDA_ENABLED")
       Sys.setenv(RETICULATE_MINICONDA_ENABLED = "FALSE")
 
@@ -2043,8 +2081,10 @@ options(reticulate.repl.teardown = function()
       if (!is.null(py_config) && !is.null(py_config$python)) {
          return(py_config$python)
       }
+      
    }
 
-   # We didn't find any indication of the python version
+   # we didn't find any indication of the python version
    ""
+   
 })

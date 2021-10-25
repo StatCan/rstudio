@@ -205,6 +205,7 @@ public class SourceDocument extends JavaScriptObject
    public final static String XT_RMARKDOWN_PREFIX = "rmarkdown-"; //$NON-NLS-1$
    public final static String XT_RMARKDOWN_DOCUMENT = "rmarkdown-document"; //$NON-NLS-1$
    public final static String XT_RMARKDOWN_NOTEBOOK = "rmarkdown-notebook"; //$NON-NLS-1$
+   public final static String XT_QUARTO_DOCUMENT = "quarto-document";
    public final static String XT_SHINY_PREFIX = "shiny-"; //$NON-NLS-1$
    public final static String XT_SHINY_DIR = "shiny-dir"; //$NON-NLS-1$
    public final static String XT_SHINY_SINGLE_FILE = "shiny-single-file"; //$NON-NLS-1$

@@ -512,7 +512,7 @@ public class RCompletionManager implements CompletionManager
                   if (value != null)
                   {
                      if (value.type == RCompletionType.DIRECTORY)
-                        context_.suggestOnAccept_ = true;
+                        value = value.withSuggestOnAccept();
                      
                      context_.onSelection(value);
                      return true;
@@ -634,7 +634,7 @@ public class RCompletionManager implements CompletionManager
       int cursorColumn = cursorPos.getColumn();
       
       // Don't auto-popup when the cursor is within a string
-      if (docDisplay_.isCursorInSingleLineString())
+      if (docDisplay_.isCursorInSingleLineString(false))
          return false;
       
       // Don't auto-popup if there is a character following the cursor
@@ -740,7 +740,7 @@ public class RCompletionManager implements CompletionManager
             return false;
          
          // Bail if we're in a single-line string
-         if (docDisplay_.isCursorInSingleLineString())
+         if (docDisplay_.isCursorInSingleLineString(false))
             return false;
          
          // if there's a selection, bail
@@ -789,17 +789,26 @@ public class RCompletionManager implements CompletionManager
          // Attempt to pop up completions immediately after a function call.
          if (c == '(' && !isLineInComment(docDisplay_.getCurrentLine()))
          {
-            String token = StringUtil.getToken(
-                  docDisplay_.getCurrentLine(),
-                  input_.getCursorPosition().getColumn(),
-                  "[" + RegexUtil.wordCharacter() + "._]",
-                  false,
-                  true);
-            
-            if (token.matches("^(library|require|requireNamespace|data)\\s*$"))
-               canAutoPopup = true;
-            
-            Scheduler.get().scheduleDeferred(() -> sigTipManager_.resolveActiveFunctionAndDisplayToolTip());
+            // further validate that we're not working within a string
+            // https://github.com/rstudio/rstudio/issues/8677
+            Token currentToken = docDisplay_.getTokenAt(docDisplay_.getCursorPosition());
+            if (currentToken != null && currentToken.hasType("identifier"))
+            {
+               String token = StringUtil.getToken(
+                     docDisplay_.getCurrentLine(),
+                     input_.getCursorPosition().getColumn(),
+                     "[" + RegexUtil.wordCharacter() + "._]",
+                     false,
+                     true);
+               
+               if (token.matches("^(library|require|requireNamespace|data)\\s*$"))
+                  canAutoPopup = true;
+               
+               Scheduler.get().scheduleDeferred(() -> 
+               {
+                  sigTipManager_.resolveActiveFunctionAndDisplayToolTip();
+               });
+            }
          }
          
          if (
@@ -1828,7 +1837,6 @@ public class RCompletionManager implements CompletionManager
                selection_.getStart().movePosition(-token.length(), true));
 
          token_ = token;
-         suggestOnAccept_ = completions.suggestOnAccept;
          overrideInsertParens_ = completions.dontInsertParens;
 
          if (results.length == 1
@@ -1866,7 +1874,7 @@ public class RCompletionManager implements CompletionManager
          applyValue(qname);
          
          // For in-line edits, we don't want to auto-popup after replacement
-         if (suggestOnAccept_ || 
+         if (qname.suggestOnAccept || 
                (qname.name.endsWith(":") &&
                      docDisplay_.getCharacterAtCursor() != ':'))
          {
@@ -2009,7 +2017,6 @@ public class RCompletionManager implements CompletionManager
          }
 
          String value = qualifiedName.name;
-         String source = qualifiedName.source;
          boolean shouldQuote = qualifiedName.shouldQuote;
          
          
@@ -2111,7 +2118,6 @@ public class RCompletionManager implements CompletionManager
       private final Position position_;
       private InputEditorSelection selection_;
       private final boolean canAutoAccept_;
-      private boolean suggestOnAccept_;
       private boolean overrideInsertParens_;
       
    }

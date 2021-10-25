@@ -26,10 +26,7 @@ import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.user.client.Command;
 
 /**
- * This is an interface straight through to a C++ object that lives
- * in the Qt desktop frame.
- * 
- * String arguments must not be null.
+ * This is an interface to callbacks registered by the desktop frame.
  */
 @BaseExpression("$wnd.desktop") //$NON-NLS-1$
 public interface DesktopFrame extends JavaScriptPassthrough
@@ -174,8 +171,8 @@ public interface DesktopFrame extends JavaScriptPassthrough
    void getClipboardMonitoring(CommandWithArg<Boolean> callback);
    void setClipboardMonitoring(boolean monitoring);
    
-   void getIgnoreGpuBlacklist(CommandWithArg<Boolean> callback);
-   void setIgnoreGpuBlacklist(boolean ignore);
+   void getIgnoreGpuExclusionList(CommandWithArg<Boolean> callback);
+   void setIgnoreGpuExclusionList(boolean ignore);
    
    void getDisableGpuDriverBugWorkarounds(CommandWithArg<Boolean> callback);
    void setDisableGpuDriverBugWorkarounds(boolean disable);
@@ -199,7 +196,7 @@ public interface DesktopFrame extends JavaScriptPassthrough
    
    void setViewerUrl(String url);
    void reloadViewerZoomWindow(String url);
-   
+   void setPresentationUrl(String url);
    void setTutorialUrl(String url);
    
    void setShinyDialogUrl(String url);

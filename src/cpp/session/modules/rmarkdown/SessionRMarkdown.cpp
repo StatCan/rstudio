@@ -50,6 +50,7 @@
 #include <session/SessionConsoleProcess.hpp>
 #include <session/SessionAsyncRProcess.hpp>
 #include <session/SessionUrlPorts.hpp>
+#include <session/SessionQuarto.hpp>
 
 #include <session/projects/SessionProjects.hpp>
 #include <session/prefs/UserPrefs.hpp>
@@ -74,6 +75,9 @@ namespace rstudio {
 namespace session {
 
 namespace {
+
+bool s_rmarkdownAvailable;
+bool s_rmarkdownAvailableInited;
 
 #ifdef _WIN32
 
@@ -154,6 +158,25 @@ Error detectWebsiteOutputDir(const std::string& siteDir,
 
 std::string s_websiteOutputDir;
 
+bool haveMarkdownToHTMLOption()
+{
+   SEXP markdownToHTMLOption = r::options::getOption("rstudio.markdownToHTML");
+   return !r::sexp::isNull(markdownToHTMLOption);
+}
+
+void initRmarkdownPackageAvailable()
+{
+   s_rmarkdownAvailableInited = true;
+   if (!haveMarkdownToHTMLOption())
+   {
+      s_rmarkdownAvailable = r::util::hasRequiredVersion("3.0");
+   }
+   else
+   {
+      s_rmarkdownAvailable = false;
+   }
+}
+
 void initWebsiteOutputDir()
 {
    if (!module_context::isWebsiteProject())
@@ -178,7 +201,7 @@ void initWebsiteOutputDir()
 
 namespace module_context {
 
-FilePath extractOutputFileCreated(const FilePath& inputFile,
+FilePath extractOutputFileCreated(const FilePath& inputDir,
                                   const std::string& output)
 {
    // check each line of the emitted output; if it starts with a token
@@ -203,7 +226,9 @@ FilePath extractOutputFileCreated(const FilePath& inputFile,
 
             // if the path looks absolute, use it as-is; otherwise, presume
             // it to be in the same directory as the input file
-            FilePath outputFile = inputFile.getParent().completePath(fileName);
+            FilePath outputFile = inputDir.completePath(fileName);
+            if (outputFile.exists())
+               core::system::realPath(outputFile, &outputFile);
 
             // if it's a plain .md file and we are in a Hugo project then
             // don't preview it (as the user is likely running a Hugo preview)
@@ -245,6 +270,21 @@ enum RenderTerminateType
 #define kMaxRenderOutputs 5
 std::vector<std::string> s_renderOutputs(kMaxRenderOutputs);
 int s_currentRenderOutput = 0;
+
+std::string parsableRStudioVersion()
+{
+   std::string version(RSTUDIO_VERSION_MAJOR);
+   version.append(".")
+      .append(RSTUDIO_VERSION_MINOR)
+      .append(".")
+      .append(RSTUDIO_VERSION_PATCH)
+      .append(".")
+      .append(boost::regex_replace(
+         std::string(RSTUDIO_VERSION_SUFFIX),
+         boost::regex("[a-zA-Z\\-+]"),
+         ""));
+   return version;
+}
 
 FilePath outputCachePath()
 {
@@ -428,7 +468,8 @@ private:
       targetFile_(targetFile),
       sourceLine_(sourceLine),
       sourceNavigation_(sourceNavigation)
-   {}
+   {
+   }
 
    void start(const std::string& format,
               const std::string& encoding,
@@ -453,9 +494,14 @@ private:
       std::string renderFunc;
       if (isShiny_)
       {
-         // if a Shiny render was requested, use the Shiny render function
-         // regardless of what was specified in the doc
-         renderFunc = kShinyRenderFunc;
+         std::string extendedType;
+         Error error = source_database::detectExtendedType(targetFile_, &extendedType);
+         if (error)
+            LOG_ERROR(error);
+         if (extendedType == "quarto-document")
+            renderFunc = "quarto run";
+         else
+            renderFunc = kShinyRenderFunc;
       }
       else
       {
@@ -471,6 +517,16 @@ private:
             renderFunc = kStandardRenderFunc;
          else if (renderFunc == kShinyRenderFunc)
             isShiny_ = true;
+      }
+
+      // if we are using a quarto command to render, we must be a quarto doc. read
+      // all of the input file lines to be used in error navigation
+      if (renderFunc == "quarto run" || renderFunc == "quarto render")
+      {
+          isQuarto_ = true;
+          Error error = core::readLinesFromFile(targetFile_, &targetFileLines_);
+          if (error)
+             LOG_ERROR(error);
       }
 
       std::string extraParams;
@@ -527,14 +583,17 @@ private:
          renderOptions = "render_args = list(" + renderOptions + ")";
       }
 
-      // fallback for non-function
-      r::sexp::Protect rProtect;
-      SEXP renderFuncSEXP;
-      error = r::exec::evaluateString(renderFunc, &renderFuncSEXP, &rProtect);
-      if (error || !r::sexp::isFunction((renderFuncSEXP)))
+      // fallback for custom render function that isn't actually a function
+      if (renderFunc != kStandardRenderFunc && renderFunc != kShinyRenderFunc)
       {
-         boost::format fmt("(function(input, ...) { system(paste0('%1% \"', input, '\"')) })");
-         renderFunc = boost::str(fmt % renderFunc);
+         r::sexp::Protect rProtect;
+         SEXP renderFuncSEXP;
+         error = r::exec::evaluateString(renderFunc, &renderFuncSEXP, &rProtect);
+         if (error || !r::sexp::isFunction((renderFuncSEXP)))
+         {
+            boost::format fmt("(function(input, ...) { invisible(system(paste0('%1% \"', input, '\"'))) })");
+            renderFunc = boost::str(fmt % renderFunc);
+         }
       }
 
       // render command
@@ -560,7 +619,8 @@ private:
          LOG_ERROR(error);
 
       // pass along the RSTUDIO_VERSION
-      environment.push_back(std::make_pair("RSTUDIO_VERSION", RSTUDIO_VERSION));
+      environment.push_back(std::make_pair("RSTUDIO_VERSION", parsableRStudioVersion()));
+      environment.push_back(std::make_pair("RSTUDIO_LONG_VERSION", RSTUDIO_VERSION));
 
       // set the not cran env var
       environment.push_back(std::make_pair("NOT_CRAN", "true"));
@@ -568,13 +628,23 @@ private:
       // pass along the current Python environment, if any
       std::string reticulatePython;
       error = r::exec::RFunction(".rs.inferReticulatePython").call(&reticulatePython);
-      if (error) {
+      if (error)
          LOG_ERROR(error);
-      }
+      
+      // pass along current PATH
+      std::string currentPath = core::system::getenv("PATH");
+      core::system::setenv(&environment, "PATH", currentPath);
+      
       if (!reticulatePython.empty())
       {
          // we found a Python version; forward it
-         environment.push_back(std::make_pair("RETICULATE_PYTHON", reticulatePython));
+         environment.push_back({"RETICULATE_PYTHON", reticulatePython});
+         
+         // also update the PATH so this version of Python is visible
+         core::system::addToPath(
+                  &environment,
+                  FilePath(reticulatePython).getParent().getAbsolutePath(),
+                  true);
       }
 
       // render unless we were handed an existing output file
@@ -665,6 +735,8 @@ private:
 
                startedJson["runtime"] = getRuntime(targetFile_);
 
+               startedJson["is_quarto"] = isQuarto_;
+
                module_context::enqueClientEvent(ClientEvent(
                            client_events::kRmdShinyDocStarted,
                            startedJson));
@@ -686,9 +758,17 @@ private:
    {
       // see if we can determine the output file
       FilePath outputFile = module_context::extractOutputFileCreated
-                                                   (targetFile_, allOutput_);
+                                                   (targetFile_.getParent(), allOutput_);
       if (!outputFile.isEmpty())
+      {
+         // record ouptut file
          outputFile_ = outputFile;
+
+         // see if the quarto module wants to handle the preview
+         if (quarto::handleQuartoPreview(targetFile_, outputFile_, allOutput_, true))
+            viewerType_ = kRmdViewerTypeNone;
+      }
+
 
       // the process may be terminated normally by the IDE (e.g. to stop the
       // Shiny server); alternately, a termination is considered normal if
@@ -735,13 +815,21 @@ private:
 
       std::string outputFile = createAliasedPath(outputFile_);
       resultJson["output_file"] = outputFile;
-      resultJson["knitr_errors"] = sourceMarkersAsJson(knitrErrors_);
+      
+      std::vector<SourceMarker> knitrErrors;
+      if (renderErrorMarker_)
+      {
+         renderErrorMarker_.message = core::html_utils::HTML(renderErrorMessage_.str());
+         knitrErrors.push_back(renderErrorMarker_);
+      }
+      resultJson["knitr_errors"] = sourceMarkersAsJson(knitrErrors);
 
       resultJson["output_url"] = assignOutputUrl(outputFile);
       resultJson["output_format"] = outputFormat_;
 
       resultJson["is_shiny_document"] = isShiny_;
       resultJson["has_shiny_content"] = hasShinyContent_;
+      resultJson["is_quarto"] = isQuarto_;
 
       resultJson["runtime"] = getRuntime(targetFile_);
 
@@ -804,43 +892,72 @@ private:
                           const std::string& output)
    {
       using namespace module_context;
-      if (type == module_context::kCompileOutputError &&  sourceNavigation_)
+      
+      if (type == kCompileOutputError && sourceNavigation_)
       {
-         // this is an error, parse it to see if it looks like a knitr error
-         const boost::regex knitrErr(
-                  "^Quitting from lines (\\d+)-(\\d+) \\(([^)]+)\\)(.*)");
-         boost::smatch matches;
-         if (regex_utils::match(output, matches, knitrErr))
+         if (renderErrorMarker_)
          {
-            // looks like a knitr error; compose a compile error object and
-            // emit it to the client when the render is complete
-            SourceMarker err(
-                     SourceMarker::Error,
-                     targetFile_.getParent().completePath(matches[3].str()),
-                     boost::lexical_cast<int>(matches[1].str()),
-                     1,
-                     core::html_utils::HTML(matches[4].str()),
-                     true);
-            knitrErrors_.push_back(err);
+            // if an error occurred during rendering, then any
+            // subsequent output should be gathered as part of
+            // that error
+            renderErrorMessage_ << output;
+         }
+         else if (isQuarto_)
+         {
+            // check for a jupyter error if this is quarto
+            int errLine = module_context::jupyterErrorLineNumber(targetFileLines_, allOutput_);
+            if (errLine != -1)
+            {
+               module_context::editFile(targetFile_, errLine);
+            }
+         }
+         else
+         {
+            // check whether an error occurred while rendering the document and
+            // if knitr is about to exit. look for a specific quit marker and
+            // parse to to gather information for a source marker
+            const char* renderErrorPattern =
+                  "(?:.*?)Quitting from lines (\\d+)-(\\d+) \\(([^)]+)\\)(.*)";
+            
+            boost::regex reRenderError(renderErrorPattern);
+            boost::smatch matches;
+            if (regex_utils::match(output, matches, reRenderError))
+            {
+               // looks like a knitr error; compose a compile error object and
+               // emit it to the client when the render is complete
+               int line = core::safe_convert::stringTo<int>(matches[1].str(), -1);
+               FilePath file = targetFile_.getParent().completePath(matches[3].str());
+               renderErrorMarker_ = SourceMarker(SourceMarker::Error, file, line, 1, {}, true);
+               renderErrorMessage_ << matches[4].str();
+            }
          }
       }
+      
+      // always enque quarto as normal output (it does it's own colorizing of error output)
+      if (isQuarto_)
+         type = module_context::kCompileOutputNormal;
+
       CompileOutput compileOutput(type, output);
-      ClientEvent event(client_events::kRmdRenderOutput,
-                        compileOutputAsJson(compileOutput));
+      ClientEvent event(
+               client_events::kRmdRenderOutput,
+               compileOutputAsJson(compileOutput));
       module_context::enqueClientEvent(event);
    }
 
    RenderTerminateType terminateType_;
    bool isShiny_;
    bool hasShinyContent_;
+   bool isQuarto_ = false;
    FilePath targetFile_;
+   std::vector<std::string> targetFileLines_;
    int sourceLine_;
    FilePath outputFile_;
    std::string encoding_;
    std::string viewerType_;
    bool sourceNavigation_;
    json::Object outputFormat_;
-   std::vector<module_context::SourceMarker> knitrErrors_;
+   module_context::SourceMarker renderErrorMarker_;
+   std::stringstream renderErrorMessage_;
    std::string allOutput_;
 };
 
@@ -943,11 +1060,6 @@ void initEnvironment()
       LOG_ERROR(error);
 }
 
-bool haveMarkdownToHTMLOption()
-{
-   SEXP markdownToHTMLOption = r::options::getOption("rstudio.markdownToHTML");
-   return !r::sexp::isNull(markdownToHTMLOption);
-}
 
 // when the RMarkdown package is installed, give .Rmd files the extended type
 // "rmarkdown", unless there is a marker that indicates we should
@@ -1131,9 +1243,14 @@ Error terminateRenderRmd(const json::JsonRpcRequest& request,
       return error;
 
    if (isRenderRunning())
+   {
+      module_context::clearViewerCurrentUrl();
+
       s_pCurrentRender_->terminateProcess(
                normal ? renderTerminateNormal :
                         renderTerminateAbnormal);
+
+   }
 
    return Success();
 }
@@ -1274,19 +1391,27 @@ Error getRmdTemplate(const json::JsonRpcRequest& request,
 
    json::Object jsonResult;
 
-   // locate the template skeleton on disk (if it doesn't exist we'll just
-   // return an empty string)
-   FilePath skeletonPath = FilePath(path).completePath("skeleton/skeleton.Rmd");
+   // locate the template skeleton on disk
+   // (return empty string if none found)
    std::string templateContent;
-   if (skeletonPath.exists())
+   for (auto&& suffix : { "skeleton/skeleton.Rmd", "skeleton/skeleton.rmd" })
    {
-      error = readStringFromFile(skeletonPath, &templateContent, string_utils::LineEndingPosix);
+      FilePath skeletonPath = FilePath(path).completePath(suffix);
+      if (!skeletonPath.exists())
+         continue;
+
+      Error error = readStringFromFile(skeletonPath, &templateContent, string_utils::LineEndingPosix);
       if (error)
-         return error;
+      {
+         LOG_ERROR(error);
+         continue;
+      }
+
+      break;
    }
+
    jsonResult["content"] = templateContent;
    pResponse->setResult(jsonResult);
-
    return Success();
 }
 
@@ -1542,14 +1667,17 @@ bool pptAvailable()
 
 bool rmarkdownPackageAvailable()
 {
-   if (!haveMarkdownToHTMLOption())
+   if (!s_rmarkdownAvailableInited)
    {
-      return r::util::hasRequiredVersion("3.0");
+      if (!r::exec::isMainThread())
+      {
+         LOG_WARNING_MESSAGE(" Accessing rmarkdownPackageAvailable() from thread other than main");
+         return false;
+      }
+      initRmarkdownPackageAvailable();
    }
-   else
-   {
-      return false;
-   }
+
+   return s_rmarkdownAvailable;
 }
 
 bool isSiteProject(const std::string& site)

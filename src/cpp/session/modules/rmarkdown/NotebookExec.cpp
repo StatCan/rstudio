@@ -147,6 +147,11 @@ void ChunkExecContext::connect()
       return;
    }
 
+   // leave an execution lock in this folder so it won't be moved if the notebook
+   // is saved while executing
+   locks_.push_back(boost::make_shared<ScopedFileLock>(FileLock::createDefault(),
+            outputPath_.completePath(kExecutionLock)));
+
    // if executing the whole chunk, initialize output right away (otherwise we
    // wait until we actually have output)
    if (execScope_ == ExecScopeChunk)
@@ -334,7 +339,6 @@ void ChunkExecContext::onFileOutput(const FilePath& file,
    // preserve original extension; some output types, such as plots, don't
    // have a canonical extension
    target = target.getParent().completePath(target.getStem() + file.getExtension());
-
    Error error = file.move(target);
    if (error)
    {
@@ -394,7 +398,7 @@ void ChunkExecContext::onError(const core::json::Object& err)
 }
 
 void ChunkExecContext::onConsoleText(int type, const std::string& output, 
-      bool truncate)
+      bool truncate, bool pending)
 {
    // if we haven't received any actual output yet, don't push input into the
    // file yet
@@ -417,7 +421,17 @@ void ChunkExecContext::onConsoleText(int type, const std::string& output,
    {
       std::string input = pendingInput_;
       pendingInput_.clear();
-      onConsoleText(kChunkConsoleInput, input, true);
+      if (pending)
+      {
+         // guard against any possibility of runaway recursion by discarding pending input if we are
+         // already processing it (no clear codepath leads to this but we've seen behavior that
+         // looks like it in the wild)
+         LOG_WARNING_MESSAGE("Discarding pending notebook text '" + input + "'");
+      }
+      else
+      {
+         onConsoleText(kChunkConsoleInput, input, true, true);
+      }
    }
 
    // determine output filename and ensure it exists
@@ -458,6 +472,9 @@ void ChunkExecContext::disconnect()
       pCapture->disconnect();
    }
 
+   // clear all execution locks
+   locks_.clear();
+
    // clean up staging folder
    error = outputPath_.removeIfExists();
    if (error)
@@ -485,6 +502,50 @@ void ChunkExecContext::disconnect()
 
    NotebookCapture::disconnect();
 
+   // check to see whether we need to migrate the output folder to another location;
+   // this addresses the case where the output folder location changed during execution,
+   // i.e. if the notebook was saved while running
+   FilePath migrationFile = chunkOutputPath(docId_, chunkId_, nbCtxId_, ContextExact)
+      .completePath(kMigrationTarget);
+   if (migrationFile.exists())
+   {
+      std::string path;
+      error = readStringFromFile(migrationFile, &path);
+      if (error)
+      {
+         error.addProperty("description", "Unable to read notebook output migration file");
+         LOG_ERROR(error);
+      }
+      else
+      {
+         // clean up migration file so it doesn't get moved
+         error = migrationFile.remove();
+         if (error)
+         {
+            error.addProperty("description", "Unable to clean up output migration file");
+            LOG_ERROR(error);
+         }
+
+         // perform the migration
+         FilePath target(path);
+         error = target.removeIfExists();
+         if (error)
+         {
+            error.addProperty("description", "Unable to remove old notebook output folder");
+            LOG_ERROR(error);
+         }
+         else
+         {
+            error = migrationFile.getParent().move(target);
+            if (error)
+            {
+               error.addProperty("description", "Unable to move notebook output folder");
+               LOG_ERROR(error);
+            }
+         }
+      }
+   }
+
    events().onChunkExecCompleted(docId_, chunkId_, chunkCode_, chunkLabel_, nbCtxId_);
 }
 
@@ -492,14 +553,14 @@ void ChunkExecContext::onConsoleOutput(module_context::ConsoleOutputType type,
       const std::string& output)
 {
    if (type == module_context::ConsoleOutputNormal)
-      onConsoleText(kChunkConsoleOutput, output, false);
+      onConsoleText(kChunkConsoleOutput, output, false, false);
    else
-      onConsoleText(kChunkConsoleError, output, false);
+      onConsoleText(kChunkConsoleError, output, false, false);
 }
 
 void ChunkExecContext::onConsoleInput(const std::string& input)
 {
-   onConsoleText(kChunkConsoleInput, input, false);
+   onConsoleText(kChunkConsoleInput, input, false, false);
 }
 
 void ChunkExecContext::initializeOutput()
@@ -515,10 +576,15 @@ void ChunkExecContext::initializeOutput()
       LOG_ERROR(error);
 
    // ensure that the output folder exists
-   error = chunkOutputPath(docId_, chunkId_, nbCtxId_, ContextExact)
-      .ensureDirectory();
+   FilePath outputPath = chunkOutputPath(docId_, chunkId_, nbCtxId_, ContextExact);
+   error = outputPath.ensureDirectory();
    if (error)
       LOG_ERROR(error);
+
+   // leave an execution lock in this folder so it won't be moved if the notebook
+   // is saved while executing
+   locks_.push_back(boost::make_shared<ScopedFileLock>(FileLock::createDefault(),
+            outputPath.completePath(kExecutionLock)));
 
    hasOutput_ = true;
 }

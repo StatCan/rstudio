@@ -380,6 +380,17 @@ public class CompletionPopupPanel extends ThemedPopupPanel
       resolveHelpPosition(!StringUtil.isNullOrEmpty(contents));
 
    }
+   
+   @Override
+   public void displayYAMLHelp(String value, String description)
+   {
+      if (!completionListIsOnScreen())
+         return;
+
+      help_.displayParameterHelp(value, description, false);
+      resolveHelpPosition(!StringUtil.isNullOrEmpty(description));
+      
+   }
 
    public void clearHelp(boolean downloadOperationPending)
    {
@@ -467,4 +478,5 @@ public class CompletionPopupPanel extends ThemedPopupPanel
    private final NativePreviewHandler handler_;
    private HandlerRegistration handlerRegistration_;
    private ShortcutManager.Handle handle_;
+   
 }

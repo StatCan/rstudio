@@ -30,6 +30,8 @@
 #include <soci/postgresql/soci-postgresql.h>
 #include <soci/sqlite3/soci-sqlite3.h>
 
+#include "config.h"
+
 // Database Boost Errors
 // Declare soci errors as boost errors.
 // =================================================================================================================
@@ -47,6 +49,22 @@ struct is_error_code_enum<soci::soci_error::error_category>
 
 namespace rstudio {
 namespace core {
+
+namespace system {
+namespace crypto {
+   // stubs for pro-only code
+   Error decryptPassword(const std::string& secureKey, const std::string& keyHash, std::string& password)
+   {
+      return Success();
+   }
+
+   bool passwordContainsKeyHash(const std::string& password)
+   {
+      return false;
+   }
+} // namespace crypto
+} // namespace system
+
 namespace database {
    const boost::system::error_category& databaseErrorCategory();
 }
@@ -371,26 +389,40 @@ public:
       return Success();
    }
 
-  Error decryptPassword(const std::string& secureKey, std::string& password) const
-   {
-      return Success();
-   }
-
    Error getPassword(const PostgresqlConnectionOptions& options, std::string& password) const
    {
       // override password from the input with the one from options if any
       if (!options.password.empty())
          password = options.password;
 
-      Error error = decryptPassword(options.secureKey, password);
+      // Somewhat convoluted due to need to handle several cases (Pro-only):
+      //
+      // (1) password without embedded encryption key; this could be a plain-text
+      //     password or an encrypted password generated before we added such embedding, but
+      //     we can't be sure without trying to decrypt and treating as plain text if that fails
+      // (2) an encrypted password with embedded key hash; if it won't decrypt, this is an error
+      //     and we don't want to treat as plain text
+      //
+      // In a future release we could simplify by assuming a password without embedded key must
+      // be plain text. Tracked in https://github.com/rstudio/rstudio-pro/issues/2446
+      // 
+
+      bool assumeEncrypted = core::system::crypto::passwordContainsKeyHash(password);
+
+      Error error = core::system::crypto::decryptPassword(options.secureKey, options.secureKeyHash, password);
       if (error)
       {
          static bool warnOnce = false;
+
+         if (assumeEncrypted)
+            return error;
+
+         // decrypt failed, we'll just use the password as-is
          if (!warnOnce)
          {
             warnOnce = true;
             LOG_DEBUG_MESSAGE(error.asString());
-            LOG_WARNING_MESSAGE("A plain text value is potentially being used for the PostgreSQL password. The RStudio Server documentation for PostgreSQL shows how to encrypt this value.");
+            LOG_WARNING_MESSAGE("A plain text value is potentially being used for the PostgreSQL password, or an encrypted password could not be decrypted. The RStudio Server documentation for PostgreSQL shows how to encrypt this value.");
          }
       }
       return Success();
@@ -444,6 +476,11 @@ RowsetIterator Rowset::begin()
 RowsetIterator Rowset::end()
 {
    return RowsetIterator();
+}
+
+size_t Rowset::columnCount() const
+{
+   return row_.size();
 }
 
 Connection::Connection(const soci::backend_factory& factory,
@@ -672,6 +709,132 @@ void Transaction::rollback()
    transaction_.rollback();
 }
 
+SchemaVersion::SchemaVersion(std::string date, std::string flower) :
+   Date(std::move(date)),
+   Flower(std::move(flower))
+{
+}
+
+SchemaVersion::SchemaVersion(SchemaVersion&& other) :
+   Date(std::move(other.Date)),
+   Flower(std::move(other.Flower))
+{
+}
+
+SchemaVersion::SchemaVersion(const SchemaVersion& other) :
+   Date(other.Date),
+   Flower(other.Flower)
+{
+}
+
+bool SchemaVersion::isEmpty() const
+{
+   return Date.empty() && Flower.empty();
+}
+
+std::string SchemaVersion::toString() const
+{
+   return Date + "_" + Flower;
+}
+
+SchemaVersion& SchemaVersion::operator=(const SchemaVersion& other)
+{
+   if (this != &other)
+   {
+      Date = other.Date;
+      Flower = other.Flower;
+   }
+   return *this;
+}
+
+SchemaVersion& SchemaVersion::operator=(SchemaVersion&& other)
+{
+   if (this != &other)
+   {
+      Date = std::move(other.Date);
+      Flower = std::move(other.Flower);
+   }
+   return *this;
+}
+
+bool SchemaVersion::operator<(const SchemaVersion& other) const
+{
+   if (*this == other)
+      return false;
+
+   if (isEmpty() && !other.isEmpty())
+      return true;
+
+   if (other.isEmpty())
+      return false;
+
+   const auto& versions = versionMap();
+   int thisFlowerIndex = (versions.find(Flower) != versions.end()) ? versions.at(Flower) : -1;
+   int otherFlowerIndex = (versions.find(other.Flower) != versions.end()) ? versions.at(other.Flower) : -1;
+
+   if (thisFlowerIndex < otherFlowerIndex)
+      return true;
+   else if (otherFlowerIndex < thisFlowerIndex)
+      return false;
+
+   // If the date is empty, we should treat this like "the latest version at this flower"
+   if (Date.empty() && !other.Date.empty())
+      return false;
+
+   if (other.Date.empty())
+      return true;
+
+   if (Date < other.Date)
+      return true;
+
+   return false;
+}
+
+bool SchemaVersion::operator<=(const SchemaVersion& other) const
+{
+   return (*this == other) || (*this < other);
+}
+
+bool SchemaVersion::operator>(const SchemaVersion& other) const
+{
+   return (other < *this);
+}
+
+bool SchemaVersion::operator>=(const SchemaVersion& other) const
+{
+   return !(*this < other);
+}
+
+bool SchemaVersion::operator==(const SchemaVersion& other) const
+{
+   return (this == &other) || ((Date == other.Date) && (Flower == other.Flower));
+}
+
+const std::map<std::string, int>& SchemaVersion::versionMap()
+{
+   static boost::mutex m;
+   static std::map<std::string, int> versions;
+
+   // Check if the map is empty before locking the mutex to avoid the cost of
+   // locking on every access But if it _is_ empty, lock and then double check
+   // that it's still empty before modifying it.
+   if (versions.empty())
+   {
+      LOCK_MUTEX(m)
+      {
+         if (versions.empty())
+         {
+            versions[""] = 0;
+            versions["Ghost Orchid"] = 1;
+            versions["Prairie Trillium"] = 2;
+         }
+      }
+      END_LOCK_MUTEX
+   }
+
+   return versions;
+}
+
 SchemaUpdater::SchemaUpdater(const boost::shared_ptr<IConnection>& connection,
                              const FilePath& migrationsPath) :
    connection_(connection),
@@ -679,7 +842,7 @@ SchemaUpdater::SchemaUpdater(const boost::shared_ptr<IConnection>& connection,
 {
 }
 
-Error SchemaUpdater::migrationFiles(std::vector<FilePath>* pMigrationFiles)
+Error SchemaUpdater::migrationFiles(std::vector<std::pair<SchemaVersion, FilePath> >* pMigrationFiles)
 {
    std::vector<FilePath> children;
    Error error = migrationsPath_.getChildren(children);
@@ -693,16 +856,25 @@ Error SchemaUpdater::migrationFiles(std::vector<FilePath>* pMigrationFiles)
           extension == SQLITE_EXTENSION ||
           extension == POSTGRESQL_EXTENSION)
       {
-         pMigrationFiles->push_back(file);
+         SchemaVersion version;
+         if (parseVersionOfFile(file, &version))
+         {
+            pMigrationFiles->emplace_back(version, file);
+         }
       }
    }
 
+   // sort descending - highest version filename wins
+   auto comparator = [](const std::pair<SchemaVersion, FilePath>& a,
+                        const std::pair<SchemaVersion, FilePath>& b)
+   { return a.first > b.first; };
+   std::sort(pMigrationFiles->begin(), pMigrationFiles->end(), comparator);
    return Success();
 }
 
-Error SchemaUpdater::highestMigrationVersion(std::string* pVersion)
+Error SchemaUpdater::highestMigrationVersion(SchemaVersion* pVersion)
 {
-   std::vector<FilePath> files;
+   std::vector<std::pair<SchemaVersion, FilePath> > files;
    Error error = migrationFiles(&files);
    if (error)
       return error;
@@ -711,18 +883,10 @@ Error SchemaUpdater::highestMigrationVersion(std::string* pVersion)
    {
       // no migration files - we do not consider this an error, but instead
       // simply consider that this database cannot be migrated past version 0
-      *pVersion = "0";
       return Success();
    }
 
-   // sort descending - highest version filename wins
-   auto comparator = [](const FilePath& a, const FilePath& b)
-   {
-      return a.getStem() > b.getStem();
-   };
-   std::sort(files.begin(), files.end(), comparator);
-
-   *pVersion = files.at(0).getStem();
+   *pVersion = files.at(0).first;
    return Success();
 }
 
@@ -744,8 +908,7 @@ Error SchemaUpdater::isSchemaVersionPresent(bool* pIsPresent)
    }
 
    int count = 0;
-   Query query = connection_->query(queryStr)
-         .withOutput(count);
+   Query query = connection_->query(queryStr).withOutput(count);
    Error error = connection_->execute(query);
    if (error)
       return error;
@@ -754,75 +917,192 @@ Error SchemaUpdater::isSchemaVersionPresent(bool* pIsPresent)
    return Success();
 }
 
-Error SchemaUpdater::databaseSchemaVersion(std::string* pVersion)
+Error SchemaUpdater::getSchemaTableColumnCount(int* pColumnCount)
 {
-   bool versionPresent = false;
-   Error error = isSchemaVersionPresent(&versionPresent);
+   int columnCount = 0;
+   Error error;
+   if (connection_->driverName() == SQLITE_DRIVER)
+   {
+      // This query is explicity a SELECT * because we use the # of columns to determine if 
+      // we're pre- or post- GhostOrchid
+      Query query = connection_->query(std::string("SELECT * FROM ") + SCHEMA_TABLE);
+      Rowset rows;
+      error = connection_->execute(query, rows);
+      columnCount = rows.columnCount();
+   }
+   else
+   {
+      Query query = connection_->query(std::string("SELECT COUNT(1) FROM information_schema.columns WHERE table_name='") + SCHEMA_TABLE +
+                 "' AND table_schema = current_schema")
+                 .withOutput(columnCount);
+      error = connection_->execute(query);
+   }
+
+   if (error)
+   {
+      error.addProperty("query", connection_->session().get_last_query());
+      return error;   
+   }
+
+   *pColumnCount = columnCount;
+   return Success();
+}
+
+bool SchemaUpdater::parseVersionOfFile(const FilePath& file, SchemaVersion* pVersion)
+{
+   std::string fileStem = file.getStem();
+   if (fileStem == CREATE_TABLES_STEM)
+      return false;
+
+   std::vector<std::string> split;
+   boost::split(split, fileStem, boost::is_any_of("_"));
+   if (split.size() != 3)
+   {
+     if (split.size() == 2)
+         LOG_DEBUG_MESSAGE("Not applying sql schema file from previous release: " + file.getAbsolutePath());
+     else
+         LOG_DEBUG_MESSAGE("Not applying unrecognized sql schema file: " + file.getAbsolutePath());
+      return false;
+   }
+
+   *pVersion = SchemaVersion(split[0], boost::replace_all_copy(split[1], "-", " "));
+
+   return true;
+}
+
+Error SchemaUpdater::databaseSchemaVersion(SchemaVersion* pVersion)
+{
+   SchemaVersion version;
+   int schemaColumnCount = 0;
+   Error error = getSchemaTableColumnCount(&schemaColumnCount);
    if (error)
       return error;
 
-   std::string currentSchemaVersion = "0";
-   if (!versionPresent)
-   {
-      // no schema version present - add the table to the database so it is available
-      // for updating whenever migrations occur
-      error = connection_->executeStr(std::string("CREATE TABLE \"") + SCHEMA_TABLE + "\" (current_version text)");
-      if (error)
-         return error;
+   static const std::string currentVersionCol = "current_version";
+   static const std::string releaseNameCol = "release_name";
+   std::string stmt;
+   if (schemaColumnCount == 2)
+      stmt = std::string("SELECT " + currentVersionCol + ", " + releaseNameCol + " FROM \"") + SCHEMA_TABLE + "\"";
+   else
+      stmt = std::string("SELECT " + currentVersionCol + " FROM \"") + SCHEMA_TABLE + "\"";
 
-      Query query = connection_->query(std::string("INSERT INTO \"") + SCHEMA_TABLE + "\" VALUES (:val)")
-            .withInput(currentSchemaVersion);
-      error = connection_->execute(query);
-      if (error)
-         return error;
-
-      *pVersion = currentSchemaVersion;
-      return Success();
-   }
-
-   Query query = connection_->query(std::string("SELECT current_version FROM \"") + SCHEMA_TABLE + "\"")
-         .withOutput(currentSchemaVersion);
+   Query query = connection_->query(stmt).withOutput(version.Date);
+   if (schemaColumnCount == 2)
+      query.withOutput(version.Flower);
 
    error = connection_->execute(query);
    if (error)
       return error;
 
-   *pVersion = currentSchemaVersion;
+   // Previously the table name was included in the schema version - parse it out.
+   if (schemaColumnCount == 1)
+   {
+      std::vector<std::string> split;
+      boost::split(split, version.Date, boost::is_any_of("_"));
+      if (split.size() >= 1)
+         version.Date = split[0];
+   }
+
+   *pVersion = version;
    return Success();
 }
 
 Error SchemaUpdater::isUpToDate(bool* pUpToDate)
 {
-   std::string version;
+   SchemaVersion version;
    Error error = databaseSchemaVersion(&version);
    if (error)
       return error;
 
-   std::string migrationVersion;
+   SchemaVersion migrationVersion;
    error = highestMigrationVersion(&migrationVersion);
    if (error)
       return error;
 
    *pUpToDate = version >= migrationVersion;
+
    return Success();
 }
 
 Error SchemaUpdater::update()
 {
-   std::string migrationVersion;
-   Error error = highestMigrationVersion(&migrationVersion);
+   bool schemaPresent = false;
+   Error error = isSchemaVersionPresent(&schemaPresent);
    if (error)
       return error;
 
-   std::string currentVersion;
-   error = databaseSchemaVersion(&currentVersion);
-   if (currentVersion < migrationVersion)
-      return updateToVersion(migrationVersion);
+   if (schemaPresent)
+   {
+      SchemaVersion migrationVersion;
+      error = highestMigrationVersion(&migrationVersion);
+      if (error)
+         return error;
+
+      SchemaVersion currentVersion;
+      error = databaseSchemaVersion(&currentVersion);
+
+      LOG_DEBUG_MESSAGE("Current Database Schema Version:\t\t" + currentVersion.Date + " : " + currentVersion.Flower);
+      LOG_DEBUG_MESSAGE("Highest Available Database Schema Version:\t" + migrationVersion.Date + " : " + migrationVersion.Flower);
+
+      if (currentVersion < migrationVersion)
+      {
+         LOG_INFO_MESSAGE(
+            "Updating database schema version from version " +
+            currentVersion.toString() +
+            " to version " +
+            migrationVersion.toString());
+         return updateToVersion(migrationVersion);
+      }
+      else
+      {
+         LOG_INFO_MESSAGE("Database schema version is up to date.");
+         return Success();
+      }
+   }
    else
-      return Success();
+   {
+      LOG_INFO_MESSAGE("Database schema has not been created yet. Creating database schema...");
+      return createSchema();
+   }
 }
 
-Error SchemaUpdater::updateToVersion(const std::string& maxVersion)
+Error SchemaUpdater::createSchema()
+{
+   Transaction transaction(connection_);
+
+   FilePath createTablesFile;
+   Error error = migrationsPath_.completeChildPath(std::string(CREATE_TABLES_STEM) + std::string(SQL_EXTENSION), createTablesFile);
+
+   if (error || !createTablesFile.exists())
+   {
+      if (connection_->driverName() == POSTGRESQL_DRIVER)
+      {
+         error = migrationsPath_.completeChildPath(std::string(CREATE_TABLES_STEM) + std::string(POSTGRESQL_EXTENSION), createTablesFile);
+         if (error)
+            return error;
+      }
+      else
+      {
+         error = migrationsPath_.completeChildPath(std::string(CREATE_TABLES_STEM) + std::string(SQLITE_EXTENSION), createTablesFile);
+         if (error)
+            return error;
+      }
+   }
+
+   std::string fileContents;
+   error = readStringFromFile(createTablesFile, &fileContents);
+   if (error)
+      return error;
+
+   error = connection_->executeStr(fileContents);
+   if (error)
+      return error;
+
+   transaction.commit();
+   return Success();
+}
+
+Error SchemaUpdater::updateToVersion(const SchemaVersion& maxVersion)
 {
    // create a transaction to perform the following steps:
    // 1. Check the current database schema version
@@ -844,7 +1124,7 @@ Error SchemaUpdater::updateToVersion(const std::string& maxVersion)
          return error;
    }
 
-   std::string currentVersion;
+   SchemaVersion currentVersion;
    Error error = databaseSchemaVersion(&currentVersion);
    if (error)
       return error;
@@ -852,42 +1132,32 @@ Error SchemaUpdater::updateToVersion(const std::string& maxVersion)
    if (currentVersion >= maxVersion)
       return Success();
 
-   std::vector<FilePath> files;
+   std::vector<std::pair<SchemaVersion, FilePath> > files;
    error = migrationFiles(&files);
    if (error)
       return error;
 
-   // sort ascending
-   auto comparator = [](const FilePath& a, const FilePath& b)
+   for (const std::pair<SchemaVersion, FilePath>& migrationFile : files)
    {
-      return a.getStem() < b.getStem();
-   };
-   std::sort(files.begin(), files.end(), comparator);
 
-   for (const FilePath& migrationFile : files)
-   {
-      // if the version has already been applied (database version is newer or same)
-      // then skip this particular migration
-      if (migrationFile.getStem() <= currentVersion)
+      // Is the migration file from an update that predates the current version?
+      // If so, skip it
+      if(migrationFile.first <= currentVersion)
          continue;
-
-      // if the migration file version is higher than the max specified version, we're done
-      if (migrationFile.getStem() > maxVersion)
-         break;
 
       bool applyMigration = false;
 
-      if (migrationFile.getExtensionLowerCase() == SQL_EXTENSION)
+      if (migrationFile.second.getExtensionLowerCase() == SQL_EXTENSION)
       {
          // plain sql - apply the migration
          applyMigration = true;
       }
-      else if (migrationFile.getExtensionLowerCase() == SQLITE_EXTENSION)
+      else if (migrationFile.second.getExtensionLowerCase() == SQLITE_EXTENSION)
       {
          // sqlite file - only apply migration if we are connected to a SQLite database
          applyMigration = connection_->driverName() == SQLITE_DRIVER;
       }
-      else if (migrationFile.getExtensionLowerCase() == POSTGRESQL_EXTENSION)
+      else if (migrationFile.second.getExtensionLowerCase() == POSTGRESQL_EXTENSION)
       {
          // postgresql file - only apply migration if we are connected to a PostgreSQL database
          applyMigration = connection_->driverName() == POSTGRESQL_DRIVER;
@@ -896,10 +1166,12 @@ Error SchemaUpdater::updateToVersion(const std::string& maxVersion)
       if (!applyMigration)
          continue;
 
+      LOG_DEBUG_MESSAGE("Applying database schema alter file " + migrationFile.second.getAbsolutePath());
+
       // we are clear to apply the migration
       // load the file and execute its SQL contents
       std::string fileContents;
-      error = readStringFromFile(migrationFile, &fileContents);
+      error = readStringFromFile(migrationFile.second, &fileContents);
       if (error)
          return error;
 
@@ -907,13 +1179,6 @@ Error SchemaUpdater::updateToVersion(const std::string& maxVersion)
       if (error)
          return error;
 
-      // record the new version in the version table
-      std::string version = migrationFile.getStem();
-      Query updateVersionQuery = connection_->query(std::string("UPDATE \"") + SCHEMA_TABLE + "\" SET current_version = (:ver)")
-            .withInput(version);
-      error = connection_->execute(updateVersionQuery);
-      if (error)
-         return error;
    }
 
    transaction.commit();

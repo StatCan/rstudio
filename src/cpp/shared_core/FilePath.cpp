@@ -93,6 +93,7 @@ MimeType s_mimeTypes[] =
       { "ttf",          "application/x-font-ttf" },
       { "woff",         "application/font-woff" },
       { "woff2",        "application/font-woff2" },
+      { "wasm",         "application/wasm"},
 
       // markdown types
       { "md",           "text/x-markdown" },
@@ -109,6 +110,7 @@ MimeType s_mimeTypes[] =
       { "stan",         "text/x-stan" },
       { "clj",          "text/x-clojure" },
       { "ts",           "text/x-typescript"},
+      { "ojs",          "text/javascript" },
       { "lua",          "text/x-lua"},
 
       // other types we are likely to serve
@@ -145,6 +147,7 @@ MimeType s_mimeTypes[] =
       { "Rmd",          "text/x-r-markdown" },
       { "Rhtml",        "text/x-r-html" },
       { "Rpres",        "text/x-r-presentation" },
+      { "qmd",          "text/x-quarto-markdown"},
       { "Rout",         "text/plain" },
       { "po",           "text/plain" },
       { "pot",          "text/plain" },
@@ -388,6 +391,30 @@ FilePath::FilePath(const std::string& in_absolutePath) :
 FilePath::FilePath(const std::wstring& absolutePath)
    : m_impl(new Impl(absolutePath)) // thwart ref-count
 {
+}
+#endif
+
+FilePath::FilePath(const char* in_absolutePath) :
+   m_impl(in_absolutePath ? 
+            new Impl(fromString(in_absolutePath)) :
+            new Impl())
+{
+   if (in_absolutePath == nullptr)
+   {
+      log::logDebugMessage("Creating an empty FilePath from a null path", ERROR_LOCATION);
+   }
+}
+
+#ifdef _WIN32
+FilePath::FilePath(const wchar_t* in_absolutePath)
+   : m_impl(in_absolutePath ? 
+         new Impl(in_absolutePath):
+         new Impl())
+{
+   if (in_absolutePath == nullptr)
+   {
+      log::logDebugMessage("Creating an empty FilePath from a null path", ERROR_LOCATION);
+   }
 }
 #endif
 
@@ -1570,6 +1597,14 @@ void FilePath::setLastWriteTime(std::time_t in_time) const
 
 Error FilePath::testWritePermissions() const
 {
+   // This check only works on ordinary files; it is an error to use it on directories.
+   if (isDirectory())
+   {
+      Error error = systemError(boost::system::errc::is_a_directory, ERROR_LOCATION);
+      error.addProperty("path", getAbsolutePath());
+      return error;
+   }
+
    std::ostream* pStream = nullptr;
    try
    {

@@ -25,6 +25,7 @@
 
 #include <core/text/TemplateFilter.hpp>
 
+#include <core/system/PosixChildProcess.hpp>
 #include <core/system/PosixSystem.hpp>
 #include <core/system/Crypto.hpp>
 
@@ -61,11 +62,14 @@
 #include "ServerAddins.hpp"
 #include "ServerBrowser.hpp"
 #include "ServerEval.hpp"
+#include "ServerEnvVars.hpp"
 #include "ServerInit.hpp"
 #include "ServerMeta.hpp"
 #include "ServerOffline.hpp"
 #include "ServerPAMAuth.hpp"
 #include "ServerREnvironment.hpp"
+#include "ServerXdgVars.hpp"
+#include "ServerLogVars.hpp"
 
 using namespace rstudio;
 using namespace rstudio::core;
@@ -244,6 +248,7 @@ void httpServerAddHandlers()
    uri_handlers::add("/fonts", secureAsyncHttpHandler(proxyContentRequest));
    uri_handlers::add("/python", secureAsyncHttpHandler(proxyContentRequest));
    uri_handlers::add("/tutorial", secureAsyncHttpHandler(proxyContentRequest));
+   uri_handlers::add("/quarto", secureAsyncHttpHandler(proxyContentRequest));
 
    // content handlers which might be accessed outside the context of the
    // workbench get secure + authentication when required
@@ -300,16 +305,11 @@ void httpServerAddHandlers()
    uri_handlers::setBlockingDefault(blockingFileHandler());
 }
 
-Error initLog()
-{
-   return core::system::initializeSystemLog(kProgramIdentity, core::log::LogLevel::WARN, false);
-}
-
 bool reloadLoggingConfiguration()
 {
    LOG_INFO_MESSAGE("Reloading logging configuration...");
 
-   Error error = initLog();
+   Error error = core::system::reinitLog();
    if (error)
    {
       LOG_ERROR_MESSAGE("Failed to reload logging configuration");
@@ -323,9 +323,27 @@ bool reloadLoggingConfiguration()
    return !static_cast<bool>(error);
 }
 
+bool reloadEnvConfiguration()
+{
+   LOG_INFO_MESSAGE("Reloading environment configuration...");
+   Error error = env_vars::initialize();
+   if (error)
+   {
+      LOG_ERROR_MESSAGE("Failed to reload environment configuration");
+      LOG_ERROR(error);
+   }
+   else
+   {
+      LOG_INFO_MESSAGE("Successfully reloaded environment configuration");
+   }
+
+   return !static_cast<bool>(error);
+}
+
 void reloadConfiguration()
 {
    bool success = reloadLoggingConfiguration();
+   success = reloadEnvConfiguration() && success;
    success = overlay::reloadConfiguration() && success;
 
    if (success)
@@ -418,6 +436,24 @@ Error waitForSignals()
       else if (sig == SIGHUP)
       {
          reloadConfiguration();
+
+         // forward signal to specific RStudio child processes
+         // this will allow them to also reload their configuration / logging if applicable
+         // care is taken not to send errant SIGHUP signals to processes we don't control
+         std::set<std::string> reloadableProcs =  {"rsession",
+                                                   "rserver-launcher",
+                                                   "rstudio-launcher",
+                                                   "rworkspaces",
+                                                   "rserver-monitor"};
+
+         Error error = core::system::sendSignalToSpecifiedChildProcesses(reloadableProcs, SIGHUP);
+         if (error)
+         {
+            error.addProperty("description", "Error occurred while notifying child processes of SIGHUP");
+            LOG_ERROR(error);
+         }
+         else
+            LOG_INFO_MESSAGE("Successfully notified children of SIGHUP");
       }
 
       // Unexpected signal
@@ -507,7 +543,15 @@ int main(int argc, char * const argv[])
 {
    try
    {
-      Error error = initLog();
+      // read environment variables from config file; we have to do this before initializing logging
+      // so that logging environment variables like RS_LOG_LEVEL stored in this file will be
+      // respected when logging is initialized (below).
+      //
+      // note that we can't emit any logs or errors while reading this config file since logging
+      // isn't initialized yet, so we suppress logging in this step
+      env_vars::readEnvConfigFile(false /* suppress logs */);
+
+      Error error = core::system::initializeLog(kProgramIdentity, core::log::LogLevel::WARN, false);
       if (error)
       {
          core::log::writeError(error, std::cerr);
@@ -553,8 +597,8 @@ int main(int argc, char * const argv[])
          if (error)
             return core::system::exitFailure(error, ERROR_LOCATION);
 
-         // Reload the loggers after succesful daemonize to clear out old FDs.
-         core::log::reloadAllLogDestinations();
+         // Refresh the loggers after succesful daemonize to clear out old FDs
+         core::log::refreshAllLogDestinations();
 
          // set file creation mask to 022 (might have inherted 0 from init)
          if (options.serverSetUmask())
@@ -699,7 +743,25 @@ int main(int argc, char * const argv[])
       {
          // add a monitor log writer
          core::log::addLogDestination(
-            monitor::client().createLogDestination(core::log::LogLevel::WARN, kProgramIdentity));
+            monitor::client().createLogDestination(core::system::generateShortenedUuid(), core::log::LogLevel::WARN, kProgramIdentity));
+      }
+
+      // initialize XDG var insertion
+      error = xdg_vars::initialize();
+      if (error)
+         return core::system::exitFailure(error, ERROR_LOCATION);
+
+      // initialize log var insertion
+      error = log_vars::initialize();
+      if (error)
+         return core::system::exitFailure(error, ERROR_LOCATION);
+
+      // initialize environment variables
+      error = env_vars::initialize();
+      if (error)
+      {
+         // error loading env vars is non-fatal
+         LOG_ERROR(error);
       }
 
       // overlay may replace this
@@ -753,14 +815,17 @@ int main(int argc, char * const argv[])
          }
       }
 
-      // give up root privilige if requested
-      std::string runAsUser = options.serverUser();
-      if (!runAsUser.empty())
+      // give up root privilege if requested and running as root
+      if (core::system::realUserIsRoot())
       {
-         // drop root priv
-         error = core::system::temporarilyDropPriv(runAsUser);
-         if (error)
-            return core::system::exitFailure(error, ERROR_LOCATION);
+         std::string runAsUser = options.serverUser();
+         if (!runAsUser.empty())
+         {
+            // drop root priv
+            error = core::system::temporarilyDropPriv(runAsUser);
+            if (error)
+               return core::system::exitFailure(error, ERROR_LOCATION);
+         }
       }
 
       // run special verify installation mode if requested
@@ -768,7 +833,10 @@ int main(int argc, char * const argv[])
       {
          Error error = session_proxy::runVerifyInstallationSession();
          if (error)
+         {
+            std::cerr << "Verify Installation Failed: " << error << std::endl;
             return core::system::exitFailure(error, ERROR_LOCATION);
+         }
 
          return EXIT_SUCCESS;
       }

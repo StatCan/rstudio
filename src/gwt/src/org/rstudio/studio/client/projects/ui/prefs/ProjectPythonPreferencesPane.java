@@ -31,8 +31,9 @@ public class ProjectPythonPreferencesPane extends PythonPreferencesPaneBase<RPro
                                        PythonServerOperations server)
    {
       super(
-         "380px", //$NON-NLS-1$
-         "(Use default)"
+              "380px", //$NON-NLS-1$
+              "(Use default)",
+              true
       );
    }
 

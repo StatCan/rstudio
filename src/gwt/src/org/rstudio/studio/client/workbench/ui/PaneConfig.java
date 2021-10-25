@@ -69,6 +69,7 @@ public class PaneConfig extends UserPrefsAccessor.Panes
       tabSet1.push("VCS");
       tabSet1.push("Tutorial");
       tabSet1.push("Presentation");
+      tabSet1.push("Presentations");
 
       // Pane default group 1
       JsArrayString tabSet2 = createArray().cast();
@@ -114,7 +115,8 @@ public class PaneConfig extends UserPrefsAccessor.Panes
       //       mis-labeled pane).  Need to figure this out and likely decouple the on-screen text from the internal
       //       pane labels
       return new String[] {"Environment", "History", "Files", "Plots", "Connections",
-                           "Packages", "Help", "Build", "VCS", "Tutorial", "Viewer", "Presentation"};
+                           "Packages", "Help", "Build", "VCS", "Tutorial", "Viewer",
+                           "Presentations", "Presentation"};
    }
 
    // Tabs that have been replaced by newer versions/replaceable supersets
@@ -210,7 +212,7 @@ public class PaneConfig extends UserPrefsAccessor.Panes
       // Replace any obsoleted tabs in the config
       replaceObsoleteTabs(ts1);
       replaceObsoleteTabs(ts2);
-
+      
       // Presentation tab must always be at the end of the ts1 tabset (this
       // is so that activating it works even in the presence of optionally
       // visible tabs). This is normally an invariant but for a time during
@@ -232,6 +234,14 @@ public class PaneConfig extends UserPrefsAccessor.Panes
             return false;
          }
       }
+      
+      // if we don't have Presentation2 then provide it (but keep Presentation last)
+      if (!hasPresentation2(ts1) && !hasPresentation2(ts2))
+      {
+         ts1.set(ts1.length(), "Presentation");
+         ts1.set(ts1.length() - 2, "Presentations");
+      }
+
 
       // Check for any unknown tabs
       Set<String> allTabs = makeSet(getAllTabs());
@@ -240,6 +250,16 @@ public class PaneConfig extends UserPrefsAccessor.Panes
          return false;
 
       return true;
+   }
+   
+   private final boolean hasPresentation2(JsArrayString tabs)
+   {
+      for (int idx = 0; idx < tabs.length(); idx++)
+      {
+         if (tabs.get(idx).equals("Presentations"))
+            return true;
+      }
+      return false;
    }
 
    private static boolean isSubset(Set<String> set, Iterable<String> possibleSubset)

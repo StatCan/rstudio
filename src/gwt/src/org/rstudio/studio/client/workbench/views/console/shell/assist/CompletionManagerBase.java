@@ -67,7 +67,7 @@ public abstract class CompletionManagerBase
       public void onToken(TokenIterator it, Token token);
    }
    
-   public CompletionManagerBase(CompletionPopupDisplay popup,
+   protected CompletionManagerBase(CompletionPopupDisplay popup,
                                 DocDisplay docDisplay,
                                 CodeToolsServerOperations server,
                                 CompletionContext context)
@@ -84,10 +84,6 @@ public abstract class CompletionManagerBase
       helpTimer_ = new HelpTimer();
       handlers_ = new ArrayList<>();
       snippets_ = new SnippetHelper((AceEditor) docDisplay, context.getId());
-      
-      // deferred so that handlers are toggled after subclasses have finished
-      // construction
-      Scheduler.get().scheduleDeferred(() -> toggleHandlers(true));
    }
    
    @Inject
@@ -142,9 +138,12 @@ public abstract class CompletionManagerBase
       {
          names.add(new QualifiedName(
                completions.getCompletions().get(i),
+               completions.getCompletionsDisplay().get(i),
                completions.getPackages().get(i),
                false,
                completions.getType().get(i),
+               completions.getSuggestOnAccept().get(i),
+               completions.getReplaceToEnd().get(i),
                completions.getMeta().get(i),
                completions.getHelpHandler(),
                completions.getLanguage()));
@@ -275,8 +274,8 @@ public abstract class CompletionManagerBase
       Token token = docDisplay_.getTokenAt(docDisplay_.getCursorPosition());
       if (token != null)
       {
-         // don't complete within comments
-         if (token.hasType("comment"))
+         // don't complete within comments if requested
+         if (!allowInComment() && token.hasType("comment"))
             return false;
 
          // don't complete within multi-line strings
@@ -368,15 +367,21 @@ public abstract class CompletionManagerBase
    protected void onCompletionInserted(QualifiedName completion)
    {
       int type = completion.type;
-      if (!RCompletionType.isFunctionType(type))
-         return;
-      
-      boolean insertParensAfterCompletion =
-            RCompletionType.isFunctionType(type) &&
-            userPrefs_.insertParensAfterFunctionCompletion().getValue();
-      
-      if (insertParensAfterCompletion)
-         docDisplay_.moveCursorBackward();
+      if (RCompletionType.isFunctionType(type))
+      {
+         boolean insertParensAfterCompletion =
+               RCompletionType.isFunctionType(type) &&
+               userPrefs_.insertParensAfterFunctionCompletion().getValue();
+         
+         if (insertParensAfterCompletion)
+            docDisplay_.moveCursorBackward();
+      }
+            
+      // suggest on accept
+      if (completion.suggestOnAccept)
+      {
+         Scheduler.get().scheduleDeferred(() -> beginSuggest(true, true, false));
+      }
    }
    
    // Subclasses can override depending on what characters are typically
@@ -630,7 +635,7 @@ public abstract class CompletionManagerBase
    }
    
    protected boolean canAutoPopup(char ch, int lookbackLimit)
-   {
+   {  
       String codeComplete = userPrefs_.codeCompletion().getValue();
       
       if (isTriggerCharacter(ch) && !StringUtil.equals(codeComplete, UserPrefs.CODE_COMPLETION_MANUAL))
@@ -642,7 +647,7 @@ public abstract class CompletionManagerBase
       if (docDisplay_.isVimModeOn() && !docDisplay_.isVimInInsertMode())
          return false;
       
-      if (docDisplay_.isCursorInSingleLineString())
+      if (docDisplay_.isCursorInSingleLineString(allowInComment()))
          return false;
       
       if (!isBoundaryCharacter(docDisplay_.getCharacterAtCursor()))
@@ -657,16 +662,25 @@ public abstract class CompletionManagerBase
             !isBoundaryCharacter(ch);
             
       if (!canAutoPopup)
+      {
          return false;
+      }
       
       for (int i = 0; i < lookbackLimit; i++)
       {
          int index = cursorColumn - i - 1;
          if (isBoundaryCharacter(StringUtil.charAt(currentLine, index)))
+         {
             return false;
+         }
       }
       
       return true;
+   }
+   
+   protected boolean allowInComment()
+   {
+      return false;
    }
    
    private void onSelection(String completionToken,
@@ -684,7 +698,7 @@ public abstract class CompletionManagerBase
          snippets_.applySnippet(completionToken, completion.name);
       }
       else
-      {
+      {   
          String value = onCompletionSelected(completion);
          
          // compute an appropriate offset for completion --
@@ -707,6 +721,10 @@ public abstract class CompletionManagerBase
          {
             Position replaceStart = range.getEnd().movedLeft(offset);
             Position replaceEnd = range.getEnd();
+            
+            if (completion.replaceToEnd)
+               replaceEnd.setColumn(docDisplay_.getLength(replaceEnd.getRow()));
+            
             docDisplay_.replaceRange(Range.fromPoints(replaceStart, replaceEnd), value);
          }
 
@@ -816,6 +834,9 @@ public abstract class CompletionManagerBase
    {
       if (completion.type == RCompletionType.SNIPPET)
          popup_.displaySnippetHelp(snippets_.getSnippetContents(completion.name));
+      else if (completion.type == RCompletionType.YAML_KEY ||
+               completion.type == RCompletionType.YAML_VALUE)
+         popup_.displayYAMLHelp(completion.name, completion.meta);
       else
          helpStrategy_.showHelp(completion, popup_);
    }
@@ -825,7 +846,7 @@ public abstract class CompletionManagerBase
       helpTimer_.schedule(completion);
    }
    
-   private void toggleHandlers(boolean enable)
+   protected void toggleHandlers(boolean enable)
    {
       if (enable)
          addHandlers();
@@ -885,12 +906,14 @@ public abstract class CompletionManagerBase
                ignoreNextBlur_ = true;
             }),
             
-            popup_.addAttachHandler((AttachEvent event) -> {
-               docDisplay_.setPopupVisible(event.isAttached());
+            popup_.addSelectionHandler((SelectionEvent<QualifiedName> event) -> {
+               docDisplay_.setPopupVisible(true);
+               onPopupSelection(event.getSelectedItem());
             }),
             
-            popup_.addSelectionHandler((SelectionEvent<QualifiedName> event) -> {
-               onPopupSelection(event.getSelectedItem());
+            popup_.addCloseHandler(event ->
+            {
+               Scheduler.get().scheduleDeferred(() -> docDisplay_.setPopupVisible(false));
             }),
             
             popup_.addSelectionCommitHandler((SelectionCommitEvent<QualifiedName> event) -> {

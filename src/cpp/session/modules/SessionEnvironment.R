@@ -60,7 +60,11 @@
 
 .rs.addFunction("valueAsStringImpl", function(val)
 {
-   if (is.null(val))
+   if (missing(val))
+   {
+      "<missing>"
+   }
+   else if (is.null(val))
    {
       "NULL"
    }
@@ -222,10 +226,12 @@
    # do.call(), the 'expression' here might just be an already-evaluated
    # R object. in such a case, we want to avoid deparsing the object as
    # it could be expensive (especially for large objects).
-   if (is.call(expr))
-      .rs.deparse(expr)
-   else
-      .rs.valueDescription(expr)
+   if (!is.call(expr))
+      return(.rs.valueDescription(expr))
+   
+   # we have a call; try to deparse it
+   sanitized <- .rs.sanitizeCall(call)
+   .rs.deparse(sanitized)
 })
 
 # used to create descriptions for language objects and symbols
@@ -291,12 +297,19 @@
     nchars <- nchars + nchar(slines[i]) + 1
     offsets[i] <- nchars
   }
-  singleline <- paste(slines, collapse=" ")
+  
+  singleline <- paste(slines, collapse = " ")
   
   if (is.null(calltext))
   {
      # No call text specified; deparse into a list of lines
-     calltext <- deparse(call)
+     # limit length of deparsed output to avoid issues with very large calls
+     # 
+     # this implies that we might be unable to highlight calls larger than
+     # the below number of lines, but in practice such a large highlight
+     # would be unlikely to be useful
+     # https://github.com/rstudio/rstudio/issues/5158
+     calltext <- .rs.deparse(call, nlines = 200L)
   }
   else
   {
@@ -307,7 +320,7 @@
 
   # Remove leading/trailing whitespace on each line, and collapse the lines
   calltext <- sub("\\s+$", "", sub("^\\s+", "", calltext))
-  calltext <- paste(calltext, collapse=" ")
+  calltext <- paste(calltext, collapse = " ")
 
   # Any call text supplied is presumed UTF-8 unless we know otherwise
   if (Encoding(calltext) == "unknown")
@@ -344,8 +357,8 @@
      return(c(0L, 0L, 0L, 0L, 0L, 0L))
 
   # Compute the starting and ending lines
-  firstline <- which(offsets >= pos, arr.ind = TRUE)[1] 
-  lastline <- which(offsets >= endpos, arr.ind = TRUE)[1]  
+  firstline <- which(offsets >= pos, arr.ind = TRUE)[1]
+  lastline <- which(offsets >= endpos, arr.ind = TRUE)[1]
   if (is.na(lastline))
      lastline <- length(offsets)
 
@@ -370,8 +383,9 @@
      lastchar <- lastchar + indents[lastline]
   }
 
-  result <- as.integer(c(firstline, firstchar, lastline, 
-                         lastchar, firstchar, lastchar))
+  result <- as.integer(c(firstline, firstchar,
+                         lastline,  lastchar,
+                         firstchar, lastchar))
   return(result)
 })
 
@@ -391,9 +405,13 @@
    .rs.deparse(call[[1L]])
 })
 
-.rs.addFunction("sanitizeCallSummary", function(object)
+.rs.addFunction("sanitizeCall", function(object)
 {
-   if (is.call(object))
+   if (missing(object))
+   {
+      return(object)
+   }
+   else if (is.call(object))
    {
       # if this is the concatenation of a large number of objects,
       # then just use a shorter representation of the call
@@ -407,7 +425,13 @@
       
       # sanitize each call entry separately
       for (i in seq_along(object))
-         object[[i]] <- .rs.sanitizeCallSummary(object[[i]])
+      {
+         # assigning NULL to object will remove that entry
+         # https://github.com/rstudio/rstudio/issues/9299
+         sanitized <- .rs.sanitizeCall(object[[i]])
+         if (!missing(sanitized) && !is.null(sanitized))
+            object[[i]] <- sanitized
+      }
       
       # return object
       object
@@ -457,75 +481,85 @@
    # where 'object' is something very large when deparsed. we avoid
    # issues by replacing such objects with a short identifier of their
    # type / class
-   call <- .rs.sanitizeCallSummary(call)
+   call <- .rs.sanitizeCall(call)
    
+   # deparse call
    .rs.deparse(call)
+   
 })
 
 .rs.addFunction("valueDescription", function(obj)
 {
    tryCatch(
+      .rs.valueDescriptionImpl(obj),
+      error = function(e) ""
+   )
+})
+
+.rs.addFunction("valueDescriptionImpl", function(obj)
+{
+   if (missing(obj))
    {
-      if (missing(obj))
+      return("Missing argument")
+   }
+   else if (is.null(obj))
+   {
+      return("NULL")
+   }
+   else if (is(obj, "ore.frame"))
+   {
+      sqlTable <- attr(obj, "sqlTable", exact = TRUE)
+      if (is.null(sqlTable))
+         return("Oracle R frame") 
+      else
+         return(paste("Oracle R frame:", sqlTable))
+   }
+   else if (.rs.isExternalPointer(obj))
+   {
+      class <- class(obj)
+      if (length(class) && !identical(class, "externalptr"))
       {
-        return("Missing argument")
-      }
-      else if (is(obj, "ore.frame"))
-      {
-        sqlTable <- attr(obj, "sqlTable", exact = TRUE)
-        if (is.null(sqlTable))
-          return("Oracle R frame") 
-        else
-          return(paste("Oracle R frame:", sqlTable))
-      }
-      else if (.rs.isExternalPointer(obj))
-      {
-         class <- class(obj)
-         if (length(class) && !identical(class, "externalptr"))
-         {
-            fmt <- "External pointer of class '%s'"
-            return(sprintf(fmt, class[[1]]))
-         }
-         else
-         {
-            return("External pointer")
-         }
-      }
-      else if (is.data.frame(obj))
-      {
-         return(paste(dim(obj)[1],
-                      "obs. of",
-                      dim(obj)[2],
-                      ifelse(dim(obj)[2] == 1, "variable", "variables"),
-                      sep=" "))
-      }
-      else if (is.environment(obj))
-      {
-         return("Environment")
-      }
-      else if (isS4(obj))
-      {
-         return(paste("Formal class ", is(obj)))
-      }
-      else if (is.list(obj))
-      {
-         return(paste("List of ", length(obj)))
-      }
-      else if (is.matrix(obj)
-              || is.numeric(obj)
-              || is.factor(obj)
-              || is.raw(obj) 
-              || is.character(obj)
-              || is.logical(obj))
-      {
-         return(.rs.valueFromStr(obj))
+         fmt <- "External pointer of class '%s'"
+         return(sprintf(fmt, class[[1]]))
       }
       else
-         return("")
-   },
-   error = function(e) print(e))
-
-   return ("")
+      {
+         return("External pointer")
+      }
+   }
+   else if (is.data.frame(obj))
+   {
+      return(paste(dim(obj)[1],
+                   "obs. of",
+                   dim(obj)[2],
+                   ifelse(dim(obj)[2] == 1, "variable", "variables"),
+                   sep=" "))
+   }
+   else if (is.environment(obj))
+   {
+      return("Environment")
+   }
+   else if (isS4(obj))
+   {
+      return(paste("Formal class ", is(obj)))
+   }
+   else if (is.list(obj))
+   {
+      return(paste("List of ", length(obj)))
+   }
+   else if (is.matrix(obj)
+            || is.numeric(obj)
+            || is.factor(obj)
+            || is.raw(obj) 
+            || is.character(obj)
+            || is.logical(obj))
+   {
+      return(.rs.valueFromStr(obj))
+   }
+   else
+   {
+      return("")
+   }
 })
 
 .rs.addFunction("editor", function(name, file = "", title = file, ...)
@@ -574,12 +608,29 @@
 {
    obj <- get(objName, env)
    
+   # https://github.com/rstudio/rstudio/issues/9328
+   if (missing(obj))
+      obj <- as.name("Missing argument")
+   
    if (inherits(obj, "python.builtin.object"))
       return(.rs.reticulate.describeObject(objName, env))
    
-   # objects containing null external pointers can crash when
-   # evaluated--display generically (see case 4092)
-   hasNullPtr <- .Call("rs_hasExternalPointer", obj, TRUE, PACKAGE = "(embedding)")
+   # NOTE (kevin): we previously screened R objects for null pointers here,
+   # as we had seen in the distant past that attempting to introspect such
+   # objects would cause an R session crash. that no longer appears to be
+   # the case so we now no longer perform this check here.
+   #
+   # https://github.com/rstudio/rstudio/issues/4741
+   # https://github.com/rstudio/rstudio/issues/5546
+   #
+   # however, just in case some users are still effected, we allow users to
+   # opt-in to checking for null pointers if required.
+   checkNullPtr <- .rs.readUiPref("check_null_external_pointers")
+   hasNullPtr <- if (identical(checkNullPtr, TRUE))
+      .Call("rs_hasExternalPointer", obj, TRUE, PACKAGE = "(embedding)")
+   else
+      FALSE
+   
    if (hasNullPtr) 
    {
       val <- "<Object with null pointer>"
@@ -603,9 +654,30 @@
    contents_deferred <- FALSE
    
    # for language objects, don't evaluate, just show the expression
-   if (is.language(obj) || is.symbol(obj))
+   if (is.symbol(obj))
    {
-      val <- deparse(obj)
+      val <- as.character(obj)
+   }
+   else if (is.language(obj))
+   {
+      # defend against very large calls; e.g. those with R objects inlined
+      # as part of the call (can happen in do.call contexts)
+      #
+      # this is primarily used for the Environment pane, where we try to display
+      # a single-line summary of an R object -- so we can enforce that when
+      # deparsing calls here as well
+      #
+      # https://github.com/rstudio/rstudio/issues/5158
+      sanitized <- .rs.sanitizeCall(obj)
+      val1 <- .rs.deparse(sanitized, nlines = 1L)
+      val2 <- .rs.deparse(sanitized, nlines = 2L)
+      
+      # indicate if there is more output
+      val <- if (!identical(val1, val2))
+         paste(val1, "<...>")
+      else
+         val1
+
    }
    else if (!hasNullPtr)
    {

@@ -20,5 +20,7 @@ public class PanmirrorExtendedDocType
 {    
    public static String bookdown = "bookdown"; //$NON-NLS-1$
    public static String hugo = "hugo"; //$NON-NLS-1$
+   public static String quarto = "quarto"; //$NON-NLS-1$
+   public static String presentation = "presentation"; //$NON-NLS-1$
 }
 

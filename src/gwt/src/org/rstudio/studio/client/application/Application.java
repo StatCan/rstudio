@@ -1322,7 +1322,7 @@ public class Application implements ApplicationEventHandlers
 
    private boolean fileUploadInProgress_ = false;
 
-   private final String CSRF_TOKEN_FIELD = "csrf-token"; //$NON-NLS-1$
+   private final String CSRF_TOKEN_FIELD = "rs-csrf-token"; //$NON-NLS-1$
 
    private ClientStateUpdater clientStateUpdaterInstance_;
    private RootLayoutPanel rootPanel_;

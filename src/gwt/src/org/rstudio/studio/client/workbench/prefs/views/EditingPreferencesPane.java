@@ -365,8 +365,9 @@ public class EditingPreferencesPane extends PreferencesPane
 
       Label diagOtherLabel = headerLabel(constants_.Editing_diagOtherLabel());
       diagnosticsPanel.add(spacedBefore(diagOtherLabel));
-      diagnosticsPanel.add(checkboxPref(prefs.showDiagnosticsCpp()));
-      diagnosticsPanel.add(checkboxPref(prefs.showDiagnosticsOther()));
+      diagnosticsPanel.add(checkboxPref("Show diagnostics for C/C++", prefs.showDiagnosticsCpp()));
+      diagnosticsPanel.add(checkboxPref("Show diagnostics for YAML", prefs.showDiagnosticsYaml()));
+      diagnosticsPanel.add(checkboxPref("Show diagnostics for JavaScript, HTML, and CSS", prefs.showDiagnosticsOther()));
 
       Label diagShowLabel = headerLabel(constants_.Editing_diagShowLabel());
       diagnosticsPanel.add(spacedBefore(diagShowLabel));

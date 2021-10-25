@@ -21,6 +21,7 @@ set -e
 ./install-mathjax
 ./install-boost
 ./install-pandoc
+./install-quarto
 ./install-packages
 ./install-sentry-cli
 ./install-npm-dependencies
@@ -30,5 +31,5 @@ set -e
 
 if [ -e install-overlay ]
 then
-   ./install-overlay
+   ./install-overlay $1
 fi

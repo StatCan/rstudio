@@ -37,6 +37,8 @@ import org.rstudio.studio.client.common.GlobalDisplay;
 import org.rstudio.studio.client.common.rpubs.events.RPubsUploadStatusEvent;
 import org.rstudio.studio.client.htmlpreview.model.HTMLPreviewResult;
 import org.rstudio.studio.client.plumber.model.PlumberAPIParams;
+import org.rstudio.studio.client.quarto.QuartoHelper;
+import org.rstudio.studio.client.quarto.model.QuartoConfig;
 import org.rstudio.studio.client.rmarkdown.model.RMarkdownServerOperations;
 import org.rstudio.studio.client.rmarkdown.model.RmdOutputInfo;
 import org.rstudio.studio.client.rmarkdown.model.RmdPreviewParams;
@@ -230,7 +232,8 @@ public class RSConnectPublishButton extends Composite
       }
       applyVisibility();
    }
-   
+
+
    public void setShinyPreview(ShinyApplicationParams params)
    {
       String ext = params.getPath() == null ? "" :
@@ -256,10 +259,56 @@ public class RSConnectPublishButton extends Composite
          applyVisibility();
       }
    }
-   
+
+   public void setQmd(String qmd)
+   {
+      // Used to create the Publish button on the text editor when it has a
+      // Quarto file loaded. Create a synthetic "preview" containing just the
+      // source file w/ no output
+      docPreview_ = new RenderedDocPreview(qmd, "", false, true);
+      setContentPath(qmd, "");
+
+      // Determine whether or not this Quarto file is part of a website; we
+      // presume it to be if it's inside the current project and the current project is a
+      // Quarto website project or book
+      boolean isWebsite = false;
+      if (!StringUtil.isNullOrEmpty(qmd))
+      {
+         isWebsite = QuartoHelper.isQuartoWebsiteDoc(qmd, session_.getSessionInfo().getQuartoConfig());
+      }
+
+      // Set the content type accordingly. Note that
+      // CONTENT_TYPE_QUARTO_WEBSITE is used just for publishing Quarto
+      // websites from the Viewer pane (where we don't have the source file
+      // context we do here)
+      setContentType(isWebsite ?
+         RSConnect.CONTENT_TYPE_WEBSITE :
+         RSConnect.CONTENT_TYPE_DOCUMENT);
+
+      applyVisibility();
+   }
+
+   public void setQuartoDocPreview(String qmd, String outputFile)
+   {
+      setContentPath(qmd, outputFile);
+      setContentType(RSConnect.CONTENT_TYPE_DOCUMENT);
+      docPreview_ = new RenderedDocPreview(qmd, outputFile, true, true);
+      applyVisibility();
+   }
+
+   public void setQuartoSitePreview()
+   {
+      // Used to create the Publish button on the Viewer pane when it has a Quarto website loaded.
+      QuartoConfig config = session_.getSessionInfo().getQuartoConfig();
+      FileSystemItem projectDir = FileSystemItem.createDir(config.project_dir);
+      setContentPath(config.project_dir, projectDir.completePath(config.project_output_dir));
+      setContentType(RSConnect.CONTENT_TYPE_QUARTO_WEBSITE);
+      applyVisibility();
+   }
+
    public void setRmd(String rmd, boolean isStatic)
    {
-      docPreview_ = new RenderedDocPreview(rmd, "", isStatic);
+      docPreview_ = new RenderedDocPreview(rmd, "", isStatic, false);
       setContentPath(rmd, "");
 
       SessionInfo sessionInfo = session_.getSessionInfo();
@@ -312,7 +361,8 @@ public class RSConnectPublishButton extends Composite
              contentType == RSConnect.CONTENT_TYPE_APP ||
              contentType == RSConnect.CONTENT_TYPE_APP_SINGLE ||
              contentType == RSConnect.CONTENT_TYPE_PLUMBER_API ||
-             contentType == RSConnect.CONTENT_TYPE_WEBSITE)
+             contentType == RSConnect.CONTENT_TYPE_WEBSITE ||
+             contentType == RSConnect.CONTENT_TYPE_QUARTO_WEBSITE)
             populateDeployments(true);
          
          // moving to a raw HTML type: erase the deployment list
@@ -505,6 +555,12 @@ public class RSConnectPublishButton extends Composite
       case RSConnect.CONTENT_TYPE_APP_SINGLE:
          // Shiny application
          events_.fireEvent(RSConnectActionEvent.DeployAppEvent(
+            contentPath_, contentType_, previous));
+         break;
+      case RSConnect.CONTENT_TYPE_QUARTO_WEBSITE:
+         // Quarto website -- deployed just like Shiny, since it's based on a
+         // directory rather than a file
+         events_.fireEvent(RSConnectActionEvent.DeployAppEvent(
                contentPath_, contentType_, previous));
          break;
       case RSConnect.CONTENT_TYPE_DOCUMENT:
@@ -668,7 +724,7 @@ public class RSConnectPublishButton extends Composite
                   {
                      RSConnectPublishSource source = 
                            new RSConnectPublishSource(htmlFile, null, 
-                                 true, true, false, "Plot", contentType_);
+                                 true, true, false, false, "Plot", contentType_);
                      ArrayList<String> deployFiles = new ArrayList<>();
                      deployFiles.add(FilePathUtils.friendlyFileName(htmlFile));
                      RSConnectPublishSettings settings = 
@@ -918,7 +974,7 @@ public class RSConnectPublishButton extends Composite
       // prevent re-entrancy
       if (rmdInfoPending_)
          return;
-      
+
       if (StringUtil.isNullOrEmpty(docPreview_.getOutputFile()))
       {
          rmdInfoPending_ = true;
@@ -929,7 +985,7 @@ public class RSConnectPublishButton extends Composite
                   public void onResponseReceived(RmdOutputInfo response)
                   {
                      RenderedDocPreview preview = new RenderedDocPreview(contentPath_,
-                           response.output_file_exists ? response.output_file : "", true);
+                           response.output_file_exists ? response.output_file : "", true, docPreview_.isQuarto());
                      events_.fireEvent(RSConnectActionEvent.DeployDocEvent(
                            preview, contentType_, previous));
                      rmdInfoPending_ = false;
@@ -956,6 +1012,7 @@ public class RSConnectPublishButton extends Composite
    public final static String HOST_EDITOR = "editor"; //$NON-NLS-1$
    public final static String HOST_PLOTS = "plots_pane"; //$NON-NLS-1$
    public final static String HOST_PRESENTATION = "presentation"; //$NON-NLS-1$
+   public final static String HOST_PRESENTATION2 = "presentation2";
    public final static String HOST_PROFILER = "profiler"; //$NON-NLS-1$
    public final static String HOST_RMD_OUTPUT = "rmd_output"; //$NON-NLS-1$
    public final static String HOST_SHINY_APP = "shiny_app"; //$NON-NLS-1$

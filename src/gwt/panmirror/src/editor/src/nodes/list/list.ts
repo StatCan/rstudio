@@ -26,9 +26,9 @@ import { EditorUI, kListSpacingTight } from '../../api/ui';
 import { ListCapabilities } from '../../api/list';
 import { ProsemirrorCommand, EditorCommandId } from '../../api/command';
 import { PandocTokenType } from '../../api/pandoc';
-import { kPlatformMac } from '../../api/platform';
 import { OmniInsertGroup } from '../../api/omni_insert';
 import { conditionalWrappingInputRule } from '../../api/input_rule';
+import { kPresentationDocType } from '../../api/format';
 
 import { ListCommand, TightListCommand, EditListPropertiesCommand, editListPropertiesCommandFn } from './list-commands';
 
@@ -67,7 +67,7 @@ export enum ListNumberDelim {
 const plugin = new PluginKey('list');
 
 const extension = (context: ExtensionContext): Extension => {
-  const { pandocExtensions, ui } = context;
+  const { pandocExtensions, ui, format } = context;
 
   // determine list capabilities based on active format options
   const capabilities: ListCapabilities = {
@@ -82,6 +82,7 @@ const extension = (context: ExtensionContext): Extension => {
     // example: pandocExtensions.fancy_lists && pandocExtensions.example_lists,
     example: false,
     order: pandocExtensions.startnum,
+    incremental: format.docTypes.includes(kPresentationDocType)
   };
 
   return {
@@ -267,7 +268,7 @@ const extension = (context: ExtensionContext): Extension => {
       const commands = [
         new ListCommand(
           EditorCommandId.BulletList,
-          kPlatformMac ? ['Shift-Mod-8'] : [],
+          [],
           schema.nodes.bullet_list,
           schema.nodes.list_item,
           bulletListOmniInsert(ui),
@@ -275,7 +276,7 @@ const extension = (context: ExtensionContext): Extension => {
         ),
         new ListCommand(
           EditorCommandId.OrderedList,
-          kPlatformMac ? ['Shift-Mod-7'] : [],
+          [],
           schema.nodes.ordered_list,
           schema.nodes.list_item,
           orderedListOmniInsert(ui),
@@ -345,6 +346,7 @@ function listAttrEdit(type: string, capabilities: ListCapabilities, ui: EditorUI
         top: 5,
         right: 5,
       },
+      preferHidden: true
     };
   };
 }

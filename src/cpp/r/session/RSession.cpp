@@ -68,6 +68,9 @@
 
 #include <gsl/gsl>
 
+extern "C" {
+int Rf_countContexts(int, int);
+}
 #define CTXT_BROWSER 16
 
 // get rid of windows TRUE and FALSE definitions
@@ -460,6 +463,12 @@ void setClientMetrics(const RClientMetrics& metrics)
    }
 }
 
+void reportWarningToConsole(const std::string& warning)
+{
+   std::string msg = "WARNING: " + warning + "\n";
+   RWriteConsoleEx(msg.c_str(), gsl::narrow_cast<int>(msg.length()), 1);
+}
+
 void reportAndLogWarning(const std::string& warning)
 {
    std::string msg = "WARNING: " + warning + "\n";
@@ -472,15 +481,28 @@ bool isSuspendable(const std::string& currentPrompt)
    // NOTE: active file graphics devices (e.g. png or pdf) are wiped out
    // during a suspend as are open connections. there may or may not be a
    // way to make this more robust.
-
-   // are we not at the default prompt?
-   std::string defaultPrompt = r::options::getOption<std::string>("prompt");
-   if (currentPrompt != defaultPrompt)
-      return false;
-   else
-      return true;
-}
    
+   if (s_options.suspendOnIncompleteStatement)
+   {
+      // Always allow suspending, even if the statement is not complete.
+      return true;
+   }
+   else
+   {
+      // Avoid suspending when the prompt is not at its default value.  This mostly prevents us from
+      // suspending if the user hasn't finished an R statement, since R's prompt changes from > to +
+      // when a statement is incomplete. It is an option since some environments prefer more
+      // aggressive suspension behavior.
+      std::string defaultPrompt = r::options::getOption<std::string>("prompt");
+      if (currentPrompt != defaultPrompt)
+      {
+         return false;
+      }
+   }
+    
+   return true;
+}
+
 
 bool browserContextActive()
 {

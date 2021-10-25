@@ -44,6 +44,7 @@ protected:
    buildOptions(boost::program_options::options_description* pTests,
                 boost::program_options::options_description* pScript,
                 boost::program_options::options_description* pVerify,
+                boost::program_options::options_description* pVersion,
                 boost::program_options::options_description* pProgram,
                 boost::program_options::options_description* pLog,
                 boost::program_options::options_description* pDocs,
@@ -76,6 +77,11 @@ protected:
       (kVerifyInstallationSessionOption,
       value<bool>(&verifyInstallation_)->default_value(false),
       "Verifies that the session installation is working correctly and exits.");
+
+   pVersion->add_options()
+      (kVersionSessionOption,
+      value<bool>(&version_)->default_value(false)->implicit_value(true),
+      "Prints the version number and exits.");
 
    pProgram->add_options()
       (kProgramModeSessionOption,
@@ -194,12 +200,27 @@ protected:
       ("restrict-directory-view",
       value<bool>(&restrictDirectoryView_)->default_value(false),
       "Indicates whether or not to restrict the directories that can be viewed within the IDE.")
-      ("directory-view-whitelist",
-      value<std::string>(&directoryViewWhitelist_)->default_value(std::string()),
+      ("directory-view-allow-list",
+      value<std::string>(&directoryViewAllowList_)->default_value(std::string()),
       "Specifies a list of directories exempt from directory view restrictions, separated by a colon character (:).")
-      (kSessionEnvVarSaveBlacklist,
-      value<std::string>(&envVarSaveBlacklist_)->default_value(std::string()),
-      "Specifies a list of environment variables that will not be saved when sessions suspend, separated by a colon character (:).");
+      (kSessionEphemeralEnvVars,
+      value<std::string>(&ephemeralEnvVars_)->default_value(std::string()),
+      "Specifies a list of environment variables that will not be saved when sessions suspend, separated by a colon character (:).")
+      (kSessionSuspendOnIncompleteStatement,
+      value<bool>(&suspendOnIncompleteStatement_)->default_value(false),
+      "Specifies whether the session should be allowed to suspend when a user has entered a partial R statement.")
+      (kSessionAsyncRpcEnabled,
+      value<bool>(&asyncRpcEnabled_)->default_value(true),
+      "Enables async responses to rpc requests to prevent connection logjams in the browser, allowing interrupt of busy sessions")
+      (kSessionAsyncRpcTimeoutMs,
+      value<int>(&asyncRpcTimeoutMs_)->default_value(200),
+      "Duration in millis before requests are converted to async - i.e. how fast will the server free up connections when it's busy")
+      (kSessionHandleOfflineEnabled,
+      value<bool>(&handleOfflineEnabled_)->default_value(true),
+      "Enables offline request handling. When the R session is busy, some requests are allowed to run")
+      (kSessionHandleOfflineTimeoutMs,
+      value<int>(&handleOfflineTimeoutMs_)->default_value(200),
+      "Duration in millis before requests that can be handled offline are processed by the offline handler thread.");
 
    pAllow->add_options()
       ("allow-vcs-executable-edit",
@@ -340,6 +361,9 @@ protected:
       ("external-pandoc-path",
       value<std::string>(&pandocPath_)->default_value(kDefaultPandocPath),
       "Specifies the path to pandoc binaries.")
+      ("external-quarto-path",
+      value<std::string>(&quartoPath_)->default_value(kDefaultQuartoPath),
+      "Specifies the path to quarto binaries.")
       ("external-libclang-path",
       value<std::string>(&libclangPath_)->default_value(kDefaultRsclangPath),
       "Specifies the path to the libclang shared library")
@@ -374,12 +398,9 @@ protected:
 
    pMisc->add_options();
 
-   FilePath defaultConfigPath = core::system::xdg::systemConfigFile("rsession.conf");
+   FilePath defaultConfigPath = core::system::xdg::findSystemConfigFile("rsession configuration", "rsession.conf");
    std::string configFile = defaultConfigPath.exists() ?
       defaultConfigPath.getAbsolutePath() : "";
-   if (!configFile.empty())
-      LOG_INFO_MESSAGE("Reading rsession configuration from " + configFile);
-
    return program_options::OptionsDescription("rsession", configFile);
 }
 
@@ -387,6 +408,7 @@ public:
    bool runTests() const { return runTests_; }
    std::string runScript() const { return runScript_; }
    bool verifyInstallation() const { return verifyInstallation_; }
+   bool version() const { return version_; }
    std::string programMode() const { return programMode_; }
    bool logStderr() const { return logStderr_; }
    std::string docsURL() const { return docsURL_; }
@@ -423,8 +445,13 @@ public:
    bool useSecureCookies() const { return useSecureCookies_; }
    rstudio::core::http::Cookie::SameSite sameSite() const { return sameSite_; }
    bool restrictDirectoryView() const { return restrictDirectoryView_; }
-   std::string directoryViewWhitelist() const { return directoryViewWhitelist_; }
-   std::string envVarSaveBlacklist() const { return envVarSaveBlacklist_; }
+   std::string directoryViewAllowList() const { return directoryViewAllowList_; }
+   std::string ephemeralEnvVars() const { return ephemeralEnvVars_; }
+   bool suspendOnIncompleteStatement() const { return suspendOnIncompleteStatement_; }
+   bool asyncRpcEnabled() const { return asyncRpcEnabled_; }
+   int asyncRpcTimeoutMs() const { return asyncRpcTimeoutMs_; }
+   bool handleOfflineEnabled() const { return handleOfflineEnabled_; }
+   int handleOfflineTimeoutMs() const { return handleOfflineTimeoutMs_; }
    bool allowVcsExecutableEdit() const { return allowVcsExecutableEdit_; }
    bool allowCRANReposEdit() const { return allowCRANReposEdit_; }
    bool allowVcs() const { return allowVcs_; }
@@ -469,6 +496,7 @@ public:
    core::FilePath hunspellDictionariesPath() const { return core::FilePath(hunspellDictionariesPath_); }
    core::FilePath mathjaxPath() const { return core::FilePath(mathjaxPath_); }
    core::FilePath pandocPath() const { return core::FilePath(pandocPath_); }
+   core::FilePath quartoPath() const { return core::FilePath(quartoPath_); }
    core::FilePath libclangPath() const { return core::FilePath(libclangPath_); }
    core::FilePath libclangHeadersPath() const { return core::FilePath(libclangHeadersPath_); }
    core::FilePath winptyPath() const { return core::FilePath(winptyPath_); }
@@ -482,6 +510,7 @@ protected:
    bool runTests_;
    std::string runScript_;
    bool verifyInstallation_;
+   bool version_;
    std::string programMode_;
    bool logStderr_;
    std::string docsURL_;
@@ -518,8 +547,13 @@ protected:
    bool useSecureCookies_;
    rstudio::core::http::Cookie::SameSite sameSite_;
    bool restrictDirectoryView_;
-   std::string directoryViewWhitelist_;
-   std::string envVarSaveBlacklist_;
+   std::string directoryViewAllowList_;
+   std::string ephemeralEnvVars_;
+   bool suspendOnIncompleteStatement_;
+   bool asyncRpcEnabled_;
+   int asyncRpcTimeoutMs_;
+   bool handleOfflineEnabled_;
+   int handleOfflineTimeoutMs_;
    bool allowVcsExecutableEdit_;
    bool allowCRANReposEdit_;
    bool allowVcs_;
@@ -564,6 +598,7 @@ protected:
    std::string hunspellDictionariesPath_;
    std::string mathjaxPath_;
    std::string pandocPath_;
+   std::string quartoPath_;
    std::string libclangPath_;
    std::string libclangHeadersPath_;
    std::string winptyPath_;

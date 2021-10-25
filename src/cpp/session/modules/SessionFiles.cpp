@@ -52,6 +52,8 @@
 #include <r/RRoutines.hpp>
 #include <r/RErrorCategory.hpp>
 
+#include <monitor/MonitorClient.hpp>
+
 #include <session/SessionClientEvent.hpp>
 #include <session/SessionModuleContext.hpp>
 #include <session/SessionOptions.hpp>
@@ -487,6 +489,29 @@ core::Error renameFile(const core::json::JsonRpcRequest& request,
    return Success();
 }
 
+// IN: String newPath
+core::Error touchFile(const core::json::JsonRpcRequest& request,
+                       json::JsonRpcResponse* pResponse)
+{
+   // read params
+   std::string newPath;
+   Error error = json::readParams(request.params, &newPath);
+   if (error)
+      return error;
+
+   // if the destination already exists then send back file exists
+   FilePath destPath = module_context::resolveAliasedPath(newPath);
+   if (destPath.exists())
+      return fileExistsError(ERROR_LOCATION);
+   
+   // attempt to create the file
+   Error touchError = destPath.ensureFile();
+   if (touchError)
+      return touchError;
+   
+   return Success();
+}
+
 void handleFilesRequest(const http::Request& request, 
                         http::Response* pResponse)
 {   
@@ -544,6 +569,8 @@ void handleFilesRequest(const http::Request& request,
 const char * const kUploadFilename = "filename";
 const char * const kUploadedTempFile = "uploadedTempFile";
 const char * const kUploadTargetDirectory = "targetDirectory";
+const char * const kIsZip = "isZip";
+const char * const kUnzipFound = "unzipFound";
 
 Error writeTmpData(const FilePath& tmpFile,
                    const char* buffer,
@@ -583,10 +610,12 @@ Error completeUpload(const core::json::JsonRpcRequest& request,
    
    // parse fields out of token object
    std::string filename, uploadedTempFile, targetDirectory;
+   bool unzipFound = false;
    error = json::readObject(token, 
                             kUploadFilename, filename,
                             kUploadedTempFile, uploadedTempFile,
-                            kUploadTargetDirectory, targetDirectory);
+                            kUploadTargetDirectory, targetDirectory,
+                            kUnzipFound, unzipFound);
    if (error)
       return error;
    
@@ -598,7 +627,7 @@ Error completeUpload(const core::json::JsonRpcRequest& request,
    {
       FilePath targetDirectoryPath(targetDirectory);
 
-      if (boost::ends_with(filename, "zip"))
+      if (boost::ends_with(filename, "zip") && unzipFound)
       {
          // expand the archive
          r::exec::RFunction unzip("unzip");
@@ -660,41 +689,73 @@ Error completeUpload(const core::json::JsonRpcRequest& request,
    
 Error detectZipFileOverwrites(const FilePath& uploadedZipFile,
                               const FilePath& destDir,
-                              json::Array* pOverwritesJson)
+                              const std::string& originalFilename,
+                              json::Array* pOverwritesJson,
+                              bool* pUnzipfound)
 {
-   // query for all of the paths in the zip file
-   core::system::ProcessResult result;
-   Error error = core::system::runCommand("unzip -Z1 " + uploadedZipFile.getAbsolutePath(),
-                                          core::system::ProcessOptions(),
-                                          &result);
-   if (error)
-      return error;
-
-   if (result.exitStatus == 0)
+   // unable to use R's unzip here in worker thread, using system's unzip instead
+   // try a couple locations for unzip, in case it's not on user's PATH
+   std::vector<std::string> pathsToTry({
+      "unzip",
+      "/usr/bin/unzip"});
+   for (auto& path : pathsToTry)
    {
-      std::vector<std::string> zipFileListing;
-      boost::split(zipFileListing, result.stdOut, boost::is_any_of("\n"));
+      core::system::ProcessResult result;
+      Error error = core::system::runCommand(path + " -Z1 " + uploadedZipFile.getAbsolutePath(),
+                                             core::system::ProcessOptions(),
+                                             &result);
 
-      // check for overwrites
-      for (std::vector<std::string>::const_iterator
-           it = zipFileListing.begin();
-           it != zipFileListing.end();
-           ++it)
+      if (error)
+         return error;
+
+      // If any of the paths were valid, check for overwrites and return
+      if (result.exitStatus == 0)
       {
-         // don't count empty lines
-         if ((*it).empty()) continue;
+         *pUnzipfound = true;
 
-         FilePath filePath = destDir.completePath(*it);
-         if (filePath.exists())
-            pOverwritesJson->push_back(module_context::createFileSystemItem(filePath));
+         std::vector<std::string> zipFileListing;
+         boost::split(zipFileListing, result.stdOut, boost::is_any_of("\n"));
+
+         // check for overwrites
+         for (std::vector<std::string>::const_iterator
+              it = zipFileListing.begin();
+              it != zipFileListing.end();
+              ++it)
+         {
+            // don't count empty lines
+            if ((*it).empty()) continue;
+
+            FilePath filePath = destDir.completePath(*it);
+            if (filePath.exists())
+               pOverwritesJson->push_back(module_context::createFileSystemItem(filePath));
+         }
+
+         return Success();
+      }
+      else if (result.exitStatus == 127)
+      {
+         // bash return code 127 - "command not found"
+         // try another unzip location
+         continue;
+      }
+      else
+      {
+         return unknownError("Unexpected result for unzip command: " +
+                            std::to_string(result.exitStatus) +
+                            " - " +
+                            result.stdOut +
+                            ": " +
+                            result.stdErr,
+                            ERROR_LOCATION);
       }
    }
-   else
-   {
-      return systemError(result.exitStatus,
-                         "Unexpected result for unzip command",
-                         ERROR_LOCATION);
-   }
+
+   // If we get here, there were no serious errors, but unzip was not found
+   // Try uploading just the .zip file, without unzipping
+   *pUnzipfound = false;
+   FilePath zipPath = destDir.completePath(originalFilename);
+   if (zipPath.exists())
+      pOverwritesJson->push_back(module_context::createFileSystemItem(zipPath));
    
    return Success();
 }
@@ -1050,9 +1111,10 @@ bool handleFileUploadRequestAsync(const http::Request& request,
    FilePath destPath = destDir.completeChildPath(pUploadState->fileName);
 
    json::Array overwritesJson;
+   bool unzipFound = false;
    if (isZip)
    {
-      Error error = detectZipFileOverwrites(pUploadState->tmpFile, destDir, &overwritesJson);
+      Error error = detectZipFileOverwrites(pUploadState->tmpFile, destDir, pUploadState->fileName, &overwritesJson, &unzipFound);
       if (error)
       {
          writeError(error);
@@ -1070,15 +1132,33 @@ bool handleFileUploadRequestAsync(const http::Request& request,
    uploadTokenJson[kUploadFilename] = pUploadState->fileName;
    uploadTokenJson[kUploadedTempFile] = pUploadState->tmpFile.getAbsolutePath();
    uploadTokenJson[kUploadTargetDirectory] = destDir.getAbsolutePath();
+   uploadTokenJson[kUnzipFound] = unzipFound;
+   uploadTokenJson[kIsZip] = isZip;
 
    json::Object uploadJson;
    uploadJson["token"] = uploadTokenJson;
    uploadJson["overwrites"] = overwritesJson;
-   json::setJsonRpcResult(uploadJson, &response);
+
+   // write the JSON result, escaping HTML since the client requires text/html
+   // (see below)
+   json::JsonRpcResponse uploadResponse;
+   uploadResponse.setResult(uploadJson);
+   std::stringstream uploadResult;
+   uploadResponse.write(uploadResult);
+   Error error = response.setBody(string_utils::jsonHtmlEscape(uploadResult.str()));
+   if (error)
+   {
+      writeError(error);
+      return false;
+   }
 
    // response content type must always be text/html to be handled
    // properly by the browser/gwt on the client side
    response.setContentType("text/html");
+
+   // let the monitor client know we've started an upload
+   using namespace monitor;
+   client().logEvent(Event(kSessionScope, kSessionUploadEvent, pUploadState->fileName));
 
    cont(&response);
    cleanupState();
@@ -1172,6 +1252,13 @@ void handleMultipleFileExportRequest(const http::Request& request,
       pResponse->setError(error);
       return;
    }
+
+   for (std::string f: files)
+   {
+      // let the monitor client know the user has downloaded this file
+      using namespace monitor;
+      client().logEvent(Event(kSessionScope, kSessionDownloadEvent, f));
+   }
    
    // return attachment
    setAttachmentResponse(request, name, tempZipFilePath, pResponse);
@@ -1200,6 +1287,10 @@ void handleFileExportRequest(const http::Request& request,
          return;
       }
       
+      // let the monitor client know the user has downloaded this file
+      using namespace monitor;
+      client().logEvent(Event(kSessionScope, kSessionDownloadEvent, file));
+
       // download as attachment
       setAttachmentResponse(request, name, filePath, pResponse);
    }
@@ -1324,6 +1415,7 @@ Error initialize()
       (bind(registerRpcMethod, "copy_file", copyFile))
       (bind(registerRpcMethod, "move_files", moveFiles))
       (bind(registerRpcMethod, "rename_file", renameFile))
+      (bind(registerRpcMethod, "touch_file", touchFile))
       (bind(registerUriHandler, "/files", handleFilesRequest))
       (bind(registerUploadHandler, "/upload", handleFileUploadRequestAsync))
       (bind(registerUriHandler, "/export", handleFileExportRequest))

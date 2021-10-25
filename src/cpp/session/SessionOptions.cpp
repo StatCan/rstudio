@@ -112,6 +112,7 @@ core::ProgramStatus Options::read(int argc, char * const argv[], std::ostream& o
    options_description runTests("tests");
    options_description runScript("script");
    options_description verify("verify");
+   options_description version("version");
    options_description program("program");
    options_description log("log");
    options_description docs("docs");
@@ -128,13 +129,14 @@ core::ProgramStatus Options::read(int argc, char * const argv[], std::ostream& o
    int sameSite;
 
    program_options::OptionsDescription optionsDesc =
-         buildOptions(&runTests, &runScript, &verify, &program, &log, &docs, &www,
+         buildOptions(&runTests, &runScript, &verify, &version, &program, &log, &docs, &www,
                       &session, &allow, &r, &limits, &external, &git, &user, &misc,
                       &saveActionDefault, &sameSite);
 
    addOverlayOptions(&misc);
 
    optionsDesc.commandLine.add(verify);
+   optionsDesc.commandLine.add(version);
    optionsDesc.commandLine.add(runTests);
    optionsDesc.commandLine.add(runScript);
    optionsDesc.commandLine.add(program);
@@ -306,6 +308,7 @@ core::ProgramStatus Options::read(int argc, char * const argv[], std::ostream& o
    resolvePath(resourcePath_, &mathjaxPath_);
    resolvePath(resourcePath_, &libclangHeadersPath_);
    resolvePandocPath(resourcePath_, &pandocPath_);
+   resolveQuartoPath(resourcePath_, &quartoPath_);
 
    // rsclang
    if (libclangPath_ != kDefaultRsclangPath)
@@ -515,7 +518,21 @@ void Options::resolvePandocPath(const FilePath& resourcePath,
 {
    if (*pPath == kDefaultPandocPath && programMode() == kSessionProgramModeDesktop)
    {
-      FilePath path = resourcePath.getParent().completePath("MacOS/pandoc");
+      FilePath path = resourcePath.getParent().completePath("MacOS/quarto/bin");
+      *pPath = path.getAbsolutePath();
+   }
+   else
+   {
+      resolvePath(resourcePath, pPath);
+   }
+}
+
+void Options::resolveQuartoPath(const FilePath& resourcePath,
+                                std::string* pPath)
+{
+   if (*pPath == kDefaultQuartoPath && programMode() == kSessionProgramModeDesktop)
+   {
+      FilePath path = resourcePath.getParent().completePath("MacOS/quarto");
       *pPath = path.getAbsolutePath();
    }
    else
@@ -548,6 +565,12 @@ void Options::resolvePostbackPath(const FilePath& resourcePath,
 
 void Options::resolvePandocPath(const FilePath& resourcePath,
                                   std::string* pPath)
+{
+   resolvePath(resourcePath, pPath);
+}
+
+void Options::resolveQuartoPath(const FilePath& resourcePath,
+                                std::string* pPath)
 {
    resolvePath(resourcePath, pPath);
 }

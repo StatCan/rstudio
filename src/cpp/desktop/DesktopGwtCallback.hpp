@@ -209,8 +209,8 @@ public Q_SLOTS:
    bool getClipboardMonitoring();
    void setClipboardMonitoring(bool monitoring);
    
-   bool getIgnoreGpuBlacklist();
-   void setIgnoreGpuBlacklist(bool ignore);
+   bool getIgnoreGpuExclusionList();
+   void setIgnoreGpuExclusionList(bool ignore);
    
    bool getDisableGpuDriverBugWorkarounds();
    void setDisableGpuDriverBugWorkarounds(bool disable);
@@ -239,7 +239,7 @@ public Q_SLOTS:
    void reloadZoomWindow();
 
    void setTutorialUrl(QString url);
-   
+   void setPresentationUrl(QString url);
    void setViewerUrl(QString url);
    void reloadViewerZoomWindow(QString url);
 

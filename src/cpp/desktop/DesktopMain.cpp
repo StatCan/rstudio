@@ -306,7 +306,7 @@ QString inferDefaultRenderingEngineWindows()
       return QStringLiteral("software");
 
    // prefer software rendering for certain graphics cards
-   std::vector<std::string> blacklist = {
+   std::vector<std::string> unsupported = {
       "Intel(R) HD Graphics 520",
       "Intel(R) HD Graphics 530",
       "Intel(R) HD Graphics 620",
@@ -325,7 +325,7 @@ QString inferDefaultRenderingEngineWindows()
 
       // check for unsupported device
       std::string deviceString(device.DeviceString);
-      for (auto&& item : blacklist)
+      for (auto&& item : unsupported)
       {
          if (deviceString.find(item) != std::string::npos)
          {
@@ -426,12 +426,12 @@ void initializeRenderingEngine(std::vector<char*>* pArguments)
       pArguments->push_back(enableWebglSoftwareRendering);
    }
    
-   // tell Chromium to ignore the GPU blacklist if requested
-   bool ignore = desktop::options().ignoreGpuBlacklist();
+   // tell Chromium to ignore the GPU exclusion list if requested
+   bool ignore = desktop::options().ignoreGpuExclusionList();
    if (ignore)
    {
-      static char ignoreGpuBlacklist[] = "--ignore-gpu-blacklist";
-      pArguments->push_back(ignoreGpuBlacklist);
+      static char ignoreGpuExclusionList[] = "--ignore-gpu-blacklist";
+      pArguments->push_back(ignoreGpuExclusionList);
    }
    
    // also disable driver workarounds if requested
@@ -594,13 +594,13 @@ int main(int argc, char* argv[])
             // https://github.com/rstudio/rstudio/issues/2176
             
             /*
-            std::vector<std::string> rasterBlacklist = {
+            std::vector<std::string> rasterUnsupported = {
                "NVIDIA GeForce GT 650M",
                "NVIDIA GeForce GT 750M",
                "Intel Iris Graphics 6100"
             };
 
-            for (const std::string& entry : rasterBlacklist)
+            for (const std::string& entry : rasterUnsupported)
             {
                if (stdOut.find(entry) != std::string::npos)
                {
@@ -611,9 +611,9 @@ int main(int argc, char* argv[])
             }
             */
             
-            std::vector<std::string> gpuBlacklist = {};
+            std::vector<std::string> gpuExclusions = {};
             
-            for (const std::string& entry : gpuBlacklist)
+            for (const std::string& entry : gpuExclusions)
             {
                if (stdOut.find(entry) != std::string::npos)
                {
@@ -795,6 +795,18 @@ int main(int argc, char* argv[])
          scriptsPath = currentPath.completePath("desktop");
          devMode = true;
       }
+
+      // alternate debug config where cmake generation was run at root of repo; the
+      // config files will be in src/cpp relative to the current directory set earlier
+      // to location of CMakeCache.txt
+      else if (currentPath.completePath("src/cpp/conf/rdesktop-dev.conf").exists())
+      {
+         confPath = currentPath.completePath("src/cpp/conf/rdesktop-dev.conf");
+         sessionPath = currentPath.completePath("src/cpp/session/rsession");
+         scriptsPath = currentPath.completePath("src/cpp/desktop");
+         devMode = true;
+      }
+
       // Sometimes boost is returning the wrong current path, which leads to not discovering the conf files correctly.
       // This falls back to checking under the install path. If this file is present there, we probably want to be
       // running in developer mode.

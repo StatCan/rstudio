@@ -84,6 +84,15 @@ public class RmdFrontMatter extends JavaScriptObject
          return Object.getOwnPropertyNames(this.output);
    }-*/;
 
+   public final native JsArrayString getQuartoFormatList() /*-{
+      if (typeof this.format === "undefined")
+         return [ "html" ];
+      if (typeof this.format === "string")
+         return [ this.format ];
+      else
+         return Object.getOwnPropertyNames(this.format);
+   }-*/;
+
    public final native RmdFrontMatterOutputOptions getOutputOption(
          String format) /*-{
      if (typeof this.output === "undefined" || 
@@ -156,12 +165,15 @@ public class RmdFrontMatter extends JavaScriptObject
       }
    }
    
-   public final static String OUTPUT_KEY = "output"; // $NON-NLS-1$
-   public final static String RUNTIME_KEY = "runtime"; // $NON-NLS-1$
-   public final static String KNIT_KEY = "knit"; // $NON-NLS-1$
+   public final static String OUTPUT_KEY = "output"; //$NON-NLS-1$
+   public final static String FORMAT_KEY = "format"; //$NON-NLS-1$
+   public final static String RUNTIME_KEY = "runtime"; //$NON-NLS-1$
+   public final static String SERVER_KEY = "server"; //$NON-NLS-1$
+   public final static String KNIT_KEY = "knit"; //$NON-NLS-1$
 
    public final static String DEFAULT_FORMAT = "default"; // $NON-NLS-1$
    public final static String SHINY_RUNTIME = "shiny"; // $NON-NLS-1$
    public final static String SHINY_PRERENDERED_RUNTIME = "shiny_prerendered"; // $NON-NLS-1$
+   public final static String SHINY_RMD_RUNTIME = "shinyrmd";
    public final static String FRONTMATTER_SEPARATOR = "---\n"; // $NON-NLS-1$
 }

@@ -223,7 +223,7 @@ public abstract class VersionControlPage extends NewProjectWizardPage
                                                           checkoutDir, 
                                                           dir);
          
-         return new NewProjectResult(projFile, false, false, dir, options, null, null, null, null);
+         return new NewProjectResult(projFile, false, false, dir, options, null, null, null, null, null);
       }
       else
       {

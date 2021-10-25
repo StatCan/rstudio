@@ -30,7 +30,7 @@ public class PythonPreferencesPane extends PythonPreferencesPaneBase<UserPrefs>
       super(
          "420px", //$NON-NLS-1$
          "(No interpreter selected)"
-      );
+      , false);
       
       overrideLabel_ = new Label();
       add(overrideLabel_);

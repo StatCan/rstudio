@@ -168,11 +168,19 @@ Error initializeLog(const std::string& programIdentity,
                     const FilePath& logDir,
                     bool enableConfigReload = true);
 
+Error initializeLog(const std::string& programIdentity,
+                    log::LogLevel logLevel,
+                    bool enableConfigReload = true);
+
 void initializeLogConfigReload();
 
 // common initialization functions - do not invoke directly
 Error initLog();
 Error reinitLog();
+
+void ttyCheck(const std::string& destination);
+
+void initFileLogDestination(const log::LogLevel level, const FilePath defaultLogDir);
 
 // exit
 int exitFailure(const Error& error, const ErrorLocation& loggedFromLocation);

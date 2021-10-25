@@ -648,7 +648,20 @@ core::Error UserPrefValues::setShowDiagnosticsCpp(bool val)
 }
 
 /**
- * Whether to show diagnostic messages for other types of code (not R or C++).
+ * Whether to show diagnostic messages for YAML code as you type.
+ */
+bool UserPrefValues::showDiagnosticsYaml()
+{
+   return readPref<bool>("show_diagnostics_yaml");
+}
+
+core::Error UserPrefValues::setShowDiagnosticsYaml(bool val)
+{
+   return writePref("show_diagnostics_yaml", val);
+}
+
+/**
+ * Whether to show diagnostic messages for other types of code (not R, C++, or YAML).
  */
 bool UserPrefValues::showDiagnosticsOther()
 {
@@ -1194,19 +1207,6 @@ core::Error UserPrefValues::setSourceWithEcho(bool val)
 }
 
 /**
- * Whether to initialize new projects with a Git repo by default.
- */
-bool UserPrefValues::newProjectGitInit()
-{
-   return readPref<bool>("new_project_git_init");
-}
-
-core::Error UserPrefValues::setNewProjectGitInit(bool val)
-{
-   return writePref("new_project_git_init", val);
-}
-
-/**
  * The default engine to use when processing Sweave documents.
  */
 std::string UserPrefValues::defaultSweaveEngine()
@@ -1360,32 +1360,6 @@ bool UserPrefValues::ignoreWordsWithNumbers()
 core::Error UserPrefValues::setIgnoreWordsWithNumbers(bool val)
 {
    return writePref("ignore_words_with_numbers", val);
-}
-
-/**
- * The maximum number of spelling words to check at once.
- */
-int UserPrefValues::maxSpellcheckWords()
-{
-   return readPref<int>("max_spellcheck_words");
-}
-
-core::Error UserPrefValues::setMaxSpellcheckWords(int val)
-{
-   return writePref("max_spellcheck_words", val);
-}
-
-/**
- * The maximum number of spelling correction suggestions to prefetch.
- */
-int UserPrefValues::maxSpellcheckPrefetch()
-{
-   return readPref<int>("max_spellcheck_prefetch");
-}
-
-core::Error UserPrefValues::setMaxSpellcheckPrefetch(int val)
-{
-   return writePref("max_spellcheck_prefetch", val);
 }
 
 /**
@@ -1883,6 +1857,19 @@ core::Error UserPrefValues::setSortFileNamesNaturally(bool val)
 }
 
 /**
+ * Whether to change the directory in the Files pane automatically when the working directory in R changes.
+ */
+bool UserPrefValues::syncFilesPaneWorkingDir()
+{
+   return readPref<bool>("sync_files_pane_working_dir");
+}
+
+core::Error UserPrefValues::setSyncFilesPaneWorkingDir(bool val)
+{
+   return writePref("sync_files_pane_working_dir", val);
+}
+
+/**
  * The visibility of the Jobs tab.
  */
 std::string UserPrefValues::jobsTabVisibility()
@@ -1935,16 +1922,16 @@ core::Error UserPrefValues::setBusyDetection(std::string val)
 }
 
 /**
- * A whitelist of apps that should not be considered busy in the Terminal.
+ * A list of apps that should not be considered busy in the Terminal.
  */
-core::json::Array UserPrefValues::busyWhitelist()
+core::json::Array UserPrefValues::busyExclusionList()
 {
-   return readPref<core::json::Array>("busy_whitelist");
+   return readPref<core::json::Array>("busy_exclusion_list");
 }
 
-core::Error UserPrefValues::setBusyWhitelist(core::json::Array val)
+core::Error UserPrefValues::setBusyExclusionList(core::json::Array val)
 {
-   return writePref("busy_whitelist", val);
+   return writePref("busy_exclusion_list", val);
 }
 
 /**
@@ -2049,6 +2036,19 @@ bool UserPrefValues::newProjGitInit()
 core::Error UserPrefValues::setNewProjGitInit(bool val)
 {
    return writePref("new_proj_git_init", val);
+}
+
+/**
+ * Whether an renv environment should be created inside new projects by default.
+ */
+bool UserPrefValues::newProjUseRenv()
+{
+   return readPref<bool>("new_proj_use_renv");
+}
+
+core::Error UserPrefValues::setNewProjUseRenv(bool val)
+{
+   return writePref("new_proj_use_renv", val);
 }
 
 /**
@@ -2650,6 +2650,19 @@ core::Error UserPrefValues::setVisualMarkdownEditingShowMargin(bool val)
 }
 
 /**
+ * Whether to show line numbers in the code editors used in visual mode
+ */
+bool UserPrefValues::visualMarkdownCodeEditorLineNumbers()
+{
+   return readPref<bool>("visual_markdown_code_editor_line_numbers");
+}
+
+core::Error UserPrefValues::setVisualMarkdownCodeEditorLineNumbers(bool val)
+{
+   return writePref("visual_markdown_code_editor_line_numbers", val);
+}
+
+/**
  * The default visual editing mode font size, in points
  */
 int UserPrefValues::visualMarkdownEditingFontSizePoints()
@@ -2896,6 +2909,58 @@ core::Error UserPrefValues::setMemoryQueryIntervalSeconds(int val)
    return writePref("memory_query_interval_seconds", val);
 }
 
+/**
+ * Enable Python terminal hooks. When enabled, the RStudio-configured version of Python will be placed on the PATH.
+ */
+bool UserPrefValues::terminalPythonIntegration()
+{
+   return readPref<bool>("terminal_python_integration");
+}
+
+core::Error UserPrefValues::setTerminalPythonIntegration(bool val)
+{
+   return writePref("terminal_python_integration", val);
+}
+
+/**
+ * Enable session protocol debug logging showing all session requests and events
+ */
+bool UserPrefValues::sessionProtocolDebug()
+{
+   return readPref<bool>("session_protocol_debug");
+}
+
+core::Error UserPrefValues::setSessionProtocolDebug(bool val)
+{
+   return writePref("session_protocol_debug", val);
+}
+
+/**
+ * When enabled, if the active project contains a Python virtual environment, then RStudio will automatically activate this environment on startup.
+ */
+bool UserPrefValues::pythonProjectEnvironmentAutomaticActivate()
+{
+   return readPref<bool>("python_project_environment_automatic_activate");
+}
+
+core::Error UserPrefValues::setPythonProjectEnvironmentAutomaticActivate(bool val)
+{
+   return writePref("python_project_environment_automatic_activate", val);
+}
+
+/**
+ * When enabled, RStudio will detect R objects containing null external pointers when building the Environment pane, and avoid introspecting their contents further.
+ */
+bool UserPrefValues::checkNullExternalPointers()
+{
+   return readPref<bool>("check_null_external_pointers");
+}
+
+core::Error UserPrefValues::setCheckNullExternalPointers(bool val)
+{
+   return writePref("check_null_external_pointers", val);
+}
+
 std::vector<std::string> UserPrefValues::allKeys()
 {
    return std::vector<std::string>({
@@ -2947,6 +3012,7 @@ std::vector<std::string> UserPrefValues::allKeys()
       kShowFunctionSignatureTooltips,
       kShowDiagnosticsR,
       kShowDiagnosticsCpp,
+      kShowDiagnosticsYaml,
       kShowDiagnosticsOther,
       kStyleDiagnostics,
       kDiagnosticsOnSave,
@@ -2989,7 +3055,6 @@ std::vector<std::string> UserPrefValues::allKeys()
       kToolbarVisible,
       kDefaultProjectLocation,
       kSourceWithEcho,
-      kNewProjectGitInit,
       kDefaultSweaveEngine,
       kDefaultLatexProgram,
       kUseRoxygen,
@@ -3002,8 +3067,6 @@ std::vector<std::string> UserPrefValues::allKeys()
       kDocumentLoadLintDelay,
       kIgnoreUppercaseWords,
       kIgnoreWordsWithNumbers,
-      kMaxSpellcheckWords,
-      kMaxSpellcheckPrefetch,
       kRealTimeSpellchecking,
       kNavigateToBuildError,
       kPackagesPaneEnabled,
@@ -3042,11 +3105,12 @@ std::vector<std::string> UserPrefValues::allKeys()
       kAlwaysShownFiles,
       kAlwaysShownExtensions,
       kSortFileNamesNaturally,
+      kSyncFilesPaneWorkingDir,
       kJobsTabVisibility,
       kShowLauncherJobsTab,
       kLauncherJobsSort,
       kBusyDetection,
-      kBusyWhitelist,
+      kBusyExclusionList,
       kKnitWorkingDir,
       kDocOutlineShow,
       kLatexPreviewOnCursorIdle,
@@ -3055,6 +3119,7 @@ std::vector<std::string> UserPrefValues::allKeys()
       kGitDiffIgnoreWhitespace,
       kConsoleDoubleClickSelect,
       kNewProjGitInit,
+      kNewProjUseRenv,
       kRootDocument,
       kShowUserHomePage,
       kReuseSessionsForProjectLinks,
@@ -3101,6 +3166,7 @@ std::vector<std::string> UserPrefValues::allKeys()
       kVisualMarkdownEditingMaxContentWidth,
       kVisualMarkdownEditingShowDocOutline,
       kVisualMarkdownEditingShowMargin,
+      kVisualMarkdownCodeEditorLineNumbers,
       kVisualMarkdownEditingFontSizePoints,
       kVisualMarkdownCodeEditor,
       kZoteroLibraries,
@@ -3120,6 +3186,10 @@ std::vector<std::string> UserPrefValues::allKeys()
       kCommandPaletteMru,
       kShowMemoryUsage,
       kMemoryQueryIntervalSeconds,
+      kTerminalPythonIntegration,
+      kSessionProtocolDebug,
+      kPythonProjectEnvironmentAutomaticActivate,
+      kCheckNullExternalPointers,
    });
 }
    

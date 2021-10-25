@@ -97,7 +97,7 @@ public class RpcRequest
       // in server mode, append a CSRF token for request validation
       if (!Desktop.isDesktop())
       {
-         builder.setHeader("X-CSRF-Token", ApplicationCsrfToken.getCsrfToken()); //$NON-NLS-1$
+         builder.setHeader("X-RS-CSRF-Token", ApplicationCsrfToken.getCsrfToken()); //$NON-NLS-1$
       }
 
       // inform the server if we should not refresh auth creds
@@ -146,7 +146,7 @@ public class RpcRequest
                         Debug.log("Response: " + responseText);
                      requestLogEntry_.logResponse(ResponseType.Normal,
                                                  responseText);
-                     rpcResponse = RpcResponse.parse(responseText);
+                     rpcResponse = RpcResponse.parseUnsafe(responseText);
                      
                      // response received and validated, process it!
                      requestCallback.onResponseReceived(enclosingRequest, 
@@ -167,7 +167,7 @@ public class RpcRequest
                   
                   // default error message
                   // i18n: Concatenation/Message
-                  String message = "Status code " + 
+                  String message = "Status code " +
                                    Integer.toString(status) + 
                                    " returned by " +
                                    (Desktop.isDesktop() ? "R session" : "RStudio Server") +

@@ -19,12 +19,11 @@ add_subdirectory(workers)
 
 # verify that install-dictionaries, install-mathjax, install-pandoc,
 # and install-rmarkdown have been run as required
-set(PANDOC_VERSION "2.11.4" CACHE INTERNAL "Pandoc version")
 
 if(WIN32)
    set(RSTUDIO_DEPENDENCIES_DICTIONARIES_DIR "${RSTUDIO_DEPENDENCIES_DIR}/common/dictionaries")
    set(RSTUDIO_DEPENDENCIES_MATHJAX_DIR      "${RSTUDIO_DEPENDENCIES_DIR}/common/mathjax-27")
-   set(RSTUDIO_DEPENDENCIES_PANDOC_DIR       "${RSTUDIO_DEPENDENCIES_DIR}/common/pandoc/${PANDOC_VERSION}")
+   set(RSTUDIO_DEPENDENCIES_QUARTO_DIR       "${RSTUDIO_DEPENDENCIES_DIR}/common/quarto")
 else()
 
    # indirection to help build machine find these libraries?
@@ -40,20 +39,27 @@ else()
       set(RSTUDIO_DEPENDENCIES_MATHJAX_DIR "${RSTUDIO_DEPENDENCIES_DIR}/mathjax-27")
    endif()
 
-   if(EXISTS "${RSTUDIO_TOOLS_ROOT}/pandoc/${PANDOC_VERSION}")
-      set(RSTUDIO_DEPENDENCIES_PANDOC_DIR "${RSTUDIO_TOOLS_ROOT}/pandoc/${PANDOC_VERSION}")
+   if(EXISTS "${RSTUDIO_TOOLS_ROOT}/quarto")
+      set(RSTUDIO_DEPENDENCIES_QUARTO_DIR "${RSTUDIO_TOOLS_ROOT}/quarto")
    else()
-      set(RSTUDIO_DEPENDENCIES_PANDOC_DIR "${RSTUDIO_DEPENDENCIES_DIR}/pandoc/${PANDOC_VERSION}")
+      set(RSTUDIO_DEPENDENCIES_QUARTO_DIR "${RSTUDIO_DEPENDENCIES_DIR}/quarto")
    endif()
 
 endif()
 
-foreach(DEP "${RSTUDIO_DEPENDENCIES_DICTIONARIES_DIR}"
-            "${RSTUDIO_DEPENDENCIES_MATHJAX_DIR}"
-            "${RSTUDIO_DEPENDENCIES_PANDOC_DIR}")
-   if(NOT EXISTS "${DEP}")
-      message(FATAL_ERROR "${DEP} not found (re-run install-dependencies script to install")
+# validate our dependencies exist
+foreach(VAR RSTUDIO_DEPENDENCIES_DICTIONARIES_DIR
+            RSTUDIO_DEPENDENCIES_MATHJAX_DIR
+            RSTUDIO_DEPENDENCIES_QUARTO_DIR)
+
+   # validate existence
+   if(NOT EXISTS "${${VAR}}")
+      message(FATAL_ERROR "${${VAR}} not found (re-run install-dependencies script to install")
    endif()
+
+   # cache variables so they can be seen by configure_file
+   set("${VAR}" "${${VAR}}" CACHE INTERNAL "")
+   
 endforeach()
 
 # verify embedded packages are available
@@ -111,6 +117,7 @@ set(SESSION_SOURCE_FILES
    SessionOptionsOverlay.cpp
    SessionPandoc.cpp
    SessionPasswordManager.cpp
+   SessionPerFilePathStorage.cpp
    SessionPersistentState.cpp
    SessionPostback.cpp
    SessionSSH.cpp
@@ -120,6 +127,7 @@ set(SESSION_SOURCE_FILES
    SessionUriHandlers.cpp
    SessionUrlPorts.cpp
    SessionWorkerContext.cpp
+   SessionOfflineService.cpp
    http/SessionHttpConnectionQueue.cpp
    http/SessionHttpConnectionUtils.cpp
    modules/RStudioAPI.cpp
@@ -268,6 +276,12 @@ set(SESSION_SOURCE_FILES
    modules/rmarkdown/NotebookWorkingDir.cpp
    modules/rmarkdown/RMarkdownPresentation.cpp
    modules/rmarkdown/RMarkdownTemplates.cpp
+   modules/quarto/SessionQuarto.cpp
+   modules/quarto/SessionQuartoJob.cpp
+   modules/quarto/SessionQuartoPreview.cpp
+   modules/quarto/SessionQuartoResources.cpp
+   modules/quarto/SessionQuartoServe.cpp
+   modules/quarto/SessionQuartoXRefs.cpp
    modules/shiny/SessionShiny.cpp
    modules/shiny/ShinyAsyncJob.cpp
    modules/sql/SessionSql.cpp
@@ -578,11 +592,10 @@ if(NOT RSTUDIO_SESSION_WIN32 AND NOT RSESSION_ALTERNATE_BUILD)
    install(DIRECTORY "${RSTUDIO_DEPENDENCIES_MATHJAX_DIR}"
            DESTINATION "${RSTUDIO_INSTALL_SUPPORTING}/resources")
 
-   # install pandoc
-   file(GLOB PANDOC_FILES "${RSTUDIO_DEPENDENCIES_PANDOC_DIR}/pandoc*")
-   install(FILES ${PANDOC_FILES}
-           PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
-           DESTINATION "${RSTUDIO_INSTALL_BIN}/pandoc")
+   # install quarto
+   install(DIRECTORY "${RSTUDIO_DEPENDENCIES_QUARTO_DIR}"
+           USE_SOURCE_PERMISSIONS
+           DESTINATION "${RSTUDIO_INSTALL_BIN}")
 
    # install embedded packages
    foreach(PKG ${RSTUDIO_EMBEDDED_PACKAGES})
@@ -615,6 +628,11 @@ if(NOT RSTUDIO_SESSION_WIN32 AND NOT RSESSION_ALTERNATE_BUILD)
    # install tutorials
    install(DIRECTORY "resources/tutorial_resources"
            DESTINATION ${RSTUDIO_INSTALL_SUPPORTING}/resources)
+
+   # install terminal resources
+   install(
+      DIRECTORY "resources/terminal"
+      DESTINATION ${RSTUDIO_INSTALL_SUPPORTING}/resources)
 
    # install libclang
    if(WIN32)
@@ -689,33 +707,6 @@ if(APPLE)
       set(RSESSION_DYLIB_PREFIX "@executable_path/../Frameworks/arm64")
    else()
       set(RSESSION_DYLIB_PREFIX "@executable_path/../Frameworks")
-   endif()
-
-   # if doing a package build on MacOS, reroute dependent libraries to our bundled copies
-   if (RSTUDIO_PACKAGE_BUILD)
-      find_package(OpenSSL REQUIRED QUIET)
-      foreach(lib ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY})
-         # get the real path to the library (with all symlinks resolved) and filename
-         get_filename_component(LIB_PATH "${lib}" REALPATH)
-         get_filename_component(LIB_FILE "${LIB_PATH}" NAME)
-         # this command does the following:
-         # 1. runs otool -L to find the path at which the OpenSSL library is
-         #    linked into the executable (this path is unfortunately not canonical
-         #    and includes layers of both resolved and unresolved symlinks)
-         # 2. extracts the path from the output using grep and awk
-         # 3. runs install_name_tool and tells it to replace the path with one that
-         #    points to a bundled copy of the same file
-         add_custom_command(TARGET rsession POST_BUILD
-            COMMAND install_name_tool -change `otool -L ${CMAKE_CURRENT_BINARY_DIR}/rsession | grep ${LIB_FILE} | awk '{ print $$1 }'` ${RSESSION_DYLIB_PREFIX}/${LIB_FILE} ${CMAKE_CURRENT_BINARY_DIR}/rsession)
-      endforeach()
-
-      # do something similar to the above to fix paths to SOCI libraries
-      foreach(lib ${SOCI_DEPENDENCIES})
-         get_filename_component(LIB_NAME "${lib}" NAME_WE)
-         add_custom_command(TARGET rsession POST_BUILD
-            COMMAND install_name_tool -change `otool -L ${CMAKE_CURRENT_BINARY_DIR}/rsession | grep ${LIB_NAME} | awk '{ print $$1 }'` ${RSESSION_DYLIB_PREFIX}/$$\(otool -L ${CMAKE_CURRENT_BINARY_DIR}/rsession | grep ${LIB_NAME} | awk '{ print $$1 }' | xargs basename\) ${CMAKE_CURRENT_BINARY_DIR}/rsession)
-      endforeach()
-
    endif()
 
 endif()

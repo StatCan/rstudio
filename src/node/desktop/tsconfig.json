@@ -1,0 +1,26 @@
+{
+  "extends": "@tsconfig/node14/tsconfig.json",
+  "compilerOptions": {
+    "incremental": true,
+    "sourceMap": true,
+    "removeComments": true,
+    "baseUrl": ".",
+    "strict": true,
+    "paths": {
+      "*": ["node_modules/*"]
+    },
+    "lib": [
+      "DOM"
+    ]
+  },
+  "include": [
+    "src/**/*",
+    "test/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "ts-node": {
+    "transpileOnly": true
+  }
+}
