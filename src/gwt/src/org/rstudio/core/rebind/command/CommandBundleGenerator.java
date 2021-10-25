@@ -329,21 +329,11 @@ class CommandBundleGeneratorHelper
       writer.println(name + "_ = new AppCommand();");
 
       setProperty(writer, name, commandProps_.get(name), "id");
-      // DEBUG: Add i18n
-      if (addI18n)
-      {
-         setProperty(writer, name, commandProps_.get(name), "desc", true);
-         setProperty(writer, name, commandProps_.get(name), "label", true);
-         setProperty(writer, name, commandProps_.get(name), "buttonLabel", true);
-         setProperty(writer, name, commandProps_.get(name), "menuLabel", true);
-      } else
-      {
-         setProperty(writer, name, commandProps_.get(name), "desc");
-         setProperty(writer, name, commandProps_.get(name), "desc", true);
+      setProperty(writer, name, commandProps_.get(name), "desc");
+      setProperty(writer, name, commandProps_.get(name), "desc", true);
       setProperty(writer, name, commandProps_.get(name), "label", true);
-         setProperty(writer, name, commandProps_.get(name), "buttonLabel", true);
-         setProperty(writer, name, commandProps_.get(name), "menuLabel", true);
-      }
+      setProperty(writer, name, commandProps_.get(name), "buttonLabel", true);
+      setProperty(writer, name, commandProps_.get(name), "menuLabel", true);
       setProperty(writer, name, commandProps_.get(name), "windowMode");
       setProperty(writer, name, commandProps_.get(name), "context");
       // Any additional textual properties would be added here...
