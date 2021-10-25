@@ -116,13 +116,8 @@ class CommandBundleGeneratorHelper
          factory.addImport("org.rstudio.core.client.command.MenuCallback");
          factory.addImport("org.rstudio.core.client.command.ShortcutManager");
          factory.addImport("org.rstudio.core.client.resources.ImageResource2x");
-         // Trying out adding some i18n versions of this code
-         if (addI18n) {
-            factory.addImport("com.google.gwt.core.client.GWT");
-            factory.addImport("org.rstudio.studio.client.workbench.commands.CmdConstants");
-
-         }
-
+         factory.addImport("com.google.gwt.core.client.GWT");
+         factory.addImport("org.rstudio.studio.client.workbench.commands.CmdConstants");
          SourceWriter writer = factory.createSourceWriter(context_, printWriter);
 
          emitConstructor(writer, images);
@@ -130,9 +125,7 @@ class CommandBundleGeneratorHelper
          emitMenus(writer);
          emitShortcuts(writer);
          emitCommandAccessors(writer);
-         if (addI18n) {
-            emitConstants(writer);
-         }
+         emitI18n(writer);
 
          // Close the class and commit it
          writer.outdent();
@@ -169,6 +162,11 @@ class CommandBundleGeneratorHelper
          String name = method.getName();
          writer.println("private AppCommand " + name + "_;");
       }
+   }
+
+   private void emitI18n(SourceWriter writer)
+   {
+      writer.println("private CmdConstants " + i18n_constants_name + " = GWT.create(CmdConstants.class);");
    }
 
    private void emitMenus(SourceWriter writer) throws UnableToCompleteException
@@ -341,9 +339,10 @@ class CommandBundleGeneratorHelper
       } else
       {
          setProperty(writer, name, commandProps_.get(name), "desc");
-         setProperty(writer, name, commandProps_.get(name), "label");
-         setProperty(writer, name, commandProps_.get(name), "buttonLabel");
-         setProperty(writer, name, commandProps_.get(name), "menuLabel");
+         setProperty(writer, name, commandProps_.get(name), "desc", true);
+      setProperty(writer, name, commandProps_.get(name), "label", true);
+         setProperty(writer, name, commandProps_.get(name), "buttonLabel", true);
+         setProperty(writer, name, commandProps_.get(name), "menuLabel", true);
       }
       setProperty(writer, name, commandProps_.get(name), "windowMode");
       setProperty(writer, name, commandProps_.get(name), "context");
@@ -416,27 +415,7 @@ class CommandBundleGeneratorHelper
       setProperty(writer, name, props, propertyName, false);
    }
 
-// DEBUG: Remove this!
-   //      private void setPropertyI18n(SourceWriter writer,
-//                                String name,
-//                                Element props,
-//                                String propertyName,
-//                                boolean i18n)
-//   {
-//      if (!isPropertySet(props, propertyName)) {
-//         return;
-//      }
-//
-//      String propertyCapitalized = Character.toUpperCase(propertyName.charAt(0)) + propertyName.substring(1);
-//      String value = constants_name + "." + name + propertyCapitalized;
-//
-//      String setter = "set" + Character.toUpperCase(propertyName.charAt(0))
-//              + propertyName.substring(1);
-//      writer.println(name + "_." + setter
-//              + "(" + Generator.escape(value) + ");");
-//   }
-
-   /**
+    /**
     * Tests if a property is set, returning true if propertyName exists in props else false
     *
     * A property set to an empty string is considered set and returns true.  If the element
@@ -453,7 +432,6 @@ class CommandBundleGeneratorHelper
          return false;
 
       return true;
-
    }
 
    private void setPropertyBool(SourceWriter writer,
@@ -584,8 +562,6 @@ class CommandBundleGeneratorHelper
    private final String packageName_;
    private final Map<String, Element> commandProps_;
    private String simpleName_;
-   // DEBUG: Trying out some local i18n debugging
-   private final boolean addI18n = true;
    private final String i18n_constants_name = "_constants";
 }
 
