@@ -267,7 +267,7 @@ public class DesktopHooks
    
    void onUrlsDropped(String droppedUrls)
    {   
-      final String kUrlSeparator = "26D63FFA-995F-4E9A-B4AA-04DA9F93B538";
+      final String kUrlSeparator = "26D63FFA-995F-4E9A-B4AA-04DA9F93B538"; // $NON-NLS-1$
       List<String> urls = Arrays.asList(droppedUrls.split(kUrlSeparator));
       workbenchContext_.setDroppedUrls(urls); 
    }

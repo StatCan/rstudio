@@ -41,7 +41,7 @@ public final class StaticDataResourceGenerator extends AbstractResourceGenerator
         method);
 
     if (resources.length != 1) {
-      logger.log(TreeLogger.ERROR, "Exactly one resource must be specified",
+      logger.log(TreeLogger.ERROR, "Exactly one resource must be specified", // $NON-NLS-1$
           null);
       throw new UnableToCompleteException();
     }

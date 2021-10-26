@@ -92,7 +92,7 @@ public abstract class HtmlFormModalDialog<T> extends ModalDialogBase
                {
                   public void execute()
                   {
-                     if ("Access is denied.".equals(
+                     if ("Access is denied.".equals( // $NON-NLS-1$
                            StringUtil.notNull(e.getDescription()).trim()))
                      {
                         indicatorWrapper.onError(

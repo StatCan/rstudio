@@ -147,6 +147,6 @@ public class DecorativeImage extends Image
     */
    public void setAltText(String altText)
    {
-      Debug.logWarning("Trying to set alt text on a decorative image");
+      Debug.logWarning("Trying to set alt text on a decorative image"); // $NON-NLS-1$
    }
 }

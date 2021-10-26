@@ -254,7 +254,7 @@ public class AsyncShimGenerator extends Generator
       }
       catch (Exception e)
       {
-         logger.log(TreeLogger.Type.ERROR, "Barf", e);
+         logger.log(TreeLogger.Type.ERROR, "Barf", e); // $NON-NLS-1$
          throw new UnableToCompleteException();
       }
 

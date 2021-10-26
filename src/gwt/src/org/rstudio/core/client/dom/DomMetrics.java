@@ -25,7 +25,7 @@ public class DomMetrics
 {
    public static Size measureHTML(String html)
    {
-      return measureHTML(html, "gwt-Label");
+      return measureHTML(html, "gwt-Label"); // $NON-NLS-1$
    } //$NON-NLS-1$
    public static Size measureHTML(String html, String styleName)
    {

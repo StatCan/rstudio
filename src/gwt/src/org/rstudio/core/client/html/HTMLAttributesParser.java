@@ -142,7 +142,7 @@ public class HTMLAttributesParser
       
       private boolean consumeWhitespace()
       {
-         return consumeUntilRegex("(?:\\S|$)");
+         return consumeUntilRegex("(?:\\S|$)"); // $NON-NLS-1$
       }
       
       private boolean consumeEquals()

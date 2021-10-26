@@ -719,7 +719,7 @@ public class AnsiCode
 
    // RegEx to match ANSI escape codes copied from https://github.com/chalk/ansi-regex
    public static final String ANSI_REGEX =
-         "[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-PRZcf-nqry=><@]";
+         "[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-PRZcf-nqry=><@]"; // $NON-NLS-1$
 
    // Match ANSI escape sequences
    public static final Pattern ANSI_ESCAPE_PATTERN = Pattern.create(ANSI_REGEX);
@@ -729,7 +729,7 @@ public class AnsiCode
 
    // RegEx to match complete SGR codes (colors, fonts, appearance)
    public static final String SGR_REGEX =
-         "[\u001b\u009b]\\[(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[m]";
+         "[\u001b\u009b]\\[(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[m]"; // $NON-NLS-1$
 
    // Match ANSI SGR escape sequences
    public static final Pattern SGR_ESCAPE_PATTERN = Pattern.create(SGR_REGEX);

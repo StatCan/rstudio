@@ -122,7 +122,7 @@ public class ShortcutsEmitter
    {
       List<ShortcutKeyCombination> keys = new ArrayList<>();
       
-      for (String keyCombination : shortcut.split("\\s+"))
+      for (String keyCombination : shortcut.split("\\s+"))// $NON-NLS-1$
       {
          String[] chunks = keyCombination.split("\\+");
          
@@ -316,7 +316,7 @@ public class ShortcutsEmitter
       if (val.equals("]"))
          return "221";
 
-      logger_.log(Type.WARN, "Returning null from toKeyCode for key " + val);
+      logger_.log(Type.WARN, "Returning null from toKeyCode for key " + val);// $NON-NLS-1$
       return null;
    }
 

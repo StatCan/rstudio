@@ -323,7 +323,7 @@ public class DirectoryContentsWidget
    {
       if (selectedRow_ != null)
       {
-         table_.getRowFormatter().removeStyleName(selectedRow_, "gwt-MenuItem-selected");
+         table_.getRowFormatter().removeStyleName(selectedRow_, "gwt-MenuItem-selected"); // $NON-NLS-1$
          Roles.getOptionRole().removeAriaSelectedState( //$NON-NLS-1$
                table_.getRowFormatter().getElement(selectedRow_));
          Roles.getListboxRole().removeAriaActivedescendantProperty(table_.getElement());

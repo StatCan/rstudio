@@ -583,7 +583,7 @@ public abstract class ModalDialogBase extends DialogBox
                   e.hasTagName("A") ||
                   e.hasTagName("BUTTON") ||
                   e.hasClassName(ALLOW_ENTER_KEY_CLASS) ||
-                  (e.hasAttribute("role") && StringUtil.equals(e.getAttribute("role"), "link"));
+                  (e.hasAttribute("role") && StringUtil.equals(e.getAttribute("role"), "link")); // $NON-NLS-1$
 
             if (enterAllowed) //$NON-NLS-1$
                return;

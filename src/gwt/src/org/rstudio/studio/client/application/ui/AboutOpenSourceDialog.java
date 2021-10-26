@@ -44,7 +44,7 @@ public class AboutOpenSourceDialog extends ModalDialogBase
       ThemedButton closeButton = new ThemedButton("Close", event -> closeDialog());
       addOkButton(closeButton);
 
-      noticeHTML_.setHTML("<pre>" + notice.notice + "</pre>");
+      noticeHTML_.setHTML("<pre>" + notice.notice + "</pre>"); // $NON-NLS-1$
       FontSizer.applyNormalFontSize(noticeHTML_);
       Roles.getDocumentRole().set(noticeHTML_.getElement());
       Roles.getDocumentRole().setAriaLabelProperty(noticeHTML_.getElement(),

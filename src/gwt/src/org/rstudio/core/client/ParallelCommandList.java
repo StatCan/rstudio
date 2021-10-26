@@ -40,7 +40,7 @@ public class ParallelCommandList
    {
       if (running_)
       {
-         log("cannot add - already running");
+         log("cannot add - already running"); // $NON-NLS-1$
          return;
       }
 
@@ -76,13 +76,13 @@ public class ParallelCommandList
 
    private void countdown()
    {
-      log("countdown");
+      log("countdown"); // $NON-NLS-1$
 
       commandsRemaining--;
 
       if (commandsRemaining <= 0)
       {
-         log("done");
+         log("done"); // $NON-NLS-1$
          running_ = false;
          onCompleted_.execute();
          commands_.clear();

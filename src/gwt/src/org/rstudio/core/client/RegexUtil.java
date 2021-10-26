@@ -54,7 +54,7 @@ public class RegexUtil
          Pattern.create("^\\s*```\\{(.*?)\\}\\s*$", ""); //$NON-NLS-1$
    
    public static final Pattern RE_RMARKDOWN_ENGINE_NAME =
-         Pattern.create("^\\w+", "");
+         Pattern.create("^\\w+", ""); // $NON-NLS-1$
    
    public static final Pattern RE_RMARKDOWN_CHUNK_END =
          Pattern.create("^\\s*```\\s*$", ""); //$NON-NLS-1$

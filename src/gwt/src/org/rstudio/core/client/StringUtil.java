@@ -102,22 +102,22 @@ public class StringUtil
 
       String format = "";
       // i18n: Do date formats need ot be internationalized?
-      if (DateTimeFormat.getFormat("MMM d").format(date) ==
-          DateTimeFormat.getFormat("MMM d").format(now))
+      if (DateTimeFormat.getFormat("MMM d").format(date) == // $NON-NLS-1$
+          DateTimeFormat.getFormat("MMM d").format(now)) // $NON-NLS-1$
       {
          // it's today, so just show the time
-         format = "h:mm a";
+         format = "h:mm a"; // $NON-NLS-1$
       }
-      else if (DateTimeFormat.getFormat("yyyy").format(date) ==
-               DateTimeFormat.getFormat("yyyy").format(now))
+      else if (DateTimeFormat.getFormat("yyyy").format(date) == // $NON-NLS-1$
+               DateTimeFormat.getFormat("yyyy").format(now)) // $NON-NLS-1$
       {
          // it's not today, but in the last year, so show the date too
-         format = "MMM d, h:mm a";
+         format = "MMM d, h:mm a"; // $NON-NLS-1$
       }
       else
       {
          // happened last year, probably don't care about the time
-         format = "MMM d, yyyy";
+         format = "MMM d, yyyy"; // $NON-NLS-1$
       }
 
       return DateTimeFormat.getFormat(format).format(date);
@@ -249,7 +249,7 @@ public class StringUtil
 
    public static String textToRLiteral(String value)
    {
-      String escaped = value.replaceAll("([\"\\n\\r\\t\\b\\f\\\\])", "\\\\$1");
+      String escaped = value.replaceAll("([\"\\n\\r\\t\\b\\f\\\\])", "\\\\$1"); // $NON-NLS-1$
       return '"' + escaped + '"';
    }
 
@@ -1094,7 +1094,7 @@ public class StringUtil
       if (string.equals(string.toUpperCase()))
          return string;
 
-      String result = string.replaceAll("\\s*([A-Z])", " $1");
+      String result = string.replaceAll("\\s*([A-Z])", " $1"); // $NON-NLS-1$
       return result.substring(0, 1).toUpperCase() +
              result.substring(1);
    }
@@ -1487,7 +1487,7 @@ public class StringUtil
    private static final NumberFormat PRETTY_NUMBER_FORMAT = NumberFormat.getFormat("#,##0.#####");
    // i18n: Does this date format need i18n?
    private static final DateTimeFormat DATE_FORMAT
-                          = DateTimeFormat.getFormat("MMM d, yyyy, h:mm a");
+                          = DateTimeFormat.getFormat("MMM d, yyyy, h:mm a"); // $NON-NLS-1$
    private static final Pattern RE_INDENT = Pattern.create("^\\s*", ""); //$NON-NLS-1$
    private static final Pattern BASH_RESERVED_CHAR = Pattern.create("[^a-zA-Z0-9,._+@%/-]");
 }
