@@ -1138,10 +1138,10 @@ Changes that do not require rebuilding the interfaces/properties files:
         desc="Create a new Quarto presentation"
         rebindable="false"/>
 
-   <cmd id="serveQuartoSite"
+   <!--<cmd id="serveQuartoSite"
         menuLabel="_Serve Site"
         desc="Run development server for Quarto site"
-        rebindable="false"/>
+        rebindable="false"/>-->
 
    <cmd id="newRShinyApp"
         menuLabel="Shiny _Web App..."

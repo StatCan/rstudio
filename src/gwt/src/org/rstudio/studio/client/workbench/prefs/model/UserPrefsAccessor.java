@@ -3769,7 +3769,7 @@ public class UserPrefsAccessor extends Prefs
          saveRetryTimeout().setValue(layer, source.getInteger("save_retry_timeout")); // $NON-NLS-1$
       if (source.hasKey("insert_native_pipe_operator")) // $NON-NLS-1$
          insertNativePipeOperator().setValue(layer, source.getBool("insert_native_pipe_operator")); // $NON-NLS-1$
-      if (source.hasKey("command_palette_mru") // $NON-NLS-1$
+      if (source.hasKey("command_palette_mru")) // $NON-NLS-1$
          commandPaletteMru().setValue(layer, source.getBool("command_palette_mru")); // $NON-NLS-1$
       if (source.hasKey("show_memory_usage")) // $NON-NLS-1$
          showMemoryUsage().setValue(layer, source.getBool("show_memory_usage")); // $NON-NLS-1$

@@ -483,7 +483,7 @@ public class ShinyApplication implements ShinyApplicationStatusEvent.Handler,
             }
 
             @Override
-            public voidonError(ServerError error)
+            public void onError(ServerError error)
                {
                   display_.showErrorMessage(
                      "Failed to Stop",
