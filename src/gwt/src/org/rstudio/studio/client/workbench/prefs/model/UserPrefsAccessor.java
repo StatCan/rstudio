@@ -3323,6 +3323,29 @@ public class UserPrefsAccessor extends Prefs
               10);
    }
 
+   /**
+    * Enable IDE features for the Quarto publishing system.
+    */
+   public PrefValue<String> quartoEnabled()
+   {
+      return enumeration(
+         "quarto_enabled",
+         "Enble Quarto features",
+         "Enable IDE features for the Quarto publishing system.",
+         new String[] {
+            QUARTO_ENABLED_AUTO,
+            QUARTO_ENABLED_ENABLED,
+            QUARTO_ENABLED_DISABLED,
+            QUARTO_ENABLED_HIDDEN
+         },
+         "auto");
+   }
+
+   public final static String QUARTO_ENABLED_AUTO = "auto";
+   public final static String QUARTO_ENABLED_ENABLED = "enabled";
+   public final static String QUARTO_ENABLED_DISABLED = "disabled";
+   public final static String QUARTO_ENABLED_HIDDEN = "hidden";
+
    public void syncPrefs(String layer, JsObject source)
    {
       if (source.hasKey("run_rprofile_on_resume")) // $NON-NLS-1$
@@ -3392,7 +3415,7 @@ public class UserPrefsAccessor extends Prefs
       if (source.hasKey("insert_matching")) // $NON-NLS-1$
          insertMatching().setValue(layer, source.getBool("insert_matching")); // $NON-NLS-1$
       if (source.hasKey("insert_spaces_around_equals")) // $NON-NLS-1$
-         insertSpacesAroundEquals().setValue(layer, source.getBool("insert_spaces_around_equals")); // $NON-NLS-1$
+         insertSpacesAroundEquals().setValue(layer, source.getBool("inser // $NON-NLS-1$t_spaces_around_equals")); // $NON-NLS-1$
       if (source.hasKey("insert_parens_after_function_completion")) // $NON-NLS-1$
          insertParensAfterFunctionCompletion().setValue(layer, source.getBool("insert_parens_after_function_completion")); // $NON-NLS-1$
       if (source.hasKey("tab_multiline_completion")) // $NON-NLS-1$
@@ -3507,8 +3530,6 @@ public class UserPrefsAccessor extends Prefs
          defaultProjectLocation().setValue(layer, source.getString("default_project_location")); // $NON-NLS-1$
       if (source.hasKey("source_with_echo")) // $NON-NLS-1$
          sourceWithEcho().setValue(layer, source.getBool("source_with_echo")); // $NON-NLS-1$
-      if (source.hasKey("new_project_git_init")) // $NON-NLS-1$
-         newProjectGitInit().setValue(layer, source.getBool("new_project_git_init")); // $NON-NLS-1$
       if (source.hasKey("default_sweave_engine")) // $NON-NLS-1$
          defaultSweaveEngine().setValue(layer, source.getString("default_sweave_engine")); // $NON-NLS-1$
       if (source.hasKey("default_latex_program")) // $NON-NLS-1$
@@ -3533,10 +3554,6 @@ public class UserPrefsAccessor extends Prefs
          ignoreUppercaseWords().setValue(layer, source.getBool("ignore_uppercase_words")); // $NON-NLS-1$
       if (source.hasKey("ignore_words_with_numbers")) // $NON-NLS-1$
          ignoreWordsWithNumbers().setValue(layer, source.getBool("ignore_words_with_numbers")); // $NON-NLS-1$
-      if (source.hasKey("max_spellcheck_words")) // $NON-NLS-1$
-         maxSpellcheckWords().setValue(layer, source.getInteger("max_spellcheck_words")); // $NON-NLS-1$
-      if (source.hasKey("max_spellcheck_prefetch")) // $NON-NLS-1$
-         maxSpellcheckPrefetch().setValue(layer, source.getInteger("max_spellcheck_prefetch")); // $NON-NLS-1$
       if (source.hasKey("real_time_spellchecking")) // $NON-NLS-1$
          realTimeSpellchecking().setValue(layer, source.getBool("real_time_spellchecking")); // $NON-NLS-1$
       if (source.hasKey("navigate_to_build_error")) // $NON-NLS-1$
@@ -3777,8 +3794,14 @@ public class UserPrefsAccessor extends Prefs
          memoryQueryIntervalSeconds().setValue(layer, source.getInteger("memory_query_interval_seconds")); // $NON-NLS-1$
       if (source.hasKey("terminal_python_integration")) // $NON-NLS-1$
          terminalPythonIntegration().setValue(layer, source.getBool("terminal_python_integration")); // $NON-NLS-1$
+      if (source.hasKey("session_protocol_debug")) // $NON-NLS-1$
+         sessionProtocolDebug().setValue(layer, source.getBool("session_protocol_debug")); // $NON-NLS-1$
       if (source.hasKey("python_project_environment_automatic_activate")) // $NON-NLS-1$
          pythonProjectEnvironmentAutomaticActivate().setValue(layer, source.getBool("python_project_environment_automatic_activate")); // $NON-NLS-1$
+      if (source.hasKey("check_null_external_pointers")) // $NON-NLS-1$
+         checkNullExternalPointers().setValue(layer, source.getBool("check_null_external_pointers")); // $NON-NLS-1$
+      if (source.hasKey("quarto_enabled")) // $NON-NLS-1$
+         quartoEnabled().setValue(layer, source.getString("quarto_enabled")); // $NON-NLS-1$
    }
    public List<PrefValue<?>> allPrefs()
    {
@@ -4010,6 +4033,8 @@ public class UserPrefsAccessor extends Prefs
       prefs.add(memoryQueryIntervalSeconds());
       prefs.add(terminalPythonIntegration());
       prefs.add(pythonProjectEnvironmentAutomaticActivate());
+      prefs.add(checkNullExternalPointers());
+      prefs.add(quartoEnabled());
       return prefs;
    }
 

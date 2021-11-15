@@ -566,7 +566,8 @@ public class RmdOutput implements RmdRenderStartedEvent.Handler,
    private void displayRenderResult(final RmdRenderResult result)
    {
       // don't display anything if user doesn't want to
-      if (prefs_.rmdViewerType().getValue() == UserPrefs.RMD_VIEWER_TYPE_NONE)
+      if (prefs_.rmdViewerType().getValue() == UserPrefs.RMD_VIEWER_TYPE_NONE ||
+          result.getViewerType() == UserPrefs.RMD_VIEWER_TYPE_NONE)
          return;
 
       String extension = FileSystemItem.getExtensionFromPath(
@@ -637,9 +638,9 @@ public class RmdOutput implements RmdRenderStartedEvent.Handler,
          final RmdRenderResult result, final Command onDownload)
    {
       globalDisplay_.showYesNoMessage(GlobalDisplay.MSG_INFO,
-            "R Markdown Render Completed",
+            "Render Completed",
             // i18n: Concatenation/Message
-            "R Markdown has finished rendering " +
+            "RStudio has finished rendering " +
             result.getTargetFile() + " to " +
             result.getOutputFile() + ".",
             false,

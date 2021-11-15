@@ -35,6 +35,11 @@ public class UserPrefsComputed extends UserPrefsAccessor
       );
    }
    
+   public PrefValue<String> rsaKeyFile()
+   {
+      return string("rsa_key_file", "RSA Public Key Filename", "Filename of RSA public key", "");
+   }
+
    public PrefValue<SpellingPrefsContext> spellingPrefsContext()
    {
       return object(

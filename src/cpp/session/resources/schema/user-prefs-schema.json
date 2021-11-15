@@ -230,9 +230,9 @@
         },
         "auto_detect_indentation": {
             "type": "boolean",
-            "default": true,
-            "title": "Autodetect indentation in files",
-            "description": "When enabled, the indentation for documents not part of an RStudio project will be automatically detected."
+            "default": false,
+            "title": "Auto-detect indentation in files",
+            "description": "Whether to automatically detect indentation settings from file contents."
         },
         "show_margin": {
             "type": "boolean",
@@ -1528,6 +1528,37 @@
             "title": "Interval for requerying memory stats (seconds)",
             "type": "integer",
             "default": 10
+        },
+        "terminal_python_integration": {
+            "description": "Enable Python terminal hooks. When enabled, the RStudio-configured version of Python will be placed on the PATH.",
+            "title": "Enable terminal Python integration",
+            "type": "boolean",
+            "default": true
+        },
+        "session_protocol_debug": {
+            "description": "Enable session protocol debug logging showing all session requests and events",
+            "title": "Session protocol debug logging",
+            "type": "boolean",
+            "default": false
+        },
+        "python_project_environment_automatic_activate": {
+            "description": "When enabled, if the active project contains a Python virtual environment, then RStudio will automatically activate this environment on startup.",
+            "title": "Automatically activate project Python environments",
+            "type": "boolean",
+            "default": true
+        },
+        "check_null_external_pointers": {
+            "description": "When enabled, RStudio will detect R objects containing null external pointers when building the Environment pane, and avoid introspecting their contents further.",
+            "title": "Check values in the Environment pane for null external pointers",
+            "type": "boolean",
+            "default": false
+        },
+         "quarto_enabled": {
+            "type": "string",
+            "enum": ["auto", "enabled", "disabled", "hidden"],
+            "default": "auto",
+            "title": "Enble Quarto features",
+            "description": "Enable IDE features for the Quarto publishing system."
         }
     }
 }

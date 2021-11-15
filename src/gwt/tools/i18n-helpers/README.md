@@ -2,6 +2,13 @@
 
 This README describes the internationalization (i18n) development workflow and helper tools available.
 
+After making any change (even whitespace-only) to Commands.cmd.xml, you must run one of
+`ant`, `ant draft`, or `ant generate-i18n` and commit all modified files along with Commands.cmd.xml.
+Failure to do this will break the RStudio build.
+
+This workflow requires Python3 to be active, and the requirements in commands.cmd.xml/requirements.txt
+to have been installed (i.e. with `pip install -r requirements.txt`).
+
 # i18n in RStudio
 
 ## Implementation Details
@@ -56,7 +63,7 @@ executed whenever chages to this file are detected and the `build`, `desktop`, o
 Usage below shows how to trigger the scripts manually (instead of via ant buildfile targets) for the creation of English
 and "dev" locales, as discussed above for `create_dev_locale.sh`
 
-TODO: Mention shortcuts
+TODO: Shortcuts in Commands.cmd.xml are not currently localizable.
 
 ### Usage
 

@@ -254,8 +254,12 @@ public class MenuEmitter
    /**
     * Replaces characters that cannot be in an interface name with "_"
     */
-   private String parse_label_for_i18n(String label) {
-      return label.replaceAll("[^0-9a-zA-Z_$]", "_");
+   private String parse_label_for_i18n(String label)
+   {
+      String result = label.replaceAll("[^0-9a-zA-Z_$]", "_");
+
+      // Collapse runs of underscores into a single underscore
+      return result.replaceAll("_+", "_");
    }
 
    private final TreeLogger logger_;

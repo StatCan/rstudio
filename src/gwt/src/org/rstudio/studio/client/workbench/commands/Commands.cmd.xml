@@ -3,20 +3,11 @@
 This file is intended to contain definitions for all commands in RStudio, as
 well as menu structures (for main menu and popup menus).
 
-Changes to this file may require that you refresh the i18n interfaces and
-possibly retranslate/refresh any affected translated properties files.  See
-`/src/gwt/tools/i18n-helpers/README.md` and
-`/src/gwt/tools/i18n-helpers/commands.cmd.xml/*` for helper scripts to do
-this.
-Changes that require rebuilding the interfaces/properties files:
-*  Adding/removing/renaming menus or nested manues (eg: changing
-   "File/New File/*" to "File/Create New File/*", or adding adding a second
-   menu "File/New Documentation File/*"
-* Adding a cmd
-* Changing the id or any user-facing text for a cmd
+Changes to this file require that you refresh the i18n interfaces and
+possibly retranslate/refresh any affected translated properties files. Do
+this by running "ant generate-i18n" and commit all modified files.
 
-Changes that do not require rebuilding the interfaces/properties files:
-*  Adding/changing non-user-facing text (example: adding `context="editor"`)
+See `/src/gwt/tools/i18n-helpers/README.md`.
 
 <menu>
    Contains <menu>, <cmd>, <separator>
@@ -896,7 +887,6 @@ Changes that do not require rebuilding the interfaces/properties files:
          <shortcut refid="nextPlot" value="Cmd+Alt+F12" />
          <shortcut refid="logFocusedElement" value="Ctrl+Shift+`" />
          <shortcut refid="setWorkingDir" value="Ctrl+Shift+H" />
-         <shortcut refid="synctexSearch" value="Cmd+F8" />
          <shortcut refid="checkSpelling" value="F7" />
          <shortcut refid="refreshSuperDevMode" value="Cmd+Shift+F9"/>
          <shortcut refid="viewerSaveAllAndRefresh" value="Cmd+Shift+F5"/>
@@ -978,7 +968,7 @@ Changes that do not require rebuilding the interfaces/properties files:
          <shortcut refid="layoutZoomBuild" value="Ctrl+Shift+F2"/>
          <shortcut refid="layoutZoomConnections" value="Ctrl+Shift+F5"/>
          <shortcut refid="layoutZoomTutorial" value="Ctrl+Shift+F6"/>
-         <shortcut refid="layoutZoomPresentation2" value="Ctrl+Shift+F8"/>
+         <shortcut refid="layoutZoomPresentation2" value="Ctrl+Shift+F7"/>
          <shortcut refid="layoutZoomLeftColumn" value="Ctrl+Alt+Shift+F12"/>
          <shortcut refid="layoutZoomRightColumn" value="Ctrl+Alt+Shift+F11"/>
       </shortcutgroup>
@@ -1475,6 +1465,7 @@ Changes that do not require rebuilding the interfaces/properties files:
    <cmd id="activatePresentation"
         label="Show Presentation Pane"
         menuLabel="Show Prese_ntation"
+        rebindable="false"
         windowMode="main"/>
 
    <cmd id="activatePresentation2"
@@ -2457,11 +2448,6 @@ Changes that do not require rebuilding the interfaces/properties files:
         desc="Create a blank Quarto document in current directory"
         rebindable="false"/>
 
-   <cmd id="serveQuartoSite"
-        menuLabel="_Serve Site"
-        desc="Run development server for Quarto site in current directory"
-        rebindable="false"/>
-
    <cmd id="touchRHTMLDoc"
         menuLabel="R _HTML"
         desc="Create a blank R HTML document in current directory"
@@ -2798,6 +2784,7 @@ Changes that do not require rebuilding the interfaces/properties files:
    <!--  Presentation2 -->
    <cmd id="refreshPresentation2"
         menuLabel="Refresh Presentation"
+        rebindable="false"
         desc="Refresh the presentation preview"/>
 
    <cmd id="presentation2Home"
