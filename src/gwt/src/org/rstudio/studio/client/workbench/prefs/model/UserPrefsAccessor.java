@@ -19,19 +19,16 @@
 
 package org.rstudio.studio.client.workbench.prefs.model;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsArrayString;
+import org.rstudio.core.client.JsArrayUtil;
 import org.rstudio.core.client.js.JsObject;
 import org.rstudio.studio.client.workbench.model.SessionInfo;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArrayString;
-import com.google.gwt.core.client.JsArray;
-import org.rstudio.core.client.JsArrayUtil;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gwt.core.client.GWT;
-import org.rstudio.studio.client.workbench.prefs.model.UserPrefsAccessorConstants;
 
 
 /**
@@ -3794,12 +3791,8 @@ public class UserPrefsAccessor extends Prefs
          memoryQueryIntervalSeconds().setValue(layer, source.getInteger("memory_query_interval_seconds")); // $NON-NLS-1$
       if (source.hasKey("terminal_python_integration")) // $NON-NLS-1$
          terminalPythonIntegration().setValue(layer, source.getBool("terminal_python_integration")); // $NON-NLS-1$
-      if (source.hasKey("session_protocol_debug")) // $NON-NLS-1$
-         sessionProtocolDebug().setValue(layer, source.getBool("session_protocol_debug")); // $NON-NLS-1$
       if (source.hasKey("python_project_environment_automatic_activate")) // $NON-NLS-1$
          pythonProjectEnvironmentAutomaticActivate().setValue(layer, source.getBool("python_project_environment_automatic_activate")); // $NON-NLS-1$
-      if (source.hasKey("check_null_external_pointers")) // $NON-NLS-1$
-         checkNullExternalPointers().setValue(layer, source.getBool("check_null_external_pointers")); // $NON-NLS-1$
       if (source.hasKey("quarto_enabled")) // $NON-NLS-1$
          quartoEnabled().setValue(layer, source.getString("quarto_enabled")); // $NON-NLS-1$
    }
@@ -4033,8 +4026,6 @@ public class UserPrefsAccessor extends Prefs
       prefs.add(memoryQueryIntervalSeconds());
       prefs.add(terminalPythonIntegration());
       prefs.add(pythonProjectEnvironmentAutomaticActivate());
-      prefs.add(checkNullExternalPointers());
-      prefs.add(quartoEnabled());
       return prefs;
    }
 
