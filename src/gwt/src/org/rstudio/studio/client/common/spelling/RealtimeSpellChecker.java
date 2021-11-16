@@ -54,7 +54,7 @@ public class RealtimeSpellChecker
 
    interface Resources extends ClientBundle
    {
-      @Source("./domain_specific_words.csv")
+      @Source("./domain_specific_words.csv") //NON-NLS
       TextResource domainSpecificWords();
    }
 
@@ -95,7 +95,7 @@ public class RealtimeSpellChecker
 
       if (domainSpecificWords_.isEmpty())
       {
-         String[] words = RES.domainSpecificWords().getText().split("[\\r\\n]+");
+         String[] words = RES.domainSpecificWords().getText().split("[\\r\\n]+"); //NON-NLS
          for (String w : words)
          {
             if (w.length() > 0)

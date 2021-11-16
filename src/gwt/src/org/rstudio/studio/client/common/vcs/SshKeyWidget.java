@@ -14,26 +14,16 @@
  */
 package org.rstudio.studio.client.common.vcs;
 
-import org.rstudio.core.client.ElementIds;
-import org.rstudio.core.client.files.FileSystemItem;
-import org.rstudio.core.client.widget.FormLabel;
-import org.rstudio.core.client.widget.HyperlinkLabel;
-import org.rstudio.core.client.widget.NullProgressIndicator;
-import org.rstudio.core.client.widget.ProgressIndicator;
-import org.rstudio.core.client.widget.SmallButton;
-import org.rstudio.studio.client.common.StudioClientCommonConstants;
-import org.rstudio.studio.client.server.ServerError;
-import org.rstudio.studio.client.server.ServerRequestCallback;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.TextBox;
-import org.rstudio.studio.client.workbench.prefs.views.SourceControlPreferencesPaneConstants;
+import com.google.gwt.user.client.ui.*;
+import org.rstudio.core.client.ElementIds;
+import org.rstudio.core.client.files.FileSystemItem;
+import org.rstudio.core.client.widget.*;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
+import org.rstudio.studio.client.server.ServerError;
+import org.rstudio.studio.client.server.ServerRequestCallback;
 
 public class SshKeyWidget extends Composite
 {
@@ -56,14 +46,14 @@ public class SshKeyWidget extends Composite
       HorizontalPanel captionPanel = new HorizontalPanel();
       captionPanel.addStyleName(RES.styles().captionPanel());
       captionPanel.setWidth(textWidth);
-      FormLabel sshKeyPathLabel = new FormLabel(constants_.sshKeyPathLabel(), txtSshKeyPath_);
+      FormLabel sshKeyPathLabel = new FormLabel("SSH RSA key:", txtSshKeyPath_);
       captionPanel.add(sshKeyPathLabel);
       captionPanel.setCellHorizontalAlignment(
             sshKeyPathLabel,
             HasHorizontalAlignment.ALIGN_LEFT);
 
       HorizontalPanel linkPanel = new HorizontalPanel();
-      publicKeyLink_ = new HyperlinkLabel(constants_.publicKeyLinkCaption(), () -> viewPublicKey());
+      publicKeyLink_ = new HyperlinkLabel("View public key", () -> viewPublicKey());
       publicKeyLink_.addStyleName(RES.styles().viewPublicKeyLink());
 
       ElementIds.assignElementId(publicKeyLink_, ElementIds.HYPERLINKLABEL_SSH_SHOW_PUBLIC_KEY);
@@ -81,7 +71,7 @@ public class SshKeyWidget extends Composite
       HorizontalPanel sshButtonPanel = new HorizontalPanel();
       sshButtonPanel.addStyleName(RES.styles().sshButtonPanel());
       SmallButton createKeyButton = new SmallButton();
-      createKeyButton.setText(constants_.createKeyButtonLabel());
+      createKeyButton.setText("Create RSA Key...");
       createKeyButton.addClickHandler(event -> showCreateKeyDialog());
       
       ElementIds.assignElementId(createKeyButton, ElementIds.BUTTON_SSH_KEY_CREATE);
@@ -138,7 +128,7 @@ public class SshKeyWidget extends Composite
 
    private void viewPublicKey()
    {
-      progressIndicator_.onProgress(constants_.progressIndicatorLabel());
+      progressIndicator_.onProgress("Reading public key...");
 
       // compute path to public key
       FileSystemItem privKey = 
@@ -154,7 +144,7 @@ public class SshKeyWidget extends Composite
          {
             progressIndicator_.onCompleted();
             
-            new ShowPublicKeyDialog(constants_.showPublicKeyDialogCaption(),
+            new ShowPublicKeyDialog("Public Key",
                                     publicKeyContents).showModal();
          }
 
@@ -162,7 +152,7 @@ public class SshKeyWidget extends Composite
          public void onError(ServerError error)
          {
             // i18n: Concatenation/Message
-            String msg = constants_.onErrorMessage() + keyPath + "' (" +
+            String msg = "Error attempting to read key '" + keyPath + "' (" +
                          error.getUserMessage() + ")";
             progressIndicator_.onError(msg);
          }

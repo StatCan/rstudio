@@ -259,7 +259,7 @@ public class SecondaryReposDialog extends ModalDialog<CRANMirror>
                   }
                   
                   if (!StringUtil.isNullOrEmpty(repo.getName()) &&
-                      !repo.getName().toLowerCase().equals("cran") &&
+                      !repo.getName().toLowerCase().equals("cran") && //NON-NLS
                       !repoUrl.equals(cranRepoUrl_))
                   {
                      repos_.add(repo);

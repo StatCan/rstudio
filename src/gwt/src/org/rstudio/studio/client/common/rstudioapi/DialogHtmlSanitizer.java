@@ -68,7 +68,7 @@ public final class DialogHtmlSanitizer implements HtmlSanitizer {
                int tagSpace = segment.indexOf(' ');
                if (tagSpace > 0) {
                   String tagName = segment.substring(tagStart, tagSpace).toLowerCase();
-                  if (tagName == "a") {
+                  if (tagName == "a") { //NON-NLS
                      
                      if (tag.matches("a href ?= ?\"https?://[^\"]+\"")) {
                         tag = tag + " target=\"_blank\""; //$NON-NLS-1$

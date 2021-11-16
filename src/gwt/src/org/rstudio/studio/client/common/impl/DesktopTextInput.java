@@ -55,7 +55,7 @@ public class DesktopTextInput implements TextInput
                }
                else
                {
-                  String[] lines = result.split("\\n");
+                  String[] lines = result.split("\\n"); //NON-NLS
                   okOperation.execute(lines[0],
                         RStudioGinjector.INSTANCE
                         .getGlobalDisplay()
@@ -97,7 +97,7 @@ public class DesktopTextInput implements TextInput
                else
                {
                   PromptWithOptionResult presult = new PromptWithOptionResult();
-                  String[] lines = result.split("\\n");
+                  String[] lines = result.split("\\n"); //NON-NLS
                   presult.input = lines[0];
                   presult.extraOption = "1".equals(lines[1]);
                   okOperation.execute(presult,

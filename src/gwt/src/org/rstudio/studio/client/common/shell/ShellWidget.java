@@ -427,7 +427,7 @@ public class ShellWidget extends Composite implements ShellDisplay,
       ensureInputVisible();
 
       // Deal gracefully with multi-line prompts
-      int promptLines = StringUtil.notNull(prompt).split("\\n").length;
+      int promptLines = StringUtil.notNull(prompt).split("\\n").length; //NON-NLS
       input_.asWidget().getElement().getStyle().setPaddingTop((promptLines - 1) * 15,
                                                    Unit.PX);
 

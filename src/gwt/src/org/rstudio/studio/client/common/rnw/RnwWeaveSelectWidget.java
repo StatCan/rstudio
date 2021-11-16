@@ -16,6 +16,9 @@ package org.rstudio.studio.client.common.rnw;
 
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.inject.Inject;
 import org.rstudio.core.client.Debug;
 import org.rstudio.core.client.widget.HelpButton;
 import org.rstudio.core.client.widget.MessageDialog;
@@ -28,21 +31,18 @@ import org.rstudio.studio.client.server.ServerError;
 import org.rstudio.studio.client.server.ServerRequestCallback;
 import org.rstudio.studio.client.workbench.model.Session;
 import org.rstudio.studio.client.workbench.model.TexCapabilities;
-import org.rstudio.studio.client.workbench.prefs.views.CompiledPdfPreferencesPaneConstants;
 import org.rstudio.studio.client.workbench.views.source.model.TexServerOperations;
-
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
-
-import com.google.inject.Inject;
 
 public class RnwWeaveSelectWidget extends SelectWidget
 {
    public RnwWeaveSelectWidget()
    { 
-      super(constants_.rnwWeaveSelectLabel(), rnwWeaveRegistry_.getTypeNames());
+      super("Weave Rnw files using:", rnwWeaveRegistry_.getTypeNames());
   
-      HelpButton.addHelpButton(this, "rnw_weave_method", constants_.helpButtonLabel());
+      HelpButton.addHelpButton(this,
+              "rnw_weave_method", //NON-NLS
+              "Help on weaving Rnw files"
+      );
       
       RStudioGinjector.INSTANCE.injectMembers(this);
       

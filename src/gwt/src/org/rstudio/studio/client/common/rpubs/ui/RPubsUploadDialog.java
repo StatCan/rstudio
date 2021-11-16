@@ -124,8 +124,8 @@ public class RPubsUploadDialog extends ModalDialogBase
 
       HTML warningLabel =  new HTML(
          // i18n: Concatenation/Message
-        "<strong>" + constants_.importantRPubsMessage() +
-         constants_.publiclyVisibleWarningLabel() + "</strong> " + constants_.youShouldMessage() +
+        "<strong>" + constants_.importantRPubsMessage() + //NON-NLS
+         constants_.publiclyVisibleWarningLabel() + "</strong> " + constants_.youShouldMessage() + //NON-NLS
         constants_.publishDocumentsMessage());
       warningLabel.addStyleName(styles.warningLabel());
       verticalPanel.add(warningLabel);

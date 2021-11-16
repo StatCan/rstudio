@@ -371,7 +371,7 @@ public abstract class ModalDialogBase extends DialogBox
 
    protected ThemedButton createCancelButton(final Operation cancelOperation)
    {
-      return new ThemedButton(constants_.Editing_cancel_shortcuts(), clickEvent ->
+      return new ThemedButton("Cancel", clickEvent ->
       {
          if (cancelOperation != null)
             cancelOperation.execute();

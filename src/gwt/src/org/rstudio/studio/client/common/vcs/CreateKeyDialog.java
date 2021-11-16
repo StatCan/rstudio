@@ -153,7 +153,7 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
          return null;
       else
          return CreateKeyOptions.create(rsaSshKeyPath_.getPath(),
-                                        "rsa",
+                                        "rsa", //NON-NLS
                                         getPassphrase(),
                                         false);
    }
@@ -201,7 +201,7 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
       CaptionWithHelp pathCaption = new CaptionWithHelp(
                                  constants_.pathCaption(),
                                  constants_.pathHelpCaption(),
-                                 "rsa_key_help",
+                                 "rsa_key_help", //NON-NLS
                                  txtKeyPath);
       pathCaption.setIncludeVersionInfo(false);
       pathCaption.setWidth("100%");
