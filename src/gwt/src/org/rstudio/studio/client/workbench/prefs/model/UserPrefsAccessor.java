@@ -2293,16 +2293,14 @@ public class UserPrefsAccessor extends Prefs
               _constants.globalThemeTitle(),
          _constants.globalThemeDescription(),
          new String[] {
-            GLOBAL_THEME_CLASSIC,
             GLOBAL_THEME_DEFAULT,
             GLOBAL_THEME_ALTERNATE
          },
          "default");
    }
 
-   // i18n: Enumerator, user facing text, or both?  Might be both (probably somewhere tests for these?).  Also note
-   //       above defaultValue must match these
-   public final static String GLOBAL_THEME_CLASSIC = "classic";
+   // i18n: Enumerator, user facing text, or both?  Might be both (probably somewhere tests for these?)
+   // Also note above defaultValue must match these
    public final static String GLOBAL_THEME_DEFAULT = "default";
    public final static String GLOBAL_THEME_ALTERNATE = "alternate";
 
