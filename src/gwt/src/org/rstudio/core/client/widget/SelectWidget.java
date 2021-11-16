@@ -16,6 +16,8 @@ package org.rstudio.core.client.widget;
 
 import com.google.gwt.aria.client.Id;
 import com.google.gwt.aria.client.Roles;
+import com.google.gwt.core.client.GWT;
+import org.rstudio.core.client.CoreClientConstants;
 import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.theme.res.ThemeResources;
 import org.rstudio.studio.client.workbench.prefs.model.Prefs.EnumValue;
@@ -120,7 +122,7 @@ public class SelectWidget extends Composite
       if (options == null)
       {
          // i18n: Should this be internastionalized?  I think Item at least might be a enumerator, but value seen?
-         listBox_.addItem("(None)", "(None)");
+         listBox_.addItem(constants_.selectWidgetListBoxNone(), constants_.selectWidgetListBoxNone());
       }
       else
       {
@@ -306,4 +308,5 @@ public class SelectWidget extends Composite
    private FlowPanel flowPanel_ = null;
    private FormLabel label_ = null;
    private final ListBox listBox_;
+   private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
 }

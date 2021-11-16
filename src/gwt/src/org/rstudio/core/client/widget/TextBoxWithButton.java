@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
+import org.rstudio.core.client.CoreClientConstants;
 import org.rstudio.core.client.ElementIds;
 import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.dom.DomUtils;
@@ -126,7 +127,7 @@ public class TextBoxWithButton extends Composite
       FlowPanel outer = new FlowPanel();
       if (label != null)
       {
-         assert existingLabel == null : "Invalid usage, cannot provide both label and existingLabel";
+         assert existingLabel == null : constants_.existingLabelMessage();
 
          lblCaption_ = new FormLabel(label, true);
          if (helpButton != null)
@@ -304,8 +305,6 @@ public class TextBoxWithButton extends Composite
    private String useDefaultValue_;
    private String uniqueId_;
    private boolean useNativePlaceholder_;
-   
-   // i18n: Enumerator, user facing text, or both?
-   private static final String USE_DEFAULT_PREFIX = "[Use Default]";
-   private static final PythonPreferencesPaneConstants constants_ = GWT.create(PythonPreferencesPaneConstants.class);
+   private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
+   private static final String USE_DEFAULT_PREFIX = constants_.useDefaultPrefix();
 }

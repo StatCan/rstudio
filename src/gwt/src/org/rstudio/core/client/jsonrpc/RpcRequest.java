@@ -15,11 +15,13 @@
 
 package org.rstudio.core.client.jsonrpc;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.*;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Random;
+import org.rstudio.core.client.CoreClientConstants;
 import org.rstudio.core.client.Debug;
 import org.rstudio.core.client.jsonrpc.RequestLogEntry.ResponseType;
 import org.rstudio.studio.client.application.ApplicationCsrfToken;
@@ -109,12 +111,12 @@ public class RpcRequest
       {
          String requestString = request.toString();
          if (TRACE)
-            Debug.log("Request: " + requestString);
+            Debug.log(constants_.requestDebugLog() + requestString);
 
          requestLogEntry_ = RequestLog.log(requestId,
                                            // i18n: I think something similar is used elsewhere - is this shown to user
                                            //       or an enumerator?
-                                           redactLog_ ? "[REDACTED]"
+                                           redactLog_ ? constants_.redactedText()
                                                       : requestString);
 
          request_ = builder.sendRequest(requestString, new RequestCallback() {
@@ -143,7 +145,7 @@ public class RpcRequest
                   {
                      String responseText = response.getText();
                      if (TRACE)
-                        Debug.log("Response: " + responseText);
+                        Debug.log(constants_.responseText() + responseText);
                      requestLogEntry_.logResponse(ResponseType.Normal,
                                                  responseText);
                      rpcResponse = RpcResponse.parseUnsafe(responseText);
@@ -167,20 +169,20 @@ public class RpcRequest
                   
                   // default error message
                   // i18n: Concatenation/Message
-                  String message = "Status code " +
+                  String message = constants_.onResponseStatusCodeMessage() +
                                    Integer.toString(status) + 
-                                   " returned by " +
-                                   (Desktop.isDesktop() ? "R session" : "RStudio Server") +
-                                   " when executing '" +
+                                   " " + constants_.onResponseReturnedBy() +
+                                   (Desktop.isDesktop() ? constants_.rSessionMessage() : constants_.rStudioServerMessage()) +
+                                   " " + constants_.whenExecutingMessage() +
                                    getMethod() + "'";
                   
                   // override error message for status code 0
                   if (status == 0)
                   {
                      // i18n: Concatenation/Message
-                     message = "Unable to establish connection with " +
-                        (Desktop.isDesktop() ? "R session" : "RStudio Server") +
-                        " when executing '" + getMethod() + "'";
+                     message = constants_.statusCodeMessage() +
+                        (Desktop.isDesktop() ? constants_.rSessionMessage() : constants_.rStudioServerMessage()) +
+                        " " + constants_.whenExecutingMessage() + getMethod() + "'";
                   }
 
                   requestLogEntry_.logResponse(ResponseType.Unknown,
@@ -299,5 +301,5 @@ public class RpcRequest
    final private boolean refreshCredentials_;
    private Request request_ = null;
    private RequestLogEntry requestLogEntry_ = null;
-
+   private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
 }

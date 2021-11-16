@@ -144,7 +144,7 @@ public class ShortcutsEmitter
             {
                logger_.log(
                      Type.ERROR,
-                     // i18n: Concatenation/Message.  Is this seen by user?  Looks like dev code and then can be ignored
+                // i18n: Concatenation/Message.  Is this seen by user?  Looks like dev code and then can be ignored
                      "Invalid modifier '" + m + "'; expected one of " +
                      "'Ctrl', 'Alt', 'Shift', 'Meta'");
                
@@ -215,7 +215,7 @@ public class ShortcutsEmitter
       {
          logger_.log(
                Type.ERROR,
-               // i18n: Concatenation/Message.  Is this seen by user?  Looks like dev code and then can be ignored
+          // i18n: Concatenation/Message.  Is this seen by user?  Looks like dev code and then can be ignored
                "Invalid key sequence: sequences must be of length 1 or 2");
          throw new UnableToCompleteException();
       }

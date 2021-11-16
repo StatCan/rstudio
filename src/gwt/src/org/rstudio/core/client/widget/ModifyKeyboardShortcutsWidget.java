@@ -61,13 +61,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.inject.Inject;
 
-import org.rstudio.core.client.CommandWithArg;
-import org.rstudio.core.client.ElementIds;
-import org.rstudio.core.client.Pair;
-import org.rstudio.core.client.ParallelCommandList;
-import org.rstudio.core.client.SerializedCommand;
-import org.rstudio.core.client.SerializedCommandQueue;
-import org.rstudio.core.client.StringUtil;
+import org.rstudio.core.client.*;
 import org.rstudio.core.client.command.*;
 import org.rstudio.core.client.command.EditorCommandManager.EditorKeyBinding;
 import org.rstudio.core.client.command.EditorCommandManager.EditorKeyBindings;
@@ -242,7 +236,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
       table_ = new RStudioDataGrid<>(1000, RES, KEY_PROVIDER);
       
       FlowPanel emptyWidget = new FlowPanel();
-      Label emptyLabel = new Label(constants_.Editing_keyboard_shortcuts());
+      Label emptyLabel = new Label(constants_.emptyLabel());
       emptyLabel.getElement().getStyle().setMarginTop(20, Unit.PX);
       emptyLabel.getElement().getStyle().setColor("#888");
       emptyWidget.add(emptyLabel);
@@ -328,9 +322,9 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
       addColumns();
       addHandlers();
       
-      setText(constants_.Editing_keyboard_text());
+      setText(constants_.keyboardShortcutsText());
 
-      applyButton_ = new ThemedButton(constants_.Editing_keyboard_apply(), new ClickHandler()
+      applyButton_ = new ThemedButton(constants_.applyThemeButtonText(), new ClickHandler()
       {
          @Override
          public void onClick(ClickEvent event)
@@ -343,7 +337,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
       
       addCancelButton();
       
-      radioAll_ = radioButton(constants_.Editing_radio_all(), new ClickHandler()
+      radioAll_ = radioButton(constants_.radioButtonLabel(), new ClickHandler()
       {
          @Override
          public void onClick(ClickEvent event)
@@ -352,7 +346,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
          }
       });
       
-      radioCustomized_ = radioButton(constants_.Editing_radio_customized(), new ClickHandler()
+      radioCustomized_ = radioButton(constants_.radioCustomizedLabel(), new ClickHandler()
       {
          @Override
          public void onClick(ClickEvent event)
@@ -361,7 +355,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
          }
       });
       
-      filterWidget_ = new SearchWidget("Filter keyboard shortcuts", new SuggestOracle() {
+      filterWidget_ = new SearchWidget(constants_.filterWidgetLabel(), new SuggestOracle() {
 
          @Override
          public void requestSuggestions(Request request, Callback callback)
@@ -384,24 +378,24 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
          }
       });
       
-      filterWidget_.setPlaceholderText(constants_.Editing_filter_widget());
+      filterWidget_.setPlaceholderText(constants_.filterWidgetPlaceholderText());
       
-      resetButton_ = new ThemedButton(constants_.Editing_reset_text(), new ClickHandler()
+      resetButton_ = new ThemedButton(constants_.resetButtonText(), new ClickHandler()
       {
          @Override
          public void onClick(ClickEvent event)
          {
             globalDisplay_.showYesNoMessage(
                   GlobalDisplay.MSG_QUESTION,
-                  constants_.Editing_global_display(),
-                  constants_.Editing_global_caption() +
-                  constants_.Editing_global_message(),
+                  constants_.resetKeyboardShortcutsCaption(),
+                  constants_.resetKeyboardShortcutsMessage() +
+                  constants_.cannotUndoShortcutsMessage(),
                   new ProgressOperation()
                   {
                      @Override
                      public void execute(final ProgressIndicator indicator)
                      {
-                        indicator.onProgress(constants_.Editing_progress_message());
+                        indicator.onProgress(constants_.resetKeyboardShortcutsProgress());
                         appCommands_.resetBindings(new CommandWithArg<EditorKeyBindings>()
                         {
                            @Override
@@ -520,7 +514,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
    
    private void addColumns()
    {
-      nameColumn_ = textColumn("Name", new ValueGetter<KeyboardShortcutEntry>()
+      nameColumn_ = textColumn(constants_.nameColumnText(), new ValueGetter<KeyboardShortcutEntry>()
       {
          @Override
          public String getValue(KeyboardShortcutEntry object)
@@ -529,7 +523,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
          }
       });
       
-      shortcutColumn_ = editableTextColumn("Shortcut", new ValueGetter<KeyboardShortcutEntry>()
+      shortcutColumn_ = editableTextColumn(constants_.editableTextColumn(), new ValueGetter<KeyboardShortcutEntry>()
       {
          @Override
          public String getValue(KeyboardShortcutEntry object)
@@ -539,7 +533,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
          }
       });
       
-      typeColumn_ = textColumn("Scope", new ValueGetter<KeyboardShortcutEntry>()
+      typeColumn_ = textColumn(constants_.scopeTextColumn(), new ValueGetter<KeyboardShortcutEntry>()
       {
          @Override
          public String getValue(KeyboardShortcutEntry object)
@@ -861,7 +855,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
             return;
          
          assert input.getTagName().toLowerCase().equals("input")
-            : "Failed to find <input> element in table";
+            : constants_.tagNameErrorMessage();
 
          String bufferString = buffer_.toString();
          input.setAttribute("value", bufferString);
@@ -989,7 +983,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
       
       FlowPanel headerPanel = new FlowPanel();
       
-      Label radioLabel = new Label(constants_.Editing_radio_label());
+      Label radioLabel = new Label(constants_.radioShowLabel());
       radioLabel.getElement().getStyle().setFloat(Style.Float.LEFT);
       radioLabel.getElement().getStyle().setMarginRight(8, Unit.PX);
 
@@ -1009,7 +1003,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
       headerPanel.add(filterWidget_);
       
       helpLink_ = new HelpLink(
-            constants_.Editing_help_link(),
+            constants_.customizeKeyboardHelpLink(),
             "custom_keyboard_shortcuts");
       helpLink_.getElement().getStyle().setFloat(Style.Float.RIGHT);
       headerPanel.add(helpLink_);
@@ -1321,7 +1315,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
       embedIcon(
             shortcutCell,
             new ImageResource2x(ThemeResources.INSTANCE.syntaxInfo2x()),
-            "Masked by RStudio command: ",
+            constants_.addMaskedCommandStylesText(),
             maskedIndex);
       
       shortcutCell.addClassName(RES.dataGridStyle().maskedEditorCommandCell());
@@ -1335,7 +1329,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
       embedIcon(
             shortcutCell,
             new ImageResource2x(ThemeResources.INSTANCE.syntaxWarning2x()),
-            "Conflicts with command: ",
+            constants_.addConflictCommandStylesText(),
             maskedIndex);
       
       shortcutCell.addClassName(RES.dataGridStyle().conflictRow());
@@ -1512,6 +1506,5 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
    static {
       RES.dataGridStyle().ensureInjected();
    }
-   private final PreferencesPaneConstants constants_ = GWT.create(PreferencesPaneConstants.class);
-
+   private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
 }
