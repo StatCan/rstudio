@@ -220,8 +220,7 @@ public class RpcRequest
       
       if (requestLogEntry_ != null)
       {
-         // i18n: Is this shown to user or just internal logs?
-         requestLogEntry_.logResponse(ResponseType.Cancelled, "Cancelled");
+         requestLogEntry_.logResponse(ResponseType.Cancelled, "Cancelled"); //NON-NLS
          requestLogEntry_ = null;
       }
    }

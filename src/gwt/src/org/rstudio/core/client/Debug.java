@@ -179,7 +179,7 @@ public class Debug
       VerticalPanel verticalPanel = new VerticalPanel();
       FlowPanel contentPanel = new FlowPanel();
       contentPanel.getElement().setId("rstudio_debug_output");
-      verticalPanel.add(new HTML("<h3 style='margin: 0;'>RStudio Debug Output</h4><hr />"));
+      verticalPanel.add(new HTML("<h3 style='margin: 0;'>RStudio Debug Output</h4><hr />")); //NON-NLS
       verticalPanel.add(contentPanel);
       popupPanel.setWidget(verticalPanel);
       popupPanel.setAutoHideEnabled(false);

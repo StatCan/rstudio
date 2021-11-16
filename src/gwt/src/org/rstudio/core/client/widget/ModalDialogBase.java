@@ -845,7 +845,7 @@ public abstract class ModalDialogBase extends DialogBox
    private final AriaLiveStatusWidget ariaLiveStatusWidget_;
    private final FocusHelper focus_;
    
-   public static final String ALLOW_ENTER_KEY_CLASS = "__rstudio_modal_allow_enter_key";
-   public static final String ALLOW_ESCAPE_KEY_CLASS = "__rstudio_modal_allow_escape_key";
+   public static final String ALLOW_ENTER_KEY_CLASS = "__rstudio_modal_allow_enter_key"; //NON-NLS
+   public static final String ALLOW_ESCAPE_KEY_CLASS = "__rstudio_modal_allow_escape_key"; //NON-NLS
    private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
 }

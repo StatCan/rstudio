@@ -61,8 +61,7 @@ public class ShortcutsEmitter
          Element childEl = (Element)childNode;
          if (!childEl.getTagName().equals("shortcut")) //$NON-NLS-1$
          {
-            // i18n: Concatenation/Message.  Is this seen by user?  Looks like dev code and then can be ignored
-            logger_.log(Type.ERROR, "Unexpected element: " + elementToString(childEl));
+            logger_.log(Type.ERROR, "Unexpected element: " + elementToString(childEl)); //NON-NLS
             throw new UnableToCompleteException();
          }
 
@@ -78,8 +77,7 @@ public class ShortcutsEmitter
 
          if (shortcutValue.length() == 0)
          {
-            // i18n: Concatenation/Message.  Is this seen by user?  Looks like dev code and then can be ignored
-            logger_.log(Type.ERROR, "Required attribute shortcut was missing\n" + elementToString(childEl));
+            logger_.log(Type.ERROR, "Required attribute shortcut was missing\n" + elementToString(childEl)); //NON-NLS
             throw new UnableToCompleteException();
          }
 
@@ -100,8 +98,8 @@ public class ShortcutsEmitter
       {
          if (keySequence.indexOf("Cmd") != -1) //$NON-NLS-1$
          {
-            shortcuts.add(keySequence.replaceAll("Cmd", "Ctrl"));
-            shortcuts.add(keySequence.replaceAll("Cmd", "Meta"));
+            shortcuts.add(keySequence.replaceAll("Cmd", "Ctrl")); //NON-NLS
+            shortcuts.add(keySequence.replaceAll("Cmd", "Meta")); //NON-NLS
          }
          else
          {
@@ -144,9 +142,8 @@ public class ShortcutsEmitter
             {
                logger_.log(
                      Type.ERROR,
-                // i18n: Concatenation/Message.  Is this seen by user?  Looks like dev code and then can be ignored
-                     "Invalid modifier '" + m + "'; expected one of " +
-                     "'Ctrl', 'Alt', 'Shift', 'Meta'");
+                     "Invalid modifier '" + m + "'; expected one of " + //NON-NLS
+                     "'Ctrl', 'Alt', 'Shift', 'Meta'"); //NON-NLS
                
                throw new UnableToCompleteException();
             }
@@ -215,8 +212,7 @@ public class ShortcutsEmitter
       {
          logger_.log(
                Type.ERROR,
-          // i18n: Concatenation/Message.  Is this seen by user?  Looks like dev code and then can be ignored
-               "Invalid key sequence: sequences must be of length 1 or 2");
+               "Invalid key sequence: sequences must be of length 1 or 2"); //NON-NLS
          throw new UnableToCompleteException();
       }
       
@@ -334,7 +330,7 @@ public class ShortcutsEmitter
       }
       catch (Exception e)
       {
-         logger_.log(Type.ERROR, "Error attempting to stringify some XML", e);
+         logger_.log(Type.ERROR, "Error attempting to stringify some XML", e); //NON-NLS
          throw new UnableToCompleteException();
       }
    }

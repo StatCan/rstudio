@@ -27,13 +27,13 @@ public class AnsiCode
 {
    // ANSI command constants
    public static final String CSI = "\33[";
-   public static final String SGR = "m";
+   public static final String SGR = "m"; //NON-NLS
 
    // Move Cursor Horizontal Absolute
-   public static final String CHA = "G";
+   public static final String CHA = "G"; //NON-NLS
 
    // Erase in Line
-   public static final String EL = "K";
+   public static final String EL = "K"; //NON-NLS
 
    public static final int RESET = 0;
    public static final int RESET_FOREGROUND = 39;
@@ -693,23 +693,23 @@ public class AnsiCode
    public static String prettyPrint(String input)
    {
       // not efficient but only intended for debug/unit testing
-      return input.replace("\u001b", "<ESC>")
-                  .replace("\7", "<BEL>")
-                  .replace("\177", "<DEL>")
-                  .replace("\r", "<CR>")
-                  .replace("\n", "<LF>")
-                  .replace("\f", "<FF>")
-                  .replace("\b", "<BS>")
-                  .replace("\t", "<TAB>");
+      return input.replace("\u001b", "<ESC>") //NON-NLS
+                  .replace("\7", "<BEL>") //NON-NLS
+                  .replace("\177", "<DEL>") //NON-NLS
+                  .replace("\r", "<CR>") //NON-NLS
+                  .replace("\n", "<LF>") //NON-NLS
+                  .replace("\f", "<FF>") //NON-NLS
+                  .replace("\b", "<BS>") //NON-NLS
+                  .replace("\t", "<TAB>"); //NON-NLS
    }
 
    public static String prettyPrintNonCRLF(String input)
    {
       // not efficient but only intended for debug/unit testing
-      return input.replace("\u001b", "<ESC>")
-                  .replace("\7", "<BEL>")
-                  .replace("\177", "<DEL>")
-                  .replace("\b", "<BS>");
+      return input.replace("\u001b", "<ESC>") //NON-NLS
+                  .replace("\7", "<BEL>") //NON-NLS
+                  .replace("\177", "<DEL>") //NON-NLS
+                  .replace("\b", "<BS>"); //NON-NLS
    }
 
 

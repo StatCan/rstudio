@@ -22,18 +22,15 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
-
 import org.rstudio.core.client.CoreClientConstants;
 import org.rstudio.core.client.ElementIds;
 import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.dom.DomUtils;
 import org.rstudio.core.client.theme.res.ThemeResources;
-import org.rstudio.studio.client.workbench.prefs.views.PythonPreferencesPaneConstants;
 
 public class TextBoxWithButton extends Composite
                                implements HasValueChangeHandlers<String>,
@@ -104,7 +101,7 @@ public class TextBoxWithButton extends Composite
       // prevent button from triggering "submit" when hosted in a form, such as in FileUploadDialog
       themedButton_.getElement().setAttribute("type", "button");
       
-      clearButton_ = new ThemedButton(constants_.clearLabel(), (ClickEvent event) ->
+      clearButton_ = new ThemedButton("Clear", (ClickEvent event) -> //NON-NLS
       {
          setText("");
       });

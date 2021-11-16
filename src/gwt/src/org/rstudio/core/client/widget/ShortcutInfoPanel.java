@@ -114,7 +114,7 @@ public class ShortcutInfoPanel extends Composite
                sb.appendHtmlConstant("</td></tr>");
             }
             sb.appendHtmlConstant("</table>");
-            if (colGroupName == "Panes")
+            if (colGroupName == "Panes") //NON-NLS
             {
                sb.appendHtmlConstant("<p>"+ constants_.addShiftPTag() + "</p>");
             }

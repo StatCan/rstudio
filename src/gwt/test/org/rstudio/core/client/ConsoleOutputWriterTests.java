@@ -120,13 +120,13 @@ public class ConsoleOutputWriterTests extends GWTTestCase
    {
       ConsoleOutputWriter output = getCOW();
       Assert.assertEquals(0, output.getCurrentLines());
-      Assert.assertTrue(output.outputToConsole("Hello World",
+      Assert.assertTrue(output.outputToConsole("Hello World", //NON-NLS
             nullClazz, notError, checkLineCount, false));
       Assert.assertEquals(0,  output.getCurrentLines());
-      Assert.assertTrue(output.outputToConsole(" more on same line",
+      Assert.assertTrue(output.outputToConsole(" more on same line", //NON-NLS
             nullClazz, notError, checkLineCount, false));
       Assert.assertEquals(0,  output.getCurrentLines());
-      Assert.assertTrue(output.outputToConsole("next line starts now\n",
+      Assert.assertTrue(output.outputToConsole("next line starts now\n", //NON-NLS
             nullClazz, notError, checkLineCount, false));
       Assert.assertEquals(1,  output.getCurrentLines());
       Assert.assertEquals(1, DomUtils.countLines(output.getElement(), true));
@@ -209,12 +209,12 @@ public class ConsoleOutputWriterTests extends GWTTestCase
       Assert.assertEquals(maxLines, DomUtils.countLines(output.getElement(), true));
 
       StringBuilder expected = new StringBuilder();
-      expected.append("<span class=\"" + myClass + "\">");
+      expected.append("<span class=\"" + myClass + "\">"); //NON-NLS
       for (int i = 10; i < maxLines + 10; i++)
       {
          expected.append(numberedLine(i));
       }
-      expected.append("</span>");
+      expected.append("</span>"); //NON-NLS
 
       Assert.assertEquals(expected.toString(), getInnerHTML(output));
    }
@@ -222,7 +222,7 @@ public class ConsoleOutputWriterTests extends GWTTestCase
    public void testWriteSimpleError()
    {
       ConsoleOutputWriter output = getCOW();
-      String errorMsg = "Oh no, an error!!";
+      String errorMsg = "Oh no, an error!!"; //NON-NLS
 
       Assert.assertTrue(output.outputToConsole(errorMsg,
                myErrorClass, isError, ignoreLineCount, false));
@@ -236,7 +236,7 @@ public class ConsoleOutputWriterTests extends GWTTestCase
    public void testWriteSimpleErrorWithNewline()
    {
       ConsoleOutputWriter output = getCOW();
-      String errorMsg = "Oh no, an error!!\n";
+      String errorMsg = "Oh no, an error!!\n"; //NON-NLS
 
       Assert.assertTrue(output.outputToConsole(errorMsg,
                myErrorClass, isError, ignoreLineCount, false));
@@ -265,10 +265,10 @@ public class ConsoleOutputWriterTests extends GWTTestCase
       output.outputToConsole("3\n", myErrorClass, isError, ignoreLineCount, false);
       output.outputToConsole("4\n", myErrorClass, isError, ignoreLineCount, false);
 
-      String lastError = "Error in h() : An error! Oh No!";
+      String lastError = "Error in h() : An error! Oh No!"; //NON-NLS
       output.outputToConsole(lastError, myErrorClass, isError, ignoreLineCount, false);
 
-      String lastErrorSpan = "<span class=\"myErrorClass\">" + lastError + "</span>";
+      String lastErrorSpan = "<span class=\"myErrorClass\">" + lastError + "</span>"; //NON-NLS //NON-NLS
       String expected =
             "<span class=\"myErrorClass\">1\n</span>" +
             "<span class=\"myErrorClass\">2\n</span>" +
@@ -296,21 +296,21 @@ public class ConsoleOutputWriterTests extends GWTTestCase
       output.outputToConsole("1\n", myErrorClass, isError, ignoreLineCount, false);
       output.outputToConsole("2\n", myErrorClass, isError, ignoreLineCount, false);
       output.outputToConsole("3\n", myErrorClass, isError, ignoreLineCount, false);
-      output.outputToConsole("4\n", myErrorClass, isError, ignoreLineCount, false);
+      output.outputToConsole("4\n", myErrorClass, isError, ignoreLineCount, false); //NON-NLS
 
-      String lastError1 = "Error in h2() : An error!\n";
-      String lastError2 = "\033[31mOh No!\n\033[39m";
-      String lastError3 = "\033[43m\033[31mWow!\033[39m\033[49m";
+      String lastError1 = "Error in h2() : An error!\n"; //NON-NLS
+      String lastError2 = "\033[31mOh No!\n\033[39m"; //NON-NLS
+      String lastError3 = "\033[43m\033[31mWow!\033[39m\033[49m"; //NON-NLS
 
       output.outputToConsole(lastError1 + lastError2 + lastError3,
             myErrorClass, isError, ignoreLineCount, false);
 
-      String lastError1Span = "<span class=\"myErrorClass\">" +
-                  lastError1 + "</span>";
-      String lastError2Span = "<span class=\"myErrorClass xtermColor1\">" +
-                  "Oh No!" + "</span>";
-      String lastError3Span = "<span class=\"myErrorClass xtermBgColor3 xtermColor1\">" +
-                  "Wow!" + "</span>";
+      String lastError1Span = "<span class=\"myErrorClass\">" + //NON-NLS
+                  lastError1 + "</span>"; //NON-NLS
+      String lastError2Span = "<span class=\"myErrorClass xtermColor1\">" + //NON-NLS
+                  "Oh No!" + "</span>"; //NON-NLS //NON-NLS
+      String lastError3Span = "<span class=\"myErrorClass xtermBgColor3 xtermColor1\">" + //NON-NLS //NON-NLS //NON-NLS
+                  "Wow!" + "</span>"; //NON-NLS
 
       String expected =
             "<span class=\"myErrorClass\">1\n</span>" +
@@ -335,10 +335,10 @@ public class ConsoleOutputWriterTests extends GWTTestCase
    {
       // output two regular strings, without a newline, and make sure
       // they turn into a single span of text
-      ConsoleOutputWriter output = getCOW();
+      ConsoleOutputWriter output = getCOW(); //NON-NLS
 
-      output.outputToConsole("Hello", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("World", myClass, notError, ignoreLineCount, false);
+      output.outputToConsole("Hello", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("World", myClass, notError, ignoreLineCount, false); //NON-NLS
 
       Assert.assertEquals(0, output.getCurrentLines());
 
@@ -352,10 +352,10 @@ public class ConsoleOutputWriterTests extends GWTTestCase
       // single span
       ConsoleOutputWriter output = getCOW();
 
-      output.outputToConsole("One\n", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("Two\n", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("Three\n", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("Four\n", myClass, notError, ignoreLineCount, false);
+      output.outputToConsole("One\n", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("Two\n", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("Three\n", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("Four\n", myClass, notError, ignoreLineCount, false); //NON-NLS
 
       Assert.assertEquals(4, output.getCurrentLines());
 
@@ -370,10 +370,10 @@ public class ConsoleOutputWriterTests extends GWTTestCase
       // and make sure DOM ends up as expected
       ConsoleOutputWriter output = getCOW();
 
-      output.outputToConsole("1\n", myErrorClass, isError, ignoreLineCount, false);
-      output.outputToConsole("2\n", myErrorClass, isError, ignoreLineCount, false);
-      output.outputToConsole("Hello ", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("world\n", myClass, notError, ignoreLineCount, false);
+      output.outputToConsole("1\n", myErrorClass, isError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("2\n", myErrorClass, isError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("Hello ", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("world\n", myClass, notError, ignoreLineCount, false); //NON-NLS
       output.outputToConsole("3\n", myErrorClass, isError, ignoreLineCount, false);
 
       Assert.assertEquals(4, output.getCurrentLines());
@@ -418,10 +418,10 @@ public class ConsoleOutputWriterTests extends GWTTestCase
 
    public void test7()
    {
-      // output a single error message with ansi code in it
+      // output a single error message with ansi code in it //NON-NLS
       ConsoleOutputWriter output = getCOW();
 
-      output.outputToConsole("Error in test7a() : \033[32mHi\033[39m", myErrorClass,
+      output.outputToConsole("Error in test7a() : \033[32mHi\033[39m", myErrorClass, //NON-NLS
             isError, ignoreLineCount, false);
 
       Assert.assertEquals(0, output.getCurrentLines());
@@ -450,11 +450,11 @@ public class ConsoleOutputWriterTests extends GWTTestCase
       output.outputToConsole("3\n", myErrorClass, isError, ignoreLineCount, false);
       output.outputToConsole("4\n", myErrorClass, isError, ignoreLineCount, false);
       output.outputToConsole(
-            "Error in test8b() : An error!\n" +
-            "\033[31mOh No!\n\033[39m" +
-            "\033[43m\033[31mA multiline error with colors.\n\033[39m\033[49m" +
-            "\033[7mAnd some inverse text.\n\033[27m" +
-            "\033[1m\033[3mThe Horror!!\033[23m\033[22m",
+            "Error in test8b() : An error!\n" + //NON-NLS
+            "\033[31mOh No!\n\033[39m" + //NON-NLS
+            "\033[43m\033[31mA multiline error with colors.\n\033[39m\033[49m" + //NON-NLS
+            "\033[7mAnd some inverse text.\n\033[27m" + //NON-NLS //NON-NLS
+            "\033[1m\033[3mThe Horror!!\033[23m\033[22m", //NON-NLS
             myErrorClass, isError, ignoreLineCount, false);
 
       Assert.assertEquals(8, output.getCurrentLines());
@@ -489,7 +489,7 @@ public class ConsoleOutputWriterTests extends GWTTestCase
             newElements.get(5).getString());
       Assert.assertEquals(newlineErrorSpan, newElements.get(6).getString());
       Assert.assertEquals("<span class=\"myErrorClass xtermBold xtermItalic\">The Horror!!</span>",
-            newElements.get(7).getString());
+            newElements.get(7).getString()); //NON-NLS
    }
 
    public void test9()
@@ -497,8 +497,8 @@ public class ConsoleOutputWriterTests extends GWTTestCase
       // write a single-line error followed by a multi-line error, no ansi codes
       ConsoleOutputWriter output = getCOW();
 
-      output.outputToConsole("Hello\n", myErrorClass, isError, ignoreLineCount, false);
-      output.outputToConsole("A\nB\nC", myErrorClass, isError, ignoreLineCount, false);
+      output.outputToConsole("Hello\n", myErrorClass, isError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("A\nB\nC", myErrorClass, isError, ignoreLineCount, false); //NON-NLS
 
       Assert.assertEquals(3, output.getCurrentLines());
 
@@ -516,22 +516,22 @@ public class ConsoleOutputWriterTests extends GWTTestCase
    public void test10()
    {
       // inline editing via \r without ansi codes
-      ConsoleOutputWriter output = getCOW();
-      output.outputToConsole("\rfoobar", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("\rX foobar\n", myClass, notError, ignoreLineCount, false);
+      ConsoleOutputWriter output = getCOW(); //NON-NLS
+      output.outputToConsole("\rfoobar", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("\rX foobar\n", myClass, notError, ignoreLineCount, false); //NON-NLS
 
       Assert.assertEquals(1, output.getCurrentLines());
       Assert.assertEquals(
             "<span class=\"myClass\">X foobar\n</span>",
-            getInnerHTML(output));
+            getInnerHTML(output)); //NON-NLS
    }
 
    public void test11()
    {
       // inline editing via \r with ansi codes
       ConsoleOutputWriter output = getCOW();
-      output.outputToConsole("\rfoobar", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("\r\033[32mX\033[39m \033[31mfoobar\033[39m\n",
+      output.outputToConsole("\rfoobar", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("\r\033[32mX\033[39m \033[31mfoobar\033[39m\n", //NON-NLS
             myClass, notError, ignoreLineCount, false);
 
       Assert.assertEquals(1, output.getCurrentLines());
@@ -545,11 +545,11 @@ public class ConsoleOutputWriterTests extends GWTTestCase
 
    public void test12()
    {
-      // inline editing via \r with ansi codes; multiple output lines, don't
+      // inline editing via \r with ansi codes; multiple output lines, don't //NON-NLS
       // overwrite entire original output
       ConsoleOutputWriter output = getCOW();
-      output.outputToConsole("Hello\nWorld", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("\r\033[32mX\033[39m \033[31mY\033[39m\n",
+      output.outputToConsole("Hello\nWorld", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("\r\033[32mX\033[39m \033[31mY\033[39m\n", //NON-NLS
             myClass, notError, ignoreLineCount, false);
 
       Assert.assertEquals(2, output.getCurrentLines());
@@ -559,7 +559,7 @@ public class ConsoleOutputWriterTests extends GWTTestCase
             "<span class=\"myClass\"> </span>" +
             "<span class=\"myClass xtermColor1\">Y</span>" +
             "<span class=\"myClass\">ld\n</span>",
-            getInnerHTML(output));
+            getInnerHTML(output)); //NON-NLS
    }
 
    public void test13()
@@ -567,8 +567,8 @@ public class ConsoleOutputWriterTests extends GWTTestCase
       // inline editing via \r with ansi codes; multiple output lines,
       // overwrite entire original output
       ConsoleOutputWriter output = getCOW();
-      output.outputToConsole("Hello\nWorld", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("\r\033[32m123\033[39m\033[31m45\033[39m\n",
+      output.outputToConsole("Hello\nWorld", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("\r\033[32m123\033[39m\033[31m45\033[39m\n", //NON-NLS
             myClass, notError, ignoreLineCount, false);
 
       Assert.assertEquals(2, output.getCurrentLines());
@@ -577,7 +577,7 @@ public class ConsoleOutputWriterTests extends GWTTestCase
             "<span class=\"myClass xtermColor2\">123</span>" +
             "<span class=\"myClass\"></span>" +
             "<span class=\"myClass xtermColor1\">45</span>" +
-            "<span class=\"myClass\">\n</span>",
+            "<span class=\"myClass\">\n</span>", //NON-NLS
             getInnerHTML(output));
    }
 
@@ -586,11 +586,11 @@ public class ConsoleOutputWriterTests extends GWTTestCase
       // output mixture of normal and error output, make sure DOM is correct
       ConsoleOutputWriter output = getCOW();
 
-      output.outputToConsole("Beginning\n", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("1\n", myErrorClass, isError, ignoreLineCount, false);
-      output.outputToConsole("2\n", myErrorClass, isError, ignoreLineCount, false);
-      output.outputToConsole("Hello ", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("world\n", myClass, notError, ignoreLineCount, false);
+      output.outputToConsole("Beginning\n", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("1\n", myErrorClass, isError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("2\n", myErrorClass, isError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("Hello ", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("world\n", myClass, notError, ignoreLineCount, false); //NON-NLS
       output.outputToConsole("3\n", myErrorClass, isError, ignoreLineCount, false);
       output.outputToConsole("END", myClass, notError, ignoreLineCount, false);
 
@@ -614,7 +614,7 @@ public class ConsoleOutputWriterTests extends GWTTestCase
       output.outputToConsole("1\n", myErrorClass, isError, ignoreLineCount, false);
       output.outputToConsole("2\n", myErrorClass, isError, ignoreLineCount, false);
       output.outputToConsole(
-            "Error in h15() : A multiline error without colors!\nOh No!",
+            "Error in h15() : A multiline error without colors!\nOh No!", //NON-NLS
             myErrorClass, isError, ignoreLineCount, false);
 
       Assert.assertEquals(3, output.getCurrentLines());
@@ -638,9 +638,9 @@ public class ConsoleOutputWriterTests extends GWTTestCase
       // write several lines of regular output
       ConsoleOutputWriter output = getCOW();
 
-      output.outputToConsole("one\n", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("two\n", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("three", myClass, notError, ignoreLineCount, false);
+      output.outputToConsole("one\n", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("two\n", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("three", myClass, notError, ignoreLineCount, false); //NON-NLS
 
       Assert.assertEquals(2, output.getCurrentLines());
 
@@ -654,14 +654,14 @@ public class ConsoleOutputWriterTests extends GWTTestCase
       // inline editing via \r with ansi codes; multiple output lines, don't
       // overwrite entire original output
       ConsoleOutputWriter output = getCOW();
-      output.outputToConsole("✔ xxx \033[34myyy\033[39m xxx", myClass, notError, ignoreLineCount, false);
+      output.outputToConsole("✔ xxx \033[34myyy\033[39m xxx", myClass, notError, ignoreLineCount, false); //NON-NLS
       output.outputToConsole("\r", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("✔xxx \033[31myyy\033[39m zzz", myClass, notError, ignoreLineCount, false);
+      output.outputToConsole("✔xxx \033[31myyy\033[39m zzz", myClass, notError, ignoreLineCount, false); //NON-NLS
       output.outputToConsole("\n", myClass, notError, ignoreLineCount, false);
       output.outputToConsole("\n", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("✔ xxx \033[34myyy\033[39m xxx", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("\r", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("✔ xxx \033[31myyy\033[39m zzz", myClass, notError, ignoreLineCount, false);
+      output.outputToConsole("✔ xxx \033[34myyy\033[39m xxx", myClass, notError, ignoreLineCount, false); //NON-NLS
+      output.outputToConsole("\r", myClass, notError, ignoreLineCount, false); //NON-NLS //NON-NLS
+      output.outputToConsole("✔ xxx \033[31myyy\033[39m zzz", myClass, notError, ignoreLineCount, false); //NON-NLS
       output.outputToConsole("\n", myClass, notError, ignoreLineCount, false);
       Assert.assertEquals(3, output.getCurrentLines());
       Assert.assertEquals(
@@ -673,7 +673,7 @@ public class ConsoleOutputWriterTests extends GWTTestCase
          "<span class=\"myClass\"></span>" + // redundant
          "<span class=\"myClass\"> zzzx\n\n✔ xxx </span>" +
          "<span class=\"myClass xtermColor4\"></span>" + // redundant
-         "<span class=\"myClass xtermColor1\">yyy</span>" +
+         "<span class=\"myClass xtermColor1\">yyy</span>" + //NON-NLS
          "<span class=\"myClass\"> zzz\n</span>",
          getInnerHTML(output));
    }
@@ -682,9 +682,9 @@ public class ConsoleOutputWriterTests extends GWTTestCase
    {
       // https://github.com/rstudio/rstudio/issues/7278
       ConsoleOutputWriter output = getCOW();
-      output.outputToConsole("B\033[31mx\033[39mA", myClass, notError, ignoreLineCount, false);
+      output.outputToConsole("B\033[31mx\033[39mA", myClass, notError, ignoreLineCount, false); //NON-NLS
       output.outputToConsole("\r   ", myClass, notError, ignoreLineCount, false);
-      output.outputToConsole("\rMessage\n", myClass, notError, ignoreLineCount, false);
+      output.outputToConsole("\rMessage\n", myClass, notError, ignoreLineCount, false); //NON-NLS
       Assert.assertEquals(1, output.getCurrentLines());
       Assert.assertEquals("<span class=\"myClass\">Message\n</span>", getInnerHTML(output));
    }

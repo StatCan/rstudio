@@ -232,7 +232,7 @@ public class DocTabLayoutPanel
                {
                   FileSystemItem targetPath = FileSystemItem.createFile(filePath);
                   events_.fireEvent(new SendToConsoleEvent(
-                     "setwd(" + RUtil.asStringLiteral(targetPath.getParentPathString()) + ")", true));
+                     "setwd(" + RUtil.asStringLiteral(targetPath.getParentPathString()) + ")", true)); //NON-NLS
                   events_.fireEvent(new DirectoryNavigateEvent(targetPath.getParentPath(), false));
                }));
                menu.addSeparator();

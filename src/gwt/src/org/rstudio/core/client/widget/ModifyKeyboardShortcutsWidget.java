@@ -142,7 +142,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
       {
          if (commandType_ == TYPE_EDITOR_COMMAND)
             // i18n: Is this shown to user or just an enum?
-            return "Editor";
+            return "Editor"; //NON-NLS
          
          return context_.toString();
       }
@@ -581,7 +581,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
             // element (thereby committing the current selection) and ensure
             // that selection has been appropriately reset in an earlier preview
             // handler.
-            if (event.getType()    == "keyup" &&
+            if (event.getType()    == "keyup" && //NON-NLS
                 event.getKeyCode() == KeyCodes.KEY_ESCAPE)
             {
                parent.getFirstChildElement().blur();
