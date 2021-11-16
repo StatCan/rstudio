@@ -33,9 +33,6 @@ import org.rstudio.studio.client.common.GlobalDisplay;
 
 public class AboutDialog extends ModalDialogBase
 {
-   private AboutDialogConstants constants = GWT.create(AboutDialogConstants.class);
-   private AboutDialogMessages messages = GWT.create(AboutDialogMessages.class);
-
    public AboutDialog(ProductInfo info)
    {
       super(Roles.getDialogRole());
