@@ -16,7 +16,9 @@
 package org.rstudio.studio.client.common.filetypes;
 
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.resources.ImageResource2x;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 import org.rstudio.studio.client.common.reditor.EditorLanguage;
 
 public class RPresentationFileType extends RWebContentFileType
@@ -25,11 +27,12 @@ public class RPresentationFileType extends RWebContentFileType
    {
       super("r_presentation", //$NON-NLS-1$
             // i18n: Enumerator, user facing text, or both?
-            "R Presentation",
+            constants_.rPresentationLabel(),
             EditorLanguage.LANG_RMARKDOWN,
             ".Rpres", 
             new ImageResource2x(FileIconResources.INSTANCE.iconRpresentation2x()), 
             true, 
             false);
    }
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 }

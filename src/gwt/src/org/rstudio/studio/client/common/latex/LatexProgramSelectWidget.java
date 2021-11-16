@@ -18,23 +18,22 @@ import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.widget.HelpButton;
 import org.rstudio.core.client.widget.SelectWidget;
 import org.rstudio.studio.client.RStudioGinjector;
-import org.rstudio.studio.client.workbench.prefs.views.CompiledPdfPreferencesPaneConstants;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 
 public class LatexProgramSelectWidget extends SelectWidget
 {
    public LatexProgramSelectWidget()
    {
-      super(constants_.latexProgramSelectLabel(), latexProgramRegistry_.getTypeNames());
+      super(constants_.typesetLatexLabel(), latexProgramRegistry_.getTypeNames());
          
-      HelpButton.addHelpButton(
-              this,
+      HelpButton.addHelpButton(this,
               "latex_program", //$NON-NLS-1$
-              constants_.helpLaxtexButtonLabel()
+              constants_.latexHelpLinkLabel()
       );
    }
    
    
    public static final LatexProgramRegistry latexProgramRegistry_ = 
          RStudioGinjector.INSTANCE.getLatexProgramRegistry();
-   private static final CompiledPdfPreferencesPaneConstants constants_ = GWT.create(CompiledPdfPreferencesPaneConstants.class);
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 }

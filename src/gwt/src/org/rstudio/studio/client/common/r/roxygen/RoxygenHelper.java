@@ -14,10 +14,7 @@
  */
 package org.rstudio.studio.client.common.r.roxygen;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsArrayInteger;
-import com.google.gwt.core.client.JsArrayString;
+import com.google.gwt.core.client.*;
 import com.google.inject.Inject;
 
 import org.rstudio.core.client.Debug;
@@ -26,6 +23,7 @@ import org.rstudio.core.client.regex.Match;
 import org.rstudio.core.client.regex.Pattern;
 import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.common.GlobalDisplay;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 import org.rstudio.studio.client.common.filetypes.DocumentMode;
 import org.rstudio.studio.client.server.ServerError;
 import org.rstudio.studio.client.server.ServerRequestCallback;
@@ -105,10 +103,9 @@ public class RoxygenHelper
       else
       {
          globalDisplay_.showErrorMessage(
-             "Insert Roxygen Skeleton",
-             // i18n: Concatenation/Message
-             "Unable to insert skeleton (the cursor is not currently " +
-             "inside an R function definition).");
+             constants_.insertRoxygenSkeletonMessage(),
+             constants_.unableToInsertSkeletonMessage() +
+             constants_.rFunctionDefinitionMessage());
       }
    }
    
@@ -409,8 +406,8 @@ public class RoxygenHelper
          {
             // i18n: Concatenation/Message
             view_.showWarningBar(
-                  "Cannot automatically update roxygen blocks " +
-                  "that are not self-contained.");
+                  constants_.cannotUpdateRoxygenMessage() +
+                  constants_.notSelfContainedMessage());
             return;
          }
       }
@@ -809,4 +806,5 @@ public class RoxygenHelper
    
    private static final Pattern RE_ROXYGEN_NONLOCAL =
          Pattern.create("^\\s*#+'\\s*@(?:inheritParams|template)", ""); //$NON-NLS-1$
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 }

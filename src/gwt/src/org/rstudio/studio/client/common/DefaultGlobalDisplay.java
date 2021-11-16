@@ -49,7 +49,7 @@ public class DefaultGlobalDisplay extends GlobalDisplay
       // This command is useful for testing warning bars (e.g. for accessibility) so please leave in.
       commands.showWarningBar().addHandler(appCommand ->
       {
-         view_.get().showWarning(false, "This is a warning!"); //$NON-NLS-1$
+         view_.get().showWarning(false, constants_.warningMessage()); //$NON-NLS-1$
       });
    }
 
@@ -435,5 +435,6 @@ public class DefaultGlobalDisplay extends GlobalDisplay
    private final Session session_;
    private final ApplicationServerOperations server_;
    private final WindowOpener windowOpener_ = GWT.create(WindowOpener.class);
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 }
 

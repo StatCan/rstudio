@@ -14,6 +14,7 @@
  */
 package org.rstudio.studio.client.common.sourcemarkers;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.*;
 
 import org.rstudio.core.client.CodeNavigationTarget;
@@ -23,6 +24,7 @@ import org.rstudio.core.client.theme.ThemeFonts;
 import org.rstudio.core.client.theme.res.ThemeResources;
 import org.rstudio.core.client.widget.FontSizer;
 import org.rstudio.core.client.widget.HeaderBreaksItemCodec;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 
 public class SourceMarkerItemCodec
       extends HeaderBreaksItemCodec<SourceMarker, CodeNavigationTarget, CodeNavigationTarget>
@@ -86,7 +88,7 @@ public class SourceMarkerItemCodec
       tdLine.setClassName(resources_.styles().lineCell());
       if (entry.getLine() >= 0)
          // i18n: ?
-         tdLine.setInnerText("Line " + entry.getLine());
+         tdLine.setInnerText(constants_.lineText() + entry.getLine());
       tr.appendChild(tdLine);
 
       TableCellElement tdMsg = Document.get().createTDElement();
@@ -111,7 +113,7 @@ public class SourceMarkerItemCodec
          td.setVAlign("middle");
    
          DivElement div = Document.get().createDivElement();
-         div.setTitle("View error or warning within the log file");
+         div.setTitle(constants_.viewErrorLogfile());
          div.setClassName(resources_.styles().disclosure());
          div.addClassName(ThemeResources.INSTANCE.themeStyles().handCursor());
    
@@ -209,4 +211,5 @@ public class SourceMarkerItemCodec
    private static final String DATA_COLUMN = "data-column"; //$NON-NLS-1$
    private static final String LOG_PATH = "log-path"; //$NON-NLS-1$
    private static final String LOG_LINE = "log-line"; //$NON-NLS-1$
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 }

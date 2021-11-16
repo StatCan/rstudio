@@ -21,6 +21,7 @@ import org.rstudio.core.client.widget.HyperlinkLabel;
 import org.rstudio.core.client.widget.NullProgressIndicator;
 import org.rstudio.core.client.widget.ProgressIndicator;
 import org.rstudio.core.client.widget.SmallButton;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 import org.rstudio.studio.client.server.ServerError;
 import org.rstudio.studio.client.server.ServerRequestCallback;
 
@@ -195,9 +196,6 @@ public class SshKeyWidget extends Composite
    private final GitServerOperations server_;
    private ProgressIndicator progressIndicator_;
    private String rsaSshKeyPath_;
-
-   // i18n: Enumerator, user facing text, or both?
-   private static final String NONE = "(None)";
-   private final SourceControlPreferencesPaneConstants constants_ = GWT.create(SourceControlPreferencesPaneConstants.class);
-
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
+   private static final String NONE = constants_.noneLabel();
 }
