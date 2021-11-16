@@ -15,6 +15,7 @@
 package org.rstudio.studio.client.application.ui;
 
 import com.google.gwt.aria.client.Roles;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Style.Cursor;
@@ -42,6 +43,7 @@ import org.rstudio.core.client.jsonrpc.RequestLogEntry.ResponseType;
 import org.rstudio.core.client.widget.ModalDialog;
 import org.rstudio.core.client.widget.OperationWithInput;
 import org.rstudio.core.client.widget.ScrollPanelWithClick;
+import org.rstudio.studio.client.application.StudioClientApplicationConstants;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -109,15 +111,15 @@ public class RequestLogVisualization extends Composite
       instructions_ = new HTML();
       // i18n: Probably i18n?  although more complex and it makes a html list...  is it interactive somehow?
       //       Concatenate if a simple i18n
-      instructions_.setHTML("<p>Click on a request to see details. Click on the " +
-                            "background to show these instructions again.</p>" +
-                            "<h4>Available commands:</h4>" +
-                            "<ul>" +
-                            "<li>Esc: Close</li>" +
-                            "<li>P: Play/pause</li>" +
-                            "<li>E: Export</li>" +
-                            "<li>I: Import</li>" +
-                            "<li>+/-: Zoom in/out</li>" +
+      instructions_.setHTML("<p>"+ constants_.clickRequestText() +
+                            constants_.showInstructionsText() + "</p>" +
+                            "<h4>"+ constants_.availableCommandsText() + "</h4>" +
+                            "<ul>"+
+                            "<li>"+ constants_.escapeText() + "</li>" +
+                            "<li>"+ constants_.playPauseText() + "</li>" +
+                            "<li>"+ constants_.exportText() + "</li>" +
+                            "<li>"+ constants_.importText() + "</li>" +
+                            "<li>"+ constants_.zoomText() + "</li>" +
                             "</ul>");
       detail_.setWidget(instructions_);
 
@@ -293,7 +295,7 @@ public class RequestLogVisualization extends Composite
             for (RequestLogEntry entry : entries_)
                entry.toCsv(writer);
 
-            TextBoxDialog dialog = new TextBoxDialog("Export",
+            TextBoxDialog dialog = new TextBoxDialog(constants_.exportCaption(),
                                                      writer.getValue(),
                                                      null);
             dialog.showModal();
@@ -301,7 +303,7 @@ public class RequestLogVisualization extends Composite
          else if (keyCode == 'I')
          {
             TextBoxDialog dialog = new TextBoxDialog(
-                  "Import",
+                  constants_.importCaption(),
                   "",
                   new OperationWithInput<String>()
                   {
@@ -357,4 +359,5 @@ public class RequestLogVisualization extends Composite
    private static final int PERIOD_MILLIS = 2000;
    private SimplePanel detail_;
    private HTML instructions_;
+   private static final StudioClientApplicationConstants constants_ = GWT.create(StudioClientApplicationConstants.class);
 }
