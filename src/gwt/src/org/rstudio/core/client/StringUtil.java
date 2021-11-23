@@ -14,6 +14,7 @@
  */
 package org.rstudio.core.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
@@ -132,11 +133,11 @@ public class StringUtil
    public static String formatElapsedTime(int seconds)
    {
       if (seconds < 60)
-         return seconds + " second" + (seconds == 1 ? "" : "s");
+         return seconds + " " + (seconds == 1 ? constants_.secondLabel()  : constants_.secondPluralLabel());
       else if (seconds < 3600)
-         return (seconds / 60) + " minute" + ((seconds / 60) == 1 ? "" : "s");
+         return (seconds / 60) + " " + ((seconds / 60) == 1 ? constants_.minuteLabel() : constants_.minutePluralLabel());
       else
-         return (seconds / 3600) + " hour" + ((seconds / 3600) == 1 ? "" : "s");
+         return (seconds / 3600) + " " + ((seconds / 3600) == 1 ? constants_.hourLabel() : constants_.hourPluralLabel());
    }
 
    /**
@@ -1489,4 +1490,5 @@ public class StringUtil
                           = DateTimeFormat.getFormat("MMM d, yyyy, h:mm a");
    private static final Pattern RE_INDENT = Pattern.create("^\\s*", "");
    private static final Pattern BASH_RESERVED_CHAR = Pattern.create("[^a-zA-Z0-9,._+@%/-]");
+   private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
 }
