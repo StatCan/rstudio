@@ -41,7 +41,7 @@ public class PanmirrorCommandPaletteItem extends BasePaletteItem<PanmirrorComman
    @Override
    public boolean matchesSearch(String[] keywords)
    {
-      return super.labelMatchesSearch(_constants.visualEditorLabel() + cmd_.getFullMenuText(), keywords);
+      return super.labelMatchesSearch(_constants.visualEditorLabel(cmd_.getFullMenuText()), keywords);
    }
 
    @Override
