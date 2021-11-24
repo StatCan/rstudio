@@ -16,6 +16,7 @@
 
 package org.rstudio.studio.client.panmirror.dialogs;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.ElementIds;
 import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.dom.DomUtils;
@@ -28,6 +29,7 @@ import org.rstudio.core.client.widget.NumericTextBox;
 import org.rstudio.core.client.widget.OperationWithInput;
 import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.common.GlobalDisplay;
+import org.rstudio.studio.client.panmirror.PanmirrorConstants;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorAttrProps;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorImageDimensions;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorImageProps;
@@ -59,7 +61,7 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
                                    PanmirrorUIContext uiContext,
                                    OperationWithInput<PanmirrorImageProps> operation)
    {
-      super(figure ? "Figure" : "Image", Roles.getDialogRole(), operation, () -> {
+      super(figure ? _constants.figureLabel() : _constants.imageLabel(), Roles.getDialogRole(), operation, () -> {
          // cancel returns null
          operation.execute(null);
       });
@@ -107,16 +109,16 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
       });
 
       // width, height, units
-      width_ = addSizeInput(sizePanel, ElementIds.VISUAL_MD_IMAGE_WIDTH, "Width:");
-      height_ = addSizeInput(sizePanel, ElementIds.VISUAL_MD_IMAGE_HEIGHT, "Height:");
-      heightAuto_ = createHorizontalLabel("(Auto)");
+      width_ = addSizeInput(sizePanel, ElementIds.VISUAL_MD_IMAGE_WIDTH, _constants.widthLabel());
+      height_ = addSizeInput(sizePanel, ElementIds.VISUAL_MD_IMAGE_HEIGHT, _constants.heightLabel());
+      heightAuto_ = createHorizontalLabel(_constants.autoText());
       heightAuto_.addStyleName(RES.styles().heightAuto());
       sizePanel.add(heightAuto_);
       units_ = addUnitsSelect(sizePanel);
       initSizeInputs();
 
       // lock ratio
-      lockRatio_ = new CheckBox("Lock ratio");
+      lockRatio_ = new CheckBox(_constants.lockRatioText());
       lockRatio_.addStyleName(RES.styles().lockRatioCheckbox());
       lockRatio_.getElement().setId(ElementIds.VISUAL_MD_IMAGE_LOCK_RATIO);
       lockRatio_.setValue(props.lockRatio);
@@ -188,10 +190,10 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
       }
       
       // alignment
-      alignDefault = new RadioButton("align", "Default");
-      alignLeft_ = new RadioButton("align", "Left");
-      alignCenter_ = new RadioButton("align", "Center");
-      alignRight_ = new RadioButton("align", "Right");
+      alignDefault = new RadioButton("align", _constants.defaultLabel());
+      alignLeft_ = new RadioButton("align", _constants.leftLabel());
+      alignCenter_ = new RadioButton("align", _constants.centerLabel());
+      alignRight_ = new RadioButton("align", _constants.rightLabel());
       if (props.align != null)
       {
          alignDefault.setValue(true);   
@@ -201,7 +203,7 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
             alignCenter_.setValue(true);
          else if (props.align.equals("right"))
             alignRight_.setValue(true);
-         HorizontalRadioPanel panel = new HorizontalRadioPanel("Alignment", false);
+         HorizontalRadioPanel panel = new HorizontalRadioPanel(_constants.legendText(), false);
          panel.addStyleName(RES.styles().alignmentPanel());
          panel.add(alignDefault);
          panel.add(alignLeft_);
@@ -211,11 +213,11 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
       }
 
       // caption/alt
-      caption_ = PanmirrorDialogsUtil.addTextBox(imageTab, ElementIds.VISUAL_MD_IMAGE_CAPTION, "Caption:", props.caption);
+      caption_ = PanmirrorDialogsUtil.addTextBox(imageTab, ElementIds.VISUAL_MD_IMAGE_CAPTION, _constants.captionLabel(), props.caption);
       
       if (props.alt != null)
       {
-         alt_ = PanmirrorDialogsUtil.addTextBox(imageTab, ElementIds.VISUAL_MD_IMAGE_CAPTION, "Alternative text:", props.alt);
+         alt_ = PanmirrorDialogsUtil.addTextBox(imageTab, ElementIds.VISUAL_MD_IMAGE_CAPTION, _constants.alternativeTextLabel(), props.alt);
       }
       else
       {
@@ -223,15 +225,15 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
       }
     
       // linkto
-      linkTo_ = PanmirrorDialogsUtil.addTextBox(imageTab,  ElementIds.VISUAL_MD_IMAGE_LINK_TO, "Link to:", props.linkTo);
+      linkTo_ = PanmirrorDialogsUtil.addTextBox(imageTab,  ElementIds.VISUAL_MD_IMAGE_LINK_TO, _constants.linkToLabel(), props.linkTo);
       
       // standard pandoc attributes
       editAttr_ =  new PanmirrorEditAttrWidget();
       editAttr_.setAttr(props, null);
      
-      DialogTabLayoutPanel tabPanel = new DialogTabLayoutPanel("Image");
+      DialogTabLayoutPanel tabPanel = new DialogTabLayoutPanel(_constants.imageLabel());
       tabPanel.addStyleName(RES.styles().imageDialogTabs());
-      tabPanel.add(imageTab, "Image", imageTab.getBasePanelId());
+      tabPanel.add(imageTab, _constants.imageLabel(), imageTab.getBasePanelId());
       
       if (editAttributes)
       {
@@ -239,7 +241,7 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
          attributesTab.addStyleName(RES.styles().dialog());
          attributesTab.addStyleName(RES.styles().imageDialogTab());
          attributesTab.add(editAttr_);
-         tabPanel.add(attributesTab, "Attributes", attributesTab.getBasePanelId());
+         tabPanel.add(attributesTab, _constants.attributesText(), attributesTab.getBasePanelId());
       }
      
       VerticalTabPanel advancedTab = new VerticalTabPanel(ElementIds.VISUAL_MD_IMAGE_TAB_ADVANCED);
@@ -248,16 +250,16 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
 
       if (props.env != null)
       {
-         env_ = PanmirrorDialogsUtil.addTextBox(advancedTab, ElementIds.VISUAL_MD_IMAGE_ENV, "LaTeX environment:",props.env);
+         env_ = PanmirrorDialogsUtil.addTextBox(advancedTab, ElementIds.VISUAL_MD_IMAGE_ENV, _constants.latexEnvironmentLabel(),props.env);
          DomUtils.disableSpellcheck(env_);
       }
       else
       {
          env_ = null;
       }
-      title_ = PanmirrorDialogsUtil.addTextBox(advancedTab, ElementIds.VISUAL_MD_IMAGE_TITLE, "Title attribute:", props.title);
+      title_ = PanmirrorDialogsUtil.addTextBox(advancedTab, ElementIds.VISUAL_MD_IMAGE_TITLE, _constants.titleAttributeLabel(), props.title);
 
-      tabPanel.add(advancedTab, "Advanced", advancedTab.getBasePanelId());
+      tabPanel.add(advancedTab, _constants.advancedLabel(), advancedTab.getBasePanelId());
       
       
       tabPanel.selectTab(0);
@@ -334,7 +336,7 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
          if (width.length() == 0)
          {
             globalDisplay.showErrorMessage(
-               "Error", "You must provide a value for image width."
+               _constants.errorCaption(), _constants.errorMessage()
             );
             width_.setFocus(true);
             return false;
@@ -360,7 +362,7 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
       if (dims_ == null)
          return;
 
-      String width = null, height = null, units = "px"; //$NON-NLS-1$
+      String width = null, height = null, units = "px";
 
       // if we have both width and height then use them
       if (widthProp_ != null && heightProp_ != null)
@@ -378,7 +380,7 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
          {
             width = dims_.naturalWidth.toString();
             height = dims_.naturalHeight.toString();
-            units = "px"; //$NON-NLS-1$
+            units = "px";
          }
          else if (widthProp_ != null)
          {
@@ -454,7 +456,7 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
       for (int i = 0; i < options.length; i++)
          units.addItem(options[i], options[i]);
       units.getElement().setId(ElementIds.VISUAL_MD_IMAGE_UNITS);
-      Roles.getListboxRole().setAriaLabelProperty(units.getElement(), "Units");
+      Roles.getListboxRole().setAriaLabelProperty(units.getElement(), _constants.unitsLabel());
       panel.add(units);
       return units;
    }
@@ -529,8 +531,8 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
    private final RadioButton alignRight_;
    private final PanmirrorEditAttrWidget editAttr_;
 
-   private static final String WIDTH = "width"; //$NON-NLS-1$
-   private static final String HEIGHT = "height"; //$NON-NLS-1$
-
+   private static final String WIDTH = "width";
+   private static final String HEIGHT = "height";
+   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
 
 }

@@ -20,6 +20,8 @@ import java.util.List;
 
 import org.rstudio.core.client.command.KeySequence;
 import org.rstudio.studio.client.palette.ui.CommandPaletteCommand;
+import org.rstudio.studio.client.panmirror.PanmirrorConstants;
+import com.google.gwt.core.client.GWT;
 
 public class PanmirrorCommandPaletteEntry extends CommandPaletteCommand
 {
@@ -46,8 +48,7 @@ public class PanmirrorCommandPaletteEntry extends CommandPaletteCommand
    @Override
    public String getContext()
    {
-      // i18n: Is this enum, user, or both?  I think it is at least used as enum in panmirrorCommandPaletteItem.java
-      return "Visual Editor";
+      return _constants.visualEditorText();
    }
 
    @Override
@@ -66,4 +67,5 @@ public class PanmirrorCommandPaletteEntry extends CommandPaletteCommand
          keys.add(keySequence);
       return keys;
    }
+   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
 }
