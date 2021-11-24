@@ -79,13 +79,13 @@ public class PanmirrorToolbarCommands implements CommandPaletteEntryProvider
       add(PanmirrorCommands.RawBlock, _constants.rawBlockMenuText());
       
       // chunk
-      add(PanmirrorCommands.RCodeChunk, "R");
-      add(PanmirrorCommands.BashCodeChunk, "Bash");
-      add(PanmirrorCommands.D3CodeChunk, "D3");
-      add(PanmirrorCommands.PythonCodeChunk, "Python");
-      add(PanmirrorCommands.RcppCodeChunk, "Rcpp");
+      add(PanmirrorCommands.RCodeChunk, "R"); //NON-NLS
+      add(PanmirrorCommands.BashCodeChunk, "Bash"); //NON-NLS
+      add(PanmirrorCommands.D3CodeChunk, "D3"); //NON-NLS
+      add(PanmirrorCommands.PythonCodeChunk, "Python"); //NON-NLS
+      add(PanmirrorCommands.RcppCodeChunk, "Rcpp"); //NON-NLS
       add(PanmirrorCommands.SQLCodeChunk, "SQL");
-      add(PanmirrorCommands.StanCodeChunk, "Stan");
+      add(PanmirrorCommands.StanCodeChunk, "Stan"); //NON-NLS
       add(PanmirrorCommands.ExpandChunk, _constants.expandChunkMenuText(), false);
       add(PanmirrorCommands.CollapseChunk, _constants.collapseChunkMenuText(), false);
       add(PanmirrorCommands.ExpandAllChunks, _constants.expandAllChunksMenuText(), false);

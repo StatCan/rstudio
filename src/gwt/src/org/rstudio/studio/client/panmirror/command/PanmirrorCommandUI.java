@@ -143,7 +143,7 @@ public class PanmirrorCommandUI implements ScheduledCommand
       String menuText = menuText_;
       int plural = command_ != null ? command_.plural() : 1;
       if (plural > 1 && pluralMenuFormat_ != null) 
-         menuText = pluralMenuFormat_.replaceAll("%d", Integer.toString(plural));
+         menuText = pluralMenuFormat_.replaceAll("%d", Integer.toString(plural)); //NON-NLS
       return menuText;
    }
    

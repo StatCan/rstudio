@@ -151,7 +151,7 @@ public class PanmirrorEditCalloutDialog extends ModalDialog<PanmirrorCalloutEdit
    {
       PanmirrorCalloutEditResult result = new PanmirrorCalloutEditResult();
       result.attr = editAttr_.getAttr();
-      result.action = "edit";
+      result.action = "edit"; //NON-NLS
       result.callout = new PanmirrorCalloutProps();
       result.callout.type = calloutType_.getValue();
       result.callout.appearance = calloutAppearance_.getValue();

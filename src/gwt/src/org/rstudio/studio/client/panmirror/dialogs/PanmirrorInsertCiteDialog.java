@@ -61,20 +61,20 @@ public class PanmirrorInsertCiteDialog extends ModalDialog<PanmirrorInsertCiteRe
          @Override
          public String displayName()
          {
-            return "CSL-YAML";
+            return "CSL-YAML"; //NON-NLS
          } //$NON-NLS-1$
 
          @Override
          public String fileExtension()
          {
-            return "yaml";
+            return "yaml"; //NON-NLS
          } //$NON-NLS-1$
       },
       json {
          @Override
          public String displayName()
          {
-            return "CSL-JSON";
+            return "CSL-JSON"; //NON-NLS
          } //$NON-NLS-1$
 
          @Override

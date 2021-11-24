@@ -63,7 +63,7 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
          ThemedButton removeLinkButton = new ThemedButton(_constants.removeLinkTitle());
          removeLinkButton.addClickHandler((event) -> {
             PanmirrorLinkEditResult result = collectInput();
-            result.action = "remove";
+            result.action = "remove"; //NON-NLS
             validateAndGo(result, new Command()
             {
                @Override

@@ -83,7 +83,7 @@ public class PanmirrorCommandIcons
    
    private String dm(String icon)
    {
-      return icon + "_dm";
+      return icon + "_dm"; //NON-NLS
    }
    
    public static PanmirrorCommandIcons INSTANCE = new PanmirrorCommandIcons();

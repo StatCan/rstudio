@@ -67,7 +67,7 @@ public class PanmirrorEditMathDialog extends ModalDialog<String>
    @Override
    protected boolean validate(String input)
    {
-      if (!input.isEmpty() && !input.startsWith("eq-"))
+      if (!input.isEmpty() && !input.startsWith("eq-")) //NON-NLS
       {
          RStudioGinjector.INSTANCE.getGlobalDisplay().showErrorMessage(
             _constants.invalidIDCaption(),

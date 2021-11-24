@@ -62,7 +62,7 @@ public class PanmirrorInsertTabsetDialog extends ModalDialog<PanmirrorInsertTabs
       // attributes tab
       PanmirrorAttrProps attr = new PanmirrorAttrProps();
       attr.id = "";
-      attr.classes = new String[] { "panel-tabset" };
+      attr.classes = new String[] { "panel-tabset" }; //NON-NLS
       attr.keyvalue = new String[][] {};
       editAttr_ =  new PanmirrorEditAttrWidget();
       editAttr_.setAttr(attr, null);

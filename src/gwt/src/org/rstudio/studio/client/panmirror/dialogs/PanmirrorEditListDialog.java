@@ -106,10 +106,10 @@ public class PanmirrorEditListDialog extends ModalDialog<PanmirrorListProps>
 
       // i18n
       numberDelimiter_.setChoices(new String[] {
-         "DefaultDelim",
-         "Period",
-         "OneParen",
-         "TwoParens",
+         "DefaultDelim",//NON-NLS
+         "Period", //NON-NLS
+         "OneParen",//NON-NLS
+         "TwoParens",//NON-NLS
       });
 
       

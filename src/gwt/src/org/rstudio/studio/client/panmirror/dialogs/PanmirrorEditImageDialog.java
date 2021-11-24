@@ -190,18 +190,18 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
       }
       
       // alignment
-      alignDefault = new RadioButton("align", _constants.defaultLabel());
-      alignLeft_ = new RadioButton("align", _constants.leftLabel());
-      alignCenter_ = new RadioButton("align", _constants.centerLabel());
-      alignRight_ = new RadioButton("align", _constants.rightLabel());
+      alignDefault = new RadioButton("align", _constants.defaultLabel()); //NON-NLS
+      alignLeft_ = new RadioButton("align", _constants.leftLabel()); //NON-NLS
+      alignCenter_ = new RadioButton("align", _constants.centerLabel()); //NON-NLS
+      alignRight_ = new RadioButton("align", _constants.rightLabel()); //NON-NLS
       if (props.align != null)
       {
          alignDefault.setValue(true);   
-         if (props.align.equals("left"))
+         if (props.align.equals("left")) //NON-NLS
             alignLeft_.setValue(true);
-         else if (props.align.equals("center"))
-            alignCenter_.setValue(true);
-         else if (props.align.equals("right"))
+         else if (props.align.equals("center")) //NON-NLS
+            alignCenter_.setValue(true); //NON-NLS
+         else if (props.align.equals("right")) //NON-NLS
             alignRight_.setValue(true);
          HorizontalRadioPanel panel = new HorizontalRadioPanel(_constants.legendText(), false);
          panel.addStyleName(RES.styles().alignmentPanel());
@@ -302,14 +302,14 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
       result.title = title_.getValue().trim();
       result.caption = caption_.getValue().trim();
       result.linkTo = linkTo_.getValue().trim();
-      if (alignDefault.getValue())
-         result.align = "default";
-      else if (alignLeft_.getValue())
-         result.align = "left";
-      else if (alignCenter_.getValue())
-         result.align = "center";
+      if (alignDefault.getValue()) //NON-NLS
+         result.align = "default"; //NON-NLS
+      else if (alignLeft_.getValue()) //NON-NLS
+         result.align = "left"; //NON-NLS
+      else if (alignCenter_.getValue()) //NON-NLS
+         result.align = "center"; //NON-NLS
       else if (alignRight_.getValue())
-         result.align = "right";
+         result.align = "right"; //NON-NLS
       if (env_ != null)
          result.env = env_.getText().trim();
       if (alt_ != null)
@@ -362,7 +362,7 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
       if (dims_ == null)
          return;
 
-      String width = null, height = null, units = "px";
+      String width = null, height = null, units = "px"; //NON-NLS
 
       // if we have both width and height then use them
       if (widthProp_ != null && heightProp_ != null)
@@ -379,8 +379,8 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
          if (widthProp_ == null && heightProp_ == null)
          {
             width = dims_.naturalWidth.toString();
-            height = dims_.naturalHeight.toString();
-            units = "px";
+            height = dims_.naturalHeight.toString(); //NON-NLS
+            units = "px"; //NON-NLS
          }
          else if (widthProp_ != null)
          {
@@ -529,10 +529,10 @@ public class PanmirrorEditImageDialog extends ModalDialog<PanmirrorImageProps>
    private final RadioButton alignLeft_;
    private final RadioButton alignCenter_;
    private final RadioButton alignRight_;
-   private final PanmirrorEditAttrWidget editAttr_;
+   private final PanmirrorEditAttrWidget editAttr_; //NON-NLS //NON-NLS
 
-   private static final String WIDTH = "width";
-   private static final String HEIGHT = "height";
+   private static final String WIDTH = "width"; //NON-NLS
+   private static final String HEIGHT = "height"; //NON-NLS
    private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
 
 }
