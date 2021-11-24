@@ -165,5 +165,4 @@ public class PanmirrorEditListDialog extends ModalDialog<PanmirrorListProps>
    @UiField NumericTextBox startingNumber_;
    @UiField SelectWidget numberStyle_;
    @UiField SelectWidget numberDelimiter_;
-
 }
