@@ -100,7 +100,7 @@ public class ProjectCompilePdfPreferencesPane extends ProjectPreferencesPane
          super(constants_.compilePDFLabel(),
                constants_.compilePDFEmptyLabel(),
                constants_.browseActionLabel(),
-               new HelpButton("pdf_root_document", constants_.rootDocumentChooserTitle()),
+               new HelpButton("pdf_root_document", constants_.rootDocumentChooserTitle()),  //NON-NLS
                ElementIds.TextBoxButtonId.PDF_ROOT,
                true,
                null);

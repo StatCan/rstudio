@@ -75,7 +75,7 @@ public class ProjectPackratPreferencesPane extends ProjectPreferencesPane
    @Override
    public String getName()
    {
-      return "Packrat";
+      return "Packrat";  //NON-NLS
    }
 
    @Override
@@ -144,7 +144,7 @@ public class ProjectPackratPreferencesPane extends ProjectPreferencesPane
         taExternalPackages_.getElement().getStyle().setMarginBottom(8, Unit.PX);
         panelExternalPackages_.add(new LabelWithHelp(
             constants_.panelExternalPackagesText(),
-            "packrat_external_packages",
+            "packrat_external_packages",  //NON-NLS
             false, constants_.panelExternalPackagesTitle(), taExternalPackages_));
         panelExternalPackages_.add(taExternalPackages_);
         add(panelExternalPackages_);
@@ -206,7 +206,7 @@ public class ProjectPackratPreferencesPane extends ProjectPreferencesPane
       String value = textArea.getValue().replace('\n', ',');
 
       // normalize whitespace (for comparison with previous options)
-      List<String> values = Arrays.asList(value.split("\\s*,\\s*"));
+      List<String> values = Arrays.asList(value.split("\\s*,\\s*"));  //NON-NLS
 
       // remove entries that are only whitespace
       ArrayList<String> result = new ArrayList<>();

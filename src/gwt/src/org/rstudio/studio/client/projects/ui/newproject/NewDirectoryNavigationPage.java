@@ -162,7 +162,7 @@ public class NewDirectoryNavigationPage
          panel.addStyleName(styles.wizardPageSelectorItemSize());
          Roles.getButtonRole().set(panel.getElement());
          panel.getElement().setTabIndex(0);
-         panel.getElement().setId(ElementIds.idFromLabel(page.getTitle() + "_wizard_page")); 
+         panel.getElement().setId(ElementIds.idFromLabel(page.getTitle() + "_wizard_page"));  //NON-NLS
 
          DecorativeImage rightArrow = new DecorativeImage(
                new ImageResource2x(WizardResources.INSTANCE.wizardDisclosureArrow2x()));
