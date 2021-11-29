@@ -172,7 +172,7 @@ public class VirtualConsole
    private String debugDumpClassEntry(Entry<Integer, ClassRange> entry)
    {
       if (entry == null)
-         return("[null]");
+         return("[null]"); //$NON-NLS-1$
       else
          return("[" + entry.getKey() + "]=" + entry.getValue().debugDump());
    }
@@ -183,7 +183,8 @@ public class VirtualConsole
    @SuppressWarnings("unused")
    private void debugDumpClassMap(String name, Map<Integer, ClassRange> map)
    {
-      Debug.logToConsole("Dumping " + name);
+      // i18n: Are these developer prints or do they reach typical users?
+      Debug.logToConsole("Dumping " + name); // $NON-NLS-1$
       if (map == null)
          Debug.logToConsole("null");
       else
@@ -191,7 +192,7 @@ public class VirtualConsole
          {
             Debug.logToConsole(name + debugDumpClassEntry(entry));
          }
-      Debug.logToConsole("Done dumping " + name);
+      Debug.logToConsole("Done dumping " + name); // $NON-NLS-1$
    }
 
    @Override
@@ -209,7 +210,7 @@ public class VirtualConsole
          String string = splat.get(i);
          String trimmed = StringUtil.trimRight(string);
          if (trimmed.length() > maxLength)
-            splat.set(i, trimmed.substring(0, maxLength) + "... <truncated>");
+            splat.set(i, trimmed.substring(0, maxLength) + "... <truncated>"); // $NON-NLS-1$
          else if (string.length() > maxLength)
             splat.set(i, string.substring(0, maxLength));
       }
@@ -761,8 +762,8 @@ public class VirtualConsole
 
       public String debugDump()
       {
-         return "start=" + start + ", length=" + length + ", clazz=[" + clazz +
-               "], text=[" + text() + "]";
+         return "start=" + start + ", length=" + length + ", clazz=[" + clazz + //$NON-NLS-1$
+               "], text=[" + text() + "]"; //$NON-NLS-1$
       }
 
       public final String clazz;

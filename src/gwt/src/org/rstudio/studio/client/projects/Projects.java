@@ -182,6 +182,7 @@ public class Projects implements OpenProjectFileEvent.Handler,
          }
          else
          {
+            // i18n: Where do items here appear?  Are these shown to user?  I think they are, just can't find menu
             commands.activateVcs().setMenuLabel(
                                  "Show _" + sessionInfo.getVcsName());
             commands.layoutZoomVcs().setMenuLabel(
@@ -240,14 +241,14 @@ public class Projects implements OpenProjectFileEvent.Handler,
               final ProgressIndicator indicator =
                     globalDisplay_.getProgressIndicator("Error");
                  indicator.onProgress("New Project...");
-              
+
               projServer_.getNewProjectContext(
                 new SimpleRequestCallback<NewProjectContext>() {
                    @Override
                    public void onResponseReceived(NewProjectContext context)
                    {
                       indicator.onCompleted();
-                      
+
                       NewProjectWizard wiz = new NewProjectWizard(
                          session_.getSessionInfo(),
                          pUserPrefs_.get(),
@@ -271,14 +272,14 @@ public class Projects implements OpenProjectFileEvent.Handler,
                       });
                       wiz.showModal();
                    }
-                   
+
                    @Override
                    public void onError(ServerError error)
                    {
                       indicator.onCompleted();
                       super.onError(error);
                    }
-                   
+
               });
            }
       });
@@ -518,7 +519,7 @@ public class Projects implements OpenProjectFileEvent.Handler,
                   quartoServer_.quartoCreateProject(
                      newProject.getProjectFile(),
                      newProject.getNewQuartoProjectOptions(),
-                     consoleProcessRequestCallback(newProject, indicator, continuation, 
+                     consoleProcessRequestCallback(newProject, indicator, continuation,
                                                    "Quarto create project failed"));
                }
                else
@@ -543,7 +544,7 @@ public class Projects implements OpenProjectFileEvent.Handler,
                                  }
                                  continuation.execute();
                               }
-   
+
                               @Override
                               public void onError(ServerError error)
                               {
@@ -553,7 +554,7 @@ public class Projects implements OpenProjectFileEvent.Handler,
                               }
                            });
                   };
-   
+
                   if (newProject.getProjectTemplateOptions() != null)
                   {
                      // NOTE: We provide built-in project templates for packages that may
@@ -573,19 +574,19 @@ public class Projects implements OpenProjectFileEvent.Handler,
                               {
                                  globalDisplay_.showErrorMessage(
                                        "Error installing " + pkg,
-                                       "Installation of package '" + pkg + "' failed, and so the project cannot " +
-                                       "be created. Try installing the package manually with " +
-                                       "'install.packages(\"" + pkg + "\")'.");
-                                 return;
-                              }
-   
-                              onReady.execute();
-                           });
-                  }
-                  else
-                  {
-                     onReady.execute();
-                  }
+                                       // i18n: Message
+                                    "Installation of package '" + pkg + "' failed, and so the project cannot " +
+                                    "be created. Try installing the package manually with " +
+                                    "'install.packages(\"" + pkg + "\")'.");
+                              return;
+                           }
+
+                           onReady.execute();
+                        });
+               }
+               else
+               {
+                  onReady.execute();}
                }
             }
             else
@@ -682,8 +683,8 @@ public class Projects implements OpenProjectFileEvent.Handler,
             });
 
          }, false);
-      } 
-      
+      }
+
 
       if (newProject.getOpenInNewWindow())
       {
@@ -842,6 +843,7 @@ public class Projects implements OpenProjectFileEvent.Handler,
          globalDisplay_.showMessage(
                MessageDialog.INFO,
                "No Active Project",
+               // i18n: Concatenate
                "Build tools can only be configured from within an " +
                "RStudio project.");
 
@@ -861,6 +863,7 @@ public class Projects implements OpenProjectFileEvent.Handler,
          globalDisplay_.showMessage(
                MessageDialog.INFO,
                "No Active Project",
+               // i18n: Concatenate
                "Version control features can only be accessed from within an " +
                "RStudio project. Note that if you have an existing directory " +
                "under version control you can associate an RStudio project " +
@@ -948,6 +951,7 @@ public class Projects implements OpenProjectFileEvent.Handler,
 
       if (session_.getSessionInfo().getAllowOpenSharedProjects())
       {
+         // i18n: Concatenate
          msg += "\n\nEnsure the project URL is correct; if it is, contact the project" +
                " owner to request access.";
       }
@@ -1025,8 +1029,8 @@ public class Projects implements OpenProjectFileEvent.Handler,
          }
       });
    }
-   
-   // initialize renv if requested AND this isn't a quarto project with 
+
+   // initialize renv if requested AND this isn't a quarto project with
    // an engine incompatible with renv
    private boolean initializeRenv(NewProjectResult newProject)
    {
@@ -1035,7 +1039,7 @@ public class Projects implements OpenProjectFileEvent.Handler,
              newProject.getNewQuartoProjectOptions().getEngine()
                 .equals(QuartoConstants.ENGINE_KNITR));
    }
-   
+
    private void showOpenProjectDialog(
                   int defaultType,
                   boolean allowOpenInNewWindow,
@@ -1184,6 +1188,7 @@ public class Projects implements OpenProjectFileEvent.Handler,
 
    private void showProjectOpenError(String projectFilePath)
    {
+      // i18n: Message
       String msg = "Project '" + projectFilePath + "' " +
             "does not exist (it has been moved or deleted), or it " +
             "is not writeable";
@@ -1248,7 +1253,7 @@ public class Projects implements OpenProjectFileEvent.Handler,
    private final ProjectOpener opener_;
    private final SessionOpener sessionOpener_;
 
-   public static final String NONE = "none";
+   public static final String NONE = "none"; //$NON-NLS-1$
    public static final Pattern PACKAGE_NAME_PATTERN =
-         Pattern.create("^[a-zA-Z][a-zA-Z0-9.]*$", "");
+         Pattern.create("^[a-zA-Z][a-zA-Z0-9.]*$", ""); //$NON-NLS-1$
 }

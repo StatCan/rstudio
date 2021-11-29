@@ -72,8 +72,7 @@ public class BuildTab extends DelayLoadWorkbenchTab<BuildPresenter>
                    EventBus eventBus,
                    UserPrefs uiPrefs)
    {
-      super("Build",  shim);
-      
+      super("Build", shim); // i18n?
       session_ = session;
       binder.bind(commands, shim);
 

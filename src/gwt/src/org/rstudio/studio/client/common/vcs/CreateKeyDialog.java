@@ -41,6 +41,7 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.rstudio.studio.client.workbench.prefs.views.SourceControlPreferencesPaneConstants;
 
 public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
 {
@@ -48,7 +49,7 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
                           final VCSServerOperations server,
                           final OperationWithInput<String> onCompleted)
    {
-      super("Create RSA Key", Roles.getDialogRole(), new ProgressOperationWithInput<CreateKeyOptions>() {
+      super(constants_.createKeyDialogCaption(), Roles.getDialogRole(), new ProgressOperationWithInput<CreateKeyOptions>() {
 
          @Override
          public void execute(final CreateKeyOptions input,
@@ -57,7 +58,7 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
             final ProgressOperationWithInput<CreateKeyOptions>
                                                       thisOperation = this;
 
-            indicator.onProgress("Creating RSA Key...");
+            indicator.onProgress(constants_.onProgressLabel());
 
             RSAEncrypt.encrypt_ServerOnly(
                server,
@@ -114,7 +115,7 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
 
                                  // show the output
                                  new ShowContentDialog(
-                                                "Create RSA Key",
+                                                constants_.createKeyDialogCaption(),
                                                 res.getOutput()).showModal();
                               }
                            }
@@ -140,7 +141,7 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
 
       rsaSshKeyPath_ = FileSystemItem.createDir(rsaSshKeyPath);
 
-      setOkButtonCaption("Create");
+      setOkButtonCaption(constants_.setOkButtonCaption());
 
       ElementIds.assignElementId(this, ElementIds.DIALOG_CREATE_SSH_KEY);
    }
@@ -152,7 +153,7 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
          return null;
       else
          return CreateKeyOptions.create(rsaSshKeyPath_.getPath(),
-                                        "rsa",
+                                        "rsa", //NON-NLS
                                         getPassphrase(),
                                         false);
    }
@@ -171,8 +172,8 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
          if (getPassphrase() != getConfirmPassphrase())
          {
             display.showErrorMessage(
-                  "Non-Matching Passphrases",
-                  "The passphrase and passphrase confirmation do not match.",
+                  constants_.showErrorCaption(),
+                  constants_.showErrorMessage(),
                   txtConfirmPassphrase_);
          }
 
@@ -198,9 +199,9 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
       txtKeyPath.setText(rsaSshKeyPath_.getPath());
       txtKeyPath.setWidth("100%");
       CaptionWithHelp pathCaption = new CaptionWithHelp(
-                                 "The RSA key will be created at:",
-                                 "SSH/RSA key management",
-                                 "rsa_key_help",
+                                 constants_.pathCaption(),
+                                 constants_.pathHelpCaption(),
+                                 "rsa_key_help", //NON-NLS
                                  txtKeyPath);
       pathCaption.setIncludeVersionInfo(false);
       pathCaption.setWidth("100%");
@@ -215,7 +216,7 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
       VerticalPanel passphrasePanel1 = new VerticalPanel();
       txtPassphrase_ = new PasswordTextBox();
       txtPassphrase_.addStyleName(styles.passphrase());
-      FormLabel passphraseLabel1 = new FormLabel("Passphrase (optional):", txtPassphrase_);
+      FormLabel passphraseLabel1 = new FormLabel(constants_.passphraseLabel(), txtPassphrase_);
       passphraseLabel1.addStyleName(styles.entryLabel());
       passphrasePanel1.add(passphraseLabel1);
 
@@ -226,7 +227,7 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
       passphrasePanel2.addStyleName(styles.lastSection());
       txtConfirmPassphrase_ = new PasswordTextBox();
       txtConfirmPassphrase_.addStyleName(styles.passphraseConfirm());
-      FormLabel passphraseLabel2 = new FormLabel("Confirm:", txtConfirmPassphrase_);
+      FormLabel passphraseLabel2 = new FormLabel(constants_.passphraseConfirmLabel(), txtConfirmPassphrase_);
       passphraseLabel2.addStyleName(styles.entryLabel());
       passphrasePanel2.add(passphraseLabel2);
       passphrasePanel2.add(txtConfirmPassphrase_);
@@ -247,9 +248,9 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
    {
       RStudioGinjector.INSTANCE.getGlobalDisplay().showYesNoMessage(
             MessageDialog.WARNING,
-            "Key Already Exists",
-            "An RSA key already exists at " + path + ". " +
-            "Do you want to overwrite the existing key?",
+            constants_.confirmOverwriteKeyCaption(),
+            constants_.confirmOverwriteKeyMessage() + path + ". " +
+            constants_.overwriteExistingKeyMessage(),
             onConfirmed,
             false);
    }
@@ -291,4 +292,6 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
    private TextBox txtConfirmPassphrase_;
 
    private final FileSystemItem rsaSshKeyPath_;
+   private static final SourceControlPreferencesPaneConstants constants_ = GWT.create(SourceControlPreferencesPaneConstants.class);
+
 }

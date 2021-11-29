@@ -55,7 +55,7 @@ import org.rstudio.studio.client.workbench.views.console.events.SendToConsoleEve
  */
 public class DesktopHooks
 {
-   @BaseExpression("$wnd.desktopHooks")
+   @BaseExpression("$wnd.desktopHooks") //$NON-NLS-1$
    interface DesktopHooksInjector extends JsObjectInjector<DesktopHooks> {}
    private static final DesktopHooksInjector injector =
          GWT.create(DesktopHooksInjector.class);
@@ -201,8 +201,8 @@ public class DesktopHooks
    void promptToQuitR()
    {
       globalDisplay_.showYesNoMessage(MessageDialog.QUESTION,
-            "Close Remote Session",
-            "Do you want to close the remote session?",
+            constants_.closeRemoteSessionCaption(),
+            constants_.closeRemoteSessionMessage(),
             false,
             (Operation) () -> commands_.quitSession().execute(),
             (Operation) () -> Desktop.getFrame().onSessionQuit(),
@@ -231,10 +231,10 @@ public class DesktopHooks
    
    void licenseLost(String licenseMessage)
    {
-      String message = "Unable to obtain a license. Please restart RStudio to try again.";
+      String message = constants_.licenseLostMessage();
       if (!StringUtil.isNullOrEmpty(licenseMessage))
       {
-         message = message + "\n\nDetails: ";
+         message = message + "\n\n" + constants_.detailsMessage();
          message = message + licenseMessage;
       }
       globalDisplay_.showMessage(MessageDialog.WARNING, editionInfo_.editionName(), message,
@@ -267,7 +267,7 @@ public class DesktopHooks
    
    void onUrlsDropped(String droppedUrls)
    {   
-      final String kUrlSeparator = "26D63FFA-995F-4E9A-B4AA-04DA9F93B538";
+      final String kUrlSeparator = "26D63FFA-995F-4E9A-B4AA-04DA9F93B538"; // $NON-NLS-1$
       List<String> urls = Arrays.asList(droppedUrls.split(kUrlSeparator));
       workbenchContext_.setDroppedUrls(urls); 
    }
@@ -285,4 +285,5 @@ public class DesktopHooks
    private final ProductEditionInfo editionInfo_;
    
    private SaveAction saveAction_ = SaveAction.saveAsk();
+   private static final StudioClientApplicationConstants constants_ = GWT.create(StudioClientApplicationConstants.class);
 }

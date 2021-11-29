@@ -49,7 +49,7 @@ public class TextEditingTargetSpelling extends SpellingContext
 {
    interface Resources extends ClientBundle
    {
-      @Source("./goToWorkingDir.png")
+      @Source("./goToWorkingDir.png") //$NON-NLS-1$
       ImageResource addToDictIcon();
    }
 

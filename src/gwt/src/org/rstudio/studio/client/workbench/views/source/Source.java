@@ -649,7 +649,7 @@ public class Source implements InsertSourceEvent.Handler,
    private boolean consoleEditorHadFocusLast()
    {
       String id = MainWindowObject.lastFocusedEditorId().get();
-      return "rstudio_console_input".equals(id);
+      return "rstudio_console_input".equals(id); //$NON-NLS-1$
    }
 
    public Widget asWidget()
@@ -726,7 +726,7 @@ public class Source implements InsertSourceEvent.Handler,
          return;
 
       // check for edit_published url parameter
-      final String kEditPublished = "edit_published";
+      final String kEditPublished = "edit_published"; //$NON-NLS-1$
       String editPublished = StringUtil.notNull(
           Window.Location.getParameter(kEditPublished));
 
@@ -883,6 +883,7 @@ public class Source implements InsertSourceEvent.Handler,
                if (!succeeded)
                {
                   globalDisplay_.showErrorMessage("Notebook Creation Failed",
+                        // i18n: Concatenation/Message
                         "One or more packages required for R Notebook " +
                         "creation were not installed.");
                   return;
@@ -1038,7 +1039,7 @@ public class Source implements InsertSourceEvent.Handler,
          RnwWeave activeWeave = rnwWeaveRegistry_.findTypeIgnoreCase(
                                     userPrefs_.defaultSweaveEngine().getValue());
          if (activeWeave.getInjectConcordance())
-            concordance = "\\SweaveOpts{concordance=TRUE}\n";
+            concordance = "\\SweaveOpts{concordance=TRUE}\n"; //$NON-NLS-1$
       }
       final String concordanceValue = concordance;
 

@@ -186,12 +186,6 @@ public interface CmdConstants extends Constants {
     @DefaultStringValue("Create a new Quarto presentation") // $NON-NLS-1$
     String newQuartoPresDesc();
     
-    // serveQuartoSite
-    @DefaultStringValue("_Serve Site") // $NON-NLS-1$
-    String serveQuartoSiteMenuLabel();
-    @DefaultStringValue("Run development server for Quarto site") // $NON-NLS-1$
-    String serveQuartoSiteDesc();
-    
     // newRShinyApp
     @DefaultStringValue("Shiny _Web App...") // $NON-NLS-1$
     String newRShinyAppMenuLabel();

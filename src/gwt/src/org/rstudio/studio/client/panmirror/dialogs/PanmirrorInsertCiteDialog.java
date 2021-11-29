@@ -9,6 +9,7 @@ import org.rstudio.core.client.widget.OperationWithInput;
 import org.rstudio.core.client.widget.ProgressIndicator;
 import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.common.GlobalDisplay;
+import org.rstudio.studio.client.panmirror.PanmirrorConstants;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorInsertCiteField;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorInsertCiteProps;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorInsertCiteResult;
@@ -53,34 +54,34 @@ public class PanmirrorInsertCiteDialog extends ModalDialog<PanmirrorInsertCiteRe
          @Override
          public String fileExtension()
          {
-            return "bib";
+            return "bib"; //$NON-NLS-1$
          }
       },
       yaml {
          @Override
          public String displayName()
          {
-            return "CSL-YAML";
-         }
+            return "CSL-YAML"; //NON-NLS
+         } //$NON-NLS-1$
 
          @Override
          public String fileExtension()
          {
-            return "yaml";
-         }
+            return "yaml"; //NON-NLS
+         } //$NON-NLS-1$
       },
       json {
          @Override
          public String displayName()
          {
-            return "CSL-JSON";
-         }
+            return "CSL-JSON"; //NON-NLS
+         } //$NON-NLS-1$
 
          @Override
          public String fileExtension()
          {
             return "json";
-         }
+         } //$NON-NLS-1$
       };
       
       public abstract String displayName();
@@ -134,7 +135,7 @@ public class PanmirrorInsertCiteDialog extends ModalDialog<PanmirrorInsertCiteRe
          canceled_ = false;
 
          ProgressIndicator indicator = addProgressIndicator(false);
-         indicator.onProgress("Looking Up DOI..", () -> {
+         indicator.onProgress(_constants.onProgressMessage(), () -> {
             canceled_ = true;
             super.closeDialog();
          });
@@ -153,10 +154,10 @@ public class PanmirrorInsertCiteDialog extends ModalDialog<PanmirrorInsertCiteRe
 
                // Get the preview and suggested Id
                JsPropertyMap<Object> responseObj = Js.asAny(response).asPropertyMap();
-               String status = (String) responseObj.get("status");
-               if (status.equals("ok")) {
+               String status = (String) responseObj.get("status"); //$NON-NLS-1$
+               if (status.equals("ok")) { //$NON-NLS-1$
 
-                  citeProps_.csl = (JsObject) responseObj.getAsAny("message");
+                  citeProps_.csl = (JsObject) responseObj.getAsAny("message"); //$NON-NLS-1$
                   
                   PanmirrorUIToolsCitation citationTools = new PanmirrorUITools().citation;
                   PanmirrorInsertCiteUI citeUI = citationTools.citeUI(citeProps_);
@@ -232,7 +233,7 @@ public class PanmirrorInsertCiteDialog extends ModalDialog<PanmirrorInsertCiteRe
       if (StringUtil.isNullOrEmpty(result.id))
       {
          globalDisplay.showErrorMessage(
-            "Error", "You must provide a value for the citation id."
+            _constants.errorCaption(), _constants.errorValidateMessage()
          );
          citationId_.setFocus(true);
          return false;
@@ -241,7 +242,7 @@ public class PanmirrorInsertCiteDialog extends ModalDialog<PanmirrorInsertCiteRe
       
       if (!isValidCitationId(result.id)) {
          globalDisplay.showErrorMessage(
-               "Error", "Please provide a validation citation Id."
+                 _constants.errorCaption(), _constants.citationErrorMessage()
             );
             citationId_.setFocus(true);
             return false;        
@@ -253,7 +254,7 @@ public class PanmirrorInsertCiteDialog extends ModalDialog<PanmirrorInsertCiteRe
          if (existingId.compareToIgnoreCase(result.id) == 0)
          {
             globalDisplay.showErrorMessage(
-                  "Error", "Please select a unique citation Id."
+                    _constants.errorCaption(), _constants.uniqueCitationErrorMessage()
                );
                citationId_.setFocus(true);
                return false;                   
@@ -264,12 +265,12 @@ public class PanmirrorInsertCiteDialog extends ModalDialog<PanmirrorInsertCiteRe
       {
          if (addTobibliographyPanel_.isVisible()) {
             globalDisplay.showErrorMessage(
-                  "Error", "You must select a bibliography."
+                    _constants.errorCaption(), _constants.bibliographyErrorMessage()
                );
             bibliographies_.setFocus(true);            
          } else {
             globalDisplay.showErrorMessage(
-                  "Error", "You must provide a bibliography file name."
+                    _constants.errorCaption(), _constants.bibliographyFileNameErrorMessage()
                );            
             createBibliographyFileName_.setFocus(true);
          }
@@ -343,7 +344,7 @@ public class PanmirrorInsertCiteDialog extends ModalDialog<PanmirrorInsertCiteRe
          createBibliographyTypes_.setSelectedIndex(
             createBibliographyTypes_.getIndexFromValue(userState_.bibliographyDefaultType().getValue())
          );
-         createBibliographyFileName_.setText(ensureExtension("references", createBibliographyTypes_.getSelectedValue()));
+         createBibliographyFileName_.setText(ensureExtension("references", createBibliographyTypes_.getSelectedValue())); //$NON-NLS-1$
       }
       else
       {
@@ -372,7 +373,7 @@ public class PanmirrorInsertCiteDialog extends ModalDialog<PanmirrorInsertCiteRe
    private void displayError(String message) {
       GlobalDisplay globalDisplay = RStudioGinjector.INSTANCE.getGlobalDisplay();
       globalDisplay.showErrorMessage(
-            "DOI Unavailable", 
+            _constants.doiUnavailableCaption(),
             message,
             new Operation(){
                @Override
@@ -383,11 +384,11 @@ public class PanmirrorInsertCiteDialog extends ModalDialog<PanmirrorInsertCiteRe
    }
    
    private void displayErrorForStatus(String status) { 
-      if (status.equals("notfound")) {
+      if (status.equals("notfound")) { //$NON-NLS-1$
 
          displayError(kNoDataError);
          
-      } else if (status.equals("nohost")) {
+      } else if (status.equals("nohost")) { //$NON-NLS-1$
          displayError(kServerError);
          
       } else {
@@ -431,9 +432,9 @@ public class PanmirrorInsertCiteDialog extends ModalDialog<PanmirrorInsertCiteRe
    }
 
    private static String title(String doi, String provider) {
-      String title = "Citation from DOI";
+      String title = _constants.citationDOITitle();
       if (provider != null && provider.length() > 0) {
-         return "Citation from " + provider;
+         return _constants.citationFromText() + provider;
       } else {
          String doiTitle = title + ": " + doi;
          if (DomMetrics.measureHTML(doiTitle).width < 350)
@@ -453,10 +454,11 @@ public class PanmirrorInsertCiteDialog extends ModalDialog<PanmirrorInsertCiteRe
       }           
 
    }
-   
-   private static String kUnknownError = "An error occurred while loading citation data for this DOI.";
-   private static String kNoDataError = "Citation data for this DOI couldn't be found.";
-   private static String kServerError = "Unable to reach server to load citation data for this DOI.";
+   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+
+   private static String kUnknownError = _constants.kUnknownError();
+   private static String kNoDataError = _constants.kNoDataError();
+   private static String kServerError = _constants.kServerError();
    
 
    private Widget mainWidget_;

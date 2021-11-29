@@ -17,14 +17,13 @@ package org.rstudio.core.client.prefs;
 
 import com.google.gwt.aria.client.Id;
 import com.google.gwt.aria.client.Roles;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
-
-import java.util.List;
-
+import org.rstudio.core.client.CoreClientConstants;
 import org.rstudio.core.client.ElementIds;
 import org.rstudio.core.client.widget.ModalDialogBase;
 import org.rstudio.core.client.widget.Operation;
@@ -35,6 +34,8 @@ import org.rstudio.studio.client.application.ApplicationQuit;
 import org.rstudio.studio.client.application.events.ReloadEvent;
 import org.rstudio.studio.client.common.GlobalDisplay;
 import org.rstudio.studio.client.workbench.model.Session;
+
+import java.util.List;
 
 public abstract class PreferencesDialogBase<T> extends ModalDialogBase
 {
@@ -56,14 +57,14 @@ public abstract class PreferencesDialogBase<T> extends ModalDialogBase
       sectionChooser_ = new SectionChooser(caption);
 
       ThemedButton okButton = new ThemedButton(
-            "OK",
+            constants_.okButtonTitle(),
             clickEvent -> attemptSaveChanges(() -> closeDialog()));
       addOkButton(okButton, ElementIds.PREFERENCES_CONFIRM);
       addCancelButton();
 
       if (showApplyButton)
       {
-         addButton(new ThemedButton("Apply",
+         addButton(new ThemedButton(constants_.addButtonTitle(),
                                     clickEvent -> attemptSaveChanges()),
                                     ElementIds.DIALOG_APPLY_BUTTON);
       }
@@ -202,7 +203,7 @@ public abstract class PreferencesDialogBase<T> extends ModalDialogBase
          }
 
          // perform save
-         progressIndicator_.onProgress("Saving...");
+         progressIndicator_.onProgress(constants_.progressIndicatorTitle());
          doSaveChanges(prefs, onCompleted, progressIndicator_, restartRequirement);
       }
    }
@@ -249,9 +250,9 @@ public abstract class PreferencesDialogBase<T> extends ModalDialogBase
    {
       globalDisplay.showYesNoMessage(
             GlobalDisplay.MSG_QUESTION,
-            "Restart Required",
-            "You need to restart RStudio in order for these changes to take effect. " +
-                  "Do you want to do this now?",
+            constants_.restartRequiredCaption(),
+            constants_.restartRequiredMessage() +
+                  constants_.restartNowMessage(),
             () -> onRestart(quit, session),
             true);
    }
@@ -267,9 +268,9 @@ public abstract class PreferencesDialogBase<T> extends ModalDialogBase
    {
       display.showYesNoMessage(
             GlobalDisplay.MSG_QUESTION,
-            "Restart Required",
-            "You need to restart the R session in order for these changes to take effect. " +
-            "Do you want to do this now?",
+            constants_.restartRequiredCaption(),
+              constants_.restartRequiredMessage() +
+                      constants_.restartNowMessage(),
             () -> onRestartSession(),
             true);
    }
@@ -305,4 +306,5 @@ public abstract class PreferencesDialogBase<T> extends ModalDialogBase
    private final SectionChooser sectionChooser_;
    private final String panelContainerStyle_;
    private final String panelContainerStyleNoChooser_;
+   private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
 }

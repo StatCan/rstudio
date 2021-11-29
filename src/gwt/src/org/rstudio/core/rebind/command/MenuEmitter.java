@@ -162,6 +162,11 @@ public class MenuEmitter
                      + " cmds;");
    }
 
+   private void emitConstants(SourceWriter writer)
+   {
+      writer.println("private MenuConstants " + i18n_constants_name + " = GWT.create(MenuConstants.class);");
+   }
+
    private void emitConstructor(SourceWriter writer, String className)
    {
       writer.println("public " + className +  "("
@@ -199,6 +204,14 @@ public class MenuEmitter
             continue;
 
          Element child = (Element)n;
+
+//         logger_.log(TreeLogger.INFO, "in emitMenu with menuName = " + menuName);  // DEBUG
+//         logger_.log(TreeLogger.INFO, "working on child with parent of " + ((Element)child.getParentNode()));  // DEBUG
+//         logger_.log(TreeLogger.INFO, "working on child with parent of " + ((Element)child.getParentNode()).getNodeName());  // DEBUG
+//         logger_.log(TreeLogger.INFO, "working on child with parent of " + ((Element)child.getParentNode()).getBaseURI());  // DEBUG
+//         logger_.log(TreeLogger.INFO, "working on child with parent of " + ((Element)child.getParentNode()).getLocalName());  // DEBUG
+//         logger_.log(TreeLogger.INFO, "working on child with parent of " + ((Element)child.getParentNode()).getAttribute("label"));  // DEBUG
+//         logger_.log(TreeLogger.INFO, "working on child with parent of " + ((Element)child.getParentNode()).toString());  // DEBUG
 
          if (child.getTagName().equals("cmd"))
          {

@@ -283,6 +283,7 @@ public class Shell implements ConsoleHistoryAddedEvent.Handler,
       if (prefs_.limitVisibleConsole().getValue())
       {
          ariaLive_.announce(AriaLiveService.INACCESSIBLE_FEATURE,
+            // i18n: Concatenation/Message
             "Warning: Focus console output command unavailable when " +
                prefs_.limitVisibleConsole().getTitle() + " option is enabled.",
             Timing.IMMEDIATE, Severity.STATUS);
@@ -318,6 +319,7 @@ public class Shell implements ConsoleHistoryAddedEvent.Handler,
          public void onError(ServerError error)
          {
             // show the error in the console then re-prompt
+            // i18n: Concatenation/Message
             view_.consoleWriteError("Error: " + error.getUserMessage() + "\n");
             if (lastPromptText_ != null)
                consolePrompt(lastPromptText_, false);
@@ -418,7 +420,7 @@ public class Shell implements ConsoleHistoryAddedEvent.Handler,
 
    public void onSendToConsole(final SendToConsoleEvent event)
    {
-      if (StringUtil.equals(event.getLanguage(), "Python"))
+      if (StringUtil.equals(event.getLanguage(), "Python")) //$NON-NLS-1$
       {
          dependencyManager_.withReticulate(
                "Executing Python code",
@@ -436,7 +438,7 @@ public class Shell implements ConsoleHistoryAddedEvent.Handler,
    private void onSendToConsoleImpl(final SendToConsoleEvent event)
    {
       String language = event.getLanguage();
-      
+
       if (StringUtil.isNullOrEmpty(language))
       {
          sendToConsoleImpl(event);
@@ -765,6 +767,7 @@ public class Shell implements ConsoleHistoryAddedEvent.Handler,
 
    private boolean isBrowsePrompt()
    {
+      // i18n: How to handle this?  Will depend on i18n
       return lastPromptText_ != null && (lastPromptText_.startsWith("Browse"));
    }
 

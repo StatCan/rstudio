@@ -143,7 +143,7 @@ public class PanmirrorCommandUI implements ScheduledCommand
       String menuText = menuText_;
       int plural = command_ != null ? command_.plural() : 1;
       if (plural > 1 && pluralMenuFormat_ != null) 
-         menuText = pluralMenuFormat_.replaceAll("%d", Integer.toString(plural));
+         menuText = pluralMenuFormat_.replaceAll("%d", Integer.toString(plural)); //NON-NLS
       return menuText;
    }
    
@@ -154,7 +154,7 @@ public class PanmirrorCommandUI implements ScheduledCommand
          // normalize to RStudio shortcut string
          String key = command.keymap[0];
          key = key.replace('-', '+');
-         key = key.replace("Mod", BrowseCap.isMacintosh() ? "Cmd" : "Ctrl");
+         key = key.replace("Mod", BrowseCap.isMacintosh() ? "Cmd" : "Ctrl"); //$NON-NLS-1$
          
          // capitalize the last 
          return KeySequence.fromShortcutString(key);

@@ -92,7 +92,7 @@ public class XTermWidget extends Widget
          Scheduler.get().scheduleDeferred(() -> {
             // Create and attach the native terminal object to this Widget
             terminal_ = XTermNative.createTerminal(getElement(), options_, showWebLinks_, tabMovesFocus_);
-            terminal_.addClass("ace_editor");
+            terminal_.addClass("ace_editor"); //$NON-NLS-1$
             terminal_.addClass(FontSizer.getNormalFontSizeClass());
 
             // Previous versions of xterm.js used 'terminal' css class for styling, and we
@@ -101,7 +101,7 @@ public class XTermWidget extends Widget
             // element. This causes our styles (which are still in the css so we can get them
             // at runtime and pass to the API) to bleed through when using DOM-based renderer.
             // Fix by removing the unnecessary 'terminal' class.
-            terminal_.removeClass("terminal");
+            terminal_.removeClass("terminal"); //$NON-NLS-1$
 
             // Handle keystrokes from the xterm and dispatch them
             addDataEventHandler(data -> fireEvent(new TerminalDataInputEvent(data)));
@@ -386,7 +386,7 @@ public class XTermWidget extends Widget
    public void updateTheme(XTermTheme theme)
    {
       if (terminalEmulatorLoaded())
-         terminal_.updateTheme(theme);
+         terminal_.updateTheme(theme); //$NON-NLS-1$
    }
 
    public void updateBooleanOption(String option, boolean value)
@@ -449,5 +449,5 @@ public class XTermWidget extends Widget
    private final boolean tabMovesFocus_;
    private final boolean showWebLinks_;
 
-   private final static String XTERM_CLASS = "xterm-rstudio";
+   private final static String XTERM_CLASS = "xterm-rstudio"; //$NON-NLS-1$
 }

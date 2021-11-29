@@ -140,12 +140,12 @@ public class TextEditingTargetLatexFormatMenu extends ToolbarPopupMenu
                indent.append('\t');
             }
            
-            String item = indent.toString() + "\\item";
+            String item = indent.toString() + "\\item"; //$NON-NLS-1$
             String itemElement = item + (isDescription ? "[]" : " ");
             
-            String code = "\\begin{" + type + "}\n";
+            String code = "\\begin{" + type + "}\n"; //$NON-NLS-1$
             code += itemElement;
-            code += "\n\\end{" + type + "}\n";
+            code += "\n\\end{" + type + "}\n"; //$NON-NLS-1$
             
             
             editor_.insertCode(code, false);

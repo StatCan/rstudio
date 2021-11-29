@@ -67,6 +67,7 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
                      Provider<UserState> pUserState,
                      HtmlMessageListener htmlMessageListener)
    {
+      // i18n: Enumerator, user facing text, or both?
       super("Viewer", events);
       commands_ = commands;
       globalDisplay_ = globalDisplay;
@@ -81,6 +82,7 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
    @Override
    protected Toolbar createMainToolbar()
    {
+      // i18n: Enumerator, user facing text, or both?
       toolbar_ = new Toolbar("Viewer Tab");
 
       // add html widget buttons
@@ -127,7 +129,7 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
 
       toolbar_.addLeftSeparator();
       toolbar_.addLeftWidget(commands_.viewerStop().createToolbarButton());
-      
+
       // quarto specific widgets
       initQuartoUI();
 
@@ -283,7 +285,7 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
       }
       else if (frame_ != null &&
           frame_.getIFrame().getCurrentUrl() != null &&
-          !StringUtil.equals(urlWithoutHash(frame_.getIFrame().getCurrentUrl()), 
+          !StringUtil.equals(urlWithoutHash(frame_.getIFrame().getCurrentUrl()),
                              urlWithoutHash(getUrl())))
       {
          // Typically we navigate to the unmodified URL (i.e. without the
@@ -312,7 +314,7 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
             frame_.setUrl(url);
       }
    }
-   
+
    @Override
    public void editSource()
    {
@@ -352,7 +354,7 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
 
       publishButton_.setShowCaption(width > 500);
    }
-   
+
    @Override
    public boolean hasNavigationHandlers()
    {
@@ -363,7 +365,7 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
    public void navigateForward()
    {
       quartoConnection_.navigateForward();
-      
+
    }
 
    @Override
@@ -371,8 +373,8 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
    {
      quartoConnection_.navigateBack();
    }
-   
-   
+
+
    private void initQuartoUI()
    {
       toolbar_.addLeftSeparator();
@@ -392,7 +394,7 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
             {
                fileTypeRegistry_.editFile(quartoConnection_.getSrcFile());
             }
-          
+
             quartoSyncEditor_.setVisible(true);
          }
          else
@@ -402,14 +404,14 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
          toolbar_.invalidateSeparators();
       });
    }
-   
+
    private void removeQuartoUI()
    {
       quartoConnection_.setQuartoUrl(null, false);
       quartoSyncEditor_.setVisible(false);
-   }   
+   }
 
-   
+
    private String urlWithoutHash(String url)
    {
       if (!StringUtil.isNullOrEmpty(url))
@@ -439,7 +441,7 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
       {
          if (URIUtils.isLocalUrl(url))
          {
-            frame_.getElement().removeAttribute("sandbox");
+            frame_.getElement().removeAttribute("sandbox"); //$NON-NLS-1$
          }
          else
          {
@@ -453,15 +455,15 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
           !useRawURL)
       {
          String viewerUrl = URIUtils.addQueryParam(unmodifiedUrl_,
-                                                   "viewer_pane",
+                                                   "viewer_pane", //$NON-NLS-1$
                                                    "1");
 
          viewerUrl = URIUtils.addQueryParam(viewerUrl,
-                                            "capabilities",
+                                            "capabilities", //$NON-NLS-1$
                                             String.valueOf(1 << Capabilities.OpenFile.ordinal()));
 
          viewerUrl = URIUtils.addQueryParam(viewerUrl,
-                                            "host",
+                                            "host", //$NON-NLS-1$
                                             HtmlMessageListener.getOriginDomain());
 
          frame_.setUrl(viewerUrl);
@@ -505,5 +507,5 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
 
    private HtmlMessageListener htmlMessageListener_;
    private QuartoConnection quartoConnection_;
-   
+
 }

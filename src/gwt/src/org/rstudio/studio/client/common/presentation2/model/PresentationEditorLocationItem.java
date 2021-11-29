@@ -18,10 +18,10 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 public class PresentationEditorLocationItem extends JavaScriptObject
 {
-   public static final String TITLE = "title";
-   public static final String HEADING = "heading";
-   public static final String HR = "hr";
-   public static final String CURSOR = "cursor";
+   public static final String TITLE = "title"; //NON-NLS
+   public static final String HEADING = "heading"; //NON-NLS
+   public static final String HR = "hr"; //NON-NLS
+   public static final String CURSOR = "cursor"; //NON-NLS
    
    
    protected PresentationEditorLocationItem()

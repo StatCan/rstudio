@@ -36,9 +36,8 @@ public class YamlFrontMatter
 
    public static Range getFrontMatterRange(DocDisplay display)
    {
-      RegExp frontMatterBegin = RegExp.compile(frontMatterBeginRegex, "gm");
-      RegExp frontMatterEnd = RegExp.compile(frontMatterEndRegex, "gm");
-
+      RegExp frontMatterBegin = RegExp.compile(frontMatterBeginRegex, "gm"); //$NON-NLS-1$
+      RegExp frontMatterEnd = RegExp.compile(frontMatterEndRegex, "gm"); //$NON-NLS-1$
       Position begin = null;
       Position end = null;
       
@@ -117,13 +116,13 @@ public class YamlFrontMatter
       }
       return null;
    }
-   
+
    public static String getFrontMatter(DocDisplay display)
    {
       Range range = getFrontMatterRange(display);
       if (range == null)
       {
-         return "output: html_document\n";
+         return "output: html_document\n"; //$NON-NLS-1$
       } 
       else
       {

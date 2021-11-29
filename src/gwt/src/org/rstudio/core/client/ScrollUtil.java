@@ -47,7 +47,7 @@ public class ScrollUtil
             if (readyState == null)
                return true;
             
-            if (!readyState.equals("complete"))
+            if (!readyState.equals("complete")) // $NON-NLS-1$
                return true;
             
             // wait for a real document to load (about:blank may be intermediate)

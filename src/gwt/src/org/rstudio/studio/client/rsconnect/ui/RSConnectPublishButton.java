@@ -233,7 +233,7 @@ public class RSConnectPublishButton extends Composite
       applyVisibility();
    }
 
-   
+
    public void setShinyPreview(ShinyApplicationParams params)
    {
       String ext = params.getPath() == null ? "" :
@@ -269,7 +269,7 @@ public class RSConnectPublishButton extends Composite
       setContentPath(qmd, "");
 
       // Determine whether or not this Quarto file is part of a website; we
-      // presume it to be if it's inside the current project and the current project is a 
+      // presume it to be if it's inside the current project and the current project is a
       // Quarto website project or book
       boolean isWebsite = false;
       if (!StringUtil.isNullOrEmpty(qmd))
@@ -287,7 +287,7 @@ public class RSConnectPublishButton extends Composite
 
       applyVisibility();
    }
-   
+
    public void setQuartoDocPreview(String qmd, String outputFile)
    {
       setContentPath(qmd, outputFile);
@@ -502,7 +502,8 @@ public class RSConnectPublishButton extends Composite
             host = StringUtil.getAuthorityFromUrl(previous.getHostUrl());
 
          display_.showMessage(GlobalDisplay.MSG_WARNING, 
-               host + " Not Registered", 
+               host + " Not Registered",
+               // i18n: Concatenation/Message
                "This copy of the content has been published to the server " +
                "'" + host + "', " +
                "but you currently do not have any accounts registered on that server. \n\n" +
@@ -568,6 +569,7 @@ public class RSConnectPublishButton extends Composite
          if (docPreview_.getSourceFile() == null)
          {
             display_.showErrorMessage("Unsaved Document",
+                  // i18n: Concatenation/Message
                   "Unsaved documents cannot be published. Save the document " +
                   "before publishing it.");
             break;
@@ -578,7 +580,8 @@ public class RSConnectPublishButton extends Composite
          events_.fireEvent(RSConnectActionEvent.DeployAPIEvent(contentPath_, contentType_, previous));
          break;
       default: 
-         // should never happen 
+         // should never happen
+         // i18n: Concatenation/Message
          display_.showErrorMessage("Can't publish " + 
             RSConnect.contentTypeDesc(contentType_), 
             "The content type '" + 
@@ -881,7 +884,7 @@ public class RSConnectPublishButton extends Composite
       // via parent path)
       if ((contentType_ == RSConnect.CONTENT_TYPE_APP || 
             contentType_ == RSConnect.CONTENT_TYPE_PLUMBER_API) &&
-          StringUtil.getExtension(contentPath_).equalsIgnoreCase("r")) 
+          StringUtil.getExtension(contentPath_).equalsIgnoreCase("r")) //$NON-NLS-1$
          parent = true;
       
       if (contentType_ == RSConnect.CONTENT_TYPE_WEBSITE)
@@ -953,6 +956,7 @@ public class RSConnectPublishButton extends Composite
                   display_.showMessage(
                         GlobalDisplay.MSG_INFO,
                         "Clear List",
+                        // i18n: Concatenation/Message
                         "Local deployment history for " + appLabel + " successfully removed.");
                }
 
@@ -992,6 +996,7 @@ public class RSConnectPublishButton extends Composite
                   {
                      Debug.logError(error);
                      display_.showErrorMessage("Content Publish Failed",
+                           // i18n: Concatenation/Message
                            "Unable to determine file to be published. Click Knit or Preview " +
                            "to render it again, then click the Publish button above the rendered document.");
                      rmdInfoPending_ = false;
@@ -1004,16 +1009,16 @@ public class RSConnectPublishButton extends Composite
       }
    }
    
-   public final static String HOST_EDITOR = "editor";
-   public final static String HOST_PLOTS = "plots_pane";
-   public final static String HOST_PRESENTATION = "presentation";
+   public final static String HOST_EDITOR = "editor"; //$NON-NLS-1$
+   public final static String HOST_PLOTS = "plots_pane"; //$NON-NLS-1$
+   public final static String HOST_PRESENTATION = "presentation"; //$NON-NLS-1$
    public final static String HOST_PRESENTATION2 = "presentation2";
-   public final static String HOST_PROFILER = "profiler";
-   public final static String HOST_RMD_OUTPUT = "rmd_output";
-   public final static String HOST_SHINY_APP = "shiny_app";
-   public final static String HOST_HTML_PREVIEW = "html_preview";
-   public final static String HOST_VIEWER = "viewer";
-   public final static String HOST_PLUMBER_API = "plumber_api";
+   public final static String HOST_PROFILER = "profiler"; //$NON-NLS-1$
+   public final static String HOST_RMD_OUTPUT = "rmd_output"; //$NON-NLS-1$
+   public final static String HOST_SHINY_APP = "shiny_app"; //$NON-NLS-1$
+   public final static String HOST_HTML_PREVIEW = "html_preview"; //$NON-NLS-1$
+   public final static String HOST_VIEWER = "viewer"; //$NON-NLS-1$
+   public final static String HOST_PLUMBER_API = "plumber_api"; //$NON-NLS-1$
    
    private final ToolbarButton publishButton_;
    private final DeploymentPopupMenu publishMenu_;

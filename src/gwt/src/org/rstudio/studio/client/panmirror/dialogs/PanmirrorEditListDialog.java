@@ -26,6 +26,7 @@ import org.rstudio.core.client.widget.ModalDialog;
 import org.rstudio.core.client.widget.NumericTextBox;
 import org.rstudio.core.client.widget.OperationWithInput;
 import org.rstudio.core.client.widget.SelectWidget;
+import org.rstudio.studio.client.panmirror.PanmirrorConstants;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorListCapabilities;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorListIncremental;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorListProps;
@@ -48,7 +49,7 @@ public class PanmirrorEditListDialog extends ModalDialog<PanmirrorListProps>
                                   PanmirrorListCapabilities capabilities,
                                   OperationWithInput<PanmirrorListProps> operation)
    {
-      super("List", Roles.getDialogRole(), operation, () -> {
+      super(_constants.listLabel(), Roles.getDialogRole(), operation, () -> {
          // cancel returns null
          operation.execute(null);
       });
@@ -68,9 +69,9 @@ public class PanmirrorEditListDialog extends ModalDialog<PanmirrorListProps>
       
       
       listIncremental_.setChoices(new String[] {
-          "(Default for presentation)",
-          "Incremental (one item at a time)",
-          "Non-Incremental (all items at once)"
+          _constants.defaultChoiceList(),
+          _constants.incrementalChoiceList(),
+          _constants.nonIncrementalChoiceList()
       }, new String[] {
          PanmirrorListIncremental.Default,
          PanmirrorListIncremental.Incremental,
@@ -91,22 +92,24 @@ public class PanmirrorEditListDialog extends ModalDialog<PanmirrorListProps>
       numberDelimiter_.setVisible(capabilities.fancy);
       
       List<String> numberStyleChoices = new ArrayList<>();
+      // i18n: ?  These look user facing but not usre
       numberStyleChoices.add("DefaultStyle");
-      numberStyleChoices.add("Decimal");
+      numberStyleChoices.add(_constants.decimalChoice());
       numberStyleChoices.add("LowerRoman");
       numberStyleChoices.add("UpperRoman");
       numberStyleChoices.add("LowerAlpha");
       numberStyleChoices.add("UpperAlpha");
       if (capabilities.example) {
-         numberStyleChoices.add("Example");
+         numberStyleChoices.add(_constants.exampleChoice());
       }
       numberStyle_.setChoices(numberStyleChoices.toArray(new String[] {}));
-      
+
+      // i18n
       numberDelimiter_.setChoices(new String[] {
-         "DefaultDelim",
-         "Period",
-         "OneParen",
-         "TwoParens",
+         "DefaultDelim",//NON-NLS
+         "Period", //NON-NLS
+         "OneParen",//NON-NLS
+         "TwoParens",//NON-NLS
       });
 
       
@@ -154,6 +157,8 @@ public class PanmirrorEditListDialog extends ModalDialog<PanmirrorListProps>
    
    private Widget mainWidget_;
 
+   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+
    @UiField SelectWidget listType_;
    @UiField FormLabel labelIncremental_;
    @UiField SelectWidget listIncremental_;
@@ -162,5 +167,4 @@ public class PanmirrorEditListDialog extends ModalDialog<PanmirrorListProps>
    @UiField NumericTextBox startingNumber_;
    @UiField SelectWidget numberStyle_;
    @UiField SelectWidget numberDelimiter_;
-   
 }

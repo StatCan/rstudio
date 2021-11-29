@@ -39,7 +39,7 @@ public class AnsiCodeTests extends GWTTestCase
 
       Pattern ConsoleCtrlPattern = Pattern.create(AnsiCode.CONTROL_REGEX);
       
-      String data = "A\nBC\fD\7EF\bG\rH\u001bZoom\u009bNoMore]";
+      String data = "A\nBC\fD\7EF\bG\rH\u001bZoom\u009bNoMore]"; //NON-NLS
       Match match = ConsoleCtrlPattern.match(data, 0);
       Assert.assertNotNull(match);
       while (match != null)
@@ -92,22 +92,22 @@ public class AnsiCodeTests extends GWTTestCase
    {
       AnsiCode ansi = new AnsiCode();
 
-      String boldOn = "\033[1m";
+      String boldOn = "\033[1m"; //NON-NLS
       AnsiCode.AnsiClazzes newClazz = ansi.processCode(boldOn);
       Assert.assertEquals("xtermBold", newClazz.inlineClazzes);
       Assert.assertNull(newClazz.blockClazzes);
       
-      String italicOn = "\033[3m";
+      String italicOn = "\033[3m"; //NON-NLS
       newClazz = ansi.processCode(italicOn);
       Assert.assertEquals("xtermBold xtermItalic", newClazz.inlineClazzes);
       Assert.assertNull(newClazz.blockClazzes);
       
-      String boldOff = "\033[22m";
+      String boldOff = "\033[22m"; //NON-NLS
       newClazz = ansi.processCode(boldOff);
       Assert.assertEquals("xtermItalic", newClazz.inlineClazzes);
       Assert.assertNull(newClazz.blockClazzes);
 
-      String italicOff = "\033[23m";
+      String italicOff = "\033[23m"; //NON-NLS
       newClazz = ansi.processCode(italicOff);
       Assert.assertNull(newClazz.inlineClazzes);
       Assert.assertNull(newClazz.blockClazzes);
@@ -117,27 +117,27 @@ public class AnsiCodeTests extends GWTTestCase
    {
       AnsiCode ansi = new AnsiCode();
 
-      String redFg = "\033[31m";
+      String redFg = "\033[31m"; //NON-NLS
       AnsiCode.AnsiClazzes newClazz = ansi.processCode(redFg);
       Assert.assertEquals("xtermColor1", newClazz.inlineClazzes);
       Assert.assertNull(newClazz.blockClazzes);
       
-      String cyanFg = "\033[36m";
+      String cyanFg = "\033[36m"; //NON-NLS
       newClazz = ansi.processCode(cyanFg);
       Assert.assertEquals("xtermColor6", newClazz.inlineClazzes);
       Assert.assertNull(newClazz.blockClazzes);
 
-      String blueBg = "\033[44m";
+      String blueBg = "\033[44m"; //NON-NLS
       newClazz = ansi.processCode(blueBg);
       Assert.assertEquals("xtermColor6 xtermBgColor4", newClazz.inlineClazzes);
       Assert.assertNull(newClazz.blockClazzes);
 
-      String resetFg = "\033[39m";
+      String resetFg = "\033[39m"; //NON-NLS
       newClazz = ansi.processCode(resetFg);
       Assert.assertEquals("xtermBgColor4", newClazz.inlineClazzes);
       Assert.assertNull(newClazz.blockClazzes);
 
-      String resetBg = "\033[49m";
+      String resetBg = "\033[49m"; //NON-NLS
       newClazz = ansi.processCode(resetBg);
       Assert.assertNull(newClazz.inlineClazzes);
       Assert.assertNull(newClazz.blockClazzes);
@@ -147,12 +147,12 @@ public class AnsiCodeTests extends GWTTestCase
    {
       AnsiCode ansi = new AnsiCode();
 
-      String fontNine = "\033[19m";
+      String fontNine = "\033[19m"; //NON-NLS
       AnsiCode.AnsiClazzes newClazz = ansi.processCode(fontNine);
       Assert.assertEquals("xtermFont9", newClazz.blockClazzes);
-      Assert.assertNull(newClazz.inlineClazzes);
+      Assert.assertNull(newClazz.inlineClazzes); //NON-NLS
 
-      String defaultFont = "\033[10m";
+      String defaultFont = "\033[10m"; //NON-NLS
       newClazz = ansi.processCode(defaultFont);
       Assert.assertNull(newClazz.blockClazzes);
       Assert.assertNull(newClazz.inlineClazzes);
@@ -162,20 +162,20 @@ public class AnsiCodeTests extends GWTTestCase
    {
       AnsiCode ansi = new AnsiCode();
 
-      String redFg = "\033[31m";
+      String redFg = "\033[31m"; //NON-NLS
       AnsiCode.AnsiClazzes newClazz = ansi.processCode(redFg);
  
-      String fontNine = "\033[19m";
+      String fontNine = "\033[19m"; //NON-NLS
       newClazz = ansi.processCode(fontNine);
       Assert.assertEquals("xtermFont9", newClazz.blockClazzes);
       Assert.assertEquals("xtermColor1", newClazz.inlineClazzes);
 
-      String defaultFont = "\033[10m";
+      String defaultFont = "\033[10m"; //NON-NLS
       newClazz = ansi.processCode(defaultFont);
       Assert.assertNull(newClazz.blockClazzes);
       Assert.assertEquals("xtermColor1", newClazz.inlineClazzes);
       
-      String resetAll = "\033[0m";
+      String resetAll = "\033[0m"; //NON-NLS
       newClazz = ansi.processCode(resetAll);
       Assert.assertNull(newClazz.blockClazzes);
       Assert.assertNull(newClazz.inlineClazzes);

@@ -72,7 +72,9 @@ import org.rstudio.studio.client.workbench.views.terminal.TerminalHelper;
 
 public class BuildPresenter extends BasePresenter
 {
-   public interface Display extends WorkbenchView 
+
+
+   public interface Display extends WorkbenchView
    {
       void buildStarted();
 
@@ -87,12 +89,14 @@ public class BuildPresenter extends BasePresenter
                       String buildType);
       void buildCompleted();
 
-      
+
       HasSelectionCommitHandlers<CodeNavigationTarget> errorList();
-        
+
       HandlerRegistration addBuildRenderSubTypeHandler(BuildRenderSubTypeEvent.Handler handler);
       HandlerRegistration addBuildServeSubTypeHandler(BuildServeSubTypeEvent.Handler handler);
-      
+
+
+
 
       HasClickHandlers stopButton();
 
@@ -229,8 +233,8 @@ public class BuildPresenter extends BasePresenter
          CodeNavigationTarget target = event.getSelectedItem();
          FileSystemItem fsi = FileSystemItem.createFile(target.getFile());
 
-         if (view_.errorsBuildType() == "test-file" ||
-             view_.errorsBuildType() == "test-shiny-file")
+         if (view_.errorsBuildType() == "test-file" || //$NON-NLS-1$
+             view_.errorsBuildType() == "test-shiny-file") //$NON-NLS-1$
          {
             // for test files, we want to avoid throwing errors when the file is missing
             fileServer_.stat(target.getFile(), new ServerRequestCallback<FileSystemItem>()
@@ -258,11 +262,11 @@ public class BuildPresenter extends BasePresenter
       view_.addBuildRenderSubTypeHandler(event -> {
          startBuild("build-all", event.getSubType());
       });
-      
+
       view_.addBuildServeSubTypeHandler(event -> {
          quartoServe(event.getSubType(), false);
       });
-   
+
 
       view_.stopButton().addClickHandler(new ClickHandler() {
          @Override
@@ -314,11 +318,11 @@ public class BuildPresenter extends BasePresenter
       {
          withDevtoolsLoadAllPath(loadAllPath ->
          {
-            sendLoadCommandToConsole("devtools::load_all(\"" + loadAllPath + "\")");
+            sendLoadCommandToConsole("devtools::load_all(\"" + loadAllPath + "\")"); //$NON-NLS-1$
          });
-      }, () -> {}, "Build");
+      }, () -> {}, "Build"); //$NON-NLS-1$
    }
-   
+
    void onServeQuartoSite()
    {
       quartoServe("default", false);
@@ -387,7 +391,8 @@ public class BuildPresenter extends BasePresenter
             }
           });
       }
-      else if (session_.getSessionInfo().getBuildToolsType() == SessionInfo.BUILD_TOOLS_QUARTO)
+      else if (
+               session_.getSessionInfo().getBuildToolsType() == SessionInfo.BUILD_TOOLS_QUARTO)
       {
          // books get a render and serve if the target is html or pdf
          QuartoConfig config = session_.getSessionInfo().getQuartoConfig();
@@ -402,7 +407,7 @@ public class BuildPresenter extends BasePresenter
          {
             executeBuild(type, "");
          }
-         else 
+         else
          {
             quartoServe("default", true);
          }
@@ -416,7 +421,7 @@ public class BuildPresenter extends BasePresenter
 
    private void executeBuild(final String type, final String subType)
    {
-      if ((type != "build-all" && type != "rebuild-all") ||
+      if ((type != "build-all" && type != "rebuild-all") || //$NON-NLS-1$
             session_.getSessionInfo().getBuildToolsType() == SessionInfo.BUILD_TOOLS_QUARTO)
       {
          executeBuildNoBusyCheck(type, subType);
@@ -512,7 +517,7 @@ public class BuildPresenter extends BasePresenter
       }
 
    }
-   
+
    
    private boolean shouldRenderAndServeBook(String bookType)
    {
@@ -521,31 +526,31 @@ public class BuildPresenter extends BasePresenter
       if (isQuartoSubProject(config)) {
          return false;
       }
-      
-      
+
+
       if (bookType.startsWith("html") || bookType.startsWith("pdf"))
       {
          return true;
       }
       else if (bookType == "all")
       {
-         for (int i=0; i<config.project_formats.length; i++) 
+         for (int i=0; i<config.project_formats.length; i++)
          {
             if (config.project_formats[i].startsWith("html"))
                return true;
          }
       }
-     
+
       // fallthrough
       return false;
-      
+
    }
-   
+
    private boolean isQuartoSubProject(QuartoConfig config)
    {
       return !config.project_dir.equals(workbenchContext_.getActiveProjectDir().getPath());
    }
-   
+
    private void quartoServe(String format, boolean render)
    {
       source_.withSaveFilesBeforeCommand(() -> {
@@ -569,5 +574,6 @@ public class BuildPresenter extends BasePresenter
    private final WorkbenchContext workbenchContext_;
    private final TerminalHelper terminalHelper_;
    private final Provider<JobManager> pJobManager_;
-   
+
+
 }

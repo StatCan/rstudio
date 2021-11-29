@@ -1,0 +1,8 @@
+<root>
+    <item name='com.google.gwt.i18n.client.Constants.DefaultStringValue java.lang.String value()'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+    <item name='com.google.gwt.i18n.client.Messages.DefaultMessage java.lang.String value()'>
+        <annotation name='org.jetbrains.annotations.NonNls'/>
+    </item>
+</root>

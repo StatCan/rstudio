@@ -167,6 +167,7 @@ public class NotebookQueueState implements NotebookRangeExecutedEvent.Handler,
             if (def == null)
             {
                // Could not create an ID for the chunk; this is not expected.
+               //noinspection HardCodedStringLiteral (think this is debugging, not meant for user)
                Debug.logWarning("Could not create a notebook output chunk at row " +
                   chunk.getScope().getBodyStart().getRow() + " of " +
                   sentinel_.getPath());
@@ -208,7 +209,7 @@ public class NotebookQueueState implements NotebookRangeExecutedEvent.Handler,
       {
          List<ChunkExecUnit> chunks = new ArrayList<>();
          chunks.add(chunk);
-         executeChunks("Run Chunk", chunks);
+         executeChunks("Run Chunk", chunks); //$NON-NLS-1$
       }
    }
    
@@ -540,7 +541,7 @@ public class NotebookQueueState implements NotebookRangeExecutedEvent.Handler,
       if (chunkDef == null)
       {
          if (StringUtil.isNullOrEmpty(newId))
-            newId = "c" + StringUtil.makeRandomId(12);
+            newId = "c" + StringUtil.makeRandomId(12); //$NON-NLS-1$
          chunkDef = ChunkDefinition.create(row, 1, true, 
                ChunkOutputWidget.EXPANDED, RmdChunkOptions.create(), sentinel_.getId(),
                newId, TextEditingTargetNotebook.getKnitrChunkLabel(row, docDisplay_, 

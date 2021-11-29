@@ -287,7 +287,7 @@ public class RmdOutput implements RmdRenderStartedEvent.Handler,
           event.getSourceFile() == shinyDoc_.getFile() &&
           !shinyDoc_.getFormat().getFormatName().endsWith(
                 RmdOutputFormat.OUTPUT_PRESENTATION_SUFFIX) &&
-          (result_ == null || "shiny".equals(result_.getRuntime())))
+          (result_ == null || "shiny".equals(result_.getRuntime()))) //$NON-NLS-1$
       {
          final RmdRenderResult result =
                RmdRenderResult.createFromShinyDoc(shinyDoc_);
@@ -522,6 +522,7 @@ public class RmdOutput implements RmdRenderStartedEvent.Handler,
             public void onError(ServerError error)
             {
                globalDisplay_.showErrorMessage("Shiny Terminate Failed",
+                     // i18n: Concatenation/Message
                      "The Shiny document " + shinyDoc_.getFile() + " needs to " +
                      "be stopped before the document can be rendered.");
             }
@@ -638,6 +639,7 @@ public class RmdOutput implements RmdRenderStartedEvent.Handler,
    {
       globalDisplay_.showYesNoMessage(GlobalDisplay.MSG_INFO,
             "Render Completed",
+            // i18n: Concatenation/Message
             "RStudio has finished rendering " +
             result.getTargetFile() + " to " +
             result.getOutputFile() + ".",

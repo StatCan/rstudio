@@ -44,6 +44,7 @@ public class TextEditingTargetJSHelper
    {
       TextEditingTargetCommentHeaderHelper previewSource = new TextEditingTargetCommentHeaderHelper(
          docDisplay_.getCode(),
+         // i18n?
          "preview",
          "//"
       );
@@ -51,7 +52,7 @@ public class TextEditingTargetJSHelper
       if (!previewSource.hasCommentHeader())
          return false;
 
-      if (!previewSource.getFunction().equals("r2d3"))
+      if (!previewSource.getFunction().equals("r2d3")) //$NON-NLS-1$
       {
          display_.showErrorMessage(
                         constants_.previewJSErrorCaption(),
@@ -59,7 +60,7 @@ public class TextEditingTargetJSHelper
       }
       else
       {
-         previewSource.setFunction("r2d3::r2d3");
+         previewSource.setFunction("r2d3::r2d3"); //$NON-NLS-1$
 
          previewSource.buildCommand(
             editingTarget.getPath(),

@@ -369,7 +369,7 @@ public class TextEditingTargetWidget
          mgr.getSourceCommand(commands_.knitDocument(), column_).createUnsyncedToolbarButton();
       knitDocumentButton_.getElement().getStyle().setMarginRight(0, Unit.PX);
       toolbar.addLeftWidget(knitDocumentButton_);
-      
+
       toolbar.addLeftWidget(
          mgr.getSourceCommand(commands_.runDocumentFromServerDotR(), column_).createToolbarButton());
 
@@ -829,7 +829,7 @@ public class TextEditingTargetWidget
       boolean canCompileNotebook = fileType.canCompileNotebook();
       boolean canSource = fileType.canSource();
       boolean canSourceWithEcho = fileType.canSourceWithEcho();
-      boolean isQuarto = extendedType_ != null && 
+      boolean isQuarto = extendedType_ != null &&
             extendedType_.equals(SourceDocument.XT_QUARTO_DOCUMENT);
       boolean canSourceOnSave = fileType.canSourceOnSave() &&
             !userPrefs_.autoSaveEnabled();
@@ -1049,7 +1049,6 @@ public class TextEditingTargetWidget
       int width = getOffsetWidth();
       if (width == 0)
          return;
-
       
       
       texToolbarButton_.setText(width >= 520, constants_.format());
@@ -1062,12 +1061,12 @@ public class TextEditingTargetWidget
       String action = getSourceOnSaveAction();
       srcOnSaveLabel_.setText(width < 450 ? action : constants_.actionOnSave(action));
       sourceButton_.setText(width >= 400, sourceCommandText_);
-      
+
       goToNextButton_.setVisible(commands_.goToNextChunk().isVisible() && width >= 650);
       goToPrevButton_.setVisible(commands_.goToPrevChunk().isVisible() && width >= 650);
       toolbar_.invalidateSeparators();
    }
-   
+
    private String getSourceOnSaveAction()
    {
       TextFileType fileType = editor_.getFileType();
@@ -1075,7 +1074,7 @@ public class TextEditingTargetWidget
       {
          return fileType.getPreviewButtonText();
       }
-      else if (extendedType_ != null && 
+      else if (extendedType_ != null &&
             (extendedType_.startsWith(SourceDocument.XT_RMARKDOWN_PREFIX) || extendedType_.equals(SourceDocument.XT_QUARTO_DOCUMENT)) )
       {
          boolean isQuarto = extendedType_.equals(SourceDocument.XT_QUARTO_DOCUMENT);
@@ -1087,7 +1086,7 @@ public class TextEditingTargetWidget
          return constants_.source();
       }
    }
-   
+
 
 
    private void showWarningImpl(final Command command)
@@ -1343,6 +1342,7 @@ public class TextEditingTargetWidget
       {
          String ext = extensions.get(i);
          ImageResource img = ext != null ?
+               // i18n for next two?
                fileTypeRegistry_.getIconForFilename("output." + ext).getImageResource() :
                fileTypeRegistry_.getIconForFilename("Makefile").getImageResource();
          final String valueName = values.get(i);
@@ -1402,9 +1402,9 @@ public class TextEditingTargetWidget
       if (publishButton_ != null)
          publishButton_.setIsStatic(true);
    }
-   
+
    @Override
-   public void setQuartoFormatOptions(TextFileType fileType, 
+   public void setQuartoFormatOptions(TextFileType fileType,
                                       boolean showRmdFormatMenu,
                                       List<String> formats,
                                       boolean isBook)
@@ -1413,7 +1413,7 @@ public class TextEditingTargetWidget
       setRmdFormatButtonVisible(showRmdFormatMenu);
       rmdFormatButton_.setEnabled(showRmdFormatMenu);
       rmdFormatButton_.clearMenu();
-      
+
       for (int i = 0; i < formats.size(); i++)
       {
          String format = formats.get(i);
@@ -1472,7 +1472,7 @@ public class TextEditingTargetWidget
                   commands_.knitDocument().getShortcutPrettyHtml())));
       knitDocumentButton_.setText(knitCommandText_);
       knitDocumentButton_.setLeftImage(new ImageResource2x(StandardIcons.INSTANCE.run2x()));
-      
+
       quartoCommandText_ = knitCommandText_;
       quartoRenderButton_.setTitle(knitDocumentButton_.getTitle());
       quartoRenderButton_.setText(quartoCommandText_);
@@ -1605,7 +1605,7 @@ public class TextEditingTargetWidget
       previewCommandText_ = constants_.setFormatTextPreviewCommandText(text);
       previewHTMLButton_.setText(previewCommandText_);
    }
-   
+
    private void setSourceButtonFromScriptState(TextFileType fileType,
                                                boolean canPreviewFromR,
                                                String previewButtonText)
@@ -1725,7 +1725,7 @@ public class TextEditingTargetWidget
       return handlerManager_.addHandler(
             RmdOutputFormatChangedEvent.TYPE, handler);
    }
-   
+
    @Override
    public SourceColumn getSourceColumn()
    {
@@ -2034,5 +2034,6 @@ public class TextEditingTargetWidget
    private String knitCommandText_ = constants_.knit();
    private String quartoCommandText_ = constants_.render();
    private String previewCommandText_ = constants_.preview();
+
 
 }

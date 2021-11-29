@@ -14,6 +14,7 @@
  */
 package org.rstudio.core.client.widget;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -21,12 +22,11 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
-
+import org.rstudio.core.client.CoreClientConstants;
 import org.rstudio.core.client.ElementIds;
 import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.dom.DomUtils;
@@ -101,7 +101,7 @@ public class TextBoxWithButton extends Composite
       // prevent button from triggering "submit" when hosted in a form, such as in FileUploadDialog
       themedButton_.getElement().setAttribute("type", "button");
       
-      clearButton_ = new ThemedButton("Clear", (ClickEvent event) ->
+      clearButton_ = new ThemedButton("Clear", (ClickEvent event) -> //NON-NLS
       {
          setText("");
       });
@@ -124,7 +124,7 @@ public class TextBoxWithButton extends Composite
       FlowPanel outer = new FlowPanel();
       if (label != null)
       {
-         assert existingLabel == null : "Invalid usage, cannot provide both label and existingLabel";
+         assert existingLabel == null : constants_.existingLabelMessage();
 
          lblCaption_ = new FormLabel(label, true);
          if (helpButton != null)
@@ -302,6 +302,6 @@ public class TextBoxWithButton extends Composite
    private String useDefaultValue_;
    private String uniqueId_;
    private boolean useNativePlaceholder_;
-   
-   private static final String USE_DEFAULT_PREFIX = "[Use Default]";
+   private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
+   private static final String USE_DEFAULT_PREFIX = constants_.useDefaultPrefix();
 }

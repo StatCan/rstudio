@@ -96,7 +96,7 @@ public class BaseMenuBar extends MenuBar
          // Monitor focus changes to know if user has, for example, clicked the
          // mouse outside the menus. Using method reference instead of lambda so
          // listener can be removed later.
-         DomGlobal.document.addEventListener("focusin", this::focusInCallback);
+         DomGlobal.document.addEventListener("focusin", this::focusInCallback); // $NON-NLS-1$
          originallyActiveElement_.blur();
 
          if (tabHandlerReg_ == null)
@@ -155,7 +155,7 @@ public class BaseMenuBar extends MenuBar
             tabHandlerReg_.removeHandler();
             tabHandlerReg_ = null;
          }
-         DomGlobal.document.removeEventListener("focusin", this::focusInCallback);
+         DomGlobal.document.removeEventListener("focusin", this::focusInCallback); // $NON-NLS-1$
       }
 
       public boolean tracking()

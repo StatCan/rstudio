@@ -4,7 +4,7 @@ This file is intended to contain definitions for all commands in RStudio, as
 well as menu structures (for main menu and popup menus).
 
 Changes to this file require that you refresh the i18n interfaces and
-possibly retranslate/refresh any affected translated properties files. Do 
+possibly retranslate/refresh any affected translated properties files. Do
 this by running "ant generate-i18n" and commit all modified files.
 
 See `/src/gwt/tools/i18n-helpers/README.md`.
@@ -47,6 +47,10 @@ See `/src/gwt/tools/i18n-helpers/README.md`.
    <menu id="mainMenu" vertical="false">
       <!--
          Keep ShowMainMenuEvent.Menu enum in sync with top-level main-menu entries (File, Edit...)
+
+         DEBUG: Why is the above comment important?  If I change <menu label="_Files"> it seems to work ok.  I can add
+         a menu too no problem.  But src/org/rstudio/studio/client/workbench/events/ShowMainMenuEvent.java mentions this
+         too so it probably matters?
       -->
       <menu label="_File">
          <menu label="New _File">
@@ -762,7 +766,7 @@ See `/src/gwt/tools/i18n-helpers/README.md`.
 
          <shortcut refid="activatePresentation2" value="Meta+F8" if="org.rstudio.core.client.BrowseCap.isMacintosh()"/>
          <shortcut refid="activatePresentation2" value="Ctrl+F8" if="!org.rstudio.core.client.BrowseCap.isMacintosh()"/>
-         
+
          <shortcut refid="activateFindInFiles" value="Meta+F6" if="org.rstudio.core.client.BrowseCap.isMacintosh()"/>
          <shortcut refid="activateFindInFiles" value="Ctrl+F6" if="!org.rstudio.core.client.BrowseCap.isMacintosh()"/>
          <shortcut refid="newSourceColumn" value="Meta+F7" if="org.rstudio.core.client.BrowseCap.isMacintosh()"/>
@@ -1118,16 +1122,16 @@ See `/src/gwt/tools/i18n-helpers/README.md`.
         menuLabel="_Quarto Document..."
         desc="Create a new Quarto document"
         rebindable="false"/>
-      
+
    <cmd id="newQuartoPres"
         menuLabel="_Quarto Presentation..."
         desc="Create a new Quarto presentation"
         rebindable="false"/>
-        
-   <cmd id="serveQuartoSite"
+
+   <!--<cmd id="serveQuartoSite"
         menuLabel="_Serve Site"
         desc="Run development server for Quarto site"
-        rebindable="false"/>
+        rebindable="false"/>-->
 
    <cmd id="newRShinyApp"
         menuLabel="Shiny _Web App..."
@@ -1463,7 +1467,7 @@ See `/src/gwt/tools/i18n-helpers/README.md`.
         menuLabel="Show Prese_ntation"
         rebindable="false"
         windowMode="main"/>
-        
+
    <cmd id="activatePresentation2"
         label="Show Presentation Pane"
         menuLabel="Show Prese_ntation"
@@ -1606,13 +1610,13 @@ See `/src/gwt/tools/i18n-helpers/README.md`.
         label="Zoom Connections"
         menuLabel="Zoom Co_nnections"
         windowMode="main"/>
-        
+
     <cmd id="layoutZoomPresentation2"
         checkable="true"
         label="Zoom Presentation"
         menuLabel="Zoom _Presentation"
         windowMode="main"/>
-   
+
    <cmd id="layoutZoomCurrentPane"
         checkable="true"
         label="Toggle Zoom for Current Pane"/>
@@ -2067,7 +2071,7 @@ See `/src/gwt/tools/i18n-helpers/README.md`.
         buttonLabel=""
         menuLabel="Source with _Echo"
         desc="Source the contents of the active document (with echo)"/>
-        
+
    <cmd id="runDocumentFromServerDotR"
         buttonLabel="Run Document"
         menuLabel="Run _Document"
@@ -2782,7 +2786,7 @@ See `/src/gwt/tools/i18n-helpers/README.md`.
         menuLabel="Refresh Presentation"
         rebindable="false"
         desc="Refresh the presentation preview"/>
-        
+
    <cmd id="presentation2Home"
         desc="Go to the first slide"
         rebindable="false"/>
@@ -2804,18 +2808,18 @@ See `/src/gwt/tools/i18n-helpers/README.md`.
    <cmd id="presentation2Present"
         buttonLabel="Present"
         desc="Present in an external web browser"
-        rebindable="false"/>   
-        
+        rebindable="false"/>
+
     <cmd id="presentation2PresentFromBeginning"
         menuLabel="Present from Beginning"
         desc="Present from the first slide in an external web browser"
-        rebindable="false"/>   
-        
+        rebindable="false"/>
+
     <cmd id="presentation2Print"
         buttonLabel="Print"
         desc="Open a browser to print the presentation"
-        rebindable="false"/>     
-        
+        rebindable="false"/>
+
 
    <cmd id="historySendToSource"
         label="Insert Command into Document"
@@ -3406,7 +3410,7 @@ See `/src/gwt/tools/i18n-helpers/README.md`.
         desc="Refresh viewer"
         rebindable="false"
         context="viewer"/>
-        
+
    <cmd id="viewerEditSource"
         desc="Edit source file"
         rebindable="false"

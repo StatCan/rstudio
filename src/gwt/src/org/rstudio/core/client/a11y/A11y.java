@@ -63,10 +63,10 @@ public class A11y
     */
    public static void setARIACurrent(Element element, String value)
    {
-      if (StringUtil.isNullOrEmpty(value) || StringUtil.equals(value, "false"))
-         element.removeAttribute("aria-current");
+      if (StringUtil.isNullOrEmpty(value) || StringUtil.equals(value, "false")) // $NON-NLS-1$
+         element.removeAttribute("aria-current"); // $NON-NLS-1$
       else
-         element.setAttribute("aria-current", value);
+         element.setAttribute("aria-current", value); // $NON-NLS-1$
    }
 
    /**
@@ -103,7 +103,7 @@ public class A11y
     */
    public static void setARIAVisible(Element el)
    {
-      el.removeAttribute("aria-hidden");
+      el.removeAttribute("aria-hidden"); // $NON-NLS-1$
    }
 
    public static void setVisuallyHidden(Widget widget)
@@ -130,7 +130,7 @@ public class A11y
    {
       // aria best-practices recommends not including aria-expanded property at all instead
       // of setting it to false
-      el.removeAttribute("aria-expanded");
+      el.removeAttribute("aria-expanded"); // $NON-NLS-1$
    }
 
    public static void setInert(Element el, boolean inert)
@@ -143,7 +143,7 @@ public class A11y
       else
       {
          setARIAVisible(el);
-         el.removeAttribute("inert");
+         el.removeAttribute("inert"); // $NON-NLS-1$
       }
    }
 

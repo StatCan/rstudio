@@ -28,7 +28,7 @@ import com.google.gwt.user.client.Command;
 /**
  * This is an interface to callbacks registered by the desktop frame.
  */
-@BaseExpression("$wnd.desktop")
+@BaseExpression("$wnd.desktop") //$NON-NLS-1$
 public interface DesktopFrame extends JavaScriptPassthrough
 {
    void browseUrl(String url);

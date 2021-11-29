@@ -15,8 +15,10 @@
 package org.rstudio.core.client.files.filedialog;
 
 import com.google.gwt.aria.client.DialogRole;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 
+import org.rstudio.core.client.CoreClientConstants;
 import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.files.FileSystemContext;
 import org.rstudio.core.client.files.FileSystemItem;
@@ -56,7 +58,7 @@ public abstract class FileDialog extends FileSystemDialog
    @Override
    public String getFilenameLabel()
    {
-      return "File name";
+      return constants_.getFilenameLabel();
    }
 
    /**
@@ -94,7 +96,7 @@ public abstract class FileDialog extends FileSystemDialog
          // Targeted fix for "611: Permission denied error when attempting to
          // browse /shared folder in open file dialog". The /shared folder
          // doesn't have list permissions.
-         if (dir.equals("/shared"))
+         if (dir.equals("/shared")) //$NON-NLS-1$
          {
             cd(filename);
             return false;
@@ -135,7 +137,7 @@ public abstract class FileDialog extends FileSystemDialog
       {
          if (!allowNonexistentFile_)
          {
-            showError("File does not exist");
+            showError(constants_.nonexistentFileMessage());
             return false;
          }
       }
@@ -143,7 +145,7 @@ public abstract class FileDialog extends FileSystemDialog
       {
          if (item.isDirectory())
          {
-            assert false : "This case should be covered by navigateIfDirectory";
+            assert false : constants_.navigateIfDirectoryMessage();
             return false;
          }
          else if (promptOnOverwrite_)
@@ -234,4 +236,5 @@ public abstract class FileDialog extends FileSystemDialog
    protected boolean promptOnOverwrite_;
    protected boolean allowNonexistentFile_;
    private boolean attemptAcceptOnNextNavigate_ = false;
+   private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
 }

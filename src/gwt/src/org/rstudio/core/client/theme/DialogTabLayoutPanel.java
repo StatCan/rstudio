@@ -58,7 +58,7 @@ public class DialogTabLayoutPanel extends TabLayoutPanel
             ArrayList<Element> focusable = DomUtils.getFocusableElements(getElement());
             if (focusable.size() == 0)
             {
-               Debug.logWarning("No potentially focusable controls found in DialogTabLayoutPanel");
+               Debug.logWarning("No potentially focusable controls found in DialogTabLayoutPanel"); // $NON-NLS-1$
                return;
             }
             focus_.setFirst(focusable.get(0));

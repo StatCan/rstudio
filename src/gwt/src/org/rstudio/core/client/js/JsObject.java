@@ -99,7 +99,7 @@ public class JsObject extends JavaScriptObject
 
    public final Integer getInteger(String key)
    {
-      if (!hasKey(key) || getValueType(key) != "number")
+      if (!hasKey(key) || getValueType(key) != "number") // $NON-NLS-1$
          return null;
       return _getInteger(key);
    }
@@ -122,7 +122,7 @@ public class JsObject extends JavaScriptObject
 
    public final Double getDouble(String key)
    {
-      if (!hasKey(key) || getValueType(key) != "number")
+      if (!hasKey(key) || getValueType(key) != "number") // $NON-NLS-1$
          return null;
       return _getDouble(key);
    }
@@ -150,7 +150,7 @@ public class JsObject extends JavaScriptObject
 
    public final Boolean getBoolean(String key)
    {
-      if (!hasKey(key) || getValueType(key) != "boolean")
+      if (!hasKey(key) || getValueType(key) != "boolean") // $NON-NLS-1$
          return null;
       return _getBoolean(key);
    }

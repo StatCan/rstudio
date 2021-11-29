@@ -15,10 +15,12 @@
 package org.rstudio.core.client.widget;
 
 import com.google.gwt.aria.client.Roles;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.rstudio.core.client.CoreClientConstants;
 import org.rstudio.core.client.Size;
 import org.rstudio.core.client.dom.DomMetrics;
 import org.rstudio.core.client.theme.res.ThemeResources;
@@ -36,7 +38,7 @@ public class ShowContentDialog extends ModalDialogBase
       setText(title);
       preferredSize_ = preferredSize;
 
-      if (content.startsWith("<html>") || content.startsWith("<!DOCTYPE "))
+      if (content.startsWith("<html>") || content.startsWith("<!DOCTYPE ")) //$NON-NLS-1$
       {
          content_ = content;
          styleName_ = ThemeResources.INSTANCE.themeStyles().showFile();
@@ -44,8 +46,8 @@ public class ShowContentDialog extends ModalDialogBase
       }
       else
       {
-         content_ = "<pre class=\"" + ThemeResources.INSTANCE.themeStyles().showFilePreFixed() +
-            "\">" + content + "</pre>";
+         content_ = "<pre class=\"" + ThemeResources.INSTANCE.themeStyles().showFilePreFixed() + //$NON-NLS-1$
+            "\">" + content + "</pre>"; //$NON-NLS-1$
          styleName_ = ThemeResources.INSTANCE.themeStyles().showFileFixed();
          isFixedFont_ = true;
       }
@@ -57,7 +59,7 @@ public class ShowContentDialog extends ModalDialogBase
 
    protected void addButtons()
    {
-      ThemedButton closeButton = new ThemedButton("Close", clickEvent -> closeDialog());
+      ThemedButton closeButton = new ThemedButton(constants_.closeButtonText(), clickEvent -> closeDialog());
       addOkButton(closeButton);
    }
 
@@ -93,4 +95,5 @@ public class ShowContentDialog extends ModalDialogBase
    private final String styleName_;
    private final boolean isFixedFont_;
    private final Size preferredSize_;
+    private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
 }

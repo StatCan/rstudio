@@ -59,6 +59,7 @@ import org.rstudio.core.client.widget.ToolbarLabel;
 import org.rstudio.core.client.widget.ToolbarSeparator;
 import org.rstudio.core.client.widget.events.GlassVisibilityEvent;
 import org.rstudio.studio.client.RStudioGinjector;
+import org.rstudio.studio.client.application.StudioClientApplicationConstants;
 import org.rstudio.studio.client.application.Desktop;
 import org.rstudio.studio.client.application.events.EventBus;
 import org.rstudio.studio.client.application.events.LogoutRequestedEvent;
@@ -199,7 +200,7 @@ public class WebApplicationHeader extends Composite
          if (logoTargetUrl_ != null)
          {
             logoAnchor_.setHref(logoTargetUrl_);
-            logoAnchor_.setTitle("RStudio Server Home");
+            logoAnchor_.setTitle(constants_.rStudioServerHomeTitle());
          }
          else
          {
@@ -332,21 +333,22 @@ public class WebApplicationHeader extends Composite
       int modifiers = BrowseCap.hasMetaKey() ? KeyboardShortcut.META : KeyboardShortcut.CTRL;
 
       setCommandShortcut(commands.undoDummy(),            "z", 'Z', modifiers);
-      setCommandShortcut(commands.redoDummy(),            "Z", 'Z', modifiers | KeyboardShortcut.SHIFT);
+      setCommandShortcut(commands.redoDummy(),            "Z", 'Z', modifiers | KeyboardShortcut.SHIFT); //$NON-NLS-1$
 
-      setCommandShortcut(commands.cutDummy(),             "x", 'X', modifiers);
-      setCommandShortcut(commands.copyDummy(),            "c", 'C', modifiers);
-      setCommandShortcut(commands.pasteDummy(),           "v", 'V', modifiers);
-      setCommandShortcut(commands.pasteWithIndentDummy(), "v", 'V', modifiers | KeyboardShortcut.SHIFT);
+      setCommandShortcut(commands.cutDummy(),             "x", 'X', modifiers); //$NON-NLS-1$
+      setCommandShortcut(commands.copyDummy(),            "c", 'C', modifiers); //$NON-NLS-1$
+      setCommandShortcut(commands.pasteDummy(),           "v", 'V', modifiers); //$NON-NLS-1$
+      setCommandShortcut(commands.pasteWithIndentDummy(), "v", 'V', modifiers | KeyboardShortcut.SHIFT); //$NON-NLS-1$
 
       CommandHandler useKeyboardNotification = new CommandHandler()
       {
          public void onCommand(AppCommand command)
          {
+            // i18n: Concatenation/Message
             MessageDialogLabel label = new MessageDialogLabel();
-            label.setHtml("Your browser does not allow access to your<br/>" +
-                          "computer's clipboard. As a result you must<br/>" +
-                          "use keyboard shortcuts for:" +
+            label.setHtml(constants_.browserNotAllowAccessLabel() + "<br/>" +
+                          constants_.computerClipBoardLabel() + "<br/>" +
+                          constants_.useKeyboardShortcutsLabel() +
                           "<br/><br/><table cellpadding=0 cellspacing=0 border=0>" +
                           makeRow(commands.undoDummy()) +
                           makeRow(commands.redoDummy()) +
@@ -358,18 +360,18 @@ public class WebApplicationHeader extends Composite
                           );
             new WebDialogBuilderFactory().create(
                   GlobalDisplay.MSG_WARNING,
-                  "Use Keyboard Shortcut",
+                  constants_.useKeyboardShortcutCaption(),
                   label).showModal();
          }
 
          private String makeRow(AppCommand cmd)
          {
             String textAlign = BrowseCap.hasMetaKey()
-                               ? "text-align: right"
+                               ? "text-align: right" //$NON-NLS-1$
                                : "";
-            return "<tr><td>" + cmd.getMenuLabel(false) + "</td>" +
-                   "<td style='padding-left: 12px; " + textAlign + "'>"
-                   + cmd.getShortcutPrettyHtml() + "</td></tr>";
+            return "<tr><td>" + cmd.getMenuLabel(false) + "</td>" + //$NON-NLS-1$
+                   "<td style='padding-left: 12px; " + textAlign + "'>" //$NON-NLS-1$
+                   + cmd.getShortcutPrettyHtml() + "</td></tr>"; //$NON-NLS-1$
          }
       };
 
@@ -407,7 +409,7 @@ public class WebApplicationHeader extends Composite
 
          ToolbarButton signOutButton = new ToolbarButton(
                ToolbarButton.NoText,
-               "Sign out",
+               constants_.signOutTitle(),
                new ImageResource2x(RESOURCES.signOut2x()),
                event -> eventBus_.fireEvent(new LogoutRequestedEvent()));
          headerBarCommandsPanel_.add(signOutButton);
@@ -576,4 +578,5 @@ public class WebApplicationHeader extends Composite
    private WebApplicationHeaderOverlay overlay_;
    private boolean hostedMode_;
    private boolean toolbarVisible_;
+   private static final StudioClientApplicationConstants constants_ = GWT.create(StudioClientApplicationConstants.class);
 }

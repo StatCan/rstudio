@@ -236,7 +236,7 @@ public class TextEditingTargetRMarkdownHelper
           });
    }
 
-   final String NOTEBOOK_FORMAT = "notebook_format";
+   final String NOTEBOOK_FORMAT = "notebook_format"; //$NON-NLS-1$
 
    private void renderNotebookv2WithDialog(final DocUpdateSentinel sourceDoc)
    {
@@ -337,6 +337,7 @@ public class TextEditingTargetRMarkdownHelper
                                final String workingDir,
                                final String viewerType)
    {
+      // i18n: Enumerator, user facing text, or both?
       withRMarkdownPackage(type == RmdOutput.TYPE_NOTEBOOK ?
                               constants_.rNotebook() :
                               constants_.rMarkdown(),
@@ -449,7 +450,7 @@ public class TextEditingTargetRMarkdownHelper
          public void onResponseReceived(RmdYamlResult yamlResult)
          {
             YamlTree yamlTree = new YamlTree(yamlResult.getYaml());
-
+            // i18n: Are items in this method enumerators or something that is translated elsewhere?
             // quote fields
             quoteField(yamlTree, "title");
             quoteField(yamlTree, "author");
@@ -730,7 +731,7 @@ public class TextEditingTargetRMarkdownHelper
    public String convertYamlToShinyDoc(String yaml)
    {
       YamlTree yamlTree = new YamlTree(yaml);
-      yamlTree.addYamlValue(null, "runtime", "shiny");
+      yamlTree.addYamlValue(null, "runtime", "shiny"); //$NON-NLS-1$
 
       return yamlTree.toString();
    }
@@ -942,7 +943,7 @@ public class TextEditingTargetRMarkdownHelper
                         FileSystemItem targetFile =
                                           FileSystemItem.createFile(file);
                         consoleDispatcher_.executeCommandWithFileEncoding(
-                                             "knit_with_parameters",
+                                             "knit_with_parameters", //$NON-NLS-1$
                                              targetFile.getPath(),
                                              encoding,
                                              contentKnownToBeAscii);
@@ -1199,7 +1200,7 @@ public class TextEditingTargetRMarkdownHelper
 
    private boolean useRMarkdownV2(String contents)
    {
-      return !contents.contains("<!-- rmarkdown v1 -->") &&
+      return !contents.contains("<!-- rmarkdown v1 -->") && //$NON-NLS-1$
               session_.getSessionInfo().getRMarkdownPackageAvailable();
    }
 

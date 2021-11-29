@@ -56,6 +56,7 @@ import org.rstudio.core.client.widget.ThemedPopupPanel;
 import org.rstudio.core.client.widget.WizardResources;
 import org.rstudio.core.client.widget.images.ProgressImages;
 import org.rstudio.studio.client.application.ApplicationAction;
+import org.rstudio.studio.client.application.StudioClientApplicationConstants;
 import org.rstudio.studio.client.application.ui.AboutDialogContents;
 import org.rstudio.studio.client.application.ui.RTimeoutOptions;
 import org.rstudio.studio.client.application.ui.LauncherSessionStatus;
@@ -124,7 +125,7 @@ public class RStudio implements EntryPoint
    public void onModuleLoad()
    {
       Debug.injectDebug();
-      maybeSetWindowName("rstudio-" + StringUtil.makeRandomId(16));
+      maybeSetWindowName("rstudio-" + StringUtil.makeRandomId(16)); //$NON-NLS-1$
       maybeDelayLoadApplication(this);
    }
 
@@ -146,11 +147,11 @@ public class RStudio implements EntryPoint
 
       String progressUrl = ProgressImages.createLargeGray().getUrl();
       StringBuilder str = new StringBuilder();
-      str.append("<img alt src=\"");
+      str.append("<img alt src=\""); //$NON-NLS-1$
       str.append(progressUrl);
       str.append("\"");
       if (BrowseCap.devicePixelRatio() > 1.0)
-         str.append("width=24 height=24");
+         str.append("width=24 height=24"); //$NON-NLS-1$
       str.append("/>");
       final SimplePanel progressPanel = new SimplePanel();
       final Element div = progressPanel.getElement();
@@ -201,7 +202,7 @@ public class RStudio implements EntryPoint
          {
             public void run()
             {
-               ariaLoadingMessage_.setText("Loading session...");
+               ariaLoadingMessage_.setText(constants_.ariaLoadingMessage());
             }
          };
          showStatusTimer_.schedule(3000);
@@ -326,7 +327,7 @@ public class RStudio implements EntryPoint
          public void onFailure(Throwable reason)
          {
             dismissProgressAnimation_.execute();
-            Window.alert("Error: " + reason.getMessage());
+            Window.alert(constants_.onFailureMessage() + reason.getMessage());
          }
       });
    }
@@ -335,7 +336,7 @@ public class RStudio implements EntryPoint
    {
       ensureStylesInjected();
 
-      String view = Window.Location.getParameter("view");
+      String view = Window.Location.getParameter("view"); //$NON-NLS-1$
       if (VCSApplication.NAME.equals(view))
       {
          RStudioGinjector.INSTANCE.getVCSApplication().go(
@@ -475,7 +476,7 @@ public class RStudio implements EntryPoint
       VisualModeDialogsResources.ensureStylesInjected();
 
       StyleInjector.inject(
-            "button::-moz-focus-inner {border:0}");
+            "button::-moz-focus-inner {border:0}"); //$NON-NLS-1$
    }
 
    /**
@@ -498,7 +499,7 @@ public class RStudio implements EntryPoint
 
    public final static String getSatelliteView()
    {
-      return Window.Location.getParameter("view");
+      return Window.Location.getParameter("view"); //$NON-NLS-1$
    }
 
    private Command dismissProgressAnimation_;
@@ -506,4 +507,5 @@ public class RStudio implements EntryPoint
    private Timer showStatusTimer_;
    private LauncherSessionStatus sessionStatus_;
    private Label ariaLoadingMessage_;
+   private static final StudioClientApplicationConstants constants_ = GWT.create(StudioClientApplicationConstants.class);
 }

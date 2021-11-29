@@ -14,6 +14,7 @@
  */
 package org.rstudio.studio.client.common.vcs;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.Debug;
 import org.rstudio.core.client.MessageDisplay;
 import org.rstudio.core.client.StringUtil;
@@ -24,6 +25,7 @@ import org.rstudio.core.client.widget.ProgressOperationWithInput;
 import org.rstudio.studio.client.application.events.EventBus;
 import org.rstudio.studio.client.common.GlobalDisplay;
 import org.rstudio.studio.client.common.SimpleRequestCallback;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 import org.rstudio.studio.client.common.crypto.RSAEncrypt;
 import org.rstudio.studio.client.common.satellite.Satellite;
 import org.rstudio.studio.client.common.satellite.SatelliteManager;
@@ -81,19 +83,20 @@ public class AskPassManager
             String prompt = e.getPrompt();
             
             // default to password prompt
-            String title = "Password";
+            // TODO: i18n: Is this something that should be handled for i18n?  Or is it ok to be English-only?
+            String title = constants_.passwordTitle();
             int dialogType = MessageDisplay.INPUT_PASSWORD;
 
             if (prompt.toLowerCase().indexOf("password") != -1)
             {
                // if password is mentioned in prompt, treat as password
-               title = "Password";
+               title = constants_.passwordTitle();
                dialogType = MessageDisplay.INPUT_PASSWORD;
             }
             else if (prompt.toLowerCase().indexOf("username") != -1)
             {
                // if username is mentioned in prmopt, treat as username
-               title = "Username";
+               title = constants_.usernameTitle();
                dialogType = MessageDisplay.INPUT_USERNAME;
             }
             
@@ -182,4 +185,5 @@ public class AskPassManager
    
    private boolean rememberByDefault_ = true;
    private boolean askpassPending_ = false;
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 }

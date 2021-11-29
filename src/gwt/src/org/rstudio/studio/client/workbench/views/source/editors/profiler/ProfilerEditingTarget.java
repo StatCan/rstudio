@@ -569,10 +569,11 @@ public class ProfilerEditingTarget implements EditingTarget,
          @Override
          public String getTitle()
          {
+            // i18n: I think this should be translated?  Not sure where it surfaces in UI
             return "Profile";
          }
       };
-
+      // i18n: Enum, user text, or both?
       view_ = new ProfilerEditingTargetWidget("Profiler", commands_, publishHtmlSource, column_);
       defaultNameProvider_ = defaultNameProvider;
 
@@ -674,8 +675,12 @@ public class ProfilerEditingTarget implements EditingTarget,
       globalDisplay_.showHtmlFile(htmlLocalPath_);
    }
 
+   /**
+    * Default name to prefix on new Profiler runs.  Text may be viewed by users
+    */
    public String getDefaultNamePrefix()
    {
+      // i18n: This SHOULD be translated - it is the default name to call new Profiler runs and language specific
       return "Profile";
    }
 
@@ -760,7 +765,7 @@ public class ProfilerEditingTarget implements EditingTarget,
                         {
                            savePropertiesWithPath(saveItem.getPath());
 
-                           persistDocumentProperty("isUserSaved", "saved");
+                           persistDocumentProperty("isUserSaved", "saved"); //$NON-NLS-1$
                            isUserSaved_ = true;
 
                            indicator.onCompleted();
@@ -801,7 +806,7 @@ public class ProfilerEditingTarget implements EditingTarget,
                           final String details,
                           final int line)
    {
-      if (message == "sourcefile")
+      if (message == "sourcefile") //$NON-NLS-1$
       {
          server_.profileSources(file, normPath, new ServerRequestCallback<String>()
          {
@@ -814,7 +819,7 @@ public class ProfilerEditingTarget implements EditingTarget,
 
                commands_.gotoProfileSource().setEnabled(hasValidPath_);
 
-               if (details == "open")
+               if (details == "open") //$NON-NLS-1$
                {
                   if (hasValidPath_)
                   {
@@ -825,7 +830,7 @@ public class ProfilerEditingTarget implements EditingTarget,
                            FileSystemItem.createFile(navigationTarget.getFile()),
                            filePosition);
                   }
-                  else if (selectedPath_.indexOf("<expr>") == -1)
+                  else if (selectedPath_.indexOf("<expr>") == -1) //$NON-NLS-1$
                   {
                      globalDisplay_.showMessage(GlobalDisplay.MSG_ERROR,
                            "Error while opening profiler source",

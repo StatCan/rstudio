@@ -79,7 +79,7 @@ public class RStudioThemes
       {
          element.addClassName("rstudio-themes-scrollbars");
       }
-         
+
       element.addClassName("rstudio-themes-" + themeName);
       element.setId("rstudio_container");
       
@@ -93,10 +93,10 @@ public class RStudioThemes
 
    public static String suggestThemeFromAceTheme(AceTheme aceTheme, String rstudioTheme)
    {
-      if (StringUtil.equals(rstudioTheme, "classic") || (aceTheme == null))
+      if (StringUtil.equals(rstudioTheme, "classic") || (aceTheme == null)) //$NON-NLS-1$
          return rstudioTheme;
       
-      return aceTheme.isDark() ? "dark-grey" : rstudioTheme;
+      return aceTheme.isDark() ? "dark-grey" : rstudioTheme; //$NON-NLS-1$
    }
 
    public static String getThemeFromUserPrefs(UserPrefs prefs, UserState state)
