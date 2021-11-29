@@ -16,14 +16,16 @@ package org.rstudio.studio.client.projects.model;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.StringUtil;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayString;
-// i18n: Many enumerators here that look like human-formatted text.  I think they're used as both (at least some are -
-//       see note on MARKDOWN_WRAP_* below).  How to handle them?
+import org.rstudio.studio.client.projects.StudioClientProjectConstants;
+
 public class RProjectConfig extends JavaScriptObject
 {
+   private static final StudioClientProjectConstants constants_ = GWT.create(StudioClientProjectConstants.class);
    public static final int DEFAULT_VALUE = 0;
    public static final int YES_VALUE = 1;
    public static final int NO_VALUE = 2;
@@ -171,11 +173,11 @@ public class RProjectConfig extends JavaScriptObject
       this.root_document = rootDocument;
    }-*/;
    
-   public static final String BUILD_TYPE_NONE = "None";
-   public static final String BUILD_TYPE_PACKAGE = "Package";
-   public static final String BUILD_TYPE_MAKEFILE = "Makefile";
-   public static final String BUILD_TYPE_WEBSITE = "Website";
-   public static final String BUILD_TYPE_CUSTOM = "Custom";
+   public static final String BUILD_TYPE_NONE = constants_.noneProjectLabel();
+   public static final String BUILD_TYPE_PACKAGE = constants_.buildTypePackageLabel();
+   public static final String BUILD_TYPE_MAKEFILE = "Makefile"; //NON-NLS
+   public static final String BUILD_TYPE_WEBSITE = constants_.buildTypeWebsiteLabel();
+   public static final String BUILD_TYPE_CUSTOM = constants_.buildTypeCustomLabel();
    
    public native final String getBuildType() /*-{
       return this.build_type;
@@ -278,11 +280,11 @@ public class RProjectConfig extends JavaScriptObject
       String roxygenize = StringUtil.join(roclets, ROXYGENIZE_DELIM);
       setPackageRoxygenizeNative(roxygenize);
    }
-   // i18n: Enumerator, user facing text, or both?
-   private static final String ROXYGENIZE_RD = "rd";
-   private static final String ROXYGENIZE_COLLATE = "collate";
-   private static final String ROXYGENIZE_NAMESPACE = "namespace";
-   private static final String ROXYGENIZE_VIGNETTE = "vignette";
+   
+   private static final String ROXYGENIZE_RD = "rd"; //NON-NLS
+   private static final String ROXYGENIZE_COLLATE = constants_.collateLabel();
+   private static final String ROXYGENIZE_NAMESPACE = constants_.rOxygenizenamespace();
+   private static final String ROXYGENIZE_VIGNETTE = constants_.vignetteLabel();
    private static final String ROXYGENIZE_DELIM = ",";
  
    private final boolean getPackageRoxygenize(String roclet)
@@ -334,13 +336,11 @@ public class RProjectConfig extends JavaScriptObject
    public native final void setTutorialPath(String tutorialPath) /*-{
       this.tutorial_path = tutorialPath;
    }-*/;
-
-   // i18n: These surface in the Options->R Markdown->Visual->Automatic Text Wrapping box.  But they also look like
-   //       enumerations.  Can they be safely i18n'd, or do we need to separate between enumerator and visible text?
-   public static final String MARKDOWN_WRAP_DEFAULT = "Default";
-   public static final String MARKDOWN_WRAP_NONE = "None";
-   public static final String MARKDOWN_WRAP_COLUMN = "Column";
-   public static final String MARKDOWN_WRAP_SENTENCE = "Sentence";
+   
+   public static final String MARKDOWN_WRAP_DEFAULT = constants_.defaultLabel();
+   public static final String MARKDOWN_WRAP_NONE = constants_.noneProjectLabel();
+   public static final String MARKDOWN_WRAP_COLUMN = constants_.columnLabel();
+   public static final String MARKDOWN_WRAP_SENTENCE = constants_.sentenceLabel();
    
    public native final String getMarkdownWrap() /*-{
       return this.markdown_wrap;
@@ -358,10 +358,10 @@ public class RProjectConfig extends JavaScriptObject
       this.markdown_wrap_at_column = column;
    }-*/;
    
-   public static final String MARKDOWN_REFERENCES_DEFAULT = "Default";
-   public static final String MARKDOWN_REFERENCES_BLOCK = "Block";
-   public static final String MARKDOWN_REFERENCES_SECTION = "Section";
-   public static final String MARKDOWN_REFERENCES_DOCUMENT = "Document";
+   public static final String MARKDOWN_REFERENCES_DEFAULT = constants_.defaultLabel();
+   public static final String MARKDOWN_REFERENCES_BLOCK = constants_.blockLabel();
+   public static final String MARKDOWN_REFERENCES_SECTION = constants_.sectionLabel();
+   public static final String MARKDOWN_REFERENCES_DOCUMENT = constants_.documentLabel();
    
    public native final String getMarkdownReferences() /*-{
       return this.markdown_references;
@@ -418,7 +418,4 @@ public class RProjectConfig extends JavaScriptObject
    public native final void setZoteroLibraries(JsArrayString libraries) /*-{
       this.zotero_libraries = libraries;
    }-*/;
-   
-   
-   
 }
