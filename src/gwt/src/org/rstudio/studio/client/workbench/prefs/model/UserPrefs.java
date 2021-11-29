@@ -18,6 +18,7 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.Scheduler;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.gwt.core.client.GWT;
 
 import org.rstudio.core.client.CommandWithArg;
 import org.rstudio.core.client.Debug;
@@ -45,6 +46,7 @@ import org.rstudio.studio.client.workbench.commands.Commands;
 import org.rstudio.studio.client.workbench.model.Session;
 import org.rstudio.studio.client.workbench.prefs.events.UserPrefsChangedEvent;
 import org.rstudio.studio.client.common.GlobalDisplay;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 
 @Singleton
 public class UserPrefs extends UserPrefsComputed
@@ -179,11 +181,8 @@ public class UserPrefs extends UserPrefsComputed
    public void onClearUserPrefs()
    {
       display_.showYesNoMessage(GlobalDisplay.MSG_QUESTION,
-         "Confirm Clear Preferences",
-         // i18n: Concatenation/Message
-         "Are you sure you want to clear your preferences? All RStudio settings " +
-         "will be restored to their defaults, and your R session will be " +
-         "restarted.",
+         constants_.onClearUserPrefsCaption(),
+         constants_.onClearUserPrefsMessage(),
          false,
          (indicator) ->
          {
@@ -194,18 +193,15 @@ public class UserPrefs extends UserPrefsComputed
                   indicator.onCompleted();
                   display_.showMessage(
                         GlobalDisplay.MSG_INFO,
-                        "Preferences Cleared",
-                        // i18n: Concatenation/Message
-                        "Your preferences have been cleared, and your R session " +
-                        "will now be restarted. A backup copy of your preferences " +
-                        "can be found at: \n\n" + path,
+                        constants_.onClearUserPrefsResponseCaption(),
+                        constants_.onClearUserPrefsResponseMessage(path),
                         () ->
                         {
                            // Restart R, then reload the UI when done
                            reloadAfterInit_ = true;
                            commands_.restartR().execute();
                         },
-                        "Restart R",
+                          constants_.onClearUserPrefsRestartR(),
                         false);
                }
 
@@ -217,8 +213,8 @@ public class UserPrefs extends UserPrefsComputed
             });
          },
          null,
-         "Clear Preferences",
-         "Cancel",
+         constants_.onClearUserPrefsYesLabel(),
+         constants_.cancel(),
          false);
    }
 
@@ -245,8 +241,8 @@ public class UserPrefs extends UserPrefsComputed
       commands_.toggleScreenReaderSupport().setChecked(checked);
       // i18n: Concatenation/Message
       commands_.toggleScreenReaderSupport().setMenuLabel(checked ?
-            origScreenReaderLabel_ + " (enabled)" :
-            origScreenReaderLabel_ + " (disabled)");
+            constants_.screenReaderStateEnabled(origScreenReaderLabel_) :
+            constants_.screenReaderStateDisabled(origScreenReaderLabel_));
    }
 
    private void announceScreenReaderState()
@@ -260,7 +256,7 @@ public class UserPrefs extends UserPrefsComputed
             String shortcut = commands_.toggleScreenReaderSupport().getShortcutRaw();
             // i18n: Concatenation/Message
             ariaLive_.announce(AriaLiveService.SCREEN_READER_NOT_ENABLED,
-                  "Warning: screen reader mode not enabled. Turn on using shortcut " + shortcut + ".",
+                  constants_.announceScreenReaderStateMessage(shortcut),
                   Timing.IMMEDIATE, Severity.ALERT);
          });
       }
@@ -288,10 +284,9 @@ public class UserPrefs extends UserPrefsComputed
    void onToggleScreenReaderSupport()
    {
       display_.showYesNoMessage(GlobalDisplay.MSG_QUESTION,
-            "Confirm Toggle Screen Reader Support",
-            // i18n: Concatenation/Message
-            "Are you sure you want to " + (enableScreenReader().getValue() ? "disable" : "enable") + " " +
-            "screen reader support? The application will reload to apply the change.",
+            constants_.toggleScreenReaderConfirmCaption(),
+            constants_.toggleScreenReaderMessageConfirmDialog(
+                    enableScreenReader().getValue() ? constants_.disable() : constants_.enable()),
             false,
             () ->
             {
@@ -306,8 +301,8 @@ public class UserPrefs extends UserPrefsComputed
                   }
                   else
                   {
-                     display_.showErrorMessage("Error Changing Setting",
-                           "The screen reader support setting could not be changed.");
+                     display_.showErrorMessage(constants_.errorChangingSettingCaption(),
+                           constants_.toggleScreenReaderErrorMessage());
                   }
                });
             },
@@ -339,13 +334,13 @@ public class UserPrefs extends UserPrefsComputed
          {
             syncToggleTabKeyMovesFocusState();
             ariaLive_.announce(AriaLiveService.TAB_KEY_MODE,
-                  newMode ? "Tab key always moves focus on" : "Tab key always moves focus off",
+                  newMode ? constants_.tabKeyFocusOnMessage() : constants_.tabKeyFocusOffMessage(),
                   Timing.IMMEDIATE, Severity.STATUS);
          }
          else
          {
-            display_.showErrorMessage("Error Changing Setting",
-                  "The tab key moves focus setting could not be updated.");
+            display_.showErrorMessage(constants_.errorChangingSettingCaption(),
+                  constants_.tabKeyErrorMessage());
          }
       });
    }
@@ -371,4 +366,6 @@ public class UserPrefs extends UserPrefsComputed
 
    private boolean reloadAfterInit_;
    private String origScreenReaderLabel_;
+
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
 }

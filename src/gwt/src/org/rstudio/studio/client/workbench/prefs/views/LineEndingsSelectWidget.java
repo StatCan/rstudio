@@ -19,8 +19,9 @@ import java.util.ArrayList;
 
 import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.widget.SelectWidget;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
-import org.rstudio.studio.client.workbench.prefs.model.UserPrefsAccessorConstants;
+import com.google.gwt.core.client.GWT;
 
 public class LineEndingsSelectWidget extends SelectWidget
 {
@@ -35,7 +36,7 @@ public class LineEndingsSelectWidget extends SelectWidget
 
    public LineEndingsSelectWidget(boolean includeDefault)
    {
-      super(constants_.lineEndingsSelectWidgetLabel(),
+      super(constants_.lineEndingConversion(),
             getLineEndingsCaptions(includeDefault),
             getLineEndingsValues(includeDefault),
             false, 
@@ -47,11 +48,11 @@ public class LineEndingsSelectWidget extends SelectWidget
    {
       ArrayList<String> captions = new ArrayList<>();
       if (includeDefault)
-         captions.add(constants_.useDefaultOption());
-      captions.add(constants_.noneOption());
-      captions.add(constants_.platformNativeOption());
-      captions.add(constants_.posixOption());
-      captions.add(constants_.windowsOption());
+         captions.add(constants_.useDefaultParentheses());
+      captions.add(constants_.none());
+      captions.add(constants_.platformNative());
+      captions.add(constants_.posixLF());
+      captions.add(constants_.windowsCRLF());
       
       return captions.toArray(new String[0]);
    }
@@ -68,5 +69,5 @@ public class LineEndingsSelectWidget extends SelectWidget
       
       return values.toArray(new String[0]);
    }
-   private static final UserPrefsAccessorConstants constants_ = GWT.create(UserPrefsAccessorConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
 }
