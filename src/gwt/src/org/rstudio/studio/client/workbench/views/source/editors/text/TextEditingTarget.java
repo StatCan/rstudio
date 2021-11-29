@@ -409,8 +409,7 @@ public class TextEditingTarget implements
             {
                // do not show the error if it is a transient autosave related issue - this can occur fairly frequently
                // when attempting to save files that are being backed up by external software
-               // i18n: This tests against a user-visible text which wont work with i18n (unless they're synced)
-               if (message.contains("The process cannot access the file because it is being used by another process") && suppressFileLockError_)
+               if (message.contains(constants_.onErrorMessage()) && suppressFileLockError_)
                {
                   if (executeOnSilentFailure_ != null)
                      executeOnSilentFailure_.execute();
@@ -418,7 +417,7 @@ public class TextEditingTarget implements
                   return;
                }
 
-               globalDisplay_.showErrorMessage("Error Saving File", message);
+               globalDisplay_.showErrorMessage(constants_.errorSavingFile(), message);
             }
          };
 
@@ -433,13 +432,11 @@ public class TextEditingTarget implements
                {
                   if (isReadOnly)
                   {
-                     // i18n: Concatenation/Message
-                     String message = "This source file is read-only " +
-                                      "so changes cannot be saved";
+                     String message = constants_.onResponseReceivedMessage();
                      view_.showWarningBar(message);
 
-                     String saveAsPath = file_.getParentPath().completePath(
-                           file_.getStem() + "-copy" + file_.getExtension()); //$NON-NLS-1$
+                     String saveAsPath = file_.getParentPath().completePath(constants_.saveAsPathName(
+                             file_.getStem(), file_.getExtension()));
                      saveNewFile(
                            saveAsPath,
                            null,
@@ -848,9 +845,7 @@ public class TextEditingTarget implements
                   // removed)
                   if (breakpoint.getState() != Breakpoint.STATE_REMOVING)
                   {
-                     // i18n: Concatenation/Message
-                     view_.showWarningBar("Breakpoints can only be set inside "+
-                                          "the body of a function. ");
+                     view_.showWarningBar(constants_.onBreakpointsSavedWarningBar());
                   }
                   docDisplay_.removeBreakpoint(breakpoint);
                }
@@ -1543,12 +1538,8 @@ public class TextEditingTarget implements
                FilePathUtils.friendlyFileName(docUpdateSentinel_.getPath());
          globalDisplay_.showYesNoMessage(
                GlobalDisplay.MSG_QUESTION,
-               "Join Edit Session",
-               // i18n: Concatenation/Message
-               "You have unsaved changes to " + filename + ", but another " +
-               "user is editing the file. Do you want to discard your " +
-               "changes and join their edit session, or make your own copy " +
-               "of the file to work on?",
+               constants_.beginQueuedCollabSessionCaption(),
+               constants_.beginQueuedCollabSessionMessage(filename),
                false, // includeCancel
                new Operation()
                {
@@ -1575,8 +1566,8 @@ public class TextEditingTarget implements
                   }
                },
                null, // cancelOperation,
-               "Discard and Join",
-               "Work on a Copy",
+               constants_.beginQueuedCollabSessionYesLabel(),
+               constants_.beginQueuedCollabSessionNoLabel(),
                true  // yesIsDefault
                );
       }
@@ -1595,7 +1586,7 @@ public class TextEditingTarget implements
           dirtyState().getValue() &&
           !isDebugWarningVisible_)
       {
-         view_.showWarningBar("Debug lines may not match because the file contains unsaved changes.");
+         view_.showWarningBar(constants_.updateDebugWarningBarMessage());
          isDebugWarningVisible_ = true;
       }
       // hide the warning bar if the dirty state or debug state change
@@ -1637,8 +1628,8 @@ public class TextEditingTarget implements
       };
 
       dependencyManager_.withTinyTeX(
-            "Installing tinytex",
-            "Installing TinyTeX",
+            constants_.installTinytexLowercase(),
+            constants_.installTinyTeX(),
             onInstall);
    }
 
@@ -1682,7 +1673,7 @@ public class TextEditingTarget implements
             server_,
             docDisplay_,
             document,
-            globalDisplay_.getProgressIndicator("Save File"),
+            globalDisplay_.getProgressIndicator(constants_.saveFile()),
             dirtyState_,
             events_,
             prefs_,
@@ -1810,7 +1801,7 @@ public class TextEditingTarget implements
          {
             docUpdateSentinel_.setSourceOnSave(
                   event.getValue(),
-                  globalDisplay_.getProgressIndicator("Error Saving Setting"));
+                  globalDisplay_.getProgressIndicator(constants_.errorSavingSetting()));
          }
       });
 
@@ -1873,16 +1864,14 @@ public class TextEditingTarget implements
                   // don't set breakpoints in Plumber documents
                   if (SourceDocument.isPlumberFile(extendedType_))
                   {
-                     view_.showWarningBar("Breakpoints not supported in Plumber API files.");
+                     view_.showWarningBar(constants_.onBreakpointSetPlumberfileWarning());
                      return;
                   }
 
                   // don't try to set breakpoints in unsaved code
                   if (isNewDoc())
                   {
-                     // i18n: Concatenation/Message
-                     view_.showWarningBar("Breakpoints cannot be set until " +
-                                          "the file is saved.");
+                     view_.showWarningBar(constants_.onBreakpointSetNewDocWarning());
                      return;
                   }
 
@@ -2167,27 +2156,19 @@ public class TextEditingTarget implements
          String message = "";
          if (hasDebugPendingBreakpoints)
          {
-            // i18n: Concatenation/Message
-            message = "Breakpoints will be activated when the file or " +
-                      "function is finished executing.";
+            message = constants_.updateBreakpointWarningBarFunctionMessage();
          }
          else if (isPackageFile())
          {
-            // i18n: Concatenation/Message
-            message = "Breakpoints will be activated when the package is " +
-                      "built and reloaded.";
+            message = constants_.updateBreakpointWarningBarPackageLoadMessage();
          }
          else if (hasPackagePendingBreakpoints)
          {
-            // i18n: Concatenation/Message
-            message = "Breakpoints will be activated when an updated version " +
-                      "of the " + pendingPackageName + " package is loaded";
+            message = constants_.updateBreakpointWarningBarPackageMessage(pendingPackageName);
          }
          else
          {
-            // i18n: Concatenation/Message
-            message = "Breakpoints will be activated when this file is " +
-                      "sourced.";
+            message = constants_.updateBreakpointWarningBarSourcedMessage();
          }
          view_.showWarningBar(message);
          isBreakpointWarningVisible_ = true;
@@ -2408,9 +2389,8 @@ public class TextEditingTarget implements
 
       if (funcs.length() == 0 && includeNoFunctionsMessage)
       {
-         String type = fileType_.canExecuteChunks() ? "chunks" : "functions"; //$NON-NLS-1$
-         // i18n: Concatenation/Message
-         MenuItem noFunctions = new MenuItem("(No " + type + " defined)",
+         String type = fileType_.canExecuteChunks() ? constants_.chunks() : constants_.functions();
+         MenuItem noFunctions = new MenuItem(constants_.addFunctionsToMenuText(type),
                                              false,
                                              (Command) null);
          noFunctions.setEnabled(false);
@@ -2890,12 +2870,8 @@ public class TextEditingTarget implements
       if (docDisplay_.hasFollowingCollabSession())
       {
          globalDisplay_.showYesNoMessage(GlobalDisplay.MSG_WARNING,
-                         getName().getValue() + " - Active Following Session",
-                         // i18n: Concatenation/Message
-                 "You're actively following another user's cursor " +
-                         "in '" + getName().getValue() + "'.\n\n" +
-                         "If you close this file, you won't see their " +
-                         "cursor until they edit another file.",
+                         constants_.onBeforeDismissCaption(getName().getValue()),
+                         constants_.onBeforeDismissMessage(getName().getValue()),
                          false,
                          new Operation()
                          {
@@ -2906,8 +2882,8 @@ public class TextEditingTarget implements
                          },
                          null,
                          null,
-                         "Close Anyway",
-                         "Cancel",
+                         constants_.closeAnyway(),
+                         constants_.cancel(),
                          false);
       }
       else
@@ -2945,12 +2921,8 @@ public class TextEditingTarget implements
       view_.ensureVisible();
 
       globalDisplay_.showYesNoMessage(GlobalDisplay.MSG_WARNING,
-                      getName().getValue() + " - Unsaved Changes",
-                      // i18n: Concatenation/Message
-
-              "The document '" + getName().getValue() +
-                      "' has unsaved changes.\n\n" +
-                      "Do you want to save these changes?",
+                      constants_.saveWithPromptCaption(getName().getValue()),
+                      constants_.saveWithPromptMessage(getName().getValue()),s
                       true,
                       new Operation() {
                          public void execute() { saveThenExecute(null, true, command); }
@@ -2964,8 +2936,8 @@ public class TextEditingTarget implements
                               onCancelled.execute();
                          }
                       },
-                      "Save",
-                      "Don't Save",
+                      constants_.save(),
+                      constants_.dontSave(),
                       true);
    }
 
@@ -3126,7 +3098,7 @@ public class TextEditingTarget implements
          fsi = getSaveFileDefaultDir();
 
       fileDialogs_.saveFile(
-            "Save File - " + getName().getValue(),
+            constants_.saveNewFileWithEncodingSaveFileCaption(getName().getValue()),
             fileContext_,
             fsi,
             fileType_.getDefaultExtension(),
@@ -3194,14 +3166,8 @@ public class TextEditingTarget implements
                      {
                         globalDisplay_.showYesNoMessage(
                               MessageDialog.WARNING,
-                              "Confirm Change File Type",
-                              // i18n: Concatenation/Message
-                              "This file was created as an R script however " +
-                              "the file extension you specified will change " +
-                              "it into another file type that will no longer " +
-                              "open as an R script.\n\n" +
-                              "Are you sure you want to change the type of " +
-                              "the file so that it is no longer an R script?",
+                              constants_.saveNewFileWithEncodingWarningCaption(),
+                              constants_.saveNewFileWithEncodingWarningMessage(),
                               new Operation() {
 
                                  @Override
@@ -3652,8 +3618,7 @@ public class TextEditingTarget implements
       {
          if (!display.getSelectionValue().isEmpty())
          {
-            // i18n: Concatenation/Message
-            String message = "No matches for '" + display.getSelectionValue() + "'";
+            String message = constants_.renameInScopeNoMatchesMessage(display.getSelectionValue());
             view_.getStatusBar().showMessage(message, 1000);
          }
 
@@ -3662,14 +3627,14 @@ public class TextEditingTarget implements
          return;
       }
 
-      String message = "Found " + matches;
+      String message = constants_.renameInScopeFoundMatchesMessage(matches);
       if (matches == 1)
-         message += " match";
+         message += constants_.renameInScopeMatch(); // add space here
       else
-         message += " matches";
+         message += constants_.renameInScopeMatchesPlural();
 
       String selectedItem = display.getSelectionValue();
-      message += " for " + selectedItem + ".";
+      message += constants_.renameInScopeSelectedItemMessage(selectedItem);
 
       display.disableSearchHighlight();
       view_.getStatusBar().showMessage(message, new HideMessageHandler()
@@ -3803,10 +3768,10 @@ public class TextEditingTarget implements
                selectionWords++;
          }
 
-         String selectedWordsText = selectionWords == 0 ? "" : "\nSelected words: " + selectionWords;
+         String selectedWordsText = selectionWords == 0 ? "" : constants_.selectedWords(selectionWords);
          globalDisplay_.showMessage(MessageDisplay.MSG_INFO,
-            "Word Count",
-            "Total words: " + totalWords + " " + selectedWordsText);
+            constants_.wordCount(),
+            constants_.onWordCountMessage(totalWords, selectedWordsText));
       });
    }
 
@@ -3868,13 +3833,9 @@ public class TextEditingTarget implements
       // changes and re-open the document as it exists on disk.
       if (dirtyState_.getValue())
       {
-         String caption = "Reopen with Encoding";
+         String caption = constants_.onReopenSourceDocWithEncodingCaption();
 
-         String message =
-               // i18n: Concatenation/Message
-               "This document has unsaved changes. These changes will be " +
-               "discarded when re-opening the document.\n\n" +
-               "Would you like to proceed?";
+         String message = constants_.onReopenSourceDocWithEncodingMessage();
 
          globalDisplay_.showYesNoMessage(
                GlobalDisplay.MSG_WARNING,
@@ -3884,8 +3845,8 @@ public class TextEditingTarget implements
                () -> action.execute(),
                () -> {},
                () -> {},
-               "Reopen Document",
-               "Cancel",
+               constants_.reopenDocument(),
+               constants_.cancel(),
                true);
       }
       else
@@ -4036,10 +3997,8 @@ public class TextEditingTarget implements
       display.focus();
 
       String initialSelection = display.getSelectionValue();
-      final String refactoringName = "Extract local variable";
-      // i18n: Concatenation/Message
-      final String pleaseSelectCodeMessage = "Please select the code to " +
-                                             "extract into a variable.";
+      final String refactoringName = constants_.extractLocalVariableRefactoringName();
+      final String pleaseSelectCodeMessage = constants_.pleaseSelectCodeMessage();
       if (checkSelectionAndAlert(refactoringName,
                                  pleaseSelectCodeMessage,
                                  initialSelection)) return;
@@ -4066,7 +4025,7 @@ public class TextEditingTarget implements
               {
                  globalDisplay_.promptForText(
                          refactoringName,
-                         "Variable Name",
+                         constants_.variableName(),
                          "",
                          new OperationWithInput<String>()
                          {
@@ -4097,10 +4056,8 @@ public class TextEditingTarget implements
    private void showRModeWarning(String command)
    {
       globalDisplay_.showMessage(MessageDisplay.MSG_WARNING,
-                                 "Command Not Available",
-                                 // i18n: Concatenation/Message
-                                 "The "+ command + " command is " +
-                                 "only valid for R code chunks.");
+                                 constants_.showRModeWarningCaption(),
+                                 constants_.showRModeWarningMessage(command));
    }
 
 
@@ -4124,10 +4081,8 @@ public class TextEditingTarget implements
       display.focus();
 
       String initialSelection = display.getSelectionValue();
-      final String refactoringName = "Extract Function";
-      // i18n: Concatenation/Message
-      final String pleaseSelectCodeMessage = "Please select the code to " +
-                                             "extract into a function.";
+      final String refactoringName = constants_.extractActiveFunctionRefactoringName();
+      final String pleaseSelectCodeMessage = constants_.pleaseSelectCodeMessage();
       if (checkSelectionAndAlert(refactoringName,
                                  pleaseSelectCodeMessage,
                                  initialSelection)) return;
@@ -4148,7 +4103,7 @@ public class TextEditingTarget implements
               {
                  globalDisplay_.promptForText(
                    refactoringName,
-                   "Function Name",
+                   constants_.functionNameLabel(),
                    "",
                    new OperationWithInput<String>()
                    {
@@ -4640,11 +4595,8 @@ public class TextEditingTarget implements
       final String yaml = getRmdFrontMatter();
       if (yaml == null)
       {
-         globalDisplay_.showErrorMessage("Edit Format Failed",
-               // i18n: Concatenation/Message
-               "Can't find the YAML front matter for this document. Make " +
-               "sure the front matter is enclosed by lines containing only " +
-               "three dashes: ---.");
+         globalDisplay_.showErrorMessage(constants_.showFrontMatterEditorErrCaption(),
+               constants_.showFrontMatterEditorMessage());
          return;
       }
       rmarkdownHelper_.convertFromYaml(yaml, new CommandWithArg<RmdYamlData>()
@@ -4652,12 +4604,8 @@ public class TextEditingTarget implements
          @Override
          public void execute(RmdYamlData arg)
          {
-            String errCaption = "Edit Format Failed";
-            String errMsg =
-               // i18n: Concatenation/Message
-               "The YAML front matter in this document could not be " +
-               "successfully parsed. This parse error needs to be " +
-               "resolved before format options can be edited.";
+            String errCaption = constants_.showFrontMatterEditorErrCaption();
+            String errMsg = constants_.showFrontMatterEditorErrMsg();
 
             if (arg == null)
             {
@@ -4697,11 +4645,8 @@ public class TextEditingTarget implements
       {
          // we don't expect this to happen since we disable the dialog
          // entry point when we can't find an associated template
-         globalDisplay_.showErrorMessage("Edit Format Failed",
-               // i18n: Concatenation/Message
-               "Couldn't determine the format options from the YAML front " +
-               "matter. Make sure the YAML defines a supported output " +
-               "format in its 'output' field.");
+         globalDisplay_.showErrorMessage(constants_.showFrontMatterEditorDialogCaption(),
+               constants_.showFrontMatterEditorDialogMessage());
          return;
       }
       RmdTemplateOptionsDialog dialog =
@@ -5815,8 +5760,8 @@ QuartoConfig quartoConfig = session_.getSessionInfo().getQuartoConfig();
    void onInsertSection()
    {
       globalDisplay_.promptForText(
-         "Insert Section",
-         "Section label:",
+         constants_.onInsertSectionTitle(),
+         constants_.onInsertSectionLabel(),
          MessageDisplay.INPUT_OPTIONAL_TEXT,
          new OperationWithInput<String>() {
             @Override
@@ -6069,11 +6014,11 @@ QuartoConfig quartoConfig = session_.getSessionInfo().getQuartoConfig();
       {
          if (position != null &&
              position.getRow() > docDisplay_.getDocumentEnd().getRow())
-            jobDesc = "Run All";
+            jobDesc = constants_.runAll();
          else if (which == TextEditingTargetScopeHelper.PREVIOUS_CHUNKS)
-            jobDesc = "Run Previous";
+            jobDesc = constants_.runPrevious();
          else if (which == TextEditingTargetScopeHelper.FOLLOWING_CHUNKS)
-            jobDesc = "Run After";
+            jobDesc = constants_.runAfter();
       }
 
       List<ChunkExecUnit> chunks = new ArrayList<>();
@@ -6147,17 +6092,17 @@ QuartoConfig quartoConfig = session_.getSessionInfo().getQuartoConfig();
       Position pos = docDisplay_.getCursorPosition();
       String scope = statusBar_.getScope().getValue();
       if (StringUtil.isNullOrEmpty(scope))
-         scope = "None";
+         scope = constants_.none();
       String name = getName().getValue();
       if (StringUtil.isNullOrEmpty(name))
-         name = "No name";
+         name = constants_.noName();
 
       StringBuilder status = new StringBuilder();
-      // i18n: Message built from multiple pieces
-      status.append("Row ").append(pos.getRow() + 1).append(" Column ").append(pos.getColumn() + 1);
-      status.append(" Scope ").append(scope);
-      status.append(" File type ").append(fileType_.getLabel());
-      status.append(" File name ").append(name);
+      status.append(constants_.getCurrentStatusRow()).append(pos.getRow() + 1)
+              .append(constants_.getCurrentStatusColumn("")).append(pos.getColumn() + 1);
+      status.append(constants_.getCurrentStatusScope("")).append(scope);
+      status.append(constants_.getCurrentStatusFileType("")).append(fileType_.getLabel());
+      status.append(constants_.getCurrentStatusFileName("")).append(name);
       return status.toString();
    }
 
@@ -6296,8 +6241,8 @@ QuartoConfig quartoConfig = session_.getSessionInfo().getQuartoConfig();
    void onGoToLine()
    {
       globalDisplay_.promptForInteger(
-            "Go to Line",
-            "Enter line number:",
+            constants_.onGoToLineTitle(),
+            constants_.onGoToLineLabel(),
             null,
             new ProgressOperationWithInput<Integer>()
             {
@@ -6371,10 +6316,8 @@ QuartoConfig quartoConfig = session_.getSessionInfo().getQuartoConfig();
       {
          globalDisplay_.showMessage(
                MessageDialog.WARNING,
-               "Source File Not Saved",
-               // i18n: Concatenation/Message
-               "The currently active source file is not saved so doesn't " +
-               "have a directory to change into.");
+               constants_.onSetWorkingDirToActiveDocCaption(),
+               constants_.onSetWorkingDirToActiveDocMessage());
       }
    }
 
@@ -6593,8 +6536,8 @@ QuartoConfig quartoConfig = session_.getSessionInfo().getQuartoConfig();
    {
       saveThenExecute(null, true, () -> {
          dependencyManager_.withReticulate(
-               "Executing Python",
-               "Sourcing Python scripts",
+               constants_.sourcePythonProgressCaption(),
+               constants_.sourcePythonUserPrompt(),
                () -> {
                   String command = "reticulate::source_python('" + getPath() + "')"; //$NON-NLS-1$
                   events_.fireEvent(new SendToConsoleEvent(command, true));
@@ -6757,10 +6700,8 @@ QuartoConfig quartoConfig = session_.getSessionInfo().getQuartoConfig();
       {
          globalDisplay_.showMessage(
                MessageDisplay.MSG_WARNING,
-               "Unable to Preview",
-               // i18n: Concatenation/Message
-               "R Presentations require the knitr package " +
-               "(version 1.2 or higher)");
+               constants_.previewRpresentationCaption(),
+               constants_.previewRpresentationMessage());
          return;
       }
 
@@ -7261,7 +7202,7 @@ private String quartoFormat()
                   else
                   {
                      globalDisplay_.showErrorMessage(
-                                       "Unable to Compile Report",
+                                       constants_.generateNotebookCaption(),
                                        response.getFailureMessage());
                   }
                }
@@ -7401,11 +7342,8 @@ private String quartoFormat()
 
             globalDisplay_.showYesNoMessage(
                MessageDialog.QUESTION,
-               "Clear Knitr Cache",
-               // i18n: Concatenation/Message
-               "Clearing the Knitr cache will delete the cache " +
-               "directory for " + docPath + ". " +
-               "\n\nAre you sure you want to clear the cache now?",
+               constants_.onClearKnitrCacheCaption(),
+               constants_.onClearKnitrCacheMessage(docPath),
                false,
                new Operation() {
                   @Override
@@ -7445,11 +7383,8 @@ private String quartoFormat()
 
             globalDisplay_.showYesNoMessage(
                MessageDialog.QUESTION,
-               "Clear Prerendered Output",
-               // i18n: Concatenation/Message
-               "This will remove all previously generated output " +
-               "for " + docPath + " (html, prerendered data, knitr cache, etc.)." +
-               "\n\nAre you sure you want to clear the output now?",
+               constants_.onClearPrerenderedOutputCaption(),
+               constants_.onClearPrerenderedOutputMessage(docPath),
                false,
                new Operation() {
                   @Override
@@ -7811,12 +7746,8 @@ private String quartoFormat()
       if (file.getName().indexOf(' ') != -1)
       {
          globalDisplay_.showErrorMessage(
-               "Invalid Filename",
-               // i18n: Concatenation/Message
-               "The file '" + file.getName() + "' cannot be compiled to " +
-               "a PDF because TeX does not understand paths with spaces. " +
-               "If you rename the file to remove spaces then " +
-               "PDF compilation will work correctly.");
+               constants_.fireCompilePdfEventErrorCaption(),
+               constants_.fireCompilePdfEventErrorMessage(file.getName()));
 
          return;
       }
@@ -7943,12 +7874,9 @@ private String quartoFormat()
                      isWaitingForUserResponseToExternalEdit_ = true;
                      globalDisplay_.showYesNoMessage(
                            GlobalDisplay.MSG_WARNING,
-                           "File Deleted",
-                           // i18n: Concatenation/Message
-                           "The file " +
-                           StringUtil.notNull(docUpdateSentinel_.getPath()) +
-                           " has been deleted or moved. " +
-                           "Do you want to close this file now?",
+                           constants_.checkForExternalEditFileDeletedCaption(),
+                           constants_.checkForExternalEditFileDeletedMessage(
+                                   StringUtil.notNull(docUpdateSentinel_.getPath())),
                            false,
                            new Operation()
                            {
@@ -8000,11 +7928,8 @@ private String quartoFormat()
                         isWaitingForUserResponseToExternalEdit_ = true;
                         globalDisplay_.showYesNoMessage(
                               GlobalDisplay.MSG_WARNING,
-                              "File Changed",
-                              // i18n: Concatenation/Message
-                              "The file " + name_.getValue() + " has changed " +
-                              "on disk. Do you want to reload the file from " +
-                              "disk and discard your unsaved changes?",
+                              constants_.checkForExternalEditFileChangedCaption(),
+                              constants_.checkForExternalEditFileChangedMessage(name_.getValue()),
                               false,
                               new Operation()
                               {
@@ -8512,7 +8437,7 @@ private String quartoFormat()
          public void onError(ServerError error)
          {
             Debug.logError(error);
-            globalDisplay_.showErrorMessage("Failed to install additional dependencies", error.getUserMessage());
+            globalDisplay_.showErrorMessage(constants_.installShinyTestDependenciesError(), error.getUserMessage());
          }
       });
    }
@@ -8536,10 +8461,8 @@ private String quartoFormat()
                         else {
                            globalDisplay_.showYesNoMessage(
                               GlobalDisplay.MSG_WARNING,
-                              "Install Shinytest Dependencies",
-                              // i18n: Concatenation/Message
-                              "The package shinytest requires additional components to run.\n\n" +
-                              "Install additional components?",
+                              constants_.checkTestPackageDependenciesCaption(),
+                              constants_.checkTestPackageDependenciesMessage(),
                               new Operation()
                               {
                                  public void execute()
@@ -8555,7 +8478,8 @@ private String quartoFormat()
                      public void onError(ServerError error)
                      {
                         Debug.logError(error);
-                        globalDisplay_.showErrorMessage("Failed to check for additional dependencies", error.getMessage());
+                        globalDisplay_.showErrorMessage(constants_.checkTestPackageDependenciesError()
+                                , error.getMessage());
                      }
                   });
                }
@@ -8706,8 +8630,8 @@ private String quartoFormat()
             {
                globalDisplay_.showMessage(
                   GlobalDisplay.MSG_INFO,
-                  "No Failed Results",
-                  "There are no failed tests to compare."
+                       constants_.onShinyCompareTestResponseCaption(),
+                       constants_.onShinyCompareTestResponseMessage()
                );
             }
             else
@@ -8726,7 +8650,7 @@ private String quartoFormat()
          public void onError(ServerError error)
          {
             Debug.logError(error);
-            globalDisplay_.showErrorMessage("Failed to check if results are available", error.getUserMessage());
+            globalDisplay_.showErrorMessage(constants_.onShinyCompareTestError(), error.getUserMessage());
          }
       });
    }
@@ -9026,10 +8950,7 @@ private String quartoFormat()
          globalDisplay_.showYesNoMessage(
                  GlobalDisplay.MSG_WARNING,
                  refactoringName_,
-                 // i18n: Concatenation/Message
-                 "The selected code could not be " +
-                 "parsed.\n\n" +
-                 "Are you sure you want to continue?",
+                 constants_.refactorServerRequestCallbackError(),
                  new Operation()
                  {
                     public void execute()
@@ -9045,4 +8966,5 @@ private String quartoFormat()
 
    private static final String PROPERTY_CURSOR_POSITION = "cursorPosition";
    private static final String PROPERTY_SCROLL_LINE = "scrollLine";
+   private static final EditorsTextConstants constants_ = GWT.create(EditorsTextConstants.class);
 }
