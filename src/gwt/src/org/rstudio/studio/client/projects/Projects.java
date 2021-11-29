@@ -297,7 +297,7 @@ public class Projects implements OpenProjectFileEvent.Handler,
    {
       if (event.getVcsId() != VCSConstants.GIT_ID)
       {
-         Debug.logWarning("Unsupported VCS type invoked through API");
+         Debug.logWarning("Unsupported VCS type invoked through API"); //NON-NLS
          return;
       }
 
@@ -1040,7 +1040,7 @@ public class Projects implements OpenProjectFileEvent.Handler,
    @Handler
    public void onShowDiagnosticsProject()
    {
-      final ProgressIndicator indicator = globalDisplay_.getProgressIndicator("Lint");
+      final ProgressIndicator indicator = globalDisplay_.getProgressIndicator("Lint"); //NON-NLS
       indicator.onProgress(constants_.onShowDiagnosticsProject());
       projServer_.analyzeProject(new ServerRequestCallback<Void>()
       {
@@ -1239,5 +1239,5 @@ public class Projects implements OpenProjectFileEvent.Handler,
 
    public static final String NONE = constants_.noneLabel();
    public static final Pattern PACKAGE_NAME_PATTERN =
-         Pattern.create("^[a-zA-Z][a-zA-Z0-9.]*$", "");
+         Pattern.create("^[a-zA-Z][a-zA-Z0-9.]*$", ""); //NON-NLS
 }

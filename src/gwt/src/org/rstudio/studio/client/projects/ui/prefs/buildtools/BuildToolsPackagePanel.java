@@ -128,7 +128,7 @@ public class BuildToolsPackagePanel extends BuildToolsPanel
    @Override
    protected void provideDefaults()
    {
-      installAdditionalArguments_.setText("--no-multiarch --with-keep.source");
+      installAdditionalArguments_.setText("--no-multiarch --with-keep.source"); //NON-NLS
       chkUseDevtools_.setValue(true);
    }
 

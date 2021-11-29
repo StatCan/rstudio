@@ -23,7 +23,7 @@ public class GitPage extends VersionControlPage
 {
    public GitPage()
    {
-      super("Git", 
+      super("Git",  //NON-NLS
             constants_.cloneGitRepo(),
             constants_.cloneGitRepoPageCaption(),
             new ImageResource2x(NewProjectResources.INSTANCE.gitIcon2x()),
@@ -61,7 +61,7 @@ public class GitPage extends VersionControlPage
       /*
        * Strip .{bundle,git}.
        */
-      url = url.replaceAll(".(bundle|git)$", "");
+      url = url.replaceAll(".(bundle|git)$", ""); //NON-NLS
       url = url.replaceAll("[\u0000-\u0020]+", " ");
       url = url.trim();
       return url;

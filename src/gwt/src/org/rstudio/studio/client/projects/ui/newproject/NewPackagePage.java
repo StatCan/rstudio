@@ -129,7 +129,7 @@ public class NewPackagePage extends NewDirectoryPage
       super.initialize(input);
       
       if (input.getContext().isRcppAvailable())
-         listProjectType_.addChoice(constants_.rcppPackageOption(), "package-rcpp");
+         listProjectType_.addChoice(constants_.rcppPackageOption(), "package-rcpp"); //NON-NLS
    }
 
    @Override
@@ -143,7 +143,7 @@ public class NewPackagePage extends NewDirectoryPage
    {
       return NewPackageOptions.create(
             getProjectName(),
-            listProjectType_.getValue() == "package-rcpp",  
+            listProjectType_.getValue() == "package-rcpp",   //NON-NLS
             JsUtil.toJsArrayString(listCodeFiles_.getCodeFiles()));
    }
    
