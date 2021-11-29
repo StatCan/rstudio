@@ -15,13 +15,10 @@
  */
 package org.rstudio.core.client.theme;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.MenuItem;
-import org.rstudio.core.client.ClassIds;
-import org.rstudio.core.client.ElementIds;
-import org.rstudio.core.client.Point;
-import org.rstudio.core.client.RUtil;
-import org.rstudio.core.client.StringUtil;
+import org.rstudio.core.client.*;
 import org.rstudio.core.client.dom.DomUtils;
 import org.rstudio.core.client.dom.DomUtils.NodePredicate;
 import org.rstudio.core.client.dom.ElementEx;
@@ -115,7 +112,7 @@ public class DocTabLayoutPanel
                             int padding,
                             int rightMargin)
    {
-      super(BAR_HEIGHT, Style.Unit.PX, "Documents");
+      super(BAR_HEIGHT, Style.Unit.PX, constants_.documentsTabList());
       closeableTabs_ = closeableTabs;
       padding_ = padding;
       rightMargin_ = rightMargin;
@@ -153,13 +150,13 @@ public class DocTabLayoutPanel
          public void execute()
          {
             Element tabBar = getTabBarElement();
-            DOM.sinkBitlessEvent(tabBar, "dragenter");
-            DOM.sinkBitlessEvent(tabBar, "dragover");
-            DOM.sinkBitlessEvent(tabBar, "dragend");
-            DOM.sinkBitlessEvent(tabBar, "dragleave");
-            DOM.sinkBitlessEvent(tabBar, "drop");
-            DOM.sinkBitlessEvent(tabBar, "mousewheel");
-            DOM.sinkBitlessEvent(tabBar, "wheel");
+            DOM.sinkBitlessEvent(tabBar, "dragenter"); //$NON-NLS-1$
+            DOM.sinkBitlessEvent(tabBar, "dragover"); //$NON-NLS-1$
+            DOM.sinkBitlessEvent(tabBar, "dragend"); //$NON-NLS-1$
+            DOM.sinkBitlessEvent(tabBar, "dragleave"); //$NON-NLS-1$
+            DOM.sinkBitlessEvent(tabBar, "drop"); //$NON-NLS-1$
+            DOM.sinkBitlessEvent(tabBar, "mousewheel"); //$NON-NLS-1$
+            DOM.sinkBitlessEvent(tabBar, "wheel"); //$NON-NLS-1$
             Event.setEventListener(tabBar, dragManager_);
          }
       });
@@ -223,35 +220,35 @@ public class DocTabLayoutPanel
             if (target != null && target.getExtendedFileType() != null && target.getPath() != null)
             {
                final String filePath = target.getPath();
-               menu.addItem(ElementIds.TAB_RENAME_FILE, new MenuItem("Rename", () ->
+               menu.addItem(ElementIds.TAB_RENAME_FILE, new MenuItem(constants_.renameMenuItem(), () ->
                {
                   events_.fireEvent(new RenameSourceFileEvent(filePath));
                }));
-               menu.addItem(ElementIds.TAB_COPY_PATH, new MenuItem("Copy Path", () ->
+               menu.addItem(ElementIds.TAB_COPY_PATH, new MenuItem(constants_.copyPathMenuItem(), () ->
                {
                   events_.fireEvent(new CopySourcePathEvent(filePath));
                }));
-               menu.addItem(ElementIds.TAB_SET_WORKING_DIR, new MenuItem("Set Working Directory", () ->
+               menu.addItem(ElementIds.TAB_SET_WORKING_DIR, new MenuItem(constants_.setWorkingDirMenuItem(), () ->
                {
                   FileSystemItem targetPath = FileSystemItem.createFile(filePath);
                   events_.fireEvent(new SendToConsoleEvent(
-                     "setwd(" + RUtil.asStringLiteral(targetPath.getParentPathString()) + ")", true));
+                     "setwd(" + RUtil.asStringLiteral(targetPath.getParentPathString()) + ")", true)); //NON-NLS
                   events_.fireEvent(new DirectoryNavigateEvent(targetPath.getParentPath(), false));
                }));
                menu.addSeparator();
             }
 
-            menu.addItem(ElementIds.TAB_CLOSE, new MenuItem("Close", () ->
+            menu.addItem(ElementIds.TAB_CLOSE, new MenuItem(constants_.closeMenuItem(), () ->
             {
                events_.fireEvent(new DocumentCloseEvent(docId));
             }));
 
-            menu.addItem(ElementIds.TAB_CLOSE_ALL, new MenuItem("Close All", () ->
+            menu.addItem(ElementIds.TAB_CLOSE_ALL, new MenuItem(constants_.closeAllMenuItem(), () ->
             {
                commands_.closeAllSourceDocs().execute();
             }));
 
-            menu.addItem(ElementIds.TAB_CLOSE_OTHERS, new MenuItem("Close All Others", () ->
+            menu.addItem(ElementIds.TAB_CLOSE_OTHERS, new MenuItem(constants_.closeOthersMenuItem(), () ->
             {
                events_.fireEvent(new CloseAllSourceDocsExceptEvent(docId));
             }));
@@ -364,7 +361,7 @@ public class DocTabLayoutPanel
                   if (n.getNodeType() != Node.ELEMENT_NODE)
                      return false;
                   return ((Element) n).getClassName()
-                        .contains("gwt-TabLayoutPanelTab-selected");
+                        .contains("gwt-TabLayoutPanelTab-selected"); //$NON-NLS-1$
                }
             });
       if (selectedTab == null)
@@ -497,7 +494,7 @@ public class DocTabLayoutPanel
       @Override
       public void onBrowserEvent(Event event)
       {
-         if (event.getType() == "dragenter")
+         if (event.getType() == "dragenter") //$NON-NLS-1$
          {
             if (dropPoint_ != null && event.getClientX() == dropPoint_.getX() &&
                   event.getClientY() == dropPoint_.getY())
@@ -535,13 +532,13 @@ public class DocTabLayoutPanel
             }
             event.preventDefault();
          }
-         else if (event.getType() == "dragover")
+         else if (event.getType() == "dragover") //$NON-NLS-1$
          {
             if (curState_ == STATE_DRAGGING)
                drag(event);
             event.preventDefault();
          }
-         else if (event.getType() == "drop")
+         else if (event.getType() == "drop") //$NON-NLS-1$
          {
             endDrag(event, ACTION_COMMIT);
             event.preventDefault();
@@ -559,7 +556,7 @@ public class DocTabLayoutPanel
                }
             }, 250);
          }
-         else if (event.getType() == "dragend")
+         else if (event.getType() == "dragend") //$NON-NLS-1$
          {
             if (curState_ != STATE_NONE)
             {
@@ -567,7 +564,7 @@ public class DocTabLayoutPanel
             }
             event.preventDefault();
          }
-         else if (event.getType() == "dragleave")
+         else if (event.getType() == "dragleave") //$NON-NLS-1$
          {
             if (curState_ == STATE_NONE)
                return;
@@ -583,7 +580,7 @@ public class DocTabLayoutPanel
                      event.getClientY());
                while (ele != null && ele != Document.get().getBody())
                {
-                  if (ele.getClassName().contains("gwt-TabLayoutPanelTabs"))
+                  if (ele.getClassName().contains("gwt-TabLayoutPanelTabs")) //$NON-NLS-1$
                   {
                      return;
                   }
@@ -602,13 +599,13 @@ public class DocTabLayoutPanel
                endDrag(event, ACTION_CANCEL);
             }
          }
-         else if (event.getType() == "wheel" ||
-                  event.getType() == "mousewheel")
+         else if (event.getType() == "wheel" || //$NON-NLS-1$
+                  event.getType() == "mousewheel") //$NON-NLS-1$
          {
             // extract the delta from the wheel event (note that this could be
             // zero)
             JsObject evt = event.cast();
-            double delta = evt.getDouble(event.getType() == "wheel" ?
+            double delta = evt.getDouble(event.getType() == "wheel" ? //$NON-NLS-1$
                   "deltaY" : "wheelDeltaY");
 
             // translate wheel scroll into tab selection
@@ -886,7 +883,7 @@ public class DocTabLayoutPanel
 
             // skip the element we're dragging and elements that are not tabs
             Element ele = (Element)node;
-            if (ele == dragElement_ || !ele.getClassName().contains("gwt-TabLayoutPanelTab"))
+            if (ele == dragElement_ || !ele.getClassName().contains("gwt-TabLayoutPanelTab")) //$NON-NLS-1$
             {
                continue;
             }
@@ -1041,7 +1038,7 @@ public class DocTabLayoutPanel
             // perform a pop-out.
             if (dragElement_ != null &&
                   evt != null &&
-                  StringUtil.equals(evt.getType(), "dragend"))
+                  StringUtil.equals(evt.getType(), "dragend")) //$NON-NLS-1$
             {
                Desktop.getFrame().doesWindowExistAtCursorPosition((Boolean hasWindow) ->
                {
@@ -1216,7 +1213,7 @@ public class DocTabLayoutPanel
          Image img = new Image(new ImageResource2x(ThemeResources.INSTANCE.closeTab2x()));
          img.setStylePrimaryName(styles_.closeTabButton());
          img.addStyleName(ThemeStyles.INSTANCE.handCursor());
-         img.setAltText("Close document tab");
+         img.setAltText(constants_.closeTabText());
          contentPanel_.add(img);
 
          layoutPanel.add(contentPanel_);
@@ -1379,7 +1376,7 @@ public class DocTabLayoutPanel
                   if (n.getNodeType() != Node.ELEMENT_NODE)
                      return false;
                   return ((Element) n).getClassName()
-                        .contains("gwt-TabLayoutPanelTabs");
+                        .contains("gwt-TabLayoutPanelTabs"); //$NON-NLS-1$
                }
             });
    }
@@ -1399,7 +1396,7 @@ public class DocTabLayoutPanel
 
    private String getDataTransferFormat()
    {
-      return "application/rstudio-tab";
+      return "application/rstudio-tab"; //$NON-NLS-1$
    }
 
    private DocTab getTabForDocId(String docId)
@@ -1426,4 +1423,5 @@ public class DocTabLayoutPanel
    private final ThemeStyles styles_;
    private Animation currentAnimation_;
    private final DragManager dragManager_;
+   private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
 }

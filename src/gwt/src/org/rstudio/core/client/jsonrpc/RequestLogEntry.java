@@ -82,7 +82,7 @@ public class RequestLogEntry
 
    public String getRequestMethodName()
    {
-      if (requestData_ == "[REDACTED]")
+      if (requestData_ == "[REDACTED]") //NON-NLS
          return requestData_;
 
       Pattern p = Pattern.create("\\\"method\\\":\\s*\\\"([^\"]+)\\\"");

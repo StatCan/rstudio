@@ -16,6 +16,7 @@ package org.rstudio.studio.client.workbench.ui;
 
 import com.google.gwt.core.client.JsArrayString;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.Debug;
 import org.rstudio.core.client.JsArrayUtil;
 import org.rstudio.core.client.StringUtil;
@@ -59,6 +60,8 @@ public class PaneConfig extends UserPrefsAccessor.Panes
       panes.push(UserPrefsAccessor.Panes.QUADRANTS_TABSET2);
       panes.push(UserPrefsAccessor.Panes.QUADRANTS_HIDDENTABSET);
 
+      // Pane default group 1
+      // i18n: See notes below
       JsArrayString tabSet1 = createArray().cast();
       tabSet1.push("Environment");
       tabSet1.push("History");
@@ -69,6 +72,7 @@ public class PaneConfig extends UserPrefsAccessor.Panes
       tabSet1.push("Presentation");
       tabSet1.push("Presentations");
 
+      // Pane default group 1
       JsArrayString tabSet2 = createArray().cast();
       tabSet2.push("Files");
       tabSet2.push("Plots");
@@ -105,8 +109,14 @@ public class PaneConfig extends UserPrefsAccessor.Panes
    {
       // A list of all the tabs. Order matters; the Presentation tab must be the
       // last element in this array that's part of the first tabset (ts1)
+      // i18n: These are both the text displayed on screen and must match the key name used for the pane they reference.
+      //       Not sure where this key name is defined though (tried changing the labels set in RStudioGinModule and
+      //       PaneManager but that wasn't enough).  If these are set to something other than a valid pane name, the
+      //       panes will show up initially but will disappear if you try to change the layout (eg: add/remove the
+      //       mis-labeled pane).  Need to figure this out and likely decouple the on-screen text from the internal
+      //       pane labels
       return new String[] {"Environment", "History", "Files", "Plots", "Connections",
-                           "Packages", "Help", "Build", "VCS", "Tutorial", "Viewer",
+              "Packages", "Help", "Build", "VCS", "Tutorial", "Viewer",
                            "Presentations", "Presentation"};
    }
 
@@ -203,7 +213,7 @@ public class PaneConfig extends UserPrefsAccessor.Panes
       // Replace any obsoleted tabs in the config
       replaceObsoleteTabs(ts1);
       replaceObsoleteTabs(ts2);
-      
+
       // Presentation tab must always be at the end of the ts1 tabset (this
       // is so that activating it works even in the presence of optionally
       // visible tabs). This is normally an invariant but for a time during
@@ -221,11 +231,11 @@ public class PaneConfig extends UserPrefsAccessor.Panes
          }
          else
          {
-            Debug.logToConsole("Invaliding tabset config (Presentation index)");
+            Debug.logToConsole(constants_.validateAndAutoCorrect());
             return false;
          }
       }
-      
+
       // if we don't have Presentation2 then provide it (but keep Presentation last)
       if (!hasPresentation2(ts1) && !hasPresentation2(ts2))
       {
@@ -242,7 +252,7 @@ public class PaneConfig extends UserPrefsAccessor.Panes
 
       return true;
    }
-   
+
    private final boolean hasPresentation2(JsArrayString tabs)
    {
       for (int idx = 0; idx < tabs.length(); idx++)
@@ -324,4 +334,6 @@ public class PaneConfig extends UserPrefsAccessor.Panes
       // function remains to maintain the structure if validation needs to be added in the future.
      return true;
    }
+   private static final PaneConfigConstants constants_ = GWT.create(PaneConfigConstants.class);
+
 }

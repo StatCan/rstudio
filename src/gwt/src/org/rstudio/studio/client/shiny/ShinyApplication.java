@@ -470,7 +470,7 @@ public class ShinyApplication implements ShinyApplicationStatusEvent.Handler,
       // Save the ID of the job we are stopping; this allows us to distinguish between jobs that we stopped ourselves
       // and jobs that were ended for other reasons.
       stoppingId_ = id;
-      jobsServer_.executeJobAction(id, JobConstants.ACTION_STOP,
+      jobsServer_.executeJobAction(id, JobConstants.ACTION_STOP,//$NON-NLS-1$
          new VoidServerRequestCallback()
          {
             @Override
@@ -484,12 +484,15 @@ public class ShinyApplication implements ShinyApplicationStatusEvent.Handler,
 
             @Override
             public void onError(ServerError error)
-            {
-               display_.showErrorMessage("Failed to Stop",
-                  "Could not stop the Shiny application.\n\n" +
-                     error.getMessage());
-            }
-         });
+               {
+                  display_.showErrorMessage(
+                     "Failed to Stop",
+                     // i18n: Concatenation/Message
+                     "Could not stop the Shiny application.\n\n" +
+                        error.getMessage());
+               }
+            });
+
    }
 
    private final native void exportShinyAppClosedCallback()/*-{
@@ -567,7 +570,8 @@ public class ShinyApplication implements ShinyApplicationStatusEvent.Handler,
                   @Override
                   public void onError(ServerError error)
                   {
-                     display_.showErrorMessage("Shiny App Launch Failed", 
+                     // i18n: Concatenation/Message
+                     display_.showErrorMessage("Shiny App Launch Failed",
                                                error.getMessage());
                   }
                });
@@ -586,7 +590,8 @@ public class ShinyApplication implements ShinyApplicationStatusEvent.Handler,
                   @Override
                   public void onError(ServerError error)
                   {
-                     display_.showErrorMessage("Shiny App Background Launch Failed", 
+                     // i18n: Concatenation/Message
+                     display_.showErrorMessage("Shiny App Background Launch Failed",
                                                error.getMessage());
                   }
                });
@@ -670,6 +675,6 @@ public class ShinyApplication implements ShinyApplicationStatusEvent.Handler,
    private String currentViewType_;
    private String stoppingId_ = null;
 
-   public static final String FOREGROUND_APP = "foreground";
-   public static final String BACKGROUND_APP = "background";
+   public static final String FOREGROUND_APP = "foreground"; //$NON-NLS-1$
+   public static final String BACKGROUND_APP = "background"; //$NON-NLS-1$
 }

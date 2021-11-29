@@ -33,10 +33,10 @@ public class DomUtilsTests extends GWTTestCase
    {
       PreElement pre = Document.get().createPreElement();
       SpanElement s1 = Document.get().createSpanElement();
-      s1.setInnerText("Line1\nLine2\n");
+      s1.setInnerText("Line1\nLine2\n"); //NON-NLS
       pre.appendChild(s1);
       SpanElement s2 = Document.get().createSpanElement();
-      s2.setInnerText("Line3\n");
+      s2.setInnerText("Line3\n"); //NON-NLS
       pre.appendChild(s2);
       
       Assert.assertEquals(3, DomUtils.countLines(pre, true));
@@ -45,7 +45,7 @@ public class DomUtilsTests extends GWTTestCase
    public void testTrimExcess()
    {
       PreElement pre = Document.get().createPreElement();
-      pre.setInnerText("Line1\nLine2\nLine3\n");
+      pre.setInnerText("Line1\nLine2\nLine3\n"); //NON-NLS
       int trimmed = DomUtils.trimLines(pre, 2);
       Assert.assertEquals("Line3\n", pre.getInnerText());
       Assert.assertEquals(trimmed, 2);
@@ -54,7 +54,7 @@ public class DomUtilsTests extends GWTTestCase
    public void testMakeAbsoluteUrl()
    {
       // test prefixing relative URLs
-      String url1 = "path/to/file";
+      String url1 = "path/to/file"; //NON-NLS
       String absolute1 = DomUtils.makeAbsoluteUrl(url1);
       Assert.assertEquals(absolute1.substring(0, 4), "http");
       

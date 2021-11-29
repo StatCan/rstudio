@@ -15,6 +15,10 @@
 
 package org.rstudio.studio.client.common.synctex;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.rstudio.core.client.BrowseCap;
 import org.rstudio.core.client.FilePosition;
 import org.rstudio.core.client.StringUtil;
@@ -25,13 +29,14 @@ import org.rstudio.studio.client.application.Desktop;
 import org.rstudio.studio.client.application.events.EventBus;
 import org.rstudio.studio.client.common.GlobalDisplay;
 import org.rstudio.studio.client.common.GlobalProgressDelayer;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 import org.rstudio.studio.client.common.compilepdf.events.CompilePdfCompletedEvent;
 import org.rstudio.studio.client.common.compilepdf.events.CompilePdfStartedEvent;
 import org.rstudio.studio.client.common.filetypes.FileTypeRegistry;
 import org.rstudio.studio.client.common.satellite.Satellite;
+import org.rstudio.studio.client.common.synctex.events.SynctexEditFileEvent;
 import org.rstudio.studio.client.common.synctex.events.SynctexStatusChangedEvent;
 import org.rstudio.studio.client.common.synctex.events.SynctexViewPdfEvent;
-import org.rstudio.studio.client.common.synctex.events.SynctexEditFileEvent;
 import org.rstudio.studio.client.common.synctex.model.PdfLocation;
 import org.rstudio.studio.client.common.synctex.model.SourceLocation;
 import org.rstudio.studio.client.common.synctex.model.SynctexServerOperations;
@@ -40,10 +45,6 @@ import org.rstudio.studio.client.server.ServerRequestCallback;
 import org.rstudio.studio.client.workbench.commands.Commands;
 import org.rstudio.studio.client.workbench.model.Session;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
-
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 @Singleton
 public class Synctex implements CompilePdfStartedEvent.Handler,
@@ -221,7 +222,7 @@ public class Synctex implements CompilePdfStartedEvent.Handler,
 
          // warn firefox users that this doesn't really work in Firefox
          if (BrowseCap.isFirefox())
-            SynctexUtils.maybeShowFirefoxWarning("source editor");
+            SynctexUtils.maybeShowFirefoxWarning("source editor"); //NON-NLS
 
          // do the inverse search
          callInverseSearch(pdfLocation);
@@ -346,7 +347,7 @@ public class Synctex implements CompilePdfStartedEvent.Handler,
    {
       return new GlobalProgressDelayer(globalDisplay_,
                                        500,
-                                       "Syncing...").getIndicator();
+                                       constants_.getSyncProgressMessage()).getIndicator();
    }
 
    private void setNoSynctexStatus()
@@ -369,7 +370,7 @@ public class Synctex implements CompilePdfStartedEvent.Handler,
 
    private void fixupSynctexCommandDescription(AppCommand command)
    {
-      String desc = command.getDesc().replace("Ctrl+", "Cmd+");
+      String desc = command.getDesc().replace("Ctrl+", "Cmd+"); //$NON-NLS-1$
       command.setDesc(desc);
    }
 
@@ -419,6 +420,7 @@ public class Synctex implements CompilePdfStartedEvent.Handler,
    private final Satellite satellite_;
    private String pdfPath_ = null;
    private String targetFile_ = "";
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 
 
 }

@@ -30,6 +30,7 @@ import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import org.rstudio.studio.client.workbench.prefs.views.RMarkdownPreferencesPaneConstants;
 
 public class ZoteroConnectionWidget extends Composite
 {

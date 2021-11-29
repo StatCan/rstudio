@@ -15,10 +15,13 @@
 
 package org.rstudio.studio.client.common.dependencies;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsArrayString;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Command;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.rstudio.core.client.CommandWith2Args;
 import org.rstudio.core.client.CommandWithArg;
 import org.rstudio.core.client.Debug;
@@ -29,6 +32,7 @@ import org.rstudio.core.client.widget.ProgressIndicator;
 import org.rstudio.studio.client.application.events.EventBus;
 import org.rstudio.studio.client.common.GlobalDisplay;
 import org.rstudio.studio.client.common.GlobalProgressDelayer;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 import org.rstudio.studio.client.common.Value;
 import org.rstudio.studio.client.common.dependencies.events.InstallShinyEvent;
 import org.rstudio.studio.client.common.dependencies.model.Dependency;
@@ -44,12 +48,9 @@ import org.rstudio.studio.client.workbench.views.jobs.model.JobConstants;
 import org.rstudio.studio.client.workbench.views.jobs.model.JobUpdate;
 import org.rstudio.studio.client.workbench.views.packages.events.PackageStateChangedEvent;
 
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsArrayString;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Command;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 @Singleton
 public class DependencyManager implements InstallShinyEvent.Handler,
@@ -230,7 +231,7 @@ public class DependencyManager implements InstallShinyEvent.Handler,
          final CommandWithArg<Boolean> onCompleted)
    {
       // build dependency array
-      List<Dependency> deps = getFeatureDependencies("rsconnect");
+      List<Dependency> deps = getFeatureDependencies("rsconnect"); //$NON-NLS-1$
       if (requiresRmarkdown)
          deps.addAll(getFeatureDependencies("rmarkdown"));
 
@@ -302,9 +303,9 @@ public class DependencyManager implements InstallShinyEvent.Handler,
          {
             globalDisplay_.showYesNoMessage(
               MessageDialog.QUESTION,
-              "Install Shiny Package",
-              userAction + " requires installation of an updated version " +
-              "of the shiny package.\n\nDo you want to install shiny now?",
+                    "Install Shiny Package",
+              userAction + " " + " requires installation of an updated version " +
+                      "of the shiny package.\n\nDo you want to install shiny now?",
                   false, // include cancel
                   new Operation()
                   {
@@ -571,7 +572,7 @@ public class DependencyManager implements InstallShinyEvent.Handler,
    public void withDataImportMongo(String userAction, final Command command)
    {
      withDependencies(
-        "Preparing Import from Mongo DB",
+        constants_.withDataImportMongoProgressCaption(),
         userAction,
         getFeatureDescription("import_mongo"),
         getFeatureDependencies("import_mongo"),
@@ -678,18 +679,18 @@ public class DependencyManager implements InstallShinyEvent.Handler,
       if (useTestThat)
       {
          dependencies.addAll(getFeatureDependencies("testthat"));
-         message = "Using testthat";
+         message = constants_.testthatMessage();
       }
       else
       {
          dependencies.addAll(getFeatureDependencies("shinytest"));
-         message = "Using shinytest";
+         message = constants_.shinytestMessage();
       }
 
       withDependencies(
-         "Preparing Tests",
+         constants_.preparingTestsProgressCaption(),
          message,
-         "Testing Tools",
+         constants_.testingToolsContext(),
          dependencies,
          true, // update package if needed
          new CommandWithArg<Boolean>()
@@ -885,10 +886,10 @@ public class DependencyManager implements InstallShinyEvent.Handler,
                        " " + unsatisfiedDeps.get(i).getVersion();
                   String version = unsatisfiedDeps.get(i).getAvailableVersion();
                   if (version.isEmpty())
-                     unsatisfiedVersions += " is not available\n";
+                     unsatisfiedVersions += " " + " is not available\n";
                   else
-                     unsatisfiedVersions += " is required but " + version +
-                        " is available\n";
+                     unsatisfiedVersions += " " + " is required but " + version +
+                        " " + " is available\n";
                }
             }
 
@@ -897,7 +898,7 @@ public class DependencyManager implements InstallShinyEvent.Handler,
                // error if we can't satisfy requirements
                globalDisplay_.showErrorMessage(
                      StringUtil.isNullOrEmpty(req.userAction) ?
-                           "Packages Not Found" : req.userAction,
+                             "Packages Not Found" : req.userAction,
                      "Required package versions could not be found:\n\n" +
                      unsatisfiedVersions + "\n" +
                      "Check that getOption(\"repos\") refers to a CRAN " +
@@ -1081,7 +1082,7 @@ public class DependencyManager implements InstallShinyEvent.Handler,
       if (dependencies.length() == 1)
       {
          msg = "requires an updated version of the " +
-               dependencies.get(0).getName() + " package. " +
+               dependencies.get(0).getName() + " " + " package. " +
                "\n\nDo you want to install this package now?";
       }
       else
@@ -1238,8 +1239,8 @@ public class DependencyManager implements InstallShinyEvent.Handler,
          Dependency dep = list.getPackage(packages.get(i));
          if (dep == null)
          {
-            Debug.logWarning("No dependency record found for package '" +
-                             packages.get(i) + "' (required by feature '" +
+            Debug.logWarning(constants_.noDependencyRecordFoundLog() +
+                             packages.get(i) + constants_.requiredByFeatureLog() +
                              feature + "')");
             continue;
          }
@@ -1259,4 +1260,5 @@ public class DependencyManager implements InstallShinyEvent.Handler,
    private final Session session_;
    private final Commands commands_;
    private final EventBus events_;
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 }

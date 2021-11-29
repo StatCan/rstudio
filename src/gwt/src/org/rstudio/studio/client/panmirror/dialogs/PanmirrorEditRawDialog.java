@@ -26,6 +26,7 @@ import org.rstudio.core.client.widget.OperationWithInput;
 import org.rstudio.core.client.widget.ThemedButton;
 import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.common.GlobalDisplay;
+import org.rstudio.studio.client.panmirror.PanmirrorConstants;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorRawFormatProps;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorRawFormatResult;
 
@@ -47,7 +48,7 @@ public class PanmirrorEditRawDialog extends ModalDialog<PanmirrorRawFormatResult
                boolean inline,
                OperationWithInput<PanmirrorRawFormatResult> operation)
    {
-      super("Raw " + (inline ? "Inline" : "Block"), Roles.getDialogRole(), operation, () -> {
+      super(_constants.modelDialogCaption(inline ? _constants.inlineText() : _constants.blockText()), Roles.getDialogRole(), operation, () -> {
          // cancel returns null
          operation.execute(null);
       });
@@ -73,11 +74,11 @@ public class PanmirrorEditRawDialog extends ModalDialog<PanmirrorRawFormatResult
       // make remove button available if we are editing an existing format
       if (!rawFormatSelect_.getValue().equals("")) 
       {
-         ThemedButton removeFormatButton = new ThemedButton("Remove Format");
+         ThemedButton removeFormatButton = new ThemedButton(_constants.removeFormatText());
          addLeftButton(removeFormatButton, ElementIds.VISUAL_MD_RAW_FORMAT_REMOVE_BUTTON); 
          removeFormatButton.addClickHandler((event) -> {
             PanmirrorRawFormatResult input = collectInput();
-            input.action = "remove";
+            input.action = "remove"; //$NON-NLS-1$
             validateAndGo(input, new Command()
             {
                @Override
@@ -125,7 +126,7 @@ public class PanmirrorEditRawDialog extends ModalDialog<PanmirrorRawFormatResult
       result.raw = new PanmirrorRawFormatProps();
       result.raw.format = rawFormatSelect_.getValue();
       result.raw.content = rawContent();
-      result.action = "edit";
+      result.action = "edit"; //$NON-NLS-1$
       return result;
    }
 
@@ -136,8 +137,8 @@ public class PanmirrorEditRawDialog extends ModalDialog<PanmirrorRawFormatResult
       if (inline_ && rawContent().length() == 0)
       {
          globalDisplay_.showErrorMessage(
-               "No Content Specified", 
-               "You must provide content to apply the raw format to.",
+               _constants.validateCaption(),
+               _constants.validateMessage(),
                rawContent_);
          
          return false;
@@ -152,7 +153,9 @@ public class PanmirrorEditRawDialog extends ModalDialog<PanmirrorRawFormatResult
    {
       return rawContent_.getValue().trim();
    }
-   
+
+   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+
    private final boolean inline_;
 
    private GlobalDisplay globalDisplay_;
@@ -161,7 +164,7 @@ public class PanmirrorEditRawDialog extends ModalDialog<PanmirrorRawFormatResult
    
    interface Binder extends UiBinder<Widget, PanmirrorEditRawDialog> {}
    
-   private Widget mainWidget_; 
+   private Widget mainWidget_;
    @UiField PanmirrorRawFormatSelect rawFormatSelect_;
    @UiField TextBox rawContent_;
    @UiField Label rawContentLabel_;

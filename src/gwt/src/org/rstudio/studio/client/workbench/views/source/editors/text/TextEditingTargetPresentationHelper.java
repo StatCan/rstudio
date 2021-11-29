@@ -32,6 +32,7 @@ import org.rstudio.studio.client.workbench.views.source.editors.text.status.Stat
 import org.rstudio.studio.client.workbench.views.source.editors.text.status.StatusBarPopupRequest;
 import org.rstudio.studio.client.workbench.views.source.model.SourcePosition;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -82,10 +83,10 @@ public class TextEditingTargetPresentationHelper
          if (title.length() > 0 && SLIDE_PATTERN.match(title, 0) == null)
             return title;
          else
-            return "(Untitled Slide)";
+            return constants_.untitledSlide();
       }
       else
-         return "(No Slides)";
+         return constants_.noSlides();
    }
    
    public void buildSlideMenu(
@@ -116,11 +117,11 @@ public class TextEditingTargetPresentationHelper
                SlideNavigationItem item = slideNavigation.getItems().get(i);
                String title = item.getTitle();
                if (StringUtil.isNullOrEmpty(title))
-                  title = "(Untitled Slide)";
+                  title = constants_.untitledSlide();
                
                StringBuilder indentBuilder = new StringBuilder();
                for (int level=0; level<item.getIndent(); level++)
-                  indentBuilder.append("&nbsp;&nbsp;");
+                  indentBuilder.append("&nbsp;&nbsp;"); //$NON-NLS-1$
                
                SafeHtmlBuilder labelBuilder = new SafeHtmlBuilder();
                labelBuilder.appendHtmlConstant(indentBuilder.toString());
@@ -174,7 +175,7 @@ public class TextEditingTargetPresentationHelper
       int currentSlide = 0;
       Position navPos = null;
       Position pos = Position.create(0, 0);
-      while ((pos = editor.search(pos, "^\\={3,}\\s*$")) != null)
+      while ((pos = editor.search(pos, "^\\={3,}\\s*$")) != null) //$NON-NLS-1$
       { 
          if (currentSlide++ == slideIndex)
          {
@@ -207,6 +208,7 @@ public class TextEditingTargetPresentationHelper
    private final DocDisplay docDisplay_;
    private PresentationServerOperations server_;
    
-   private static final String SLIDE_REGEX = "^\\={3,}\\s*$";
+   private static final String SLIDE_REGEX = "^\\={3,}\\s*$"; //$NON-NLS-1$
    private static final Pattern SLIDE_PATTERN = Pattern.create(SLIDE_REGEX);
+   private static final EditorsTextConstants constants_ = GWT.create(EditorsTextConstants.class);
 }

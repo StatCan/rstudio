@@ -17,6 +17,7 @@ package org.rstudio.studio.client.workbench.prefs.views;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.widget.SelectWidget;
 import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
@@ -24,11 +25,15 @@ import com.google.gwt.core.client.GWT;
 
 public class LineEndingsSelectWidget extends SelectWidget
 {
+   // i18n: It implements the enumerator and human readable values directly, plus logic for whether to show all values
+   //       or a subset. This class is also used by ProjectEditingPreferencesPane.java, which does not have the same
+   //       access to preferences as EditingPreferencesPane.java. Need to investigate. Porting logic will be easy, but
+   //       getting the translated values from the lineEndingConversion() PrefValue might be harder.
    public LineEndingsSelectWidget()
    {
       this(false);
    }
-   
+
    public LineEndingsSelectWidget(boolean includeDefault)
    {
       super(constants_.lineEndingConversion(),

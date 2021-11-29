@@ -15,8 +15,13 @@
 
 package org.rstudio.studio.client.dataviewer;
 
-import java.util.ArrayList;
-
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.Widget;
 import org.rstudio.core.client.CommandWith2Args;
 import org.rstudio.core.client.command.ShortcutManager;
@@ -27,13 +32,7 @@ import org.rstudio.core.client.resources.ImageResource2x;
 import org.rstudio.core.client.theme.res.ThemeStyles;
 import org.rstudio.core.client.widget.*;
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.SuggestOracle;
+import java.util.ArrayList;
 
 public class DataTable
 {
@@ -379,9 +378,9 @@ public class DataTable
    private boolean filtered_ = false;
 
    private static String COLUMN_VIEW_BUTTONS[] = {
-      "<i class=\"icon-angle-double-left \"></i>",
-      "<i class=\"icon-angle-left \"></i>",
-      "<i class=\"icon-angle-right \"></i>",
-      "<i class=\"icon-angle-double-right \"></i>"
+      "<i class=\"icon-angle-double-left \"></i>", //$NON-NLS-1$
+      "<i class=\"icon-angle-left \"></i>", //$NON-NLS-1$
+      "<i class=\"icon-angle-right \"></i>", //$NON-NLS-1$
+      "<i class=\"icon-angle-double-right \"></i>" //$NON-NLS-1$
    };
 }

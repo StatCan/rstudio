@@ -93,7 +93,7 @@ public class SendToConsoleEvent extends CrossWindowEvent<SendToConsoleEvent.Hand
                              boolean focus,
                              boolean animate)
    {
-      this(code, "R", execute, raise, focus, animate);
+      this(code, "R", execute, raise, focus, animate); //$NON-NLS-1$
    }
    
    public SendToConsoleEvent(String code,

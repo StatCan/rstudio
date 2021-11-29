@@ -239,6 +239,7 @@ public class UserPrefs extends UserPrefsComputed
    private void setScreenReaderMenuState(boolean checked)
    {
       commands_.toggleScreenReaderSupport().setChecked(checked);
+      // i18n: Concatenation/Message
       commands_.toggleScreenReaderSupport().setMenuLabel(checked ?
             constants_.screenReaderStateEnabled(origScreenReaderLabel_) :
             constants_.screenReaderStateDisabled(origScreenReaderLabel_));
@@ -253,6 +254,7 @@ public class UserPrefs extends UserPrefsComputed
          Timers.singleShot(AriaLiveService.STARTUP_ANNOUNCEMENT_DELAY, () ->
          {
             String shortcut = commands_.toggleScreenReaderSupport().getShortcutRaw();
+            // i18n: Concatenation/Message
             ariaLive_.announce(AriaLiveService.SCREEN_READER_NOT_ENABLED,
                   constants_.announceScreenReaderStateMessage(shortcut),
                   Timing.IMMEDIATE, Severity.ALERT);

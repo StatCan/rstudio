@@ -24,6 +24,7 @@ import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
 import com.google.inject.Inject;
+import com.google.gwt.core.client.GWT;
 
 import org.rstudio.core.client.CommandWithArg;
 import org.rstudio.core.client.Debug;
@@ -160,7 +161,7 @@ public class TextEditingTargetRMarkdownHelper
           final boolean isShinyDoc,
           final CommandWithArg<RMarkdownContext> onReady)
    {
-      withRMarkdownPackage("R Markdown", userAction, isShinyDoc, onReady);
+      withRMarkdownPackage(constants_.rMarkdown(), userAction, isShinyDoc, onReady);
    }
 
    public void withRMarkdownPackage(
@@ -235,7 +236,7 @@ public class TextEditingTargetRMarkdownHelper
           });
    }
 
-   final String NOTEBOOK_FORMAT = "notebook_format";
+   final String NOTEBOOK_FORMAT = "notebook_format"; //$NON-NLS-1$
 
    private void renderNotebookv2WithDialog(final DocUpdateSentinel sourceDoc)
    {
@@ -336,9 +337,10 @@ public class TextEditingTargetRMarkdownHelper
                                final String workingDir,
                                final String viewerType)
    {
+      // i18n: Enumerator, user facing text, or both?
       withRMarkdownPackage(type == RmdOutput.TYPE_NOTEBOOK ?
-                              "R Notebook" :
-                              "R Markdown",
+                              constants_.rNotebook() :
+                              constants_.rMarkdown(),
                            "Rendering R Markdown documents",
                            type == RmdOutput.TYPE_SHINY,
                            new CommandWithArg<RMarkdownContext>() {
@@ -448,7 +450,7 @@ public class TextEditingTargetRMarkdownHelper
          public void onResponseReceived(RmdYamlResult yamlResult)
          {
             YamlTree yamlTree = new YamlTree(yamlResult.getYaml());
-
+            // i18n: Are items in this method enumerators or something that is translated elsewhere?
             // quote fields
             quoteField(yamlTree, "title");
             quoteField(yamlTree, "author");
@@ -704,8 +706,8 @@ public class TextEditingTargetRMarkdownHelper
 
             // the file exists--offer to clean it up and continue.
             globalDisplay_.showYesNoMessage(GlobalDisplay.MSG_QUESTION,
-                  "Overwrite " + (template.createDir() ? "Directory" : "File"),
-                  targetFile + " exists. Overwrite it?", false,
+                  constants_.createDraftFromTemplateCaption((template.createDir() ? "Directory" : "File")),
+                  constants_.createDraftFromTemplateMessage(targetFile), false,
                   new Operation()
                   {
                      @Override
@@ -713,7 +715,8 @@ public class TextEditingTargetRMarkdownHelper
                      {
                         cleanAndCreateTemplate(template, target, fsi);
                      }
-                  }, null, null, "Overwrite", "Cancel", false);
+                  }, null, null, constants_.overwrite(),
+                    constants_.cancel(), false);
          }
 
          @Override
@@ -728,7 +731,7 @@ public class TextEditingTargetRMarkdownHelper
    public String convertYamlToShinyDoc(String yaml)
    {
       YamlTree yamlTree = new YamlTree(yaml);
-      yamlTree.addYamlValue(null, "runtime", "shiny");
+      yamlTree.addYamlValue(null, "runtime", "shiny"); //$NON-NLS-1$
 
       return yamlTree.toString();
    }
@@ -867,9 +870,8 @@ public class TextEditingTargetRMarkdownHelper
             @Override
             public void onError(ServerError error)
             {
-               globalDisplay_.showErrorMessage("Template Creation Failed",
-                     "Failed to load content from the template at " +
-                     template.getTemplatePath() + ": " + error.getMessage());
+               globalDisplay_.showErrorMessage(constants_.getTemplateContentErrorCaption(),
+                     constants_.getTemplateContentErrorMessage(template.getTemplatePath(), error.getMessage()));
             }
          });
    }
@@ -902,8 +904,8 @@ public class TextEditingTargetRMarkdownHelper
       {
          globalDisplay_.showMessage(
                MessageDisplay.MSG_WARNING,
-               "R Session Busy",
-               "Unable to edit parameters (the R session is currently busy).");
+               constants_.getRMarkdownParamsFileCaption(),
+               constants_.getRMarkdownParamsFileMessage());
          return;
       }
 
@@ -941,7 +943,7 @@ public class TextEditingTargetRMarkdownHelper
                         FileSystemItem targetFile =
                                           FileSystemItem.createFile(file);
                         consoleDispatcher_.executeCommandWithFileEncoding(
-                                             "knit_with_parameters",
+                                             "knit_with_parameters", //$NON-NLS-1$
                                              targetFile.getPath(),
                                              encoding,
                                              contentKnownToBeAscii);
@@ -1005,8 +1007,8 @@ public class TextEditingTargetRMarkdownHelper
             @Override
             public void onError(ServerError error)
             {
-               globalDisplay_.showErrorMessage("File Remove Failed",
-                     "Couldn't remove " + oldFile.getPath());
+               globalDisplay_.showErrorMessage(constants_.cleanAndCreateTemplateCaption(),
+                     constants_.cleanAndCreateTemplateMessage(oldFile.getPath()));
             }
          });
    }
@@ -1017,7 +1019,7 @@ public class TextEditingTargetRMarkdownHelper
       final ProgressIndicator progress = new GlobalProgressDelayer(
             globalDisplay_,
             250,
-            "Creating R Markdown Document...").getIndicator();
+            constants_.createDraftFromTemplateProgressMessage()).getIndicator();
 
       server_.createRmdFromTemplate(target,
             template.getTemplatePath(), template.createDir(),
@@ -1039,10 +1041,8 @@ public class TextEditingTargetRMarkdownHelper
                @Override
                public void onError(ServerError error)
                {
-                  progress.onError(
-                        "Couldn't create a template from " +
-                        template.getTemplatePath() + " at " + target + ".\n\n" +
-                        error.getMessage());
+                  progress.onError(constants_.createDraftFromTemplateOnError(template.getTemplatePath(),
+                          target, error.getMessage()));
                }
             });
    }
@@ -1183,9 +1183,7 @@ public class TextEditingTargetRMarkdownHelper
                                         String feature,
                                         String requiredVersion)
    {
-      display.showWarningBar(feature + " requires the " +
-                             "knitr package (version " + requiredVersion +
-                             " or higher)");
+      display.showWarningBar(constants_.showKnitrPreviewWarningBar(feature, requiredVersion));
    }
 
    private void addAdditionalResourceFiles(RmdFrontMatter frontMatter,
@@ -1202,7 +1200,7 @@ public class TextEditingTargetRMarkdownHelper
 
    private boolean useRMarkdownV2(String contents)
    {
-      return !contents.contains("<!-- rmarkdown v1 -->") &&
+      return !contents.contains("<!-- rmarkdown v1 -->") && //$NON-NLS-1$
               session_.getSessionInfo().getRMarkdownPackageAvailable();
    }
 
@@ -1219,4 +1217,5 @@ public class TextEditingTargetRMarkdownHelper
    private FilesServerOperations fileServer_;
 
    private static HandlerRegistration rmdParamsReadyRegistration_ = null;
+   private static final EditorsTextConstants constants_ = GWT.create(EditorsTextConstants.class);
 }

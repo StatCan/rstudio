@@ -52,10 +52,10 @@ public class TriStateCheckboxCell<TKey> implements Cell<Boolean>
    {
       selectionModel_ = selectionModel;
       consumedEvents_ = new HashSet<>();
-      consumedEvents_.add("click");
-      consumedEvents_.add("keydown");
-      consumedEvents_.add("mouseover");
-      consumedEvents_.add("mouseout");
+      consumedEvents_.add("click"); // $NON-NLS-1$
+      consumedEvents_.add("keydown"); // $NON-NLS-1$
+      consumedEvents_.add("mouseover"); // $NON-NLS-1$
+      consumedEvents_.add("mouseout"); // $NON-NLS-1$
    }
 
    @Override
@@ -95,17 +95,17 @@ public class TriStateCheckboxCell<TKey> implements Cell<Boolean>
                               ValueUpdater<Boolean> booleanValueUpdater)
    {
       if (Element.is(event.getEventTarget()) &&
-          Element.as(event.getEventTarget()).getTagName().equalsIgnoreCase("img"))
+          Element.as(event.getEventTarget()).getTagName().equalsIgnoreCase("img")) //$NON-NLS-1$
       {
-         if ("click".equals(event.getType()))
+         if ("click".equals(event.getType())) //$NON-NLS-1$
          {
             booleanValueUpdater.update(value == null ? true : !value);
          }
-         else if ("mouseover".equals(event.getType()))
+         else if ("mouseover".equals(event.getType())) //$NON-NLS-1$
          {
             mouseInCheckbox_ = true;
          }
-         else if ("mouseout".equals(event.getType()))
+         else if ("mouseout".equals(event.getType())) //$NON-NLS-1$
          {
             // WARNING!!!! Sometimes we get mouseover without a corresponding
             // mouseout!! See comment at top of this class!

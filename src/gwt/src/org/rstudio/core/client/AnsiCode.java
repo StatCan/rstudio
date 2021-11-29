@@ -27,13 +27,13 @@ public class AnsiCode
 {
    // ANSI command constants
    public static final String CSI = "\33[";
-   public static final String SGR = "m";
+   public static final String SGR = "m"; //NON-NLS
 
    // Move Cursor Horizontal Absolute
-   public static final String CHA = "G";
+   public static final String CHA = "G"; //NON-NLS
 
    // Erase in Line
-   public static final String EL = "K";
+   public static final String EL = "K"; //NON-NLS
 
    public static final int RESET = 0;
    public static final int RESET_FOREGROUND = 39;
@@ -693,23 +693,23 @@ public class AnsiCode
    public static String prettyPrint(String input)
    {
       // not efficient but only intended for debug/unit testing
-      return input.replace("\u001b", "<ESC>")
-                  .replace("\7", "<BEL>")
-                  .replace("\177", "<DEL>")
-                  .replace("\r", "<CR>")
-                  .replace("\n", "<LF>")
-                  .replace("\f", "<FF>")
-                  .replace("\b", "<BS>")
-                  .replace("\t", "<TAB>");
+      return input.replace("\u001b", "<ESC>") //NON-NLS
+                  .replace("\7", "<BEL>") //NON-NLS
+                  .replace("\177", "<DEL>") //NON-NLS
+                  .replace("\r", "<CR>") //NON-NLS
+                  .replace("\n", "<LF>") //NON-NLS
+                  .replace("\f", "<FF>") //NON-NLS
+                  .replace("\b", "<BS>") //NON-NLS
+                  .replace("\t", "<TAB>"); //NON-NLS
    }
 
    public static String prettyPrintNonCRLF(String input)
    {
       // not efficient but only intended for debug/unit testing
-      return input.replace("\u001b", "<ESC>")
-                  .replace("\7", "<BEL>")
-                  .replace("\177", "<DEL>")
-                  .replace("\b", "<BS>");
+      return input.replace("\u001b", "<ESC>") //NON-NLS
+                  .replace("\7", "<BEL>") //NON-NLS
+                  .replace("\177", "<DEL>") //NON-NLS
+                  .replace("\b", "<BS>"); //NON-NLS
    }
 
 
@@ -719,7 +719,7 @@ public class AnsiCode
 
    // RegEx to match ANSI escape codes copied from https://github.com/chalk/ansi-regex
    public static final String ANSI_REGEX =
-         "[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-PRZcf-nqry=><@]";
+         "[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-PRZcf-nqry=><@]"; // $NON-NLS-1$
 
    // Match ANSI escape sequences
    public static final Pattern ANSI_ESCAPE_PATTERN = Pattern.create(ANSI_REGEX);
@@ -729,7 +729,7 @@ public class AnsiCode
 
    // RegEx to match complete SGR codes (colors, fonts, appearance)
    public static final String SGR_REGEX =
-         "[\u001b\u009b]\\[(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[m]";
+         "[\u001b\u009b]\\[(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[m]"; // $NON-NLS-1$
 
    // Match ANSI SGR escape sequences
    public static final Pattern SGR_ESCAPE_PATTERN = Pattern.create(SGR_REGEX);

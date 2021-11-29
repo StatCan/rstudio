@@ -49,7 +49,7 @@ public class Debug
 
    public static void logWarning(String warning)
    {
-      printStackTrace("WARNING: " + warning);
+      printStackTrace("WARNING: " + warning); // $NON-NLS-1$
    }
 
    public static native void logObject(Object object) /*-{
@@ -77,7 +77,7 @@ public class Debug
       StringBuffer buf = new StringBuffer(label + "\n");
       for (StackTraceElement ste : new Throwable().getStackTrace())
       {
-         buf.append("\tat " + ste + "\n");
+         buf.append("\tat " + ste + "\n"); // $NON-NLS-1$
       }
       log(buf.toString());
    }
@@ -165,7 +165,7 @@ public class Debug
    public static void logStatus(String html)
    {
       Element el = debugPopupElement();
-      html = html.replaceAll("\n", "<br />");
+      html = html.replaceAll("\n", "<br />"); // $NON-NLS-1$
       el.setInnerHTML(html);
    }
 
@@ -179,7 +179,7 @@ public class Debug
       VerticalPanel verticalPanel = new VerticalPanel();
       FlowPanel contentPanel = new FlowPanel();
       contentPanel.getElement().setId("rstudio_debug_output");
-      verticalPanel.add(new HTML("<h3 style='margin: 0;'>RStudio Debug Output</h4><hr />"));
+      verticalPanel.add(new HTML("<h3 style='margin: 0;'>RStudio Debug Output</h4><hr />")); //NON-NLS
       verticalPanel.add(contentPanel);
       popupPanel.setWidget(verticalPanel);
       popupPanel.setAutoHideEnabled(false);

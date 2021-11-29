@@ -14,12 +14,14 @@
  */
 package org.rstudio.studio.client.common.impl;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.MessageDisplay.PromptWithOptionResult;
 import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.widget.Operation;
 import org.rstudio.core.client.widget.ProgressOperationWithInput;
 import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.application.Desktop;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 import org.rstudio.studio.client.common.TextInput;
 
 public class DesktopTextInput implements TextInput
@@ -53,11 +55,11 @@ public class DesktopTextInput implements TextInput
                }
                else
                {
-                  String[] lines = result.split("\\n");
+                  String[] lines = result.split("\\n"); //NON-NLS
                   okOperation.execute(lines[0],
                         RStudioGinjector.INSTANCE
                         .getGlobalDisplay()
-                        .getProgressIndicator("Error"));
+                        .getProgressIndicator(constants_.errorCaption()));
                }
             });
    }
@@ -95,14 +97,15 @@ public class DesktopTextInput implements TextInput
                else
                {
                   PromptWithOptionResult presult = new PromptWithOptionResult();
-                  String[] lines = result.split("\\n");
+                  String[] lines = result.split("\\n"); //NON-NLS
                   presult.input = lines[0];
                   presult.extraOption = "1".equals(lines[1]);
                   okOperation.execute(presult,
                         RStudioGinjector.INSTANCE
                         .getGlobalDisplay()
-                        .getProgressIndicator("Error"));
+                        .getProgressIndicator(constants_.errorCaption()));
                }
             });
    }
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 }

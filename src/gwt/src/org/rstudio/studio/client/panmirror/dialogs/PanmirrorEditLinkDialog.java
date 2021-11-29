@@ -16,6 +16,7 @@
 
 package org.rstudio.studio.client.panmirror.dialogs;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.ElementIds;
 import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.theme.DialogTabLayoutPanel;
@@ -26,6 +27,7 @@ import org.rstudio.core.client.widget.OperationWithInput;
 import org.rstudio.core.client.widget.ThemedButton;
 import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.common.GlobalDisplay;
+import org.rstudio.studio.client.panmirror.PanmirrorConstants;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorAttrProps;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorLinkCapabilities;
 import org.rstudio.studio.client.panmirror.dialogs.model.PanmirrorLinkEditResult;
@@ -46,7 +48,7 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
                                   PanmirrorLinkCapabilities capabilities,
                                   OperationWithInput<PanmirrorLinkEditResult> operation)
    {
-      super("Link", Roles.getDialogRole(), operation, () -> {
+      super(_constants.linkLabel(), Roles.getDialogRole(), operation, () -> {
          // cancel returns null
          operation.execute(null);
       });
@@ -58,10 +60,10 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
 
       if (!StringUtil.isNullOrEmpty(link.href))
       {
-         ThemedButton removeLinkButton = new ThemedButton("Remove Link");
+         ThemedButton removeLinkButton = new ThemedButton(_constants.removeLinkTitle());
          removeLinkButton.addClickHandler((event) -> {
             PanmirrorLinkEditResult result = collectInput();
-            result.action = "remove";
+            result.action = "remove"; //NON-NLS
             validateAndGo(result, new Command()
             {
                @Override
@@ -87,14 +89,14 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
       text_ = PanmirrorDialogsUtil.addTextBox(
          linkTab,
          ElementIds.VISUAL_MD_LINK_TEXT,
-         textLabel_ = new FormLabel("Text:"),
+         textLabel_ = new FormLabel(_constants.textFormLabel()),
          link.text
       );
 
       title_ = PanmirrorDialogsUtil.addTextBox(
          linkTab,
          ElementIds.VISUAL_MD_LINK_TITLE,
-         titleLabel_ = new FormLabel("Title/Tooltip:"),
+         titleLabel_ = new FormLabel(_constants.titleToolTipLabel()),
          link.title
       );
 
@@ -115,10 +117,10 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
          attributesTab.addStyleName(RES.styles().dialog());
          attributesTab.add(editAttr_);
 
-         DialogTabLayoutPanel tabPanel = new DialogTabLayoutPanel("Image");
+         DialogTabLayoutPanel tabPanel = new DialogTabLayoutPanel(_constants.imageLabel());
          tabPanel.addStyleName(RES.styles().linkDialogTabs());
-         tabPanel.add(linkTab, "Link", linkTab.getBasePanelId());
-         tabPanel.add(attributesTab, "Attributes", attributesTab.getBasePanelId());
+         tabPanel.add(linkTab, _constants.linkLabel(), linkTab.getBasePanelId());
+         tabPanel.add(attributesTab, _constants.attributesText(), attributesTab.getBasePanelId());
          tabPanel.selectTab(0);
 
          mainWidget_ = tabPanel;
@@ -146,7 +148,7 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
    protected PanmirrorLinkEditResult collectInput()
    {
       PanmirrorLinkEditResult result = new PanmirrorLinkEditResult();
-      result.action = "edit";
+      result.action = "edit"; //$NON-NLS-1$
       result.link = new PanmirrorLinkProps();
       result.link.type = href_.getType();
       result.link.href = href_.getHRef();
@@ -178,7 +180,7 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
       if (StringUtil.isNullOrEmpty(result.link.href))
       {
          globalDisplay.showErrorMessage(
-            "Error", "You must provide a value for the link target."
+            _constants.errorCaption(), _constants.validateErrorMessage()
          );
          href_.focus();
          return false;
@@ -214,4 +216,5 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
    private final PanmirrorLinkCapabilities capabilities_;
 
    private final PanmirrorEditAttrWidget editAttr_;
+   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
 }

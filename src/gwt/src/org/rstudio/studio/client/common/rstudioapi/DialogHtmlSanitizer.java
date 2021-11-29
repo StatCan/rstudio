@@ -28,7 +28,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 public final class DialogHtmlSanitizer implements HtmlSanitizer {
    private static final Set<String> TAG_ALLOW_LIST = new HashSet<>(
       Arrays.asList(
-         "p", "em", "strong", "b", "i", "a"
+         "p", "em", "strong", "b", "i", "a" //$NON-NLS-1$
       )
    );
 
@@ -68,10 +68,10 @@ public final class DialogHtmlSanitizer implements HtmlSanitizer {
                int tagSpace = segment.indexOf(' ');
                if (tagSpace > 0) {
                   String tagName = segment.substring(tagStart, tagSpace).toLowerCase();
-                  if (tagName == "a") {
+                  if (tagName == "a") { //NON-NLS
                      
                      if (tag.matches("a href ?= ?\"https?://[^\"]+\"")) {
-                        tag = tag + " target=\"_blank\"";
+                        tag = tag + " target=\"_blank\""; //$NON-NLS-1$
                         isValidTag = true;
                      }
                   }

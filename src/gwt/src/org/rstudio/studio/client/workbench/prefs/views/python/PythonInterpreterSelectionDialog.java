@@ -17,6 +17,7 @@ package org.rstudio.studio.client.workbench.prefs.views.python;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.js.JsUtil;
 import org.rstudio.core.client.theme.DialogTabLayoutPanel;
@@ -34,6 +35,7 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.user.client.ui.Widget;
+import org.rstudio.studio.client.workbench.prefs.views.PythonPreferencesPaneConstants;
 
 public class PythonInterpreterSelectionDialog extends ModalDialog<PythonInterpreter>
 {

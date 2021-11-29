@@ -15,11 +15,13 @@
 
 package org.rstudio.core.client.jsonrpc;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.*;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.user.client.Random;
+import org.rstudio.core.client.CoreClientConstants;
 import org.rstudio.core.client.Debug;
 import org.rstudio.core.client.jsonrpc.RequestLogEntry.ResponseType;
 import org.rstudio.studio.client.application.ApplicationCsrfToken;
@@ -72,9 +74,9 @@ public class RpcRequest
       JSONObject request = new JSONObject();
       request.put("method", new JSONString(method_));
       if ( params_ != null )
-         request.put("params", params_);  
+         request.put("params", params_); //$NON-NLS-1$
       if ( kwparams_ != null)
-         request.put("kwparams", kwparams_);
+         request.put("kwparams", kwparams_); //$NON-NLS-1$
       
       // add src window if we have it
       if (sourceWindow_ != null)
@@ -89,30 +91,32 @@ public class RpcRequest
       
       // configure request builder
       RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url_);
-      builder.setHeader("Content-Type", "application/json");
-      builder.setHeader("Accept", "application/json");
+      builder.setHeader("Content-Type", "application/json"); //$NON-NLS-1$
+      builder.setHeader("Accept", "application/json"); //$NON-NLS-1$
       String requestId = Integer.toString(Random.nextInt());
-      builder.setHeader("X-RS-RID", requestId);
+      builder.setHeader("X-RS-RID", requestId); //$NON-NLS-1$
       
       // in server mode, append a CSRF token for request validation
       if (!Desktop.isDesktop())
       {
-         builder.setHeader("X-RS-CSRF-Token", ApplicationCsrfToken.getCsrfToken());
+         builder.setHeader("X-RS-CSRF-Token", ApplicationCsrfToken.getCsrfToken()); //$NON-NLS-1$
       }
 
       // inform the server if we should not refresh auth creds
       if (!refreshCredentials_)
-         builder.setHeader("X-RStudio-Refresh-Auth-Creds", "0");
+         builder.setHeader("X-RStudio-Refresh-Auth-Creds", "0"); //$NON-NLS-1$
       
       // send request
       try
       {
          String requestString = request.toString();
          if (TRACE)
-            Debug.log("Request: " + requestString);
+            Debug.log(constants_.requestDebugLog() + requestString);
 
          requestLogEntry_ = RequestLog.log(requestId,
-                                           redactLog_ ? "[REDACTED]"
+                                           // i18n: I think something similar is used elsewhere - is this shown to user
+                                           //       or an enumerator?
+                                           redactLog_ ? constants_.redactedText()
                                                       : requestString);
 
          request_ = builder.sendRequest(requestString, new RequestCallback() {
@@ -141,7 +145,7 @@ public class RpcRequest
                   {
                      String responseText = response.getText();
                      if (TRACE)
-                        Debug.log("Response: " + responseText);
+                        Debug.log(constants_.responseText() + responseText);
                      requestLogEntry_.logResponse(ResponseType.Normal,
                                                  responseText);
                      rpcResponse = RpcResponse.parseUnsafe(responseText);
@@ -164,19 +168,21 @@ public class RpcRequest
                   // ERROR: Non-200 response from server
                   
                   // default error message
-                  String message = "Status code " + 
+                  // i18n: Concatenation/Message
+                  String message = constants_.onResponseStatusCodeMessage() +
                                    Integer.toString(status) + 
-                                   " returned by " +
-                                   (Desktop.isDesktop() ? "R session" : "RStudio Server") +
-                                   " when executing '" +
+                                   " " + constants_.onResponseReturnedBy() +
+                                   (Desktop.isDesktop() ? constants_.rSessionMessage() : constants_.rStudioServerMessage()) +
+                                   " " + constants_.whenExecutingMessage() +
                                    getMethod() + "'";
                   
                   // override error message for status code 0
                   if (status == 0)
                   {
-                     message = "Unable to establish connection with " +
-                        (Desktop.isDesktop() ? "R session" : "RStudio Server") +
-                        " when executing '" + getMethod() + "'";
+                     // i18n: Concatenation/Message
+                     message = constants_.statusCodeMessage() +
+                        (Desktop.isDesktop() ? constants_.rSessionMessage() : constants_.rStudioServerMessage()) +
+                        " " + constants_.whenExecutingMessage() + getMethod() + "'";
                   }
 
                   requestLogEntry_.logResponse(ResponseType.Unknown,
@@ -214,7 +220,7 @@ public class RpcRequest
       
       if (requestLogEntry_ != null)
       {
-         requestLogEntry_.logResponse(ResponseType.Cancelled, "Cancelled");
+         requestLogEntry_.logResponse(ResponseType.Cancelled, "Cancelled"); //NON-NLS
          requestLogEntry_ = null;
       }
    }
@@ -294,5 +300,5 @@ public class RpcRequest
    final private boolean refreshCredentials_;
    private Request request_ = null;
    private RequestLogEntry requestLogEntry_ = null;
-
+   private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
 }

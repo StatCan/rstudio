@@ -14,6 +14,7 @@
  */
 package org.rstudio.studio.client.workbench.prefs.views;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.event.dom.client.ChangeEvent;
@@ -112,6 +113,8 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
             checkBox.addValueChangeHandler(this);
             checkBoxes_.add(checkBox);
             flowPanel.add(checkBox);
+            // i18n: This looks like an enumerator, but might also be shown to the user?  Find where this is defined
+            //       and handle it accordingly
             if (module == "Presentation")
               checkBox.setVisible(false);
          }
@@ -165,6 +168,7 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
             return false;
 
          CheckBox lastCheckBox = checkBoxes_.get(checkBoxes_.size() - 1);
+         // i18n: See above
          return StringUtil.equals(lastCheckBox.getText(), "Presentation") &&
                                   lastCheckBox.isVisible();
       }
@@ -191,27 +195,28 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
       PaneConfig paneConfig = userPrefs.panes().getGlobalValue().cast();
       additionalColumnCount_ = paneConfig.getAdditionalSourceColumns();
 
-      add(new Label("Choose the layout of the panels in RStudio by selecting from the controls in" +
-         " each panel. Add up to three additional Source Columns to the left side of the layout. " +
-         "When a column is removed, all saved files within the column are closed and any unsaved " +
-         "files are moved to the main Source Pane.",
+      // i18n: Concatenate
+      add(new Label(constants_.paneLayoutText() + " " +
+         constants_.paneLayoutAddText() +
+         constants_.paneLayoutRemoveText() +
+         constants_.paneLayoutMoveText(),
          true));
 
-      Toolbar columnToolbar = new Toolbar("Manage Column Display");
+      Toolbar columnToolbar = new Toolbar(constants_.columnToolbarLabel());
       columnToolbar.setStyleName(res_.styles().newSection());
       columnToolbar.setHeight("20px");
 
+      // i18n: Not sure where these show, but I think they're displayed?
       ToolbarButton addButton = new ToolbarButton(
-         "Add Column",
-         "Add column",
+         constants_.addButtonText(),
+         constants_.addButtonLabel(),
          res_.iconAddSourcePane());
       if (displayColumnCount_ > PaneManager.MAX_COLUMN_COUNT - 1 ||
          !userPrefs.allowSourceColumns().getGlobalValue())
          addButton.setEnabled(false);
 
       ToolbarButton removeButton = new ToolbarButton(
-         "Remove Column",
-         "Remove column",
+         constants_.removeButtonText(), constants_.removeButtonLabel(),
          res_.iconRemoveSourcePane());
       removeButton.setEnabled(additionalColumnCount_ > 0);
 
@@ -269,7 +274,7 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
          boolean success = selectByValue(visiblePanes_[i], origPanes.get(i));
          if (!success)
          {
-            Debug.log("Bad config! Falling back to a reasonable default");
+            Debug.log(constants_.debugLogText());
             leftTop_.setSelectedIndex(0);
             leftBottom_.setSelectedIndex(1);
             rightTop_.setSelectedIndex(2);
@@ -366,8 +371,8 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
       cellWidthValue -= (GRID_CELL_SPACING + GRID_CELL_PADDING);
       columnWidthValue -= (GRID_CELL_SPACING + GRID_CELL_PADDING);
 
-      final String columnWidth = columnWidthValue + "px";
-      final String cellWidth = cellWidthValue + "px";
+      final String columnWidth = columnWidthValue + "px"; //$NON-NLS-1$
+      final String cellWidth = cellWidthValue + "px"; //$NON-NLS-1$
       final String selectWidth = (cellWidthValue - GRID_SELECT_PADDING) + "px";
       leftTop_.setWidth(selectWidth);
       leftBottom_.setWidth(selectWidth);
@@ -381,7 +386,7 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
          grid_.addStyleName(res_.styles().paneLayoutTable());
          grid_.setCellSpacing(GRID_CELL_SPACING);
          grid_.setCellPadding(GRID_CELL_PADDING);
-         Roles.getGridRole().setAriaLabelProperty(grid_.getElement(), "Columns and Panes Layout");
+         Roles.getGridRole().setAriaLabelProperty(grid_.getElement(), constants_.createGridLabel());
 
          // the two rows have a different number of columns
          // because the source columns only use one
@@ -457,7 +462,7 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
 
       ScrollPanel sp = new ScrollPanel();
       sp.add(verticalPanel);
-      Roles.getTextboxRole().setAriaLabelProperty(sp.getElement(), "Additional source column");
+      Roles.getTextboxRole().setAriaLabelProperty(sp.getElement(), constants_.createColumnLabel());
 
       return sp;
    }
@@ -519,6 +524,7 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
          PaneConfig prevConfig = userPrefs_.panes().getGlobalValue().cast();
          boolean consoleLeftOnTop = prevConfig.getConsoleLeftOnTop();
          boolean consoleRightOnTop = prevConfig.getConsoleRightOnTop();
+         // i18n: Think this is enumerator and display text.  See note about Presentation
          final String kConsole = "Console";
          if (panes.get(0).equals(kConsole))
             consoleLeftOnTop = true;
@@ -546,7 +552,7 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
    @Override
    public String getName()
    {
-      return "Pane Layout";
+      return constants_.paneLayoutLabel();
    }
 
    private void updateTabSetPositions()
@@ -568,7 +574,8 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
       String itemText1 = tabSet1ModuleList_.getValue().isEmpty() ?
          "TabSet" : StringUtil.join(tabSet1ModuleList_.getValue(), ", "); 
       String itemText2 = tabSet2ModuleList_.getValue().isEmpty() ?
-         "TabSet" : StringUtil.join(tabSet2ModuleList_.getValue(), ", "); 
+         "TabSet" : StringUtil.join(tabSet2ModuleList_.getValue(), ", ");
+      // i18n: See above
       if (StringUtil.equals(itemText1, "Presentation") && !tabSet1ModuleList_.presentationVisible())
          itemText1 = "TabSet";
 
@@ -616,4 +623,5 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
    private final static int TABLE_WIDTH = 435;
    private final static int GRID_PANE_COUNT = 2;
    private final static int GRID_SELECT_PADDING = 10; // must match CSS file
+   private final PaneLayoutPreferencesPaneConstants constants_ = GWT.create(PaneLayoutPreferencesPaneConstants.class);
 }

@@ -207,7 +207,7 @@ public class ImagePreviewer
       // construct placeholder for image
       final SimplePanel container = new SimplePanel();
       container.addStyleName(RES.styles().container());
-      final Label noImageLabel = new Label("(No image at path " + href + ")");
+      final Label noImageLabel = new Label(constants_.noImageLabel(href));
       
       // resize command (used by various routines that need to respond
       // to width / height change events)
@@ -352,7 +352,7 @@ public class ImagePreviewer
                
                // set new src location (load handler will replace label as needed)
                container.setWidget(new SimplePanel());
-               noImageLabel.setText("(No image at path " + href_ + ")");
+               noImageLabel.setText(constants_.noImageLabel(href_));
                image.getElement().setAttribute("src", imgSrcPathFromHref(
                      sentinel, href_));
                
@@ -520,8 +520,8 @@ public class ImagePreviewer
          absPath = docDir + "/" + absPath;
       }
       
-      return "file_show?path=" + StringUtil.encodeURIComponent(absPath) + 
-            "&id=" + IMAGE_ID++;
+      return "file_show?path=" + StringUtil.encodeURIComponent(absPath) + //$NON-NLS-1$
+            "&id=" + IMAGE_ID++; //$NON-NLS-1$
    }
    
    private static void onPreviewImage(DocDisplay display, 
@@ -579,7 +579,7 @@ public class ImagePreviewer
    private final DocUpdateSentinel sentinel_;
    private final UserPrefs prefs_;
 
-   private static final String LINE_WIDGET_TYPE = "image-preview";
+   private static final String LINE_WIDGET_TYPE = "image-preview"; //$NON-NLS-1$
    private static int IMAGE_ID = 0;
    
    interface Styles extends CssResource
@@ -596,5 +596,5 @@ public class ImagePreviewer
    
    private static final Resources RES = GWT.create(Resources.class);
    static { RES.styles().ensureInjected(); }
-   
+   private static final EditorsTextConstants constants_ = GWT.create(EditorsTextConstants.class);
 }

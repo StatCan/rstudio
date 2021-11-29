@@ -127,7 +127,9 @@ public class NewPackagePage extends NewDirectoryPage
       super.initialize(input);
       
       if (input.getContext().isRcppAvailable())
-         listProjectType_.addChoice("Package w/ Rcpp", "package-rcpp");
+         listProjectType_.addChoice(
+            "Package w/ Rcpp",
+            PACKAGE_RCCP); //$NON-NLS-1$
    }
 
    @Override
@@ -141,7 +143,7 @@ public class NewPackagePage extends NewDirectoryPage
    {
       return NewPackageOptions.create(
             getProjectName(),
-            listProjectType_.getValue() == "package-rcpp",  
+            listProjectType_.getValue() == PACKAGE_RCCP,
             JsUtil.toJsArrayString(listCodeFiles_.getCodeFiles()));
    }
    
@@ -259,7 +261,8 @@ public class NewPackagePage extends NewDirectoryPage
    private SelectWidget listProjectType_;
    private CodeFilesList listCodeFiles_;
    private final NewProjectResources.Styles styles_;
-   
+   private final String PACKAGE_RCCP = "package-rcpp";
+
    // Injected ----
    private FilesServerOperations server_;
 }

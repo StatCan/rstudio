@@ -14,6 +14,7 @@
  */
 package org.rstudio.studio.client.workbench.views.source.editors.text;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.dom.ImageElementEx;
 import org.rstudio.core.client.widget.MiniPopupPanel;
 import org.rstudio.studio.client.workbench.views.source.editors.text.DocDisplay.AnchoredSelection;
@@ -43,7 +44,7 @@ public class ImagePreviewPopup extends MiniPopupPanel
       // defer visibility until image has finished loading
       setVisible(false);
       image_ = new Image(src);
-      error_ = new Label("No image at path " + href);
+      error_ = new Label(constants_.noImageLabelNoParentheses(href));
 
       final Element imgEl = image_.getElement();
       DOM.sinkEvents(imgEl, Event.ONLOAD | Event.ONERROR);
@@ -66,7 +67,7 @@ public class ImagePreviewPopup extends MiniPopupPanel
       });
 
       // allow zoom with double-click
-      setTitle("Double-Click to Zoom");
+      setTitle(constants_.doubleClickToZoom());
       addDomHandler(new DoubleClickHandler()
       {
          @Override
@@ -155,10 +156,13 @@ public class ImagePreviewPopup extends MiniPopupPanel
    private final Image image_;
    private final Label error_;
 
-   private static final String SMALL_MAX_WIDTH  = "100px";
-   private static final String SMALL_MAX_HEIGHT = "100px";
+   private static final String SMALL_MAX_WIDTH  = "100px"; //$NON-NLS-1$
+   private static final String SMALL_MAX_HEIGHT = "100px"; //$NON-NLS-1$
+
 
    private static final String LARGE_MAX_WIDTH  = "400px";
    private static final String LARGE_MAX_HEIGHT = "600px";
+   private static final EditorsTextConstants constants_ = GWT.create(EditorsTextConstants.class);
+
 }
 

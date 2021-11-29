@@ -21,6 +21,7 @@ import org.rstudio.studio.client.common.GlobalDisplay;
 import org.rstudio.studio.client.workbench.views.console.events.SendToConsoleEvent;
 import org.rstudio.studio.client.workbench.views.source.editors.EditingTarget;
 
+import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 
 public class TextEditingTargetJSHelper
@@ -43,6 +44,7 @@ public class TextEditingTargetJSHelper
    {
       TextEditingTargetCommentHeaderHelper previewSource = new TextEditingTargetCommentHeaderHelper(
          docDisplay_.getCode(),
+         // i18n?
          "preview",
          "//"
       );
@@ -50,16 +52,15 @@ public class TextEditingTargetJSHelper
       if (!previewSource.hasCommentHeader())
          return false;
 
-      if (!previewSource.getFunction().equals("r2d3"))
+      if (!previewSource.getFunction().equals("r2d3")) //$NON-NLS-1$
       {
          display_.showErrorMessage(
-                        "Error Previewing JavaScript",
-                        "'" + previewSource.getFunction() + "' is not a known previewer for " +
-                        "JavaScript files. Did you mean 'r2d3'?");
+                        constants_.previewJSErrorCaption(),
+                        constants_.previewJSErrorMessage(previewSource.getFunction()));
       }
       else
       {
-         previewSource.setFunction("r2d3::r2d3");
+         previewSource.setFunction("r2d3::r2d3"); //$NON-NLS-1$
 
          previewSource.buildCommand(
             editingTarget.getPath(),
@@ -80,5 +81,5 @@ public class TextEditingTargetJSHelper
    private GlobalDisplay display_;
    private EventBus eventBus_; 
    private DocDisplay docDisplay_;
-  
+   private static final EditorsTextConstants constants_ = GWT.create(EditorsTextConstants.class);
 }

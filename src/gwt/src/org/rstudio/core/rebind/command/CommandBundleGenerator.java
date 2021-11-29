@@ -63,7 +63,7 @@ public class CommandBundleGenerator extends Generator
       }
       catch (Exception e)
       {
-         logger.log(TreeLogger.Type.ERROR, "Barf", e);
+         logger.log(TreeLogger.Type.ERROR, "Barf", e); //$NON-NLS-1$
          throw new UnableToCompleteException();
       }
    }
@@ -135,6 +135,11 @@ class CommandBundleGeneratorHelper
       return packageName_ + "." + simpleName_;
    }
 
+   private void emitConstants(SourceWriter writer)
+   {
+      writer.println("private CmdConstants " + i18n_constants_name + " = GWT.create(CmdConstants.class);");
+   }
+
    private void emitConstructor(SourceWriter writer, ImageResourceInfo images)
    {
       writer.println("public " + simpleName_ + "() {");
@@ -169,6 +174,8 @@ class CommandBundleGeneratorHelper
       for (JMethod method : menuMethods_)
       {
          String name = method.getName();
+         System.out.println("in emitMenus.getConfigDoc()!"); // DEBUG
+         logger_.log(TreeLogger.ERROR, "(not really an error) in emitMenus.getConfigDoc():"); // DEBUG
          NodeList nodes = getConfigDoc("/commands/menu[@id='" + name + "']");
          if (nodes.getLength() == 0)
          {
@@ -511,8 +518,14 @@ class CommandBundleGeneratorHelper
    {
       try
       {
+//         DEBUG: This resolves to the Commands.cmd.xml file we want (I think that's the only file it could match?
+//         So we're always called from Commands in the same dir as the xml?  Think so.
+//         Why is there a resource created already with this name?  Is that just something it does?  But how would it
+//         know the .cmd.xml part?
+         System.out.println("We are in getConfigDoc()!"); // DEBUG
          String resourceName =
                bundleType_.getQualifiedSourceName().replace('.', '/') + ".cmd.xml";
+         System.out.println("resourceName = " + resourceName); // DEBUG
          Resource resource = context_.getResourcesOracle().getResource(resourceName);
          if (resource == null)
             return null;

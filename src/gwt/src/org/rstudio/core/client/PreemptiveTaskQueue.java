@@ -52,7 +52,7 @@ public class PreemptiveTaskQueue
 
    public void addTask(Task task)
    {
-      log("adding " + task.getLabel());
+      log("adding " + task.getLabel()); // $NON-NLS-1$
       taskQueue_.add(task);
       processTasks();
    }
@@ -61,7 +61,7 @@ public class PreemptiveTaskQueue
    {
       if (processing_)
       {
-         log("already running");
+         log("already running"); // $NON-NLS-1$
          return;
       }
 
@@ -71,11 +71,11 @@ public class PreemptiveTaskQueue
 
    private void processNextTask()
    {
-      log("process next task");
+      log("process next task"); // $NON-NLS-1$
 
       if (taskQueue_.isEmpty())
       {
-         log("done");
+         log("done"); // $NON-NLS-1$
          processing_ = false;
          return;
       }
@@ -87,7 +87,7 @@ public class PreemptiveTaskQueue
          if (task.shouldPreempt())
          {
             nextTask = task;
-            log("executing " + nextTask.getLabel() + " [Priority]");
+            log("executing " + nextTask.getLabel() + " [Priority]"); // $NON-NLS-1$
             break;
          }
       }
@@ -96,7 +96,7 @@ public class PreemptiveTaskQueue
       if (nextTask == null)
       {
          nextTask = taskQueue_.peek();
-         log("executing " + nextTask.getLabel());
+         log("executing " + nextTask.getLabel()); // $NON-NLS-1$
       }
 
       // remove the task
@@ -107,7 +107,7 @@ public class PreemptiveTaskQueue
       try
       {
          nextTask.execute(() -> {
-            log("continuation");
+            log("continuation"); // $NON-NLS-1$
             // defer next task to give event loop a chance
             // to process other user input/actions
             Scheduler.get().scheduleDeferred(() -> {
@@ -120,7 +120,7 @@ public class PreemptiveTaskQueue
       {
          if (safe_)
          {
-            log("exception processing " + nextTask.getLabel());
+            log("exception processing " + nextTask.getLabel()); // $NON-NLS-1$
             Debug.logException(e);
             processNextTask();
          }
@@ -136,7 +136,7 @@ public class PreemptiveTaskQueue
    {
       if (log_)
       {
-         Debug.logToConsole(hashCode() + " " + label + " size=" + taskQueue_.size());
+         Debug.logToConsole(hashCode() + " " + label + " size=" + taskQueue_.size()); // $NON-NLS-1$
       }
    }
 
