@@ -425,8 +425,8 @@ public class TerminalPane extends WorkbenchPane
       // terminals in the cache, something is, to be technical, busted.
       if (terminals_.terminalCount() > 0 || terminalSessionsPanel_.getTerminalCount() > 0)
       {
-         Debug.logWarning("Received terminal list from server when terminals " +
-                          "already loaded. Ignoring.");
+         Debug.logWarning("Received terminal list from server when terminals " + //NON-NLS
+                          "already loaded. Ignoring."); //NON-NLS
          return;
       }
 
@@ -630,7 +630,7 @@ public class TerminalPane extends WorkbenchPane
       if (visibleTerminal == null)
          return;
 
-      String command = "cd ";
+      String command = "cd "; //NON-NLS
 
       if (visibleTerminal.isPosixShell())
          command += StringUtil.escapeBashPath(workbenchContext_.getCurrentWorkingDir().getPath(), false);
@@ -655,7 +655,7 @@ public class TerminalPane extends WorkbenchPane
             TerminalSession session = terminalSessionsPanel_.getTerminalAtIndex(i);
             if (session == null)
             {
-               dump.append("null\n");
+               dump.append("null\n"); //NON-NLS
             }
             else
             {

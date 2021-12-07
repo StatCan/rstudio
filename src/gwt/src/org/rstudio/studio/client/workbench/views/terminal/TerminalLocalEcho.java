@@ -154,8 +154,8 @@ public class TerminalLocalEcho
 
          // diagnostics to help isolate cases where local-echo is 
          // not matching as expected 
-         diagnostic_.log("Received: '" + AnsiCode.prettyPrint(outputToMatch) +
-               "' Had: '" + AnsiCode.prettyPrint(lastOutput.toString()) + "'");
+         diagnostic_.log("Received: '" + AnsiCode.prettyPrint(outputToMatch) + //NON-NLS
+               "' Had: '" + AnsiCode.prettyPrint(lastOutput.toString()) + "'"); //NON-NLS
 
          localEcho_.clear();
          writer_.accept(outputToMatch);

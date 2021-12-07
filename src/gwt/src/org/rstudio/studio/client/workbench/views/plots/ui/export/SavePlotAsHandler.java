@@ -111,7 +111,7 @@ public class SavePlotAsHandler
                               final boolean viewAfterSave,
                               final Operation onCompleted)
    {
-      globalDisplay_.openProgressWindow("_blank",
+      globalDisplay_.openProgressWindow("_blank", //NON-NLS
             constants_.convertingPlotText(),
             new OperationWithInput<WindowEx>() {
          public void execute(final WindowEx window)

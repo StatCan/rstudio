@@ -163,8 +163,8 @@ public class NewConnectionSnippetHost extends Composite
             String connStringField = matcher.getGroupCount() >= 6 ? matcher.getGroup(6) : null;
             
             if (value != null) {
-               value = value.replaceAll("\\$colon\\$", ":");
-               value = value.replaceAll("\\$equal\\$", "=");
+               value = value.replaceAll("\\$colon\\$", ":"); //NON-NLS
+               value = value.replaceAll("\\$equal\\$", "="); //NON-NLS
             }
 
             parts.add(new NewConnectionSnippetParts(order, key, value, connStringField));
@@ -437,8 +437,8 @@ public class NewConnectionSnippetHost extends Composite
             String connStringField = matcher.getGroupCount() >= 6 ? matcher.getGroup(6) : null;
             
             if (value != null) {
-               value = value.replaceAll("\\$colon\\$", ":");
-               value = value.replaceAll("\\$equal\\$", "=");
+               value = value.replaceAll("\\$colon\\$", ":"); //NON-NLS
+               value = value.replaceAll("\\$equal\\$", "="); //NON-NLS
             }
 
             builder.append(input.substring(inputIndex, matcher.getIndex()));

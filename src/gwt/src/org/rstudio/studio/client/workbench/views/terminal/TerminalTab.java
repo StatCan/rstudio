@@ -164,8 +164,8 @@ public class TerminalTab extends DelayLoadWorkbenchTab<TerminalTabPresenter>
       int newSequence = procInfo.getTerminalSequence();
       if (newSequence < 1)
       {
-         Debug.logWarning("Invalid terminal sequence " + newSequence +
-               ", killing unrecognized process");
+         Debug.logWarning("Invalid terminal sequence " + newSequence + //NON-NLS
+               ", killing unrecognized process"); //NON-NLS
          pConsoleProcessFactory_.get().interruptAndReap(procInfo.getHandle());
          return;
       }
@@ -176,8 +176,8 @@ public class TerminalTab extends DelayLoadWorkbenchTab<TerminalTabPresenter>
 
          if (newSequence == currentSequence)
          {
-            Debug.logWarning("Duplicate terminal sequence " + newSequence +
-                  ", killing duplicate process");
+            Debug.logWarning("Duplicate terminal sequence " + newSequence + //NON-NLS
+                  ", killing duplicate process"); //NON-NLS
             pConsoleProcessFactory_.get().interruptAndReap(procInfo.getHandle());
             return;
          }

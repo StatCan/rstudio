@@ -103,22 +103,22 @@ public class StringUtil
 
       String format = "";
 
-      if (DateTimeFormat.getFormat("MMM d").format(date) ==
-          DateTimeFormat.getFormat("MMM d").format(now))
+      if (DateTimeFormat.getFormat("MMM d").format(date) == //NON-NLS
+          DateTimeFormat.getFormat("MMM d").format(now)) //NON-NLS
       {
          // it's today, so just show the time
-         format = "h:mm a";
+         format = "h:mm a"; //NON-NLS
       }
-      else if (DateTimeFormat.getFormat("yyyy").format(date) ==
-               DateTimeFormat.getFormat("yyyy").format(now))
+      else if (DateTimeFormat.getFormat("yyyy").format(date) == //NON-NLS
+               DateTimeFormat.getFormat("yyyy").format(now)) //NON-NLS
       {
          // it's not today, but in the last year, so show the date too
-         format = "MMM d, h:mm a";
+         format = "MMM d, h:mm a"; //NON-NLS
       }
       else
       {
-         // happened last year, probably don't care about the time
-         format = "MMM d, yyyy";
+         // happened last year, probably don't care about the time //NON-NLS
+         format = "MMM d, yyyy"; //NON-NLS
       }
 
       return DateTimeFormat.getFormat(format).format(date);
@@ -250,13 +250,13 @@ public class StringUtil
 
    public static String textToRLiteral(String value)
    {
-      String escaped = value.replaceAll("([\"\\n\\r\\t\\b\\f\\\\])", "\\\\$1");
+      String escaped = value.replaceAll("([\"\\n\\r\\t\\b\\f\\\\])", "\\\\$1"); //NON-NLS
       return '"' + escaped + '"';
    }
 
    private static String toHex(char c)
    {
-      String table = "0123456789ABCDEF";
+      String table = "0123456789ABCDEF"; //NON-NLS
       return table.charAt((c >> 8) & 0xF) + "" + table.charAt(c & 0xF);
    }
 
@@ -270,7 +270,7 @@ public class StringUtil
 
    private static boolean isRKeyword(String identifier)
    {
-      String ALL_KEYWORDS = "|NULL|NA|TRUE|FALSE|T|F|Inf|NaN|NA_integer_|NA_real_|NA_character_|NA_complex_|function|while|repeat|for|if|in|else|next|break|...|";
+      String ALL_KEYWORDS = "|NULL|NA|TRUE|FALSE|T|F|Inf|NaN|NA_integer_|NA_real_|NA_character_|NA_complex_|function|while|repeat|for|if|in|else|next|break|...|"; //NON-NLS
 
       if (identifier.length() > 20 || identifier.contains("|"))
          return false;
@@ -403,17 +403,17 @@ public class StringUtil
     */
    public static String trimBlankLines(String data)
    {
-      data = Pattern.create("^[\\r\\n\\t ]*\\n", "g").replaceAll(data, "");
-      data = Pattern.create("\\r?\\n[\\r\\n\\t ]*$", "g").replaceAll(data, "");
+      data = Pattern.create("^[\\r\\n\\t ]*\\n", "g").replaceAll(data, ""); //NON-NLS
+      data = Pattern.create("\\r?\\n[\\r\\n\\t ]*$", "g").replaceAll(data, ""); //NON-NLS
       return data;
    }
 
    public static String trimLeft(String str)
-   {
+   { //NON-NLS
       return str.replaceFirst("^\\s+", "");
    }
 
-   public static String trimRight(String str)
+   public static String trimRight(String str) //NON-NLS //NON-NLS
    {
       return str.replaceFirst("\\s+$", "");
    }
@@ -1039,7 +1039,7 @@ public class StringUtil
       return true;
    }
 
-   private static final String[] LABELS = {
+   private static final String[] LABELS = { //NON-NLS
          "B",
          "KB",
          "MB",
@@ -1093,7 +1093,7 @@ public class StringUtil
          return string;
 
       if (string.equals(string.toUpperCase()))
-         return string;
+         return string; //NON-NLS //NON-NLS
 
       String result = string.replaceAll("\\s*([A-Z])", " $1");
       return result.substring(0, 1).toUpperCase() +
@@ -1158,7 +1158,7 @@ public class StringUtil
              MathUtil.inRange(val, 1425, 1610);
    }
 
-   public static String makeRandomId(int length)
+   public static String makeRandomId(int length) //NON-NLS
    {
       String alphanum = "0123456789abcdefghijklmnopqrstuvwxyz";
       String id = "";
@@ -1487,7 +1487,7 @@ public class StringUtil
    private static final NumberFormat FORMAT = NumberFormat.getFormat("0.#");
    private static final NumberFormat PRETTY_NUMBER_FORMAT = NumberFormat.getFormat("#,##0.#####");
    private static final DateTimeFormat DATE_FORMAT
-                          = DateTimeFormat.getFormat("MMM d, yyyy, h:mm a");
+                          = DateTimeFormat.getFormat("MMM d, yyyy, h:mm a"); //NON-NLS //NON-NLS
    private static final Pattern RE_INDENT = Pattern.create("^\\s*", "");
    private static final Pattern BASH_RESERVED_CHAR = Pattern.create("[^a-zA-Z0-9,._+@%/-]");
    private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);

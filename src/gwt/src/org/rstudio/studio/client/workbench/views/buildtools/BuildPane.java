@@ -247,7 +247,7 @@ public class BuildPane extends WorkbenchPane
                String defaultFormat = formats.getOutputFormat();
                JsArrayString allFormats = formats.getAllOututFormats();
                MenuItem allMenu = new FormatMenuItem(
-                  "all", constants_.allFormatsLabel(), defaultFormat == "all");
+                  "all", constants_.allFormatsLabel(), defaultFormat == "all"); //NON-NLS //NON-NLS
                addItem(allMenu);
                addSeparator();
                for (int i = 0; i < allFormats.length(); i++)
@@ -320,7 +320,7 @@ public class BuildPane extends WorkbenchPane
             @Override
             public void execute()
             {
-               BuildPane.this.fireEvent(new BuildRenderSubTypeEvent("all"));
+               BuildPane.this.fireEvent(new BuildRenderSubTypeEvent("all")); //NON-NLS
             }  
          });
          addItem(allMenu);
@@ -329,7 +329,7 @@ public class BuildPane extends WorkbenchPane
          for (int i=0; i<formats.length; i++) 
          {
             String format = formats[i];
-            ImageResource img = fileTypeRegistry_.getIconForFilename("output." + format)
+            ImageResource img = fileTypeRegistry_.getIconForFilename("output." + format) //NON-NLS
                   .getImageResource();
             String menuLabel = AppCommand.formatMenuLabel(
                   img, constants_.formatMenuLabel(formatName(format)), null);
@@ -355,7 +355,7 @@ public class BuildPane extends WorkbenchPane
             String format = formats[i];
             if (format.startsWith("html") || format.startsWith("pdf"))
             {
-               ImageResource img = fileTypeRegistry_.getIconForFilename("output." + format)
+               ImageResource img = fileTypeRegistry_.getIconForFilename("output." + format) //NON-NLS
                      .getImageResource();
                String menuLabel = AppCommand.formatMenuLabel(
                      img, constants_.formatMenuLabel(formatName(format)), null);
@@ -496,9 +496,9 @@ public class BuildPane extends WorkbenchPane
          return "HTML";
       else if (format == "pdf")
          return "PDF";
-      else if (format == "docx")
-         return "MS Word";
-      else if (format == "epub")
+      else if (format == "docx") //NON-NLS //NON-NLS
+         return "MS Word"; //NON-NLS
+      else if (format == "epub") //NON-NLS
          return "EPUB";
       else
          return format;

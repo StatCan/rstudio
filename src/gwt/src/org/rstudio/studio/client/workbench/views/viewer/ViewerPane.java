@@ -439,7 +439,7 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
       {
          if (URIUtils.isLocalUrl(url))
          {
-            frame_.getElement().removeAttribute("sandbox");
+            frame_.getElement().removeAttribute("sandbox"); //NON-NLS
          }
          else
          {
@@ -453,15 +453,15 @@ public class ViewerPane extends WorkbenchPane implements ViewerPresenter.Display
           !useRawURL)
       {
          String viewerUrl = URIUtils.addQueryParam(unmodifiedUrl_,
-                                                   "viewer_pane",
+                                                   "viewer_pane", //NON-NLS
                                                    "1");
 
          viewerUrl = URIUtils.addQueryParam(viewerUrl,
-                                            "capabilities",
+                                            "capabilities", //NON-NLS
                                             String.valueOf(1 << Capabilities.OpenFile.ordinal()));
 
          viewerUrl = URIUtils.addQueryParam(viewerUrl,
-                                            "host",
+                                            "host", //NON-NLS
                                             HtmlMessageListener.getOriginDomain());
 
          frame_.setUrl(viewerUrl);

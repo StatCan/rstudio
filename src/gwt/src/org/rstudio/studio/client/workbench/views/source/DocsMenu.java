@@ -80,7 +80,7 @@ public class DocsMenu extends AppMenuBar
 
       if (icons.length == 0)
       {
-         addItem(new DisabledMenuItem("(No documents)"));
+         addItem(new DisabledMenuItem("(No documents)")); //NON-NLS
       }
 
       for (int i = 0; i < icons.length; i++)

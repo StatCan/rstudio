@@ -75,7 +75,7 @@ public class PresentationFrame extends AnchorableFrame
    
    public void clear()
    {
-      getWindow().replaceLocationHref("about:blank");
+      getWindow().replaceLocationHref("about:blank"); //NON-NLS
    }
    
    public void home()

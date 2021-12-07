@@ -201,9 +201,9 @@ public class PresentationDispatcher
       for (String cmd : cmds)
       {         
          cmd = cmd.trim();
-         if (cmd.equals("maximize"))
+         if (cmd.equals("maximize")) //NON-NLS
             commands_.maximizeConsole().execute();
-         else if (cmd.equals("clear"))
+         else if (cmd.equals("clear")) //NON-NLS
             commands_.consoleClear().execute();
          else
             globalDisplay_.showErrorMessage(constants_.unknownConsoleDirectiveCaption(), cmd);

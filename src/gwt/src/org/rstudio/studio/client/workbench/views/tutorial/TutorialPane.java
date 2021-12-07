@@ -169,7 +169,7 @@ public class TutorialPane
       int width = Math.max(800, frame_.getElement().getClientWidth());
       int height = Math.max(800, frame_.getElement().getClientHeight());
 
-      String windowName = "rstudio-tutorial-" + StringUtil.makeRandomId(16);
+      String windowName = "rstudio-tutorial-" + StringUtil.makeRandomId(16); //NON-NLS
 
       NewWindowOptions options = new NewWindowOptions();
       options.setAppendClientId(false);
@@ -233,9 +233,9 @@ public class TutorialPane
       commands_.tutorialStop().setVisible(false);
       commands_.tutorialStop().setEnabled(false);
 
-      String url = "./tutorial/run" +
-            "?package=" + tutorial.getPackageName() +
-            "&name=" + tutorial.getTutorialName();
+      String url = "./tutorial/run" + //NON-NLS
+            "?package=" + tutorial.getPackageName() + //NON-NLS //NON-NLS
+            "&name=" + tutorial.getTutorialName(); //NON-NLS
 
       navigate(url, false);
    }
@@ -284,7 +284,7 @@ public class TutorialPane
    {
       if (URIUtils.isLocalUrl(url))
       {
-         frame_.getElement().removeAttribute("sandbox");
+         frame_.getElement().removeAttribute("sandbox"); //NON-NLS
       }
       else
       {
@@ -309,7 +309,7 @@ public class TutorialPane
       {
          Element el = els.getItem(i);
 
-         String href = el.getPropertyString("href");
+         String href = el.getPropertyString("href"); //NON-NLS
          if (href == null)
             continue;
 
@@ -318,7 +318,7 @@ public class TutorialPane
                !href.startsWith(GWT.getHostPageBaseURL());
 
          if (isNonLocalHref)
-            el.setPropertyString("target", "_blank");
+            el.setPropertyString("target", "_blank"); //NON-NLS //NON-NLS
       }
    }
 
@@ -405,8 +405,8 @@ public class TutorialPane
                {
                   handler_.removeHandler();
 
-                  String version = session_.getSessionInfo().getPackageDependencies().getPackage("learnr").getVersion();
-                  server_.isPackageInstalled("learnr", version, new ServerRequestCallback<Boolean>()
+                  String version = session_.getSessionInfo().getPackageDependencies().getPackage("learnr").getVersion(); //NON-NLS
+                  server_.isPackageInstalled("learnr", version, new ServerRequestCallback<Boolean>() //NON-NLS
                   {
                      @Override
                      public void onResponseReceived(Boolean installed)
@@ -432,7 +432,7 @@ public class TutorialPane
 
             // fire console event installing learnr
             progress_.onProgress(constants_.installingLearnrCaption());
-            SendToConsoleEvent event = new SendToConsoleEvent("install.packages(\"learnr\")", true);
+            SendToConsoleEvent event = new SendToConsoleEvent("install.packages(\"learnr\")", true); //NON-NLS
             events_.fireEvent(event);
          }
       };

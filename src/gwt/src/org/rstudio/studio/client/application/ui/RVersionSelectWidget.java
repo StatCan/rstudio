@@ -48,7 +48,7 @@ public class RVersionSelectWidget extends SelectWidget
             false,
             fillContainer);
       if (includeHelpButton)
-         HelpButton.addHelpButton(this, "multiple_r_versions", constants_.helpOnRVersionsTitle());
+         HelpButton.addHelpButton(this, "multiple_r_versions", constants_.helpOnRVersionsTitle()); //NON-NLS
    }
    
    public void setRVersion(RVersionSpec version)

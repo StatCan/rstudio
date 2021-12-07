@@ -158,7 +158,7 @@ public class InstallPackageDialog extends ModalDialog<PackageInstallRequest>
                                     ")");
       reposCaption_ = new CaptionWithHelp(constants_.installFromCaption(),
                                           constants_.configuringRepositoriesHelpCaption(),
-                                          "configuring_repositories",
+                                          "configuring_repositories", //NON-NLS
                                           packageSourceListBox_);
       reposCaption_.setIncludeVersionInfo(false);
       reposCaption_.setWidth("100%");
@@ -232,7 +232,7 @@ public class InstallPackageDialog extends ModalDialog<PackageInstallRequest>
          }
          
          if (libPath == installContext_.getDefaultLibraryPath())
-            libPath = libPath + " [Default]";
+            libPath = libPath + " [Default]"; //NON-NLS
          
          libraryListBox_.addItem(libPath);
         

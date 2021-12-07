@@ -59,10 +59,10 @@ public class ApplicationEndedPopupPanel extends PopupPanel
 
    public static void showSuicide(String reason)
    {
-      String description = "<p>" + constants_.rFatalErrorMessage();
+      String description = "<p>" + constants_.rFatalErrorMessage(); //NON-NLS
       if (reason.length() > 0)
          description += ": " + reason;
-      description += "</p>" + constants_.sessionTerminatedMessage();
+      description += "</p>" + constants_.sessionTerminatedMessage(); //NON-NLS
       asyncShow(SUICIDE, description, null);
    }
 

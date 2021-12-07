@@ -56,7 +56,7 @@ public class PlotsPanePreviewer implements ExportPlotPreviewer
       if (imageFrame_ == null)
       {
          imageFrame_ = new ImageFrame(constants_.plotPreviewTitle());
-         imageFrame_.setUrl("about:blank");
+         imageFrame_.setUrl("about:blank"); //NON-NLS NON-NLS
          imageFrame_.setSize("100%", "100%");
          imageFrame_.setMarginHeight(0);
          imageFrame_.setMarginWidth(0);

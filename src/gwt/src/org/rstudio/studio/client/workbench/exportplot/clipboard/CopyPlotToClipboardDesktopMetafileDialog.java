@@ -51,13 +51,13 @@ public class CopyPlotToClipboardDesktopMetafileDialog extends CopyPlotToClipboar
       
       copyAsBitmapRadioButton_ = new RadioButton(
                                        constants_.formatName(),
-                                       SafeHtmlUtils.fromString("Bitmap"));
+                                       SafeHtmlUtils.fromString("Bitmap")); //NON-NLS
       copyAsBitmapRadioButton_.setStylePrimaryName(styles.copyFormatBitmap());
       addLeftWidget(copyAsBitmapRadioButton_);
       
       copyAsMetafileRadioButton_ = new RadioButton(
                                        constants_.formatName(),
-                                       SafeHtmlUtils.fromString("Metafile"));
+                                       SafeHtmlUtils.fromString("Metafile")); //NON-NLS
       copyAsMetafileRadioButton_.setStylePrimaryName(styles.copyFormatMetafile());
       addLeftWidget(copyAsMetafileRadioButton_);
       

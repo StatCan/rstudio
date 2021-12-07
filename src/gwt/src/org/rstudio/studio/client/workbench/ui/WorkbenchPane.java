@@ -75,7 +75,7 @@ public abstract class WorkbenchPane extends ToolbarPane
       }
       else
          // i18n: Concatenation/Message.  Is this for devs only?
-         Debug.logWarning("Could not set focus, no focusable element on " + title_ + " pane");
+         Debug.logWarning("Could not set focus, no focusable element on " + title_ + " pane"); //NON-NLS //NON-NLS
    }
 
    @Override

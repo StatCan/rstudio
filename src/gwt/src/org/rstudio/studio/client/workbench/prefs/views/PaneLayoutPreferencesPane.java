@@ -115,7 +115,7 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
             flowPanel.add(checkBox);
             // i18n: This looks like an enumerator, but might also be shown to the user?  Find where this is defined
             //       and handle it accordingly
-            if (module == "Presentation")
+            if (module == "Presentation") //NON-NLS
               checkBox.setVisible(false);
          }
 
@@ -169,7 +169,7 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
 
          CheckBox lastCheckBox = checkBoxes_.get(checkBoxes_.size() - 1);
          // i18n: See above
-         return StringUtil.equals(lastCheckBox.getText(), "Presentation") &&
+         return StringUtil.equals(lastCheckBox.getText(), "Presentation") && //NON-NLS
                                   lastCheckBox.isVisible();
       }
 
@@ -525,7 +525,7 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
          boolean consoleLeftOnTop = prevConfig.getConsoleLeftOnTop();
          boolean consoleRightOnTop = prevConfig.getConsoleRightOnTop();
          // i18n: Think this is enumerator and display text.  See note about Presentation
-         final String kConsole = "Console";
+         final String kConsole = "Console"; //NON-NLS
          if (panes.get(0).equals(kConsole))
             consoleLeftOnTop = true;
          else if (panes.get(1).equals(kConsole))
@@ -576,7 +576,7 @@ public class PaneLayoutPreferencesPane extends PreferencesPane
       String itemText2 = tabSet2ModuleList_.getValue().isEmpty() ?
          "TabSet" : StringUtil.join(tabSet2ModuleList_.getValue(), ", ");
       // i18n: See above
-      if (StringUtil.equals(itemText1, "Presentation") && !tabSet1ModuleList_.presentationVisible())
+      if (StringUtil.equals(itemText1, "Presentation") && !tabSet1ModuleList_.presentationVisible()) //NON-NLS
          itemText1 = "TabSet";
 
       for (ListBox pane : visiblePanes_)

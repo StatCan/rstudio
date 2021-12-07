@@ -29,7 +29,7 @@ import com.google.inject.Inject;
 
 public class QuartoPreferencesPane extends PreferencesPane
 {
-   public static final String NAME = "Quarto";
+   public static final String NAME = "Quarto"; //NON-NLS
    
    @Inject
    public QuartoPreferencesPane(PreferencesDialogResources res, Session session)
@@ -38,12 +38,12 @@ public class QuartoPreferencesPane extends PreferencesPane
       session_ = session;
       PreferencesDialogBaseResources baseRes = PreferencesDialogBaseResources.INSTANCE;
       
-      add(headerLabel("Quarto"));
+      add(headerLabel("Quarto")); //NON-NLS
       
-      add(new Label("This version of RStudio includes a preview of Quarto, a new " + 
-            "scientific and technical publishing system. ", true));
+      add(new Label("This version of RStudio includes a preview of Quarto, a new " +  //NON-NLS
+            "scientific and technical publishing system. ", true)); //NON-NLS
       
-      chkEnableQuarto_ = new CheckBox("Enable Quarto preview");
+      chkEnableQuarto_ = new CheckBox("Enable Quarto preview"); //NON-NLS
       add(spacedBefore(chkEnableQuarto_));
       lblQuartoVersion_ = new Label("", true);
       lblQuartoVersion_.setVisible(false);
@@ -55,7 +55,7 @@ public class QuartoPreferencesPane extends PreferencesPane
 
       lblQuartoPath_.setVisible(false);
       
-      HelpLink helpLink = new HelpLink("Learn more about Quarto", "https://quarto.org", false, false);
+      HelpLink helpLink = new HelpLink("Learn more about Quarto", "https://quarto.org", false, false); //NON-NLS
       nudgeRight(helpLink);
       helpLink.addStyleName(res_.styles().newSection());
       add(helpLink);
@@ -85,7 +85,7 @@ public class QuartoPreferencesPane extends PreferencesPane
      
       // let user know what version of quarto we are using (only 
       // show version info for non-embedded versions)
-      lblQuartoVersion_.setText("Quarto v" + config.version);
+      lblQuartoVersion_.setText("Quarto v" + config.version); //NON-NLS
       lblQuartoVersion_.setVisible(chkEnableQuarto_.getValue() && 
             !config.user_installed.isEmpty());
       lblQuartoPath_.setText(config.user_installed);

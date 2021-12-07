@@ -230,8 +230,8 @@ public class BuildPresenter extends BasePresenter
          CodeNavigationTarget target = event.getSelectedItem();
          FileSystemItem fsi = FileSystemItem.createFile(target.getFile());
 
-         if (view_.errorsBuildType() == "test-file" ||
-             view_.errorsBuildType() == "test-shiny-file")
+         if (view_.errorsBuildType() == "test-file" || //NON-NLS
+             view_.errorsBuildType() == "test-shiny-file") //NON-NLS
          {
             // for test files, we want to avoid throwing errors when the file is missing
             fileServer_.stat(target.getFile(), new ServerRequestCallback<FileSystemItem>()
@@ -315,14 +315,14 @@ public class BuildPresenter extends BasePresenter
       {
          withDevtoolsLoadAllPath(loadAllPath ->
          {
-            sendLoadCommandToConsole("devtools::load_all(\"" + loadAllPath + "\")");
+            sendLoadCommandToConsole("devtools::load_all(\"" + loadAllPath + "\")"); //NON-NLS
          });
-      }, () -> {}, "Build");
+      }, () -> {}, "Build"); //NON-NLS
    }
    
    void onServeQuartoSite()
    {
-      quartoServe("default", false);
+      quartoServe("default", false); //NON-NLS
    }
 
    void onBuildSourcePackage()
@@ -397,7 +397,7 @@ public class BuildPresenter extends BasePresenter
             if (shouldRenderAndServeBook(subType))
                quartoServe(subType, true);
             else
-               executeBuild("build-all", subType);
+               executeBuild("build-all", subType); //NON-NLS
          }
          else if (isQuartoSubProject(config) || !QuartoHelper.isQuartoWebsiteConfig(config))
          {
@@ -405,7 +405,7 @@ public class BuildPresenter extends BasePresenter
          }
          else 
          {
-            quartoServe("default", true);
+            quartoServe("default", true); //NON-NLS
          }
       }
       else
@@ -417,7 +417,7 @@ public class BuildPresenter extends BasePresenter
 
    private void executeBuild(final String type, final String subType)
    {
-      if ((type != "build-all" && type != "rebuild-all") ||
+      if ((type != "build-all" && type != "rebuild-all") || //NON-NLS //NON-NLS
             session_.getSessionInfo().getBuildToolsType() == SessionInfo.BUILD_TOOLS_QUARTO)
       {
          executeBuildNoBusyCheck(type, subType);
@@ -459,7 +459,7 @@ public class BuildPresenter extends BasePresenter
             }
 
          });
-      }, () -> {}, "Build");
+      }, () -> {}, "Build"); //NON-NLS
    }
 
    void onStopBuild()
@@ -524,11 +524,11 @@ public class BuildPresenter extends BasePresenter
       }
       
       
-      if (bookType.startsWith("html") || bookType.startsWith("pdf"))
+      if (bookType.startsWith("html") || bookType.startsWith("pdf")) //NON-NLS
       {
          return true;
       }
-      else if (bookType == "all")
+      else if (bookType == "all") //NON-NLS
       {
          for (int i=0; i<config.project_formats.length; i++) 
          {
@@ -550,8 +550,8 @@ public class BuildPresenter extends BasePresenter
    private void quartoServe(String format, boolean render)
    {
       source_.withSaveFilesBeforeCommand(() -> {
-         server_.quartoServe(format, render, new SimpleRequestCallback<Void>(constants_.quartoServeError()));
-      }, () -> {}, "Quarto");
+         server_.quartoServe(format, render, new SimpleRequestCallback<Void>(constants_.quartoServeError())); //NON-NLS
+      }, () -> {}, "Quarto"); //NON-NLS
    }
 
    private String devtoolsLoadAllPath_ = null;

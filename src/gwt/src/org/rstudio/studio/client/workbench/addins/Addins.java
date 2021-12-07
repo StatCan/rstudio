@@ -68,7 +68,7 @@ public class Addins
                addin.getPackage(),
                addin.getTitle(),
                addin.getDescription(),
-               addin.isInteractive() ? "true" : "false",
+               addin.isInteractive() ? "true" : "false", //NON-NLS //NON-NLS
                addin.getBinding(),
                "" + addin.getOrdinal());
       }
@@ -87,7 +87,7 @@ public class Addins
                splat[1],
                splat[2],
                splat[3],
-               splat[4] == "false" ? false : true,
+               splat[4] == "false" ? false : true, //NON-NLS
                splat[5],
                StringUtil.parseInt(splat[6], 0));
       }

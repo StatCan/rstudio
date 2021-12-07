@@ -35,25 +35,25 @@ public class TerminalShellInfo extends JavaScriptObject
       switch (shell)
       {
       case UserPrefs.WINDOWS_TERMINAL_SHELL_DEFAULT:
-         return "Default";
+         return "Default"; //NON-NLS
       case UserPrefs.WINDOWS_TERMINAL_SHELL_WIN_GIT_BASH:
-         return "Git Bash";
+         return "Git Bash"; //NON-NLS
       case UserPrefs.WINDOWS_TERMINAL_SHELL_WIN_WSL_BASH:
          return "WSL";
       case UserPrefs.WINDOWS_TERMINAL_SHELL_WIN_CMD:
-         return "Command Prompt";
+         return "Command Prompt"; //NON-NLS
       case UserPrefs.WINDOWS_TERMINAL_SHELL_WIN_PS:
          return "PowerShell";
       case UserPrefs.WINDOWS_TERMINAL_SHELL_PS_CORE:
-         return "PowerShell Core";
+         return "PowerShell Core"; //NON-NLS
       case UserPrefs.POSIX_TERMINAL_SHELL_BASH:
-         return "Bash";
+         return "Bash"; //NON-NLS
       case UserPrefs.POSIX_TERMINAL_SHELL_CUSTOM:
-         return "Custom";
-      case UserPrefs.POSIX_TERMINAL_SHELL_NONE:
+         return "Custom"; //NON-NLS
+      case UserPrefs.POSIX_TERMINAL_SHELL_NONE: //NON-NLS
          return "User command";
-      case UserPrefs.POSIX_TERMINAL_SHELL_ZSH:
-         return "Zsh";
+      case UserPrefs.POSIX_TERMINAL_SHELL_ZSH: //NON-NLS
+         return "Zsh"; //NON-NLS
       default:
          return "Unknown";
       }

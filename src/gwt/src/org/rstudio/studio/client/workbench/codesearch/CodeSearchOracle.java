@@ -102,7 +102,7 @@ public class CodeSearchOracle extends SuggestOracle
          
          // More penalty for 'uninteresting' extensions (e.g. .Rd)
          String extension = StringUtil.getExtension(suggestionLower);
-         if (extension.toLowerCase() == "rd")
+         if (extension.toLowerCase() == "rd") //NON-NLS
             penalty += 6;
          
          totalPenalty += penalty;

@@ -347,7 +347,7 @@ public class ViewerPresenter extends BasePresenter
       });
 
       String displayUrl = display_.getUrl().replaceAll(
-         "capabilities=[^&]+",
+         "capabilities=[^&]+", //NON-NLS
          "no");
 
       globalDisplay_.openMinimalWindow(displayUrl,
@@ -618,7 +618,7 @@ public class ViewerPresenter extends BasePresenter
 
       if (quartoNav != null)
       {
-         boolean pdf = (viewerUrl != null) && viewerUrl.endsWith("/web/viewer.html");
+         boolean pdf = (viewerUrl != null) && viewerUrl.endsWith("/web/viewer.html"); //NON-NLS
          boolean website = quartoNav.isWebsite();
          boolean webnav = website && !pdf;
          commands_.viewerClearAll().setVisible(false);

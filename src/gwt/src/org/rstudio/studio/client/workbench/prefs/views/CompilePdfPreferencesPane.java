@@ -106,7 +106,7 @@ public class CompilePdfPreferencesPane extends PreferencesPane
             true,
             false);
 
-         HelpButton.addHelpButton(this, "pdf_preview", constants_.pdfPreviewHelpButtonTitle());
+         HelpButton.addHelpButton(this, "pdf_preview", constants_.pdfPreviewHelpButtonTitle()); //NON-NLS
       }
    }
 

@@ -106,7 +106,7 @@ public class WorkbenchListManager
       if (context == null)
       {
          // i18n: Concatenation/Message.  Is this for developers only?
-         Debug.logWarning("Unknown workbench list: " + name);
+         Debug.logWarning("Unknown workbench list: " + name); //NON-NLS
          return;
       }
       context.setList(list);

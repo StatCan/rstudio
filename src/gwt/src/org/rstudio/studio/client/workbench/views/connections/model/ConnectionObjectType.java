@@ -40,6 +40,6 @@ public class ConnectionObjectType extends JavaScriptObject
    public final boolean isDataType()
    {
       return StringUtil.isNullOrEmpty(getContains()) ||
-             getContains() == "data";
+             getContains() == "data"; //NON-NLS
    }
 }

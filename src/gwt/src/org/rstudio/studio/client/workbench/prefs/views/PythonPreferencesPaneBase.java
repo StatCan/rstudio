@@ -73,7 +73,7 @@ public abstract class PythonPreferencesPaneBase<T> extends PreferencesDialogPane
               null,
               placeholderText,
               constants_.tbPythonActionText(),
-              new HelpButton("using_python", constants_.helpButtonLabel()),
+              new HelpButton("using_python", constants_.helpButtonLabel()), //NON-NLS
               ElementIds.TextBoxButtonId.PYTHON_PATH,
               true,
               true,
@@ -271,19 +271,19 @@ public abstract class PythonPreferencesPaneBase<T> extends PreferencesDialogPane
          
          if (type == null)
          {
-            type = "[Unknown]";
+            type = "[Unknown]"; //NON-NLS
          }
-         else if (type == "virtualenv")
+         else if (type == "virtualenv") //NON-NLS
          {
-            type = "Virtual Environment";
-         }
-         else if (type == "conda")
-         {
-            type = "Conda Environment";
+            type = "Virtual Environment"; //NON-NLS
+         } //NON-NLS
+         else if (type == "conda") //NON-NLS
+         { //NON-NLS
+            type = "Conda Environment"; //NON-NLS
          }
          else if (type == "system")
          {
-            type = "System Interpreter";
+            type = "System Interpreter"; //NON-NLS
          }
          
          ui.getPath().setText("[" + type + "]");

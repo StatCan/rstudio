@@ -123,7 +123,7 @@ public class EditSnippetsDialog extends ModalDialogBase implements TextDisplay
             updateEditor(snippetTypes_.getSelectedItem());
          }
       });
-      snippetTypes_.addItem(new EditableSnippets("R", FileTypeRegistry.R));
+      snippetTypes_.addItem(new EditableSnippets("R", FileTypeRegistry.R)); //NON-NLS
       snippetTypes_.addItem(new EditableSnippets(FileTypeRegistry.CPP));
       snippetTypes_.addItem(new EditableSnippets(FileTypeRegistry.MARKDOWN));
       snippetTypes_.addItem(new EditableSnippets(FileTypeRegistry.TEX));

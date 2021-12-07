@@ -140,7 +140,7 @@ public class BrowseAddinsDialog extends ModalDialog<Command>
          @Override
          public void onClick(ClickEvent event)
          {
-            ModifyKeyboardShortcutsWidget widget = new ModifyKeyboardShortcutsWidget("addin");
+            ModifyKeyboardShortcutsWidget widget = new ModifyKeyboardShortcutsWidget("addin"); //NON-NLS NON-NLS
             widget.showModal();
          }
       }));
@@ -272,7 +272,7 @@ public class BrowseAddinsDialog extends ModalDialog<Command>
    
    private void filter(String query)
    {
-      final String[] splat = query.toLowerCase().split("\\s+");
+      final String[] splat = query.toLowerCase().split("\\s+"); //NON-NLS NON-NLS
       List<RAddin> data = ListUtil.filter(originalData_, new FilterPredicate<RAddin>()
       {
          @Override

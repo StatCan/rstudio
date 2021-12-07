@@ -429,7 +429,7 @@ public class TerminalSessionSocket
 
    // RegEx to match common password prompts
    // i18n: Does this need i18n?
-   private static final String PASSWORD_REGEX = "(?:password:)|(?:passphrase:)";
+   private static final String PASSWORD_REGEX = "(?:password:)|(?:passphrase:)"; //NON-NLS
 
    public static final Pattern PASSWORD_PATTERN = Pattern.create(PASSWORD_REGEX, "im"); //$NON-NLS-1$
 

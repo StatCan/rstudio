@@ -371,13 +371,13 @@ public class SavePlotAsPdfDialog extends ModalDialogBase
          ExportPlotResources.Styles styles = 
                                        ExportPlotResources.INSTANCE.styles();
          
-         paperSizes_.add(new PaperSize("US Letter", 8.5, 11));
-         paperSizes_.add(new PaperSize("US Legal", 8.5, 14));
-         paperSizes_.add(new PaperSize("A4", 8.27, 11.69));
-         paperSizes_.add(new PaperSize("A5", 5.83, 8.27));
-         paperSizes_.add(new PaperSize("A6", 4.13, 5.83));
-         paperSizes_.add(new PaperSize("4 x 6 in.", 4, 6));
-         paperSizes_.add(new PaperSize("5 x 7 in.", 5, 7));
+         paperSizes_.add(new PaperSize("US Letter", 8.5, 11)); //NON-NLS
+         paperSizes_.add(new PaperSize("US Legal", 8.5, 14)); //NON-NLS
+         paperSizes_.add(new PaperSize("A4", 8.27, 11.69)); //NON-NLS
+         paperSizes_.add(new PaperSize("A5", 5.83, 8.27)); //NON-NLS
+         paperSizes_.add(new PaperSize("A6", 4.13, 5.83)); //NON-NLS
+         paperSizes_.add(new PaperSize("4 x 6 in.", 4, 6)); //NON-NLS
+         paperSizes_.add(new PaperSize("5 x 7 in.", 5, 7)); //NON-NLS //NON-NLS
          paperSizes_.add(new PaperSize("6 x 8 in.", 6, 8));
            
          FieldSetWrapperPanel<HorizontalPanel> panel = new FieldSetWrapperPanel<>(

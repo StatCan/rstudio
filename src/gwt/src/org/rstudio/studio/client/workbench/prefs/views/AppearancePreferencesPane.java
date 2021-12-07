@@ -84,14 +84,14 @@ public class AppearancePreferencesPane extends PreferencesPane
       relaunchRequired_ = false;
 
       // dark-grey theme and classic themes no longer exist; map them to defaults
-      if (StringUtil.equals(userPrefs_.globalTheme().getValue(), "dark-grey") ||
+      if (StringUtil.equals(userPrefs_.globalTheme().getValue(), "dark-grey") || //NON-NLS
           StringUtil.equals(userPrefs_.globalTheme().getValue(), "classic")) //$NON-NLS-1$
         userPrefs_.globalTheme().setGlobalValue(UserPrefs.GLOBAL_THEME_DEFAULT);
 
       final String originalTheme = userPrefs_.globalTheme().getValue();
 
       flatTheme_ = new SelectWidget(constants_.appearanceRStudioThemeLabel(),
-                                new String[]{"Modern", "Sky"},
+                                new String[]{"Modern", "Sky"}, //NON-NLS //NON-NLS
                                 new String[]{
                                       UserPrefs.GLOBAL_THEME_DEFAULT,
                                       UserPrefs.GLOBAL_THEME_ALTERNATE

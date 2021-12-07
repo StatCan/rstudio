@@ -195,7 +195,7 @@ public class PublishingPreferencesPane extends PreferencesPane
             userState_.enableRsconnectPublishUi());
       final HorizontalPanel rsconnectPanel = HelpButton.checkBoxWithHelp(
          chkEnableRSConnect,
-         new HelpButton("rstudio_connect", constants_.checkBoxWithHelpTitle()));
+         new HelpButton("rstudio_connect", constants_.checkBoxWithHelpTitle())); //NON-NLS
       lessSpaced(rsconnectPanel);
 
       add(headerLabel(constants_.settingsHeaderLabel()));

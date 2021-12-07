@@ -193,7 +193,7 @@ public class Presentation2 extends BasePresenter
    @Handler
    void onPresentation2Print()
    {
-      globalDisplay_.openWindow(activeUrl_ + "?print-pdf");
+      globalDisplay_.openWindow(activeUrl_ + "?print-pdf"); //NON-NLS
    }
    
    @Handler
@@ -228,7 +228,7 @@ public class Presentation2 extends BasePresenter
    
    private String asApplicationUrl(String url)
    {
-      if (!url.startsWith("http"))
+      if (!url.startsWith("http")) //NON-NLS
          url = server_.getApplicationURL(url);
       return url;
    }

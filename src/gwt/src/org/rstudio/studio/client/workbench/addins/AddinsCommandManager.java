@@ -169,7 +169,7 @@ public class AddinsCommandManager
    }
 
    private final ConfigFileBacked<EditorKeyBindings> bindings_;
-   private static final String KEYBINDINGS_PATH = "keybindings/addins.json";
+   private static final String KEYBINDINGS_PATH = "keybindings/addins.json"; //NON-NLS
 
 
    // Injected ----

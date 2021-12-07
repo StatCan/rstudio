@@ -164,7 +164,7 @@ public class PresentationPane extends WorkbenchPane implements Presentation.Disp
    protected Widget createMainWidget()
    {  
       frame_ = new PresentationFrame(false);
-      frame_.setUrl("about:blank");
+      frame_.setUrl("about:blank"); //NON-NLS
       frame_.setSize("100%", "100%");
       return new AutoGlassPanel(frame_);
    }
@@ -219,8 +219,8 @@ public class PresentationPane extends WorkbenchPane implements Presentation.Disp
    public boolean hasSlides()
    {
       String href = frame_.getWindow().getLocationHref();
-      return !"about:blank".equals(href) &&
-             !"javascript:void(0)".equals(href);
+      return !"about:blank".equals(href) && //NON-NLS
+             !"javascript:void(0)".equals(href); //NON-NLS
    }
    
    @Override

@@ -220,7 +220,7 @@ public class Presentation extends BasePresenter
       // show the zoomed version of the presentation. after it closes
       // restore the inline version
       view_.zoom(session_.getSessionInfo().getPresentationName(),
-                 buildPresentationUrl("zoom"), //$NON-NLS-1$
+                 buildPresentationUrl("zoom"),  //NON-NLS NON-NLS
                  new Command() {
          @Override
          public void execute()
@@ -247,7 +247,7 @@ public class Presentation extends BasePresenter
       else
       {
          globalDisplay_.openWindow(
-                           server_.getApplicationURL("presentation/view")); //$NON-NLS-1$
+                           server_.getApplicationURL("presentation/view")); //NON-NLS NON-NLS
       }
    }
    
@@ -265,7 +265,7 @@ public class Presentation extends BasePresenter
       }
             
       fileDialogs_.saveFile(
-         "Save Presentation As", 
+          constants_.savePresentationAsCaption(),
           fileSystemContext_, 
           saveAsStandaloneDefaultPath_, 
           ".html",
@@ -282,7 +282,7 @@ public class Presentation extends BasePresenter
                   return;
                }
                
-               indicator.onProgress("Saving Presentation...");
+               indicator.onProgress(constants_.savingPresentationProgressMessage());
    
                server_.createStandalonePresentation(
                   targetFile.getPath(), 
@@ -316,19 +316,15 @@ public class Presentation extends BasePresenter
    {
       globalDisplay_.showYesNoMessage(
             MessageDialog.INFO, 
-            "Clear Knitr Cache",
-            // i18n: Concatenate
-            "Clearing the Knitr cache will discard previously cached " +
-            "output and re-run all of the R code chunks within the " +
-            "presentation.\n\n" +
-            "Are you sure you want to clear the cache now?",
+            constants_.clearKnitrCacheCaption(),
+            constants_.clearKnitrCacheMessage(),
             false,
             new ProgressOperation() {
 
                @Override
                public void execute(final ProgressIndicator indicator)
                {
-                  indicator.onProgress("Clearing Knitr Cache...");
+                  indicator.onProgress(constants_.clearingKnitrCaption());
                   server_.clearPresentationCache(
                         new ServerRequestCallback<Void>() {
                            @Override
@@ -343,7 +339,7 @@ public class Presentation extends BasePresenter
                            {
                               indicator.onCompleted();
                               globalDisplay_.showErrorMessage(
-                                                "Error Clearing Cache",
+                                                constants_.errorClearingCache(),
                                                  getErrorMessage(error));
                            }
                         });
@@ -399,7 +395,7 @@ public class Presentation extends BasePresenter
       final ProgressIndicator progress = new GlobalProgressDelayer(
             globalDisplay_,
             0,
-            "Closing Presentation...").getIndicator();
+            constants_.closingPresentationProgressMessage()).getIndicator();
       
       server_.closePresentationPane(new ServerRequestCallback<Void>(){
          @Override
@@ -474,7 +470,7 @@ public class Presentation extends BasePresenter
    
    private String buildPresentationUrl(String extraPath)
    {
-      String url = server_.getApplicationURL("presentation/"); //$NON-NLS-1$
+      String url = server_.getApplicationURL("presentation/"); //NON-NLS NON-NLS
       if (extraPath != null)
          url = url + extraPath;
       url = url + "#/" + currentState_.getSlideIndex();

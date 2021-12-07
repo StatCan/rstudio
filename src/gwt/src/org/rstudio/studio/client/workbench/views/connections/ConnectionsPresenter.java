@@ -377,15 +377,15 @@ public class ConnectionsPresenter extends BasePresenter
             type = NewDocumentWithCodeEvent.R_NOTEBOOK; 
             int codeLength = code.split("\n").length;
             code = "---\n" +
-                   "title: \"R Notebook\"\n" +
-                   "output: html_notebook\n" +
+                   "title: \"R Notebook\"\n" + //NON-NLS
+                   "output: html_notebook\n" + //NON-NLS
                    "---\n" +
                    "\n" +
-                   "```{r setup, include=FALSE}\n" +
+                   "```{r setup, include=FALSE}\n" + //NON-NLS
                    code + "\n" +
                    "```\n" +
                    "\n" +
-                   "```{r}\n" +
+                   "```{r}\n" + //NON-NLS
                    "\n" +
                    "```\n";
             cursorPosition = SourcePosition.create(9 + codeLength, 0);      
@@ -579,7 +579,7 @@ public class ConnectionsPresenter extends BasePresenter
    private List<Connection> filteredConnections()
    {
       String query = display_.getSearchFilter();
-      final String[] splat = query.toLowerCase().split("\\s+");
+      final String[] splat = query.toLowerCase().split("\\s+"); //NON-NLS
       return ListUtil.filter(allConnections_, 
                                    new FilterPredicate<Connection>()
       {
@@ -609,7 +609,7 @@ public class ConnectionsPresenter extends BasePresenter
    @SuppressWarnings("unused") private final ApplicationInterrupt applicationInterrupt_;
    
    // client state
-   public static final String MODULE_CONNECTIONS = "connections-pane";
+   public static final String MODULE_CONNECTIONS = "connections-pane"; //NON-NLS
    private static final String KEY_EXPLORED_CONNECTION = "exploredConnections";
    private Connection exploredConnection_;
    private Connection lastExploredConnection_;

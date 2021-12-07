@@ -181,7 +181,7 @@ public class Presentation2Pane extends WorkbenchPane implements Presentation2.Di
       if (Desktop.hasDesktopFrame())
       {
          if (URIUtils.isLocalUrl(url))
-            frame_.getElement().removeAttribute("sandbox");
+            frame_.getElement().removeAttribute("sandbox"); //NON-NLS
          else
             frame_.getElement().setAttribute("sandbox", "allow-scripts");
       }
@@ -229,7 +229,7 @@ public class Presentation2Pane extends WorkbenchPane implements Presentation2.Di
       // navigate to initial slide
       RevealSlide intialSlide = activeSlides_.get(slideIndex);
       if (intialSlide != null)
-         postRevealMessage("slide", intialSlide);   
+         postRevealMessage("slide", intialSlide);    //NON-NLS
       
       // populate the menu
       slidesMenu_.clearItems();
@@ -249,7 +249,7 @@ public class Presentation2Pane extends WorkbenchPane implements Presentation2.Di
             @Override
             public void execute()
             {
-               postRevealMessage("slide", slide);
+               postRevealMessage("slide", slide); //NON-NLS
             }
          })); 
       }
@@ -257,7 +257,7 @@ public class Presentation2Pane extends WorkbenchPane implements Presentation2.Di
       setSecondaryToolbarVisible(true);
 
       // signal reveal that we are ready for more events
-      postRevealMessage("ready");
+      postRevealMessage("ready"); //NON-NLS
    }
 
    
@@ -270,32 +270,32 @@ public class Presentation2Pane extends WorkbenchPane implements Presentation2.Di
       origin_ = null;
       publishButton_.setContentType(RSConnect.CONTENT_TYPE_NONE);
       setSecondaryToolbarVisible(false);
-      frame_.setUrl("about:blank");
+      frame_.setUrl("about:blank"); //NON-NLS
    }
       
    @Override
    public void home()
    {
-      postRevealMessage("home");
+      postRevealMessage("home"); //NON-NLS
    }
 
    @Override
-   public void next()
+   public void next() //NON-NLS
    {
-      postRevealMessage("next");
+      postRevealMessage("next"); //NON-NLS NON-NLS
    }
 
 
    @Override
    public void prev()
    {
-      postRevealMessage("prev");
-   }
+      postRevealMessage("prev"); //NON-NLS
+   } //NON-NLS
 
    @Override
    public void refresh()
    {
-      postRevealMessage("refresh");
+      postRevealMessage("refresh"); //NON-NLS NON-NLS
    }
 
    
@@ -319,8 +319,8 @@ public class Presentation2Pane extends WorkbenchPane implements Presentation2.Di
    
    private String slideTitle(String title)
    {
-      if (StringUtil.isNullOrEmpty(title))
-         title = "(Untitled)";
+      if (StringUtil.isNullOrEmpty(title)) //NON-NLS
+         title = "(Untitled)"; //NON-NLS NON-NLS
       return title;
    }
    
@@ -384,7 +384,7 @@ public class Presentation2Pane extends WorkbenchPane implements Presentation2.Di
       if (activeUrl_ == null || !activeUrl_.startsWith(origin) || source == null || origin== null)
          return;
         
-      final String kRevealMessagePrefix = "reveal-";
+      final String kRevealMessagePrefix = "reveal-"; //NON-NLS
       if (message.getMessage() != null &&
           message.getMessage().startsWith(kRevealMessagePrefix))
       {
@@ -392,20 +392,20 @@ public class Presentation2Pane extends WorkbenchPane implements Presentation2.Di
          source_ = source;
          origin_ = origin;
          
-         String type = message.getMessage().replaceFirst(kRevealMessagePrefix, "");
-         if (type == "init")
+         String type = message.getMessage().replaceFirst(kRevealMessagePrefix, ""); //NON-NLS
+         if (type == "init") //NON-NLS NON-NLS
          {
-            handlerManager_.fireEvent(new PresentationInitEvent(message.getData().cast()));
+            handlerManager_.fireEvent(new PresentationInitEvent(message.getData().cast())); //NON-NLS
          }
-         else if (type == "slidechange")
+         else if (type == "slidechange") //NON-NLS
          {
             PresentationSlideChangeEvent.Data data = message.getData().cast();
             int slideIndex = slideChanged(data.getSlide());
             handlerManager_.fireEvent(new PresentationSlideChangeEvent(
-              PresentationSlideChangeEvent.Data.withSlideIndex(data,  slideIndex)
+              PresentationSlideChangeEvent.Data.withSlideIndex(data,  slideIndex) //NON-NLS
             ));
-         }  
-         else if (type == "hashchange")
+         }   //NON-NLS
+         else if (type == "hashchange") //NON-NLS
          {
             handlerManager_.fireEvent(new PresentationHashChangeEvent(message.getData().cast()));
          }

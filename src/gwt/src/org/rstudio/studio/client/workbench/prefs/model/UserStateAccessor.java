@@ -45,9 +45,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<String> contextId()
    {
       return string(
-         "context_id",
+         "context_id", //NON-NLS
          "", 
-         "A unique identifier representing the user and machine.", 
+         "A unique identifier representing the user and machine.",  //NON-NLS
          "");
    }
 
@@ -59,7 +59,7 @@ public class UserStateAccessor extends Prefs
       return bool(
          "auto_created_profile",
          "", 
-         "Whether we have automatically created an .Rprofile for this user.", 
+         "Whether we have automatically created an .Rprofile for this user.",  //NON-NLS
          false);
    }
 
@@ -68,10 +68,10 @@ public class UserStateAccessor extends Prefs
     */
    public PrefValue<Theme> theme()
    {
-      return object(
+      return object( //NON-NLS
          "theme",
          "", 
-         "The color theme to apply.", 
+         "The color theme to apply.",  //NON-NLS
          null);
    }
 
@@ -99,9 +99,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<String> defaultProjectLocation()
    {
       return string(
-         "default_project_location",
+         "default_project_location", //NON-NLS
          "", 
-         "The directory path under which to place new projects by default. Shadows a uipref.", 
+         "The directory path under which to place new projects by default. Shadows a uipref.",  //NON-NLS
          "");
    }
 
@@ -113,7 +113,7 @@ public class UserStateAccessor extends Prefs
       return bool(
          "clear_hidden",
          "", 
-         "Whether to clear hidden objects along with visible objects when clearing the workspace. Set automatically to remember last action.", 
+         "Whether to clear hidden objects along with visible objects when clearing the workspace. Set automatically to remember last action.",  //NON-NLS
          true);
    }
 
@@ -123,9 +123,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<ExportPlotOptions> exportPlotOptions()
    {
       return object(
-         "export_plot_options",
+         "export_plot_options", //NON-NLS
          "", 
-         "The most recently used plot export options.", 
+         "The most recently used plot export options.",  //NON-NLS
          null);
    }
 
@@ -162,12 +162,12 @@ public class UserStateAccessor extends Prefs
    /**
     * The most recently used viewer export options.
     */
-   public PrefValue<ExportViewerOptions> exportViewerOptions()
+   public PrefValue<ExportViewerOptions> exportViewerOptions() //NON-NLS
    {
       return object(
          "export_viewer_options",
          "", 
-         "The most recently used viewer export options.", 
+         "The most recently used viewer export options.",  //NON-NLS
          null);
    }
 
@@ -206,10 +206,10 @@ public class UserStateAccessor extends Prefs
     */
    public PrefValue<SavePlotAsPdfOptions> savePlotAsPdfOptions()
    {
-      return object(
+      return object( //NON-NLS
          "save_plot_as_pdf_options",
          "", 
-         "The most recently used options for saving a plot as a PDF.", 
+         "The most recently used options for saving a plot as a PDF.",  //NON-NLS
          null);
    }
 
@@ -244,10 +244,10 @@ public class UserStateAccessor extends Prefs
     */
    public PrefValue<CompileRNotebookPrefs> compileRNotebookPrefs()
    {
-      return object(
+      return object( //NON-NLS
          "compile_r_notebook_prefs",
          "", 
-         "Most recently used settings for compiling a notebook from an R script.", 
+         "Most recently used settings for compiling a notebook from an R script.",  //NON-NLS
          null);
    }
 
@@ -270,10 +270,10 @@ public class UserStateAccessor extends Prefs
     */
    public PrefValue<CompileRMarkdownNotebookPrefs> compileRMarkdownNotebookPrefs()
    {
-      return object(
+      return object( //NON-NLS
          "compile_r_markdown_notebook_prefs",
          "", 
-         "Most recently used settings for compiling a notebook using R Markdown.", 
+         "Most recently used settings for compiling a notebook using R Markdown.",  //NON-NLS
          null);
    }
 
@@ -290,7 +290,7 @@ public class UserStateAccessor extends Prefs
    /**
     * Whether to show UI for publishing content.
     */
-   public PrefValue<Boolean> showPublishUi()
+   public PrefValue<Boolean> showPublishUi() //NON-NLS
    {
       return bool(
          "show_publish_ui",
@@ -304,7 +304,7 @@ public class UserStateAccessor extends Prefs
     */
    public PrefValue<Boolean> enableRsconnectPublishUi()
    {
-      return bool(
+      return bool( //NON-NLS
          "enable_rsconnect_publish_ui",
          "", 
          "Whether to show UI for publishing content to RStudio Connect.", 
@@ -314,9 +314,9 @@ public class UserStateAccessor extends Prefs
    /**
     * The default (last) account used for publishing
     */
-   public PrefValue<PublishAccount> publishAccount()
+   public PrefValue<PublishAccount> publishAccount() //NON-NLS
    {
-      return object(
+      return object( //NON-NLS
          "publish_account",
          "", 
          "The default (last) account used for publishing", 
@@ -345,11 +345,11 @@ public class UserStateAccessor extends Prefs
       return integer(
          "document_outline_width",
          "", 
-         "The preferred width, in pixels, of the document outline pane.", 
+         "The preferred width, in pixels, of the document outline pane.",  //NON-NLS
          110);
    }
 
-   /**
+   /** //NON-NLS //NON-NLS
     * How to create new connections to data sources.
     */
    public PrefValue<String> connectVia()
@@ -361,21 +361,21 @@ public class UserStateAccessor extends Prefs
          new String[] {
             CONNECT_VIA_CONNECT_R_CONSOLE,
             CONNECT_VIA_CONNECT_NEW_R_SCRIPT,
-            CONNECT_VIA_CONNECT_NEW_R_NOTEBOOK,
+            CONNECT_VIA_CONNECT_NEW_R_NOTEBOOK, //NON-NLS
             CONNECT_VIA_CONNECT_COPY_TO_CLIPBOARD
          },
-         "connect-r-console");
+         "connect-r-console"); //NON-NLS //NON-NLS
    }
 
-   public final static String CONNECT_VIA_CONNECT_R_CONSOLE = "connect-r-console";
+   public final static String CONNECT_VIA_CONNECT_R_CONSOLE = "connect-r-console"; //NON-NLS
    public final static String CONNECT_VIA_CONNECT_NEW_R_SCRIPT = "connect-new-r-script";
-   public final static String CONNECT_VIA_CONNECT_NEW_R_NOTEBOOK = "connect-new-r-notebook";
+   public final static String CONNECT_VIA_CONNECT_NEW_R_NOTEBOOK = "connect-new-r-notebook"; //NON-NLS //NON-NLS
    public final static String CONNECT_VIA_CONNECT_COPY_TO_CLIPBOARD = "connect-copy-to-clipboard";
 
    /**
     * The kind of handler to invoke when errors occur.
     */
-   public PrefValue<String> errorHandlerType()
+   public PrefValue<String> errorHandlerType() //NON-NLS
    {
       return enumeration(
          "error_handler_type",
@@ -383,16 +383,16 @@ public class UserStateAccessor extends Prefs
          "The kind of handler to invoke when errors occur.", 
          new String[] {
             ERROR_HANDLER_TYPE_MESSAGE,
-            ERROR_HANDLER_TYPE_TRACEBACK,
+            ERROR_HANDLER_TYPE_TRACEBACK, //NON-NLS
             ERROR_HANDLER_TYPE_BREAK,
             ERROR_HANDLER_TYPE_NOTEBOOK,
-            ERROR_HANDLER_TYPE_CUSTOM
-         },
-         "traceback");
+            ERROR_HANDLER_TYPE_CUSTOM //NON-NLS
+         }, //NON-NLS
+         "traceback"); //NON-NLS
    }
 
-   public final static String ERROR_HANDLER_TYPE_MESSAGE = "message";
-   public final static String ERROR_HANDLER_TYPE_TRACEBACK = "traceback";
+   public final static String ERROR_HANDLER_TYPE_MESSAGE = "message"; //NON-NLS
+   public final static String ERROR_HANDLER_TYPE_TRACEBACK = "traceback"; //NON-NLS
    public final static String ERROR_HANDLER_TYPE_BREAK = "break";
    public final static String ERROR_HANDLER_TYPE_NOTEBOOK = "notebook";
    public final static String ERROR_HANDLER_TYPE_CUSTOM = "custom";
@@ -404,7 +404,7 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "using_mingw_gcc49",
-         "", 
+         "",  //NON-NLS
          "Whether or not the MinGW compiler with GCC 4.9 is used.", 
          false);
    }
@@ -417,7 +417,7 @@ public class UserStateAccessor extends Prefs
       return bool(
          "visual_mode_confirmed",
          "", 
-         "Whether or not the use of Visual Mode has been confirmed.", 
+         "Whether or not the use of Visual Mode has been confirmed.",  //NON-NLS //NON-NLS //NON-NLS
          false);
    }
 
@@ -427,18 +427,18 @@ public class UserStateAccessor extends Prefs
    public PrefValue<String> bibliographyDefaultType()
    {
       return enumeration(
-         "bibliography_default_type",
+         "bibliography_default_type", //NON-NLS
          "", 
          "The default type for new bibliographies.", 
          new String[] {
-            BIBLIOGRAPHY_DEFAULT_TYPE_BIB,
+            BIBLIOGRAPHY_DEFAULT_TYPE_BIB, //NON-NLS
             BIBLIOGRAPHY_DEFAULT_TYPE_YAML,
             BIBLIOGRAPHY_DEFAULT_TYPE_JSON
          },
          "bib");
    }
 
-   public final static String BIBLIOGRAPHY_DEFAULT_TYPE_BIB = "bib";
+   public final static String BIBLIOGRAPHY_DEFAULT_TYPE_BIB = "bib"; //NON-NLS
    public final static String BIBLIOGRAPHY_DEFAULT_TYPE_YAML = "yaml";
    public final static String BIBLIOGRAPHY_DEFAULT_TYPE_JSON = "json";
 
@@ -447,8 +447,8 @@ public class UserStateAccessor extends Prefs
     */
    public PrefValue<Boolean> citationDefaultInText()
    {
-      return bool(
-         "citation_default_in_text",
+      return bool( //NON-NLS
+         "citation_default_in_text", //NON-NLS //NON-NLS
          "", 
          "The default style for inserting citations.", 
          false);
@@ -461,36 +461,36 @@ public class UserStateAccessor extends Prefs
    {
       return enumeration(
          "zotero_connection_type",
-         "Zotero connection type", 
+         "Zotero connection type",  //NON-NLS
          "Zotero connection type (local or web)", 
          new String[] {
             ZOTERO_CONNECTION_TYPE_AUTO,
             ZOTERO_CONNECTION_TYPE_NONE,
-            ZOTERO_CONNECTION_TYPE_LOCAL,
+            ZOTERO_CONNECTION_TYPE_LOCAL, //NON-NLS
             ZOTERO_CONNECTION_TYPE_WEB
          },
-         "auto");
+         "auto"); //NON-NLS
    }
 
    public final static String ZOTERO_CONNECTION_TYPE_AUTO = "auto";
    public final static String ZOTERO_CONNECTION_TYPE_NONE = "none";
    public final static String ZOTERO_CONNECTION_TYPE_LOCAL = "local";
-   public final static String ZOTERO_CONNECTION_TYPE_WEB = "web";
+   public final static String ZOTERO_CONNECTION_TYPE_WEB = "web"; //NON-NLS
 
    /**
-    * Whether to use Better BibTeX when suggesting citation keys and writing citations to BibTeX bibliographies
+    * Whether to use Better BibTeX when suggesting citation keys and writing citations to BibTeX bibliographies //NON-NLS
     */
    public PrefValue<Boolean> zoteroUseBetterBibtex()
    {
       return bool(
-         "zotero_use_better_bibtex",
-         "Use Better BibTeX for citation keys and BibTeX export", 
+         "zotero_use_better_bibtex", //NON-NLS
+         "Use Better BibTeX for citation keys and BibTeX export",  //NON-NLS
          "Whether to use Better BibTeX when suggesting citation keys and writing citations to BibTeX bibliographies", 
          false);
    }
 
-   /**
-    * Key for making Zotero API calls
+   /** //NON-NLS
+    * Key for making Zotero API calls //NON-NLS
     */
    public PrefValue<String> zoteroApiKey()
    {
@@ -506,9 +506,9 @@ public class UserStateAccessor extends Prefs
     */
    public PrefValue<String> zoteroDataDir()
    {
-      return string(
-         "zotero_data_dir",
-         "Zotero Data Directory", 
+      return string( //NON-NLS
+         "zotero_data_dir", //NON-NLS
+         "Zotero Data Directory",  //NON-NLS
          "Directory containing Zotero data files", 
          "");
    }
@@ -521,12 +521,12 @@ public class UserStateAccessor extends Prefs
       return bool(
          "quarto_website_sync_editor",
          "Quarto Website Sync Editor", 
-         "Sync source editor to Quarto website preview navigation.", 
+         "Sync source editor to Quarto website preview navigation.",  //NON-NLS //NON-NLS
          false);
    }
 
    /**
-    * Build Quarto editor tools (yaml.js) on the fly when requested.
+    * Build Quarto editor tools (yaml.js) on the fly when requested. //NON-NLS
     */
    public PrefValue<Boolean> quartoBuildEditorTools()
    {

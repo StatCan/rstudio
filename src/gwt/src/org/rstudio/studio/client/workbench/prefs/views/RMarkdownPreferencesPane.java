@@ -230,7 +230,7 @@ public class RMarkdownPreferencesPane extends PreferencesPane
 
       // line numbers
       CheckBox visualEditorShowLineNumbers = checkboxPref(
-         "Show line numbers in code blocks",
+         "Show line numbers in code blocks", //NON-NLS
          prefs_.visualMarkdownCodeEditorLineNumbers(),
          false);
       lessSpaced(visualEditorShowLineNumbers);
@@ -250,7 +250,7 @@ public class RMarkdownPreferencesPane extends PreferencesPane
       visualModeOptions.add(nudgeRightPlus(visualModeContentWidth_));
 
       // font size
-      final String kDefault = "(Default)";
+      final String kDefault = "(Default)"; //NON-NLS
       String[] labels = {kDefault, "8", "9", "10", "11", "12",};
       String[] values = new String[labels.length];
       for (int i = 0; i < labels.length; i++)
@@ -293,7 +293,7 @@ public class RMarkdownPreferencesPane extends PreferencesPane
       visualModeWrap_ = new SelectWidget(constants_.visualModeWrapLabel(), wrapValues, wrapValues, false, true, false);
       if (!visualModeWrap_.setValue(prefs_.visualMarkdownEditingWrap().getGlobalValue()))
          visualModeWrap_.getListBox().setSelectedIndex(0);
-      HelpButton.addHelpButton(visualModeWrap_, "visual_markdown_editing-line-wrapping", constants_.visualModeWrapHelpLabel(), 0);
+      HelpButton.addHelpButton(visualModeWrap_, "visual_markdown_editing-line-wrapping", constants_.visualModeWrapHelpLabel(), 0); //NON-NLS
       visualModeWrap_.addStyleName(res.styles().visualModeWrapSelectWidget());
       visualModeOptions.add(visualModeWrap_);
       

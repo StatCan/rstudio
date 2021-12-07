@@ -96,11 +96,11 @@ public class PythonInterpreterSelectionDialog extends ModalDialog<PythonInterpre
          {
             widgets_.get(LABEL_SYSTEM).addItem(new PythonInterpreterListEntryUi(interpreter));
          }
-         else if (StringUtil.equals(type, "virtualenv"))
+         else if (StringUtil.equals(type, "virtualenv")) //NON-NLS
          {
             widgets_.get(LABEL_VIRTUAL).addItem(new PythonInterpreterListEntryUi(interpreter));
          }
-         else if (StringUtil.equals(type, "conda"))
+         else if (StringUtil.equals(type, "conda")) //NON-NLS
          {
             widgets_.get(LABEL_CONDA).addItem(new PythonInterpreterListEntryUi(interpreter));
          }

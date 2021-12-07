@@ -434,17 +434,17 @@ public class TerminalPreferencesPane extends PreferencesPane
    private boolean pythonIntegrationSupported()
    {
       String shell = terminalShell_.getValue();
-      if (StringUtil.equals(shell, "bash") ||
-          StringUtil.equals(shell, "zsh"))
+      if (StringUtil.equals(shell, "bash") || //NON-NLS
+          StringUtil.equals(shell, "zsh")) //NON-NLS
       {
          return true;
       }
 
-      if (StringUtil.equals(shell, "custom"))
+      if (StringUtil.equals(shell, "custom")) //NON-NLS
       {
          String shellPath = customShellChooser_.getText();
-         if (shellPath.endsWith("bash") ||
-             shellPath.endsWith("zsh") ||
+         if (shellPath.endsWith("bash") || //NON-NLS //NON-NLS
+             shellPath.endsWith("zsh") || //NON-NLS
              shellPath.endsWith("bash.exe") ||
              shellPath.endsWith("zsh.exe"))
          {

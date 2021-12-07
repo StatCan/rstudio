@@ -50,11 +50,11 @@ public class QuartoConnection
       if (url != null)
       {
          // provide base url if it's relative
-         if (!url.startsWith("http"))
+         if (!url.startsWith("http")) //NON-NLS
             url = server_.getApplicationURL(url);
          
          // clean out viewer_pane params
-         int paramsLoc = url.indexOf("?viewer_pane=");
+         int paramsLoc = url.indexOf("?viewer_pane="); //NON-NLS
          if (paramsLoc != -1)
             url = url.substring(0, paramsLoc);
       }
@@ -83,12 +83,12 @@ public class QuartoConnection
    
    public void navigateBack()
    {
-      postQuartoMessage("goback", null);
+      postQuartoMessage("goback", null); //NON-NLS
    }
    
    public void navigateForward()
    {
-      postQuartoMessage("goforward", null);
+      postQuartoMessage("goforward", null); //NON-NLS
    }
    
 
@@ -122,7 +122,7 @@ public class QuartoConnection
       source_ = source;
       origin_ = origin;
      
-      // dispatch message
+      // dispatch message //NON-NLS
       if (message.type == "navigate") 
       {
          // record current navigation url
@@ -132,13 +132,13 @@ public class QuartoConnection
          srcFile_ = StringUtil.isNullOrEmpty(message.file) ? null : message.file;
          
          // let quarto know we can handle devhost requests
-         postQuartoMessage("devhost-init", null);
+         postQuartoMessage("devhost-init", null); //NON-NLS
          
          // fire navigation event
          handlerManager_.fireEvent(new QuartoNavigationEvent(message.href, message.file));
         
       } 
-      else if (message.type == "openfile") 
+      else if (message.type == "openfile")  //NON-NLS
       {
          fileTypeRegistry_.editFile(
            FileSystemItem.createFile(message.file),
