@@ -54,7 +54,7 @@ public class ModuleTabLayoutPanel extends TabLayoutPanel
 
          String minimized_id = "";
          if (minimized)
-            minimized_id = "_minimized"; //$NON-NLS-1$
+            minimized_id = "_minimized";
 
          // Determine a base element ID based on the tab's title; make available to be
          // associated with actual tab element when ModuleTab is attached to the tab layout panel
@@ -73,7 +73,7 @@ public class ModuleTabLayoutPanel extends TabLayoutPanel
             closeButton_ = new Image(new ImageResource2x(ThemeResources.INSTANCE.closeTab2x()));
             closeButton_.setStylePrimaryName(styles.closeTabButton());
             closeButton_.addStyleName(ThemeStyles.INSTANCE.handCursor());
-            closeButton_.setAltText(constants_.closeButtonText() + " " + title + " " + constants_.closeAltTabText());
+            closeButton_.setAltText(constants_.closeButtonText(title));
             center.add(closeButton_);
          }
          layoutPanel.add(center);

@@ -26,13 +26,13 @@ public class PanmirrorRawFormatSelect extends SelectWidget
 {
    public PanmirrorRawFormatSelect()
    {
-      super(_constants.formatLabel(), new String[] {}, new String[] {}, false);
+      super(constants_.formatLabel(), new String[] {}, new String[] {}, false);
    }
    
    public void setFormats(String[] formats, String value)
    {
       this.setChoices(
-         getFormatList(_constants.chooseFormatLabel(), formats, value),
+         getFormatList(constants_.chooseFormatLabel(), formats, value),
          getFormatList("", formats, value)
       );
    }
@@ -46,6 +46,6 @@ public class PanmirrorRawFormatSelect extends SelectWidget
          options.add(value);
       return options.toArray(new String[]{});
    }
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 
 }

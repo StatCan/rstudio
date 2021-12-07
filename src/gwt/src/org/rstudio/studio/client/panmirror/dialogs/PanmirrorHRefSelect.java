@@ -59,7 +59,7 @@ public class PanmirrorHRefSelect extends Composite implements CanFocus
       type_.addItem("URL", Integer.toString(PanmirrorLinkType.URL));
       
       if (capabilities.headings && targets.headings.length > 0)
-         type_.addItem("Heading", Integer.toString(PanmirrorLinkType.Heading)); //$NON-NLS-1$
+         type_.addItem("Heading", Integer.toString(PanmirrorLinkType.Heading));
       if (targets.ids.length > 0)
          type_.addItem("ID",Integer.toString(PanmirrorLinkType.ID));
       controls_.add(type_);
@@ -101,7 +101,7 @@ public class PanmirrorHRefSelect extends Composite implements CanFocus
       });
       
       VerticalPanel container = new VerticalPanel();
-      container.add(new FormLabel(_constants.linkToLabel(), type_));
+      container.add(new FormLabel(constants_.linkToLabel(), type_));
       container.add(controls_);
       
       initWidget(container);
@@ -222,6 +222,6 @@ public class PanmirrorHRefSelect extends Composite implements CanFocus
    private final FormTextBox href_; 
    private final FormListBox headings_;
    private final FormListBox ids_;
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 
 }

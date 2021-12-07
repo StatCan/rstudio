@@ -38,7 +38,7 @@ public class ShowContentDialog extends ModalDialogBase
       setText(title);
       preferredSize_ = preferredSize;
 
-      if (content.startsWith("<html>") || content.startsWith("<!DOCTYPE ")) //$NON-NLS-1$
+      if (content.startsWith("<html>") || content.startsWith("<!DOCTYPE "))
       {
          content_ = content;
          styleName_ = ThemeResources.INSTANCE.themeStyles().showFile();
@@ -46,8 +46,8 @@ public class ShowContentDialog extends ModalDialogBase
       }
       else
       {
-         content_ = "<pre class=\"" + ThemeResources.INSTANCE.themeStyles().showFilePreFixed() + //$NON-NLS-1$
-            "\">" + content + "</pre>"; //$NON-NLS-1$
+         content_ = "<pre class=\"" + ThemeResources.INSTANCE.themeStyles().showFilePreFixed() +
+            "\">" + content + "</pre>";
          styleName_ = ThemeResources.INSTANCE.themeStyles().showFileFixed();
          isFixedFont_ = true;
       }
@@ -59,7 +59,7 @@ public class ShowContentDialog extends ModalDialogBase
 
    protected void addButtons()
    {
-      ThemedButton closeButton = new ThemedButton(constants_.closeButtonText(), clickEvent -> closeDialog());
+      ThemedButton closeButton = new ThemedButton(constants_.closeText(), clickEvent -> closeDialog());
       addOkButton(closeButton);
    }
 

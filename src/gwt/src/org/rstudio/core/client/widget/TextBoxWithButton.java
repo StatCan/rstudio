@@ -22,10 +22,12 @@ import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
+
 import org.rstudio.core.client.CoreClientConstants;
 import org.rstudio.core.client.ElementIds;
 import org.rstudio.core.client.StringUtil;
@@ -101,7 +103,7 @@ public class TextBoxWithButton extends Composite
       // prevent button from triggering "submit" when hosted in a form, such as in FileUploadDialog
       themedButton_.getElement().setAttribute("type", "button");
       
-      clearButton_ = new ThemedButton("Clear", (ClickEvent event) -> //NON-NLS
+      clearButton_ = new ThemedButton("Clear", (ClickEvent event) ->
       {
          setText("");
       });
@@ -124,7 +126,7 @@ public class TextBoxWithButton extends Composite
       FlowPanel outer = new FlowPanel();
       if (label != null)
       {
-         assert existingLabel == null : constants_.existingLabelMessage();
+         assert existingLabel == null : "Invalid usage, cannot provide both label and existingLabel";
 
          lblCaption_ = new FormLabel(label, true);
          if (helpButton != null)

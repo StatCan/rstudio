@@ -73,8 +73,7 @@ public class TutorialPane
                           DependencyManager dependencies,
                           TutorialServerOperations server)
    {
-      // i18n: Enumerator, user facing text, or both?
-      super("Tutorial", events);
+      super(constants_.tutorialTitle(), events);
 
       globalDisplay_ = globalDisplay;
       commands_      = commands;
@@ -82,7 +81,7 @@ public class TutorialPane
       dependencies_  = dependencies;
       server_        = server;
 
-      indicator_ = globalDisplay_.getProgressIndicator("Error Loading Tutorial");
+      indicator_ = globalDisplay_.getProgressIndicator(constants_.errorLoadingTutorialCaption());
 
       events.addHandler(ThemeChangedEvent.TYPE, this);
 
@@ -93,7 +92,7 @@ public class TutorialPane
    @Override
    protected Widget createMainWidget()
    {
-      frame_ = new RStudioFrame("Tutorial Pane");
+      frame_ = new RStudioFrame(constants_.tutorialPaneTitle());
       frame_.setSize("100%", "100%");
       frame_.setStylePrimaryName("rstudio-TutorialFrame");
       frame_.addStyleName("ace_editor_theme");
@@ -109,7 +108,7 @@ public class TutorialPane
    @Override
    protected Toolbar createMainToolbar()
    {
-      toolbar_ = new Toolbar("Tutorial Tab");
+      toolbar_ = new Toolbar(constants_.tutorialTabLabel());
 
       // TODO: managing history within an iframe is surprisingly challenging,
       // so we just leave these buttons unavailable for now and just allow
@@ -149,8 +148,8 @@ public class TutorialPane
          {
             onPopout(
                   url,
-                  response.getString("name"), //$NON-NLS-1$
-                  response.getString("package")); //$NON-NLS-1$
+                  response.getString("name"),
+                  response.getString("package"));
          }
 
          @Override
@@ -170,7 +169,7 @@ public class TutorialPane
       int width = Math.max(800, frame_.getElement().getClientWidth());
       int height = Math.max(800, frame_.getElement().getClientHeight());
 
-      String windowName = "rstudio-tutorial-" + StringUtil.makeRandomId(16); //$NON-NLS-1$
+      String windowName = "rstudio-tutorial-" + StringUtil.makeRandomId(16);
 
       NewWindowOptions options = new NewWindowOptions();
       options.setAppendClientId(false);
@@ -215,7 +214,7 @@ public class TutorialPane
             Timers.singleShot(500, () ->
             {
                if (!loaded_)
-                  indicator_.onProgress("Loading tutorial...");
+                  indicator_.onProgress(constants_.loadingTutorialProgressMessage());
             });
 
             handler_ = frame_.addLoadHandler((LoadEvent event) ->
@@ -234,9 +233,9 @@ public class TutorialPane
       commands_.tutorialStop().setVisible(false);
       commands_.tutorialStop().setEnabled(false);
 
-      String url = "./tutorial/run" + //$NON-NLS-1$
-            "?package=" + tutorial.getPackageName() + //$NON-NLS-1$
-            "&name=" + tutorial.getTutorialName(); //$NON-NLS-1$
+      String url = "./tutorial/run" +
+            "?package=" + tutorial.getPackageName() +
+            "&name=" + tutorial.getTutorialName();
 
       navigate(url, false);
    }
@@ -285,7 +284,7 @@ public class TutorialPane
    {
       if (URIUtils.isLocalUrl(url))
       {
-         frame_.getElement().removeAttribute("sandbox"); //$NON-NLS-1$
+         frame_.getElement().removeAttribute("sandbox");
       }
       else
       {
@@ -310,7 +309,7 @@ public class TutorialPane
       {
          Element el = els.getItem(i);
 
-         String href = el.getPropertyString("href"); //$NON-NLS-1$
+         String href = el.getPropertyString("href");
          if (href == null)
             continue;
 
@@ -319,7 +318,7 @@ public class TutorialPane
                !href.startsWith(GWT.getHostPageBaseURL());
 
          if (isNonLocalHref)
-            el.setPropertyString("target", "_blank"); //$NON-NLS-1$
+            el.setPropertyString("target", "_blank");
       }
    }
 
@@ -390,9 +389,9 @@ public class TutorialPane
          private HandlerRegistration handler_;
          private ProgressIndicator progress_;
 
-         private final String errorCaption = "Error installing learnr";
+         private final String errorCaption = constants_.errorInstallingLearnr();
          private final String errorMessage =
-               "RStudio was unable to install the learnr package.";
+               constants_.errorInstallingLearnrMessage();
 
          @Override
          protected void invoke()
@@ -406,8 +405,8 @@ public class TutorialPane
                {
                   handler_.removeHandler();
 
-                  String version = session_.getSessionInfo().getPackageDependencies().getPackage("learnr").getVersion(); //$NON-NLS-1$
-                  server_.isPackageInstalled("learnr", version, new ServerRequestCallback<Boolean>() //$NON-NLS-1$
+                  String version = session_.getSessionInfo().getPackageDependencies().getPackage("learnr").getVersion();
+                  server_.isPackageInstalled("learnr", version, new ServerRequestCallback<Boolean>()
                   {
                      @Override
                      public void onResponseReceived(Boolean installed)
@@ -432,8 +431,8 @@ public class TutorialPane
             });
 
             // fire console event installing learnr
-            progress_.onProgress("Installing learnr...");
-            SendToConsoleEvent event = new SendToConsoleEvent("install.packages(\"learnr\")", true); //$NON-NLS-1$
+            progress_.onProgress(constants_.installingLearnrCaption());
+            SendToConsoleEvent event = new SendToConsoleEvent("install.packages(\"learnr\")", true);
             events_.fireEvent(event);
          }
       };
@@ -551,4 +550,5 @@ public class TutorialPane
    private final TutorialServerOperations server_;
 
    private static final Resources RES = GWT.create(Resources.class);
+   private static final TutorialConstants constants_ = com.google.gwt.core.client.GWT.create(TutorialConstants.class);
 }

@@ -46,17 +46,17 @@ public class FileTypeRegistry
    private static final FileIconResources ICONS = FileIconResources.INSTANCE;
 
    public static final TextFileType TEXT =
-         new TextFileType("text", FileIcon.TEXT_ICON.getDescription(), EditorLanguage.LANG_PLAIN, "", //NON-NLS
+         new TextFileType("text", FileIcon.TEXT_ICON.getDescription(), EditorLanguage.LANG_PLAIN, "",
                           FileIcon.TEXT_ICON.getImageResource(),
                           true,
                           false, false, false, false, false, false, false, false, false, true, false, false);
 
    public static final TextFileType R =
-         new RFileType("r_source", constants_.rScriptLabel(), EditorLanguage.LANG_R, ".R", //NON-NLS
+         new RFileType("r_source", constants_.rScriptLabel(), EditorLanguage.LANG_R, ".R",
                        new ImageResource2x(ICONS.iconRdoc2x()));
 
    public static final TextFileType RD =
-      new TextFileType("r_doc", constants_.rdFile(), EditorLanguage.LANG_RDOC, ".Rd", //NON-NLS
+      new TextFileType("r_doc", constants_.rdFile(), EditorLanguage.LANG_RDOC, ".Rd",
                        new ImageResource2x(ICONS.iconRd2x()),
                        true, // word-wrap
                        true, // source on save aka preview on save
@@ -68,12 +68,12 @@ public class FileTypeRegistry
                        false);
 
    public static final TextFileType DCF =
-         new TextFileType("dcf", "DCF", EditorLanguage.LANG_DCF, ".dcf", //NON-NLS
+         new TextFileType("dcf", "DCF", EditorLanguage.LANG_DCF, ".dcf",
                           new ImageResource2x(ICONS.iconDCF2x()), false, false, false, false, false,
                           false, false, false, false, false, false, false, false);
 
    public static final TextFileType INI =
-         new TextFileType("ini", "INI", EditorLanguage.LANG_INI, ".ini", //NON-NLS
+         new TextFileType("ini", "INI", EditorLanguage.LANG_INI, ".ini",
                           new ImageResource2x(ICONS.iconDCF2x()), false, false, false, false, false,
                           false, false, false, false, false, false, false, false);
 
@@ -85,12 +85,12 @@ public class FileTypeRegistry
 
 
    public static final TextFileType NAMESPACE =
-     new TextFileType("r_namespace", constants_.namespaceLabel(), EditorLanguage.LANG_R, "", //NON-NLS
+     new TextFileType("r_namespace", constants_.namespaceLabel(), EditorLanguage.LANG_R, "",
                       new ImageResource2x(ICONS.iconText2x()), false, false, false, false, false,
                       false, false, false, false, false, false, false, false);
 
    public static final TextFileType SWEAVE =
-      new SweaveFileType("sweave", "R Sweave", //NON-NLS
+      new SweaveFileType("sweave", "R Sweave",
           EditorLanguage.LANG_SWEAVE, ".Rnw",new ImageResource2x(ICONS.iconRsweave2x()));
 
    public static final TexFileType TEX =
@@ -98,16 +98,16 @@ public class FileTypeRegistry
                           new ImageResource2x(ICONS.iconTex2x()));
 
    public static final PlainTextFileType RHISTORY =
-      new PlainTextFileType("r_history", constants_.rHistoryLabel(), ".Rhistory", //NON-NLS
+      new PlainTextFileType("r_history", constants_.rHistoryLabel(), ".Rhistory",
                             new ImageResource2x(ICONS.iconRhistory2x()),
                             true);
 
    public static final RWebContentFileType RMARKDOWN =
-         new RWebContentFileType("r_markdown", constants_.rMarkdownLabel(), EditorLanguage.LANG_RMARKDOWN, //NON-NLS
+         new RWebContentFileType("r_markdown", constants_.rMarkdownLabel(), EditorLanguage.LANG_RMARKDOWN,
                               ".Rmd", new ImageResource2x(ICONS.iconRmarkdown2x()), true, true, true);
 
    public static final RWebContentFileType RNOTEBOOK =
-         new RWebContentFileType("r_notebook", constants_.rNotebookLabel(), EditorLanguage.LANG_RMARKDOWN, //NON-NLS
+         new RWebContentFileType("r_notebook", constants_.rNotebookLabel(), EditorLanguage.LANG_RMARKDOWN,
                                  ".nb.html", new ImageResource2x(ICONS.iconRnotebook2x()), true);
    
    public static final QuartoFileType QUARTO = new QuartoFileType();
@@ -115,179 +115,179 @@ public class FileTypeRegistry
    public static final RWebContentFileType RPRESENTATION = new RPresentationFileType();
 
    public static final WebContentFileType MARKDOWN =
-      new WebContentFileType("markdown", constants_.markdownLabel(), EditorLanguage.LANG_MARKDOWN, //NON-NLS
+      new WebContentFileType("markdown", constants_.markdownLabel(), EditorLanguage.LANG_MARKDOWN,
                            ".md", new ImageResource2x(ICONS.iconMarkdown2x()), true, true);
 
 
    public static final RWebContentFileType RHTML =
-         new RWebContentFileType("r_html", "R HTML", EditorLanguage.LANG_RHTML, //NON-NLS
+         new RWebContentFileType("r_html", "R HTML", EditorLanguage.LANG_RHTML,
                               ".Rhtml", new ImageResource2x(ICONS.iconRhtml2x()), false);
 
    public static final WebContentFileType HTML =
-         new WebContentFileType("html", "HTML", EditorLanguage.LANG_HTML, //NON-NLS
+         new WebContentFileType("html", "HTML", EditorLanguage.LANG_HTML,
                               ".html", new ImageResource2x(ICONS.iconHTML2x()), false, true);
 
    public static final TextFileType CSS =
-         new TextFileType("css", "CSS", EditorLanguage.LANG_CSS, ".css", //NON-NLS
+         new TextFileType("css", "CSS", EditorLanguage.LANG_CSS, ".css",
                           new ImageResource2x(ICONS.iconCss2x()),
                           true,
                           false, false, false, false, false, false, false, false, false, false, false, false);
 
    public static final TextFileType SCSS =
-         new TextFileType("scss", "SCSS", EditorLanguage.LANG_SCSS, ".scss", //NON-NLS
+         new TextFileType("scss", "SCSS", EditorLanguage.LANG_SCSS, ".scss",
                           new ImageResource2x(ICONS.iconScss2x()),
                           true,
                           false, false, false, false, false, false, false, false, false, false, false, false);
 
    public static final TextFileType SASS =
-         new TextFileType("sass", "SASS", EditorLanguage.LANG_SASS, ".sass", //NON-NLS
+         new TextFileType("sass", "SASS", EditorLanguage.LANG_SASS, ".sass",
                           new ImageResource2x(ICONS.iconScss2x()),
                           true,
                           false, false, false, false, false, false, false, false, false, false, false, false);
 
    public static final TextFileType JS =
-         new TextFileType("js", "JavaScript", EditorLanguage.LANG_JAVASCRIPT, ".js", //NON-NLS
+         new TextFileType("js", "JavaScript", EditorLanguage.LANG_JAVASCRIPT, ".js",
                           new ImageResource2x(ICONS.iconJavascript2x()),
                           true,
                           true, false, false, false, false, false, false, false, false, false, false, false);
 
    public static final TextFileType JSON =
-         new TextFileType("json", "JSON", EditorLanguage.LANG_JAVASCRIPT, ".json", //NON-NLS
+         new TextFileType("json", "JSON", EditorLanguage.LANG_JAVASCRIPT, ".json",
                           new ImageResource2x(ICONS.iconJavascript2x()),
                           true,
                           false, false, false, false, false, false, false, false, false, false, false, false);
 
 
    public static final TextFileType PYTHON =
-         new PythonFileType("python", "Python", EditorLanguage.LANG_PYTHON, ".py", new ImageResource2x(ICONS.iconPython2x())); //NON-NLS
+         new PythonFileType("python", "Python", EditorLanguage.LANG_PYTHON, ".py", new ImageResource2x(ICONS.iconPython2x()));
 
    public static final TextFileType SQL =
-         new TextFileType("sql", "SQL", EditorLanguage.LANG_SQL, ".sql", //NON-NLS
+         new TextFileType("sql", "SQL", EditorLanguage.LANG_SQL, ".sql",
                           new ImageResource2x(ICONS.iconSql2x()), false, true, false, false, false,
                           false, false, false, false, false, false, false, false);
 
    public static final TextFileType SH = new ScriptFileType(
-         "sh", "Shell", EditorLanguage.LANG_SH, ".sh", new ImageResource2x(ICONS.iconSh2x()), //NON-NLS
+         "sh", "Shell", EditorLanguage.LANG_SH, ".sh", new ImageResource2x(ICONS.iconSh2x()),
          null, true, false);
 
    public static final TextFileType TOML =
-         new TextFileType("toml", "TOML", EditorLanguage.LANG_TOML, ".toml", //NON-NLS
+         new TextFileType("toml", "TOML", EditorLanguage.LANG_TOML, ".toml",
                           new ImageResource2x(ICONS.iconToml2x()), false, false, false, false, false,
                           false, false, false, false, false, false, false, false);
 
    public static final TextFileType YAML =
-         new TextFileType("yaml", "YAML", EditorLanguage.LANG_YAML, ".yml", //NON-NLS
+         new TextFileType("yaml", "YAML", EditorLanguage.LANG_YAML, ".yml",
                           new ImageResource2x(ICONS.iconYaml2x()), false, false, false, false, false,
                           false, false, false, false, false, false, false, false);
 
    public static final TextFileType XML =
-         new TextFileType("xml", "XML", EditorLanguage.LANG_XML, ".xml", //NON-NLS
+         new TextFileType("xml", "XML", EditorLanguage.LANG_XML, ".xml",
                           new ImageResource2x(ICONS.iconXml2x()), false, false, false, false, false,
                           false, false, false, false, false, false, false, false);
 
-   public static final TextFileType H = new CppFileType("h", ".h", new ImageResource2x(ICONS.iconH2x()), true, false); //NON-NLS
-   public static final TextFileType C = new CppFileType("c", ".c", new ImageResource2x(ICONS.iconC2x()), false, false); //NON-NLS
-   public static final TextFileType HPP = new CppFileType("hpp", ".hpp", new ImageResource2x(ICONS.iconHpp2x()), true, false); //NON-NLS
-   public static final TextFileType CPP = new CppFileType("cpp", ".cpp", new ImageResource2x(ICONS.iconCpp2x()), true, true); //NON-NLS
+   public static final TextFileType H = new CppFileType("h", ".h", new ImageResource2x(ICONS.iconH2x()), true, false);
+   public static final TextFileType C = new CppFileType("c", ".c", new ImageResource2x(ICONS.iconC2x()), false, false);
+   public static final TextFileType HPP = new CppFileType("hpp", ".hpp", new ImageResource2x(ICONS.iconHpp2x()), true, false);
+   public static final TextFileType CPP = new CppFileType("cpp", ".cpp", new ImageResource2x(ICONS.iconCpp2x()), true, true);
 
    public static final TextFileType CLOJURE =
-         new TextFileType("clojure", "Clojure", EditorLanguage.LANG_CLOJURE, ".clj", new ImageResource2x(ICONS.iconClojure2x()), //NON-NLS
+         new TextFileType("clojure", "Clojure", EditorLanguage.LANG_CLOJURE, ".clj", new ImageResource2x(ICONS.iconClojure2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType COFFEE =
-         new TextFileType("coffee", "Coffee", EditorLanguage.LANG_COFFEE, ".coffee", new ImageResource2x(ICONS.iconCoffee2x()), //NON-NLS
+         new TextFileType("coffee", "Coffee", EditorLanguage.LANG_COFFEE, ".coffee", new ImageResource2x(ICONS.iconCoffee2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType CSHARP =
-         new TextFileType("csharp", "C#", EditorLanguage.LANG_CSHARP, ".cs", new ImageResource2x(ICONS.iconCsharp2x()), //NON-NLS
+         new TextFileType("csharp", "C#", EditorLanguage.LANG_CSHARP, ".cs", new ImageResource2x(ICONS.iconCsharp2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
 
    public static final TextFileType DOCKERFILE =
-         new TextFileType("dockerfile", "Dockerfile", EditorLanguage.LANG_DOCKERFILE, "Dockerfile", new ImageResource2x(ICONS.iconDockerfile2x()), //NON-NLS
+         new TextFileType("dockerfile", "Dockerfile", EditorLanguage.LANG_DOCKERFILE, "Dockerfile", new ImageResource2x(ICONS.iconDockerfile2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
    
    public static final TextFileType GITIGNORE =
-         new TextFileType("gitignore", "Gitignore", EditorLanguage.LANG_GITIGNORE, ".gitignore", new ImageResource2x(ICONS.iconGitignore2x()), //NON-NLS
+         new TextFileType("gitignore", "Gitignore", EditorLanguage.LANG_GITIGNORE, ".gitignore", new ImageResource2x(ICONS.iconGitignore2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType GO =
-         new TextFileType("go", "Go", EditorLanguage.LANG_GO, ".go", new ImageResource2x(ICONS.iconGo2x()), //NON-NLS
+         new TextFileType("go", "Go", EditorLanguage.LANG_GO, ".go", new ImageResource2x(ICONS.iconGo2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType GROOVY =
-         new TextFileType("groovy", "Groovy", EditorLanguage.LANG_GROOVY, ".groovy", new ImageResource2x(ICONS.iconGroovy2x()), //NON-NLS
+         new TextFileType("groovy", "Groovy", EditorLanguage.LANG_GROOVY, ".groovy", new ImageResource2x(ICONS.iconGroovy2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType HASKELL =
-         new TextFileType("haskell", "Haskell", EditorLanguage.LANG_HASKELL, ".haskell", new ImageResource2x(ICONS.iconHaskell2x()), //NON-NLS
+         new TextFileType("haskell", "Haskell", EditorLanguage.LANG_HASKELL, ".haskell", new ImageResource2x(ICONS.iconHaskell2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType HAXE =
-         new TextFileType("haxe", "Haxe", EditorLanguage.LANG_HAXE, ".haxe", new ImageResource2x(ICONS.iconHaxe2x()), //NON-NLS
+         new TextFileType("haxe", "Haxe", EditorLanguage.LANG_HAXE, ".haxe", new ImageResource2x(ICONS.iconHaxe2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType JAVA =
-         new TextFileType("java", "Java", EditorLanguage.LANG_JAVA, ".java", new ImageResource2x(ICONS.iconJava2x()), //NON-NLS
+         new TextFileType("java", "Java", EditorLanguage.LANG_JAVA, ".java", new ImageResource2x(ICONS.iconJava2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType JULIA =
-         new TextFileType("julia", "Julia", EditorLanguage.LANG_JULIA, ".julia", new ImageResource2x(ICONS.iconJulia2x()), //NON-NLS
+         new TextFileType("julia", "Julia", EditorLanguage.LANG_JULIA, ".julia", new ImageResource2x(ICONS.iconJulia2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType LISP =
-         new TextFileType("lisp", "Lisp", EditorLanguage.LANG_LISP, ".lisp", new ImageResource2x(ICONS.iconLisp2x()), //NON-NLS
+         new TextFileType("lisp", "Lisp", EditorLanguage.LANG_LISP, ".lisp", new ImageResource2x(ICONS.iconLisp2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType LUA =
-         new TextFileType("lua", "Lua", EditorLanguage.LANG_LUA, ".lua", new ImageResource2x(ICONS.iconLua2x()), //NON-NLS
+         new TextFileType("lua", "Lua", EditorLanguage.LANG_LUA, ".lua", new ImageResource2x(ICONS.iconLua2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType MAKEFILE =
-         new TextFileType("makefile", "Makefile", EditorLanguage.LANG_MAKEFILE, ".makefile", new ImageResource2x(ICONS.iconMakefile2x()), //NON-NLS
+         new TextFileType("makefile", "Makefile", EditorLanguage.LANG_MAKEFILE, ".makefile", new ImageResource2x(ICONS.iconMakefile2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType MATLAB =
-         new TextFileType("matlab", "Matlab", EditorLanguage.LANG_MATLAB, ".m", new ImageResource2x(ICONS.iconMatlab2x()), //NON-NLS
+         new TextFileType("matlab", "Matlab", EditorLanguage.LANG_MATLAB, ".m", new ImageResource2x(ICONS.iconMatlab2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType PERL =
-         new TextFileType("perl", "Perl", EditorLanguage.LANG_PERL, ".pl", new ImageResource2x(ICONS.iconPerl2x()), //NON-NLS
+         new TextFileType("perl", "Perl", EditorLanguage.LANG_PERL, ".pl", new ImageResource2x(ICONS.iconPerl2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType RUBY =
-         new TextFileType("ruby", "Ruby", EditorLanguage.LANG_RUBY, ".rb", new ImageResource2x(ICONS.iconRuby2x()), //NON-NLS
+         new TextFileType("ruby", "Ruby", EditorLanguage.LANG_RUBY, ".rb", new ImageResource2x(ICONS.iconRuby2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType RUST =
-         new TextFileType("rust", "Rust", EditorLanguage.LANG_RUST, ".rs", new ImageResource2x(ICONS.iconRust2x()), //NON-NLS
+         new TextFileType("rust", "Rust", EditorLanguage.LANG_RUST, ".rs", new ImageResource2x(ICONS.iconRust2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType SCALA =
-         new TextFileType("scala", "Scala", EditorLanguage.LANG_SCALA, ".scala", new ImageResource2x(ICONS.iconScala2x()), //NON-NLS
+         new TextFileType("scala", "Scala", EditorLanguage.LANG_SCALA, ".scala", new ImageResource2x(ICONS.iconScala2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
    public static final TextFileType SNIPPETS =
-         new TextFileType("snippets", "Snippets", EditorLanguage.LANG_SNIPPETS, ".snippets", new ImageResource2x(ICONS.iconSnippets2x()), //NON-NLS
+         new TextFileType("snippets", "Snippets", EditorLanguage.LANG_SNIPPETS, ".snippets", new ImageResource2x(ICONS.iconSnippets2x()),
                false, false, false, false, false,
                false, false, false, false, false, false, false, false);
 
@@ -500,9 +500,8 @@ public class FileTypeRegistry
                   else
                   {
                      globalDisplay_.showErrorMessage(
-                       constants_.fileDownloadErrorCaption(), //$NON-NLS-1$
-               constants_.fileDownloadErrorMessage() +
-                       constants_.restrictedOnServerMessage());
+                     constants_.fileDownloadErrorCaption(),
+                     constants_.fileDownloadErrorMessage());
                   }
                }
             }
@@ -612,7 +611,7 @@ public class FileTypeRegistry
       // that unknown files types are treated as text and opened in the editor
       // (we don't do this on desktop because  in that case users have the
       // recourse of using a local editor)
-      String defaultType = Desktop.isDesktop() ? "application/octet-stream" : //NON-NLS
+      String defaultType = Desktop.isDesktop() ? "application/octet-stream" :
                                                  "text/plain";
       return getTypeForFile(file, defaultType);
    }
@@ -634,7 +633,7 @@ public class FileTypeRegistry
          if (defaultType != null)
          {
             String mimeType = file.mimeType(defaultType);
-            if (mimeType.startsWith("text/")) //$NON-NLS-1$
+            if (mimeType.startsWith("text/"))
                return TEXT;
          }
       }
@@ -707,7 +706,7 @@ public class FileTypeRegistry
       }
       else
       {
-         assert filespec.indexOf("*") < 0 : constants_.unexpectedFormatMessage();
+         assert filespec.indexOf("*") < 0 : "Unexpected filespec format";
          fileTypesByFilename_.put(filespec.toLowerCase(), fileType);
          if (icon != null)
          {

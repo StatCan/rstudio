@@ -88,7 +88,7 @@ public class PanmirrorPandocServer {
             bibliographies,
             refBlock,
             etag,
-            new PromiseServerRequestCallback<>(resolve, reject, _constants.readingBibliographyProgressText(), 1500)
+            new PromiseServerRequestCallback<>(resolve, reject, constants_.readingBibliographyProgressText(), 1500)
          );
       });
    }
@@ -102,7 +102,7 @@ public class PanmirrorPandocServer {
            id,
            sourceAsJson,
            sourceAsBibTeX,
-           new PromiseServerRequestCallback<>(resolve, reject, _constants.savingBibliographyProgressText(), 1500)
+           new PromiseServerRequestCallback<>(resolve, reject, constants_.savingBibliographyProgressText(), 1500)
         );
      }); 
    }
@@ -126,5 +126,5 @@ public class PanmirrorPandocServer {
    }
 
    private PanmirrorPandocServerOperations server_;
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 }

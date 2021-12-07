@@ -40,7 +40,7 @@ public class PanmirrorInsertTableDialog extends ModalDialog<PanmirrorInsertTable
    public PanmirrorInsertTableDialog(PanmirrorTableCapabilities capabilities, 
                                      OperationWithInput<PanmirrorInsertTableResult> operation)
    {
-      super(_constants.insertTableCaption(), Roles.getDialogRole(), operation, () -> {
+      super(constants_.insertTableCaption(), Roles.getDialogRole(), operation, () -> {
          // cancel returns null
          operation.execute(null);
       });
@@ -94,7 +94,7 @@ public class PanmirrorInsertTableDialog extends ModalDialog<PanmirrorInsertTable
    }
    
    interface Binder extends UiBinder<Widget, PanmirrorInsertTableDialog> {}
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
    private Widget mainWidget_;
 
    @UiField NumericValueWidget rows_;

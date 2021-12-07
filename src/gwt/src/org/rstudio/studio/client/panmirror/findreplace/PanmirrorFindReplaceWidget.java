@@ -87,8 +87,8 @@ public class PanmirrorFindReplaceWidget extends FindReplaceBar implements HasFin
          int replaced = find.replaceAll(text);
          RStudioGinjector.INSTANCE.getGlobalDisplay().showMessage(
             GlobalDisplay.MSG_INFO,
-            _constants.findReplaceTitle(),
-            _constants.rStudioGinjectorErrorMessage(replaced)
+            constants_.findReplaceTitle(),
+            constants_.rStudioGinjectorErrorMessage(replaced)
          );
       });
      
@@ -189,6 +189,6 @@ public class PanmirrorFindReplaceWidget extends FindReplaceBar implements HasFin
    
    private Container container_;
 
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 
 }

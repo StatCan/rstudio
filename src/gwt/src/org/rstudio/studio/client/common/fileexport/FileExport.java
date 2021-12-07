@@ -93,7 +93,7 @@ public class FileExport
          if (files.size() == 1)
             defaultArchiveName = files.get(0).getStem();
          else
-            defaultArchiveName = "rstudio-export"; //$NON-NLS-1$
+            defaultArchiveName = "rstudio-export";
          
          // prompt user
          final String ZIP = ".zip";
@@ -135,8 +135,7 @@ public class FileExport
    {
       globalDisplay_.promptForText(
             caption,
-            constants_.theText() + description + " " + constants_.downloadedLabel() +
-            constants_.specifyDownloadFileLabel(),
+            constants_.showFileExportLabel(description),
             defaultName + defaultExtension,
             -1, -1,
             constants_.downloadButtonCaption(),

@@ -14,17 +14,18 @@
  */
 package org.rstudio.studio.client.common.filetypes;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.files.FileSystemItem;
 import org.rstudio.core.client.resources.ImageResource2x;
 import org.rstudio.studio.client.application.events.EventBus;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 
 public class ObjectExplorerFileType extends EditableFileType
 {
    public ObjectExplorerFileType()
    {
-      // i18n: Is this for users to see or a key?
       super(ID,
-            "Object Explorer",
+            constants_.objectExplorerLabel(),
             new ImageResource2x(FileIconResources.INSTANCE.iconObjectExplorer2x()));
    }
 
@@ -35,5 +36,6 @@ public class ObjectExplorerFileType extends EditableFileType
          "Object explorer doesn't operate on filesystem files";
    }
    
-   public static final String ID = "object_explorer"; //$NON-NLS-1$
+   public static final String ID = "object_explorer";
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 }

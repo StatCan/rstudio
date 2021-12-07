@@ -61,7 +61,7 @@ public class RPubsUploader
          // randomize the name so Firefox doesn't prevent us from reactivating
          // the window programmatically 
          globalDisplay_.openProgressWindow(
-               "_rpubs_upload" + (int)(Math.random() * 10000), //$NON-NLS-1$
+               "_rpubs_upload" + (int)(Math.random() * 10000), 
                PROGRESS_MESSAGE, 
                new OperationWithInput<WindowEx>() {
 
@@ -164,8 +164,7 @@ public class RPubsUploader
                   onUploadComplete(false);
                   globalDisplay_.showErrorMessage(
                          constants_.errorCaption(),
-                         constants_.unableToContinueMessage() +
-                         constants_.currentlyRunningMessage());
+                         constants_.unableToContinueMessage());
                }
             }
             

@@ -49,7 +49,7 @@ public class PanmirrorEditListDialog extends ModalDialog<PanmirrorListProps>
                                   PanmirrorListCapabilities capabilities,
                                   OperationWithInput<PanmirrorListProps> operation)
    {
-      super(_constants.listLabel(), Roles.getDialogRole(), operation, () -> {
+      super(constants_.listLabel(), Roles.getDialogRole(), operation, () -> {
          // cancel returns null
          operation.execute(null);
       });
@@ -69,9 +69,9 @@ public class PanmirrorEditListDialog extends ModalDialog<PanmirrorListProps>
       
       
       listIncremental_.setChoices(new String[] {
-          _constants.defaultChoiceList(),
-          _constants.incrementalChoiceList(),
-          _constants.nonIncrementalChoiceList()
+          constants_.defaultChoiceList(),
+          constants_.incrementalChoiceList(),
+          constants_.nonIncrementalChoiceList()
       }, new String[] {
          PanmirrorListIncremental.Default,
          PanmirrorListIncremental.Incremental,
@@ -92,24 +92,22 @@ public class PanmirrorEditListDialog extends ModalDialog<PanmirrorListProps>
       numberDelimiter_.setVisible(capabilities.fancy);
       
       List<String> numberStyleChoices = new ArrayList<>();
-      // i18n: ?  These look user facing but not usre
       numberStyleChoices.add("DefaultStyle");
-      numberStyleChoices.add(_constants.decimalChoice());
+      numberStyleChoices.add(constants_.decimalChoice());
       numberStyleChoices.add("LowerRoman");
       numberStyleChoices.add("UpperRoman");
       numberStyleChoices.add("LowerAlpha");
       numberStyleChoices.add("UpperAlpha");
       if (capabilities.example) {
-         numberStyleChoices.add(_constants.exampleChoice());
+         numberStyleChoices.add(constants_.exampleChoice());
       }
       numberStyle_.setChoices(numberStyleChoices.toArray(new String[] {}));
-
-      // i18n
+      
       numberDelimiter_.setChoices(new String[] {
-         "DefaultDelim",//NON-NLS
-         "Period", //NON-NLS
-         "OneParen",//NON-NLS
-         "TwoParens",//NON-NLS
+         "DefaultDelim",
+         "Period",
+         "OneParen",
+         "TwoParens",
       });
 
       
@@ -157,7 +155,7 @@ public class PanmirrorEditListDialog extends ModalDialog<PanmirrorListProps>
    
    private Widget mainWidget_;
 
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 
    @UiField SelectWidget listType_;
    @UiField FormLabel labelIncremental_;

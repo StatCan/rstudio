@@ -30,6 +30,7 @@ import org.rstudio.studio.client.workbench.views.buildtools.events.BuildComplete
 import org.rstudio.studio.client.workbench.views.buildtools.events.BuildErrorsEvent;
 import org.rstudio.studio.client.workbench.views.buildtools.events.BuildOutputEvent;
 import org.rstudio.studio.client.workbench.views.buildtools.events.BuildStartedEvent;
+import org.rstudio.studio.client.workbench.views.output.OutputConstants;
 
 public class TestsOutputTab
    extends DelayLoadWorkbenchTab<TestsOutputPresenter>
@@ -53,8 +54,7 @@ public class TestsOutputTab
                          EventBus events,
                          final Session session)
    {
-      // i18n: Enumerator, user facing text, or both?
-      super("Tests", shim);
+      super(constants_.testsTaskName(), shim);
       shim_ = shim;
 
       events.addHandler(BuildStartedEvent.TYPE, shim);
@@ -83,4 +83,5 @@ public class TestsOutputTab
    }
 
    private final Shim shim_;
+   private static final OutputConstants constants_ = com.google.gwt.core.client.GWT.create(OutputConstants.class);
 }

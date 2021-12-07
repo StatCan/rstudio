@@ -202,18 +202,18 @@ public class PanmirrorDialogs {
    
    public Promise<PanmirrorAttrEditResult> editAttr(PanmirrorAttrProps attr, String idHint)
    {
-      return editPanmirrorAttr(_constants.editAttributesCaption(), null, idHint, attr);
+      return editPanmirrorAttr(constants_.editAttributesCaption(), null, idHint, attr);
    }
 
    
    public Promise<PanmirrorAttrEditResult> editSpan(PanmirrorAttrProps attr)
    {
-      return editPanmirrorAttr(_constants.spanAttributesCaption(), _constants.unwrapSpanRemoveButtonCaption(), null, attr);
+      return editPanmirrorAttr(constants_.spanAttributesCaption(), constants_.unwrapSpanRemoveButtonCaption(), null, attr);
    }
    
    public Promise<PanmirrorAttrEditResult> editDiv(PanmirrorAttrProps attr, boolean removeEnabled)
    {
-      return editPanmirrorAttr(_constants.divAttributesCaption(), removeEnabled ? _constants.unwrapSpanRemoveButtonCaption() : null, null, attr);
+      return editPanmirrorAttr(constants_.divAttributesCaption(), removeEnabled ? constants_.unwrapSpanRemoveButtonCaption() : null, null, attr);
    }
    
 
@@ -329,7 +329,7 @@ public class PanmirrorDialogs {
    
    private GlobalDisplay globalDisplay_; 
    private PanmirrorUIContext uiContext_;
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 }
 
 

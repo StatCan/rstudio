@@ -16,11 +16,13 @@ package org.rstudio.studio.client.common.filetypes;
 
 import java.util.HashSet;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.FilePosition;
 import org.rstudio.core.client.command.AppCommand;
 import org.rstudio.core.client.files.FileSystemItem;
 import org.rstudio.core.client.resources.ImageResource2x;
 import org.rstudio.studio.client.application.events.EventBus;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 import org.rstudio.studio.client.common.filetypes.model.NavigationMethods;
 import org.rstudio.studio.client.workbench.commands.Commands;
 import org.rstudio.studio.client.workbench.views.source.editors.profiler.OpenProfileEvent;
@@ -29,8 +31,7 @@ public class ProfilerType extends EditableFileType
 {
    public ProfilerType()
    {
-      // i18n: Enum or user text?
-      super("r_prof", "R Profiler",
+      super("r_prof", constants_.rProfilerLabel(),
             new ImageResource2x(FileIconResources.INSTANCE.iconRdoc2x()));
    }
    
@@ -64,4 +65,5 @@ public class ProfilerType extends EditableFileType
    {
       return ".Rprofvis";
    }
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 }

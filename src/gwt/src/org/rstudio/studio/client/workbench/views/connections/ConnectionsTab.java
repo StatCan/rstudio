@@ -12,6 +12,7 @@
  */
 package org.rstudio.studio.client.workbench.views.connections;
 
+import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 
 import org.rstudio.core.client.command.CommandBinder;
@@ -57,7 +58,7 @@ public class ConnectionsTab extends DelayLoadWorkbenchTab<ConnectionsPresenter>
                          EventBus eventBus,
                          Session session)
    {
-      super("Connections", shim);
+      super(constants_.connectionsTitle(), shim);
       binder.bind(commands, shim);
       session_ = session;
       eventBus_ = eventBus;
@@ -93,4 +94,5 @@ public class ConnectionsTab extends DelayLoadWorkbenchTab<ConnectionsPresenter>
 
    private Session session_;
    private EventBus eventBus_;
+   private static final ConnectionsConstants constants_ = GWT.create(ConnectionsConstants.class);
 }

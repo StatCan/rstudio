@@ -23,6 +23,9 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Widget;
+
+import java.util.List;
+
 import org.rstudio.core.client.CoreClientConstants;
 import org.rstudio.core.client.ElementIds;
 import org.rstudio.core.client.widget.ModalDialogBase;
@@ -34,8 +37,6 @@ import org.rstudio.studio.client.application.ApplicationQuit;
 import org.rstudio.studio.client.application.events.ReloadEvent;
 import org.rstudio.studio.client.common.GlobalDisplay;
 import org.rstudio.studio.client.workbench.model.Session;
-
-import java.util.List;
 
 public abstract class PreferencesDialogBase<T> extends ModalDialogBase
 {
@@ -251,8 +252,7 @@ public abstract class PreferencesDialogBase<T> extends ModalDialogBase
       globalDisplay.showYesNoMessage(
             GlobalDisplay.MSG_QUESTION,
             constants_.restartRequiredCaption(),
-            constants_.restartRequiredMessage() +
-                  constants_.restartNowMessage(),
+            constants_.restartRequiredMessage(),
             () -> onRestart(quit, session),
             true);
    }
@@ -269,8 +269,7 @@ public abstract class PreferencesDialogBase<T> extends ModalDialogBase
       display.showYesNoMessage(
             GlobalDisplay.MSG_QUESTION,
             constants_.restartRequiredCaption(),
-              constants_.restartRequiredMessage() +
-                      constants_.restartNowMessage(),
+            constants_.restartRequiredMessage(),
             () -> onRestartSession(),
             true);
    }

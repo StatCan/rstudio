@@ -41,7 +41,7 @@ public class PanmirrorCommandPaletteItem extends BasePaletteItem<PanmirrorComman
    @Override
    public boolean matchesSearch(String[] keywords)
    {
-      return super.labelMatchesSearch(_constants.visualEditorLabel(cmd_.getFullMenuText()), keywords);
+      return super.labelMatchesSearch(constants_.visualEditorLabel(cmd_.getFullMenuText()), keywords);
    }
 
    @Override
@@ -69,5 +69,5 @@ public class PanmirrorCommandPaletteItem extends BasePaletteItem<PanmirrorComman
    }
 
    private final PanmirrorCommandUI cmd_;
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 }

@@ -48,7 +48,7 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
                                   PanmirrorLinkCapabilities capabilities,
                                   OperationWithInput<PanmirrorLinkEditResult> operation)
    {
-      super(_constants.linkLabel(), Roles.getDialogRole(), operation, () -> {
+      super(constants_.linkLabel(), Roles.getDialogRole(), operation, () -> {
          // cancel returns null
          operation.execute(null);
       });
@@ -60,10 +60,10 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
 
       if (!StringUtil.isNullOrEmpty(link.href))
       {
-         ThemedButton removeLinkButton = new ThemedButton(_constants.removeLinkTitle());
+         ThemedButton removeLinkButton = new ThemedButton(constants_.removeLinkTitle());
          removeLinkButton.addClickHandler((event) -> {
             PanmirrorLinkEditResult result = collectInput();
-            result.action = "remove"; //NON-NLS
+            result.action = "remove";
             validateAndGo(result, new Command()
             {
                @Override
@@ -89,14 +89,14 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
       text_ = PanmirrorDialogsUtil.addTextBox(
          linkTab,
          ElementIds.VISUAL_MD_LINK_TEXT,
-         textLabel_ = new FormLabel(_constants.textFormLabel()),
+         textLabel_ = new FormLabel(constants_.textFormLabel()),
          link.text
       );
 
       title_ = PanmirrorDialogsUtil.addTextBox(
          linkTab,
          ElementIds.VISUAL_MD_LINK_TITLE,
-         titleLabel_ = new FormLabel(_constants.titleToolTipLabel()),
+         titleLabel_ = new FormLabel(constants_.titleToolTipLabel()),
          link.title
       );
 
@@ -117,10 +117,10 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
          attributesTab.addStyleName(RES.styles().dialog());
          attributesTab.add(editAttr_);
 
-         DialogTabLayoutPanel tabPanel = new DialogTabLayoutPanel(_constants.imageLabel());
+         DialogTabLayoutPanel tabPanel = new DialogTabLayoutPanel(constants_.imageLabel());
          tabPanel.addStyleName(RES.styles().linkDialogTabs());
-         tabPanel.add(linkTab, _constants.linkLabel(), linkTab.getBasePanelId());
-         tabPanel.add(attributesTab, _constants.attributesText(), attributesTab.getBasePanelId());
+         tabPanel.add(linkTab, constants_.linkLabel(), linkTab.getBasePanelId());
+         tabPanel.add(attributesTab, constants_.attributesText(), attributesTab.getBasePanelId());
          tabPanel.selectTab(0);
 
          mainWidget_ = tabPanel;
@@ -148,7 +148,7 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
    protected PanmirrorLinkEditResult collectInput()
    {
       PanmirrorLinkEditResult result = new PanmirrorLinkEditResult();
-      result.action = "edit"; //$NON-NLS-1$
+      result.action = "edit";
       result.link = new PanmirrorLinkProps();
       result.link.type = href_.getType();
       result.link.href = href_.getHRef();
@@ -180,7 +180,7 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
       if (StringUtil.isNullOrEmpty(result.link.href))
       {
          globalDisplay.showErrorMessage(
-            _constants.errorCaption(), _constants.validateErrorMessage()
+            constants_.errorCaption(), constants_.validateErrorMessage()
          );
          href_.focus();
          return false;
@@ -216,5 +216,5 @@ public class PanmirrorEditLinkDialog extends ModalDialog<PanmirrorLinkEditResult
    private final PanmirrorLinkCapabilities capabilities_;
 
    private final PanmirrorEditAttrWidget editAttr_;
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 }

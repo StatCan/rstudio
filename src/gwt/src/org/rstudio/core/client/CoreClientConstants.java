@@ -1,13 +1,27 @@
+/*
+ * CoreClientConstants.java
+ *
+ * Copyright (C) 2021 by RStudio, PBC
+ *
+ * Unless you have received this program directly from RStudio pursuant
+ * to the terms of a commercial license agreement with RStudio, then
+ * this program is licensed to you under the terms of version 3 of the
+ * GNU Affero General Public License. This program is distributed WITHOUT
+ * ANY EXPRESS OR IMPLIED WARRANTY, INCLUDING THOSE OF NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE. Please refer to the
+ * AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
+ *
+ */
 package org.rstudio.core.client;
 
-public interface CoreClientConstants extends com.google.gwt.i18n.client.Constants {
+public interface CoreClientConstants extends com.google.gwt.i18n.client.Messages {
 
     /**
      * Translated "Cancel".
      *
      * @return translated "Cancel"
      */
-    @DefaultStringValue("Cancel")
+    @DefaultMessage("Cancel")
     @Key("cancelLabel")
     String cancelLabel();
 
@@ -16,7 +30,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "No"
      */
-    @DefaultStringValue("No")
+    @DefaultMessage("No")
     @Key("noLabel")
     String noLabel();
 
@@ -25,7 +39,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Yes"
      */
-    @DefaultStringValue("Yes")
+    @DefaultMessage("Yes")
     @Key("yesLabel")
     String yesLabel();
 
@@ -34,7 +48,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "OK"
      */
-    @DefaultStringValue("OK")
+    @DefaultMessage("OK")
     @Key("okayLabel")
     String okayLabel();
 
@@ -43,7 +57,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Not Yet Implemented"
      */
-    @DefaultStringValue("Not Yet Implemented")
+    @DefaultMessage("Not Yet Implemented")
     @Key("notYetImplementedCaption")
     String notYetImplementedCaption();
 
@@ -52,7 +66,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "This feature has not yet been implemented."
      */
-    @DefaultStringValue("This feature has not yet been implemented.")
+    @DefaultMessage("This feature has not yet been implemented.")
     @Key("notYetImplementedMessage")
     String notYetImplementedMessage();
 
@@ -61,169 +75,79 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Popup Blocked"
      */
-    @DefaultStringValue("Popup Blocked")
+    @DefaultMessage("Popup Blocked")
     @Key("popupBlockCaption")
     String popupBlockCaption();
-
-    /**
-     * Translated "We attempted to open an external browser window, but".
-     *
-     * @return translated "We attempted to open an external browser window, but"
-     */
-    @DefaultStringValue("We attempted to open an external browser window, but")
-    @Key("popupBlockMessage")
-    String popupBlockMessage();
-
-    /**
-     * Translated "the action was prevented by your popup blocker. You".
-     *
-     * @return translated "the action was prevented by your popup blocker. You"
-     */
-    @DefaultStringValue("the action was prevented by your popup blocker. You")
-    @Key("popupBlockActionMessage")
-    String popupBlockActionMessage();
-
-    /**
-     * Translated "can attempt to open the window again by pressing the".
-     *
-     * @return translated "can attempt to open the window again by pressing the"
-     */
-    @DefaultStringValue("can attempt to open the window again by pressing the")
-    @Key("popupBlockAttemptMessage")
-    String popupBlockAttemptMessage();
-
-    /**
-     * Translated "Try Again" button below.\n\n".
-     *
-     * @return translated "can attempt Try Again" button below.\n\n"
-     */
-    @DefaultStringValue("Try Again\" button below.\\n\\n")
-    @Key("popupBlockTryAgainMessage")
-    String popupBlockTryAgainMessage();
-
-    /**
-     * Translated "NOTE: To prevent seeing this message in the future, you".
-     *
-     * @return translated "NOTE: To prevent seeing this message in the future, you"
-     */
-    @DefaultStringValue("NOTE: To prevent seeing this message in the future, you")
-    @Key("popupBlockNote")
-    String popupBlockNote();
-
-    /**
-     * Translated "should configure your browser to allow popup windows".
-     *
-     * @return translated "should configure your browser to allow popup windows"
-     */
-    @DefaultStringValue("should configure your browser to allow popup windows")
-    @Key("popupBlockAllowMessage")
-    String popupBlockAllowMessage();
-
-    /**
-     * Translated "for".
-     *
-     * @return translated "for"
-     */
-    @DefaultStringValue("for")
-    @Key("popupBlockFor")
-    String popupBlockFor();
 
     /**
      * Translated "Try Again".
      *
      * @return translated "Try Again"
      */
-    @DefaultStringValue("Try Again")
+    @DefaultMessage("Try Again")
     @Key("popupBlockTryAgainLabel")
     String popupBlockTryAgainLabel();
 
     /**
-     * Translated "cannot add - already running".
+     * Translated "{0} second".
      *
-     * @return translated "cannot add - already running"
+     * @return translated "{0} second"
      */
-    @DefaultStringValue("cannot add - already running")
-    @Key("addCommandLabel")
-    String addCommandLabel();
-
-    /**
-     * Translated "already running".
-     *
-     * @return translated "already running"
-     */
-    @DefaultStringValue("already running")
-    @Key("runningLabel")
-    String runningLabel();
-
-    /**
-     * Translated "finished cmd".
-     *
-     * @return translated "finished cmd"
-     */
-    @DefaultStringValue("finished cmd")
-    @Key("finishedCmdLabel")
-    String finishedCmdLabel();
-
-    /**
-     * Translated "countdown".
-     *
-     * @return translated "countdown"
-     */
-    @DefaultStringValue("countdown")
-    @Key("countdownLabel")
-    String countdownLabel();
-
-    /**
-     * Translated "done".
-     *
-     * @return translated "done"
-     */
-    @DefaultStringValue("done")
-    @Key("doneLabel")
-    String doneLabel();
-
-    /**
-     * Translated "size=".
-     *
-     * @return translated "size="
-     */
-    @DefaultStringValue("size=")
-    @Key("logSizeLabel")
-    String logSizeLabel();
-
-    /**
-     * Translated "second".
-     *
-     * @return translated "second"
-     */
-    @DefaultStringValue("second")
+    @DefaultMessage("{0} second")
     @Key("secondLabel")
-    String secondLabel();
+    String secondLabel(int second);
 
     /**
-     * Translated "minute".
+     * Translated "{0} seconds".
      *
-     * @return translated "minute"
+     * @return translated "{0} seconds"
      */
-    @DefaultStringValue("minute")
+    @DefaultMessage("{0} seconds")
+    @Key("secondPluralLabel")
+    String secondPluralLabel(int seconds);
+
+    /**
+     * Translated "{0} minute".
+     *
+     * @return translated "{0} minute"
+     */
+    @DefaultMessage("{0} minute")
     @Key("minuteLabel")
-    String minuteLabel();
+    String minuteLabel(int minute);
 
     /**
-     * Translated "hour".
+     * Translated "{0} minutes".
      *
-     * @return translated "hour"
+     * @return translated "{0} minutes"
      */
-    @DefaultStringValue("hour")
+    @DefaultMessage("{0} minutes")
+    @Key("minutePluralLabel")
+    String minutePluralLabel(int minutes);
+
+    /**
+     * Translated "{0} hour".
+     *
+     * @return translated "{0} hour"
+     */
+    @DefaultMessage("{0} hour")
     @Key("hourLabel")
-    String hourLabel();
+    String hourLabel(int hour);
+
+    /**
+     * Translated "{0} hours".
+     *
+     * @return translated "{0} hours"
+     */
+    @DefaultMessage("{0} hours")
+    @Key("hourPluralLabel")
+    String hourPluralLabel(int hours);
 
     /**
      * Translated "Type shortcuts to see if they are bound to a command. Close this message bar when done.".
      *
      * @return translated "Type shortcuts to see if they are bound to a command. Close this message bar when done."
      */
-    @DefaultStringValue("Type shortcuts to see if they are bound to a command. Close this message bar when done.")
+    @DefaultMessage("Type shortcuts to see if they are bound to a command. Close this message bar when done.")
     @Key("reportShortCutMessage")
     String reportShortCutMessage();
 
@@ -232,7 +156,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Multi-gesture shortcut pending"
      */
-    @DefaultStringValue("Multi-gesture shortcut pending")
+    @DefaultMessage("Multi-gesture shortcut pending")
     @Key("multiGestureMessage")
     String multiGestureMessage();
 
@@ -241,7 +165,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Shortcut not bound"
      */
-    @DefaultStringValue("Shortcut not bound")
+    @DefaultMessage("Shortcut not bound")
     @Key("shortcutUnBoundMessage")
     String shortcutUnBoundMessage();
 
@@ -250,7 +174,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Name is empty"
      */
-    @DefaultStringValue("Name is empty")
+    @DefaultMessage("Name is empty")
     @Key("nameEmptyMessage")
     String nameEmptyMessage();
 
@@ -259,7 +183,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Names should not start or end with spaces"
      */
-    @DefaultStringValue("Names should not start or end with spaces")
+    @DefaultMessage("Names should not start or end with spaces")
     @Key("nameStartWithMessage")
     String nameStartWithMessage();
 
@@ -268,7 +192,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Illegal character: /"
      */
-    @DefaultStringValue("Illegal character: /")
+    @DefaultMessage("Illegal character: /")
     @Key("nameIllegalCharacterMessage")
     String nameIllegalCharacterMessage();
 
@@ -277,7 +201,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Illegal name"
      */
-    @DefaultStringValue("Illegal name")
+    @DefaultMessage("Illegal name")
     @Key("illegalNameMessage")
     String illegalNameMessage();
 
@@ -286,7 +210,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Folder"
      */
-    @DefaultStringValue("Folder")
+    @DefaultMessage("Folder")
     @Key("fileNameLabel")
     String fileNameLabel();
 
@@ -295,7 +219,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "File name"
      */
-    @DefaultStringValue("File name")
+    @DefaultMessage("File name")
     @Key("getFilenameLabel")
     String getFilenameLabel();
 
@@ -304,25 +228,16 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "File does not exist"
      */
-    @DefaultStringValue("File does not exist")
+    @DefaultMessage("File does not exist")
     @Key("nonexistentFileMessage")
     String nonexistentFileMessage();
-
-    /**
-     * Translated "This case should be covered by navigateIfDirectory".
-     *
-     * @return translated "This case should be covered by navigateIfDirectory"
-     */
-    @DefaultStringValue("This case should be covered by navigateIfDirectory")
-    @Key("navigateIfDirectoryMessage")
-    String navigateIfDirectoryMessage();
 
     /**
      * Translated "Open Project".
      *
      * @return translated "Open Project"
      */
-    @DefaultStringValue("Open Project")
+    @DefaultMessage("Open Project")
     @Key("openProjectTitle")
     String openProjectTitle();
 
@@ -331,7 +246,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Open"
      */
-    @DefaultStringValue("Open")
+    @DefaultMessage("Open")
     @Key("openButtonTitle")
     String openButtonTitle();
 
@@ -340,7 +255,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "R Projects (*.RProj)"
      */
-    @DefaultStringValue("R Projects (*.RProj)")
+    @DefaultMessage("R Projects (*.RProj)")
     @Key("rProjectsFilter")
     String rProjectsFilter();
 
@@ -349,7 +264,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Open in new session"
      */
-    @DefaultStringValue("Open in new session")
+    @DefaultMessage("Open in new session")
     @Key("newSessionCheckLabel")
     String newSessionCheckLabel();
 
@@ -358,7 +273,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Create"
      */
-    @DefaultStringValue("Create")
+    @DefaultMessage("Create")
     @Key("createButtonTitle")
     String createButtonTitle();
 
@@ -367,7 +282,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Selected path breadcrumb"
      */
-    @DefaultStringValue("Selected path breadcrumb")
+    @DefaultMessage("Selected path breadcrumb")
     @Key("pathBreadCrumbSelectPath")
     String pathBreadCrumbSelectPath();
 
@@ -376,7 +291,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Go to directory"
      */
-    @DefaultStringValue("Go to directory")
+    @DefaultMessage("Go to directory")
     @Key("pathBreadCrumbButtonTitle")
     String pathBreadCrumbButtonTitle();
 
@@ -385,7 +300,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Go to project directory"
      */
-    @DefaultStringValue("Go to project directory")
+    @DefaultMessage("Go to project directory")
     @Key("projectIconDesc")
     String projectIconDesc();
 
@@ -394,7 +309,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Home"
      */
-    @DefaultStringValue("Home")
+    @DefaultMessage("Home")
     @Key("anchorHomeText")
     String anchorHomeText();
 
@@ -403,7 +318,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Cloud"
      */
-    @DefaultStringValue("Cloud")
+    @DefaultMessage("Cloud")
     @Key("cloudHomeText")
     String cloudHomeText();
 
@@ -412,7 +327,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Go To Folder"
      */
-    @DefaultStringValue("Go To Folder")
+    @DefaultMessage("Go To Folder")
     @Key("browseFolderCaption")
     String browseFolderCaption();
 
@@ -421,7 +336,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Path to folder (use ~ for home directory):"
      */
-    @DefaultStringValue("Path to folder (use ~ for home directory):")
+    @DefaultMessage("Path to folder (use ~ for home directory):")
     @Key("browseFolderLabel")
     String browseFolderLabel();
 
@@ -430,7 +345,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Confirm Overwrite"
      */
-    @DefaultStringValue("Confirm Overwrite")
+    @DefaultMessage("Confirm Overwrite")
     @Key("showOverwriteCaption")
     String showOverwriteCaption();
 
@@ -439,34 +354,17 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "This file already exists. Do you want to replace it?"
      */
-    @DefaultStringValue("This file already exists. Do you want to replace it?")
+    @DefaultMessage("This file already exists. Do you want to replace it?")
     @Key("showOverwriteMessage")
     String showOverwriteMessage();
 
-    /**
-     * Translated "Status code ".
-     *
-     * @return translated "Status code "
-     */
-    @DefaultStringValue("Status code ")
-    @Key("onResponseStatusCodeMessage")
-    String onResponseStatusCodeMessage();
-
-    /**
-     * Translated "returned by ".
-     *
-     * @return translated "returned by "
-     */
-    @DefaultStringValue("returned by ")
-    @Key("onResponseReturnedBy")
-    String onResponseReturnedBy();
 
     /**
      * Translated "R session".
      *
      * @return translated "R session"
      */
-    @DefaultStringValue("R session")
+    @DefaultMessage("R session")
     @Key("rSessionMessage")
     String rSessionMessage();
 
@@ -475,25 +373,16 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "RStudio Server"
      */
-    @DefaultStringValue("RStudio Server")
+    @DefaultMessage("RStudio Server")
     @Key("rStudioServerMessage")
     String rStudioServerMessage();
-
-    /**
-     * Translated "when executing '".
-     *
-     * @return translated "when executing '"
-     */
-    @DefaultStringValue("when executing '")
-    @Key("whenExecutingMessage")
-    String whenExecutingMessage();
 
     /**
      * Translated "Unable to establish connection with ".
      *
      * @return translated "Unable to establish connection with "
      */
-    @DefaultStringValue("Unable to establish connection with ")
+    @DefaultMessage("Unable to establish connection with ")
     @Key("statusCodeMessage")
     String statusCodeMessage();
 
@@ -502,7 +391,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "OK"
      */
-    @DefaultStringValue("OK")
+    @DefaultMessage("OK")
     @Key("okButtonTitle")
     String okButtonTitle();
 
@@ -511,7 +400,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Apply"
      */
-    @DefaultStringValue("Apply")
+    @DefaultMessage("Apply")
     @Key("addButtonTitle")
     String addButtonTitle();
 
@@ -520,7 +409,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Saving..."
      */
-    @DefaultStringValue("Saving...")
+    @DefaultMessage("Saving...")
     @Key("progressIndicatorTitle")
     String progressIndicatorTitle();
 
@@ -529,34 +418,16 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Restart Required"
      */
-    @DefaultStringValue("Restart Required")
+    @DefaultMessage("Restart Required")
     @Key("restartRequiredCaption")
     String restartRequiredCaption();
-
-    /**
-     * Translated "You need to restart RStudio in order for these changes to take effect. ".
-     *
-     * @return translated "You need to restart RStudio in order for these changes to take effect. "
-     */
-    @DefaultStringValue("You need to restart RStudio in order for these changes to take effect. ")
-    @Key("restartRequiredMessage")
-    String restartRequiredMessage();
-
-    /**
-     * Translated "Do you want to do this now?".
-     *
-     * @return translated "Do you want to do this now?"
-     */
-    @DefaultStringValue("Do you want to do this now?")
-    @Key("restartNowMessage")
-    String restartNowMessage();
 
     /**
      * Translated "Working...".
      *
      * @return translated "Working..."
      */
-    @DefaultStringValue("Working...")
+    @DefaultMessage("Working...")
     @Key("promiseWithProgress")
     String promiseWithProgress();
 
@@ -565,7 +436,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Error"
      */
-    @DefaultStringValue("Error")
+    @DefaultMessage("Error")
     @Key("promiseWithProgressError")
     String promiseWithProgressError();
 
@@ -574,7 +445,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Documents"
      */
-    @DefaultStringValue("Documents")
+    @DefaultMessage("Documents")
     @Key("documentsTabList")
     String documentsTabList();
 
@@ -583,7 +454,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Rename"
      */
-    @DefaultStringValue("Rename")
+    @DefaultMessage("Rename")
     @Key("renameMenuItem")
     String renameMenuItem();
 
@@ -592,7 +463,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Copy Path"
      */
-    @DefaultStringValue("Copy Path")
+    @DefaultMessage("Copy Path")
     @Key("copyPathMenuItem")
     String copyPathMenuItem();
 
@@ -601,7 +472,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Set Working Directory"
      */
-    @DefaultStringValue("Set Working Directory")
+    @DefaultMessage("Set Working Directory")
     @Key("setWorkingDirMenuItem")
     String setWorkingDirMenuItem();
 
@@ -610,7 +481,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Close"
      */
-    @DefaultStringValue("Close")
+    @DefaultMessage("Close")
     @Key("closeMenuItem")
     String closeMenuItem();
 
@@ -619,7 +490,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Close All"
      */
-    @DefaultStringValue("Close All")
+    @DefaultMessage("Close All")
     @Key("closeAllMenuItem")
     String closeAllMenuItem();
 
@@ -628,7 +499,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Close All Others"
      */
-    @DefaultStringValue("Close All Others")
+    @DefaultMessage("Close All Others")
     @Key("closeOthersMenuItem")
     String closeOthersMenuItem();
 
@@ -637,88 +508,25 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Close document tab"
      */
-    @DefaultStringValue("Close document tab")
+    @DefaultMessage("Close document tab")
     @Key("closeTabText")
     String closeTabText();
-
-    /**
-     * Translated "Close".
-     *
-     * @return translated "Close"
-     */
-    @DefaultStringValue("Close")
-    @Key("closeButtonText")
-    String closeButtonText();
-
-    /**
-     * Translated "tab".
-     *
-     * @return translated "tab"
-     */
-    @DefaultStringValue("tab")
-    @Key("closeAltTabText")
-    String closeAltTabText();
 
     /**
      * Translated "WindowFrameButton: for keyboard support use setClickHandler instead of addClickHandler".
      *
      * @return translated "WindowFrameButton: for keyboard support use setClickHandler instead of addClickHandler"
      */
-    @DefaultStringValue("WindowFrameButton: for keyboard support use setClickHandler instead of addClickHandler")
+    @DefaultMessage("WindowFrameButton: for keyboard support use setClickHandler instead of addClickHandler")
     @Key("addClickHandlerMessage")
     String addClickHandlerMessage();
-
-    /**
-     * Translated "Minimize".
-     *
-     * @return translated "Minimize"
-     */
-    @DefaultStringValue("Minimize")
-    @Key("minimizeState")
-    String minimizeState();
-
-    /**
-     * Translated "Maximize".
-     *
-     * @return translated "Maximize"
-     */
-    @DefaultStringValue("Maximize")
-    @Key("maximizeState")
-    String maximizeState();
-
-    /**
-     * Translated "Restore".
-     *
-     * @return translated "Restore"
-     */
-    @DefaultStringValue("Restore")
-    @Key("normalState")
-    String normalState();
-
-    /**
-     * Translated "Hide".
-     *
-     * @return translated "Hide"
-     */
-    @DefaultStringValue("Hide")
-    @Key("hideState")
-    String hideState();
-
-    /**
-     * Translated "Exclusive".
-     *
-     * @return translated "Exclusive"
-     */
-    @DefaultStringValue("Exclusive")
-    @Key("exclusiveState")
-    String exclusiveState();
 
     /**
      * Translated "Could Not Change Setting"
      *
      * @return translated "Could Not Change Setting"
      */
-    @DefaultStringValue("Could Not Change Setting")
+    @DefaultMessage("Could Not Change Setting")
     @Key("docPropErrorMessage")
     String docPropErrorMessage();
 
@@ -727,7 +535,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Close popup"
      */
-    @DefaultStringValue("Close popup")
+    @DefaultMessage("Close popup")
     @Key("closePopupText")
     String closePopupText();
 
@@ -736,7 +544,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Please use a complete file path."
      */
-    @DefaultStringValue("Please use a complete file path.")
+    @DefaultMessage("Please use a complete file path.")
     @Key("themeButtonOnErrorMessage")
     String themeButtonOnErrorMessage();
 
@@ -745,34 +553,16 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Unexpected empty response from server"
      */
-    @DefaultStringValue("Unexpected empty response from server")
+    @DefaultMessage("Unexpected empty response from server")
     @Key("onSubmitErrorMessage")
     String onSubmitErrorMessage();
-
-    /**
-     * Translated "Package ".
-     *
-     * @return translated "Package "
-     */
-    @DefaultStringValue("Package ")
-    @Key("packageMessage")
-    String packageMessage();
-
-    /**
-     * Translated "required but is not installed."
-     *
-     * @return translated "required but is not installed."
-     */
-    @DefaultStringValue("required but is not installed.")
-    @Key("packageNotInstalledMessage")
-    String packageNotInstalledMessage();
 
     /**
      * Translated "and "
      *
      * @return translated "and "
      */
-    @DefaultStringValue("and ")
+    @DefaultMessage("and ")
     @Key("andText")
     String andText();
 
@@ -781,7 +571,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Install"
      */
-    @DefaultStringValue("Install")
+    @DefaultMessage("Install")
     @Key("installText")
     String installText();
 
@@ -790,7 +580,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Don't Show Again"
      */
-    @DefaultStringValue("Don't Show Again")
+    @DefaultMessage("Don''t Show Again")
     @Key("donnotShowAgain")
     String donnotShowAgain();
 
@@ -799,7 +589,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Markdown format changes require a reload of the visual editor."
      */
-    @DefaultStringValue("Markdown format changes require a reload of the visual editor.")
+    @DefaultMessage("Markdown format changes require a reload of the visual editor.")
     @Key("showPanmirrorText")
     String showPanmirrorText();
 
@@ -808,7 +598,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Reload Now"
      */
-    @DefaultStringValue("Reload Now")
+    @DefaultMessage("Reload Now")
     @Key("reloadNowText")
     String reloadNowText();
 
@@ -817,7 +607,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Install TinyTeX"
      */
-    @DefaultStringValue("Install TinyTeX")
+    @DefaultMessage("Install TinyTeX")
     @Key("installTinyTexText")
     String installTinyTexText();
 
@@ -826,7 +616,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "This document is read only."
      */
-    @DefaultStringValue("This document is read only.")
+    @DefaultMessage("This document is read only.")
     @Key("showReadOnlyWarningText")
     String showReadOnlyWarningText();
 
@@ -835,25 +625,17 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "This document is read only. Generated from:"
      */
-    @DefaultStringValue("This document is read only. Generated from:")
+    @DefaultMessage("This document is read only. Generated from:")
     @Key("showReadOnlyWarningGeneratedText")
     String showReadOnlyWarningGeneratedText();
 
-    /**
-     * Translated "others required but are not installed."
-     *
-     * @return translated "others required but are not installed."
-     */
-    @DefaultStringValue("others required but are not installed.")
-    @Key("packageRequiredMessage")
-    String packageRequiredMessage();
 
     /**
      * Translated "Add"
      *
      * @return translated "Add"
      */
-    @DefaultStringValue("Add")
+    @DefaultMessage("Add")
     @Key("buttonAddCaption")
     String buttonAddCaption();
 
@@ -862,7 +644,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Remove"
      */
-    @DefaultStringValue("Remove")
+    @DefaultMessage("Remove")
     @Key("buttonRemoveCaption")
     String buttonRemoveCaption();
 
@@ -871,7 +653,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Local repositories:"
      */
-    @DefaultStringValue("Local repositories:")
+    @DefaultMessage("Local repositories:")
     @Key("localReposText")
     String localReposText();
 
@@ -880,7 +662,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Help on local Packrat repositories"
      */
-    @DefaultStringValue("Help on local Packrat repositories")
+    @DefaultMessage("Help on local Packrat repositories")
     @Key("localReposTitle")
     String localReposTitle();
 
@@ -889,7 +671,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Add Local Repository"
      */
-    @DefaultStringValue("Add Local Repository")
+    @DefaultMessage("Add Local Repository")
     @Key("addLocalRepoText")
     String addLocalRepoText();
 
@@ -898,7 +680,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Error"
      */
-    @DefaultStringValue("Error")
+    @DefaultMessage("Error")
     @Key("errorCaption")
     String errorCaption();
 
@@ -908,7 +690,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "No bindings available"
      */
-    @DefaultStringValue("No bindings available")
+    @DefaultMessage("No bindings available")
     @Key("emptyLabel")
     String emptyLabel();
 
@@ -917,7 +699,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Keyboard Shortcuts"
      */
-    @DefaultStringValue("Keyboard Shortcuts")
+    @DefaultMessage("Keyboard Shortcuts")
     @Key("keyboardShortcutsText")
     String keyboardShortcutsText();
 
@@ -926,7 +708,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Apply"
      */
-    @DefaultStringValue("Apply")
+    @DefaultMessage("Apply")
     @Key("applyThemeButtonText")
     String applyThemeButtonText();
 
@@ -935,7 +717,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "All"
      */
-    @DefaultStringValue("All")
+    @DefaultMessage("All")
     @Key("radioButtonLabel")
     String radioButtonLabel();
 
@@ -944,7 +726,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Customized"
      */
-    @DefaultStringValue("Customized")
+    @DefaultMessage("Customized")
     @Key("radioCustomizedLabel")
     String radioCustomizedLabel();
 
@@ -953,7 +735,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Filter keyboard shortcuts"
      */
-    @DefaultStringValue("Filter keyboard shortcuts")
+    @DefaultMessage("Filter keyboard shortcuts")
     @Key("filterWidgetLabel")
     String filterWidgetLabel();
 
@@ -962,7 +744,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Filter..."
      */
-    @DefaultStringValue("Filter...")
+    @DefaultMessage("Filter...")
     @Key("filterWidgetPlaceholderText")
     String filterWidgetPlaceholderText();
 
@@ -971,7 +753,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Reset..."
      */
-    @DefaultStringValue("Reset...")
+    @DefaultMessage("Reset...")
     @Key("resetButtonText")
     String resetButtonText();
 
@@ -980,34 +762,16 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Reset Keyboard Shortcuts"
      */
-    @DefaultStringValue("Reset Keyboard Shortcuts")
+    @DefaultMessage("Reset Keyboard Shortcuts")
     @Key("resetKeyboardShortcutsCaption")
     String resetKeyboardShortcutsCaption();
-
-    /**
-     * Translated "Are you sure you want to reset keyboard shortcuts to their default values? "
-     *
-     * @return translated "Are you sure you want to reset keyboard shortcuts to their default values? "
-     */
-    @DefaultStringValue("Are you sure you want to reset keyboard shortcuts to their default values? ")
-    @Key("resetKeyboardShortcutsMessage")
-    String resetKeyboardShortcutsMessage();
-
-    /**
-     * Translated "This action cannot be undone."
-     *
-     * @return translated "This action cannot be undone."
-     */
-    @DefaultStringValue("This action cannot be undone.")
-    @Key("cannotUndoShortcutsMessage")
-    String cannotUndoShortcutsMessage();
 
     /**
      * Translated "Resetting Keyboard Shortcuts..."
      *
      * @return translated "Resetting Keyboard Shortcuts..."
      */
-    @DefaultStringValue("Resetting Keyboard Shortcuts...")
+    @DefaultMessage("Resetting Keyboard Shortcuts...")
     @Key("resetKeyboardShortcutsProgress")
     String resetKeyboardShortcutsProgress();
 
@@ -1016,7 +780,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Name"
      */
-    @DefaultStringValue("Name")
+    @DefaultMessage("Name")
     @Key("nameColumnText")
     String nameColumnText();
 
@@ -1025,7 +789,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Shortcut"
      */
-    @DefaultStringValue("Shortcut")
+    @DefaultMessage("Shortcut")
     @Key("editableTextColumn")
     String editableTextColumn();
 
@@ -1034,7 +798,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Scope"
      */
-    @DefaultStringValue("Scope")
+    @DefaultMessage("Scope")
     @Key("scopeTextColumn")
     String scopeTextColumn();
 
@@ -1043,7 +807,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Failed to find <input> element in table"
      */
-    @DefaultStringValue("Failed to find <input> element in table")
+    @DefaultMessage("Failed to find <input> element in table")
     @Key("tagNameErrorMessage")
     String tagNameErrorMessage();
 
@@ -1052,7 +816,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Show:"
      */
-    @DefaultStringValue("Show:")
+    @DefaultMessage("Show:")
     @Key("radioShowLabel")
     String radioShowLabel();
 
@@ -1061,7 +825,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Customizing Keyboard Shortcuts"
      */
-    @DefaultStringValue("Customizing Keyboard Shortcuts")
+    @DefaultMessage("Customizing Keyboard Shortcuts")
     @Key("customizeKeyboardHelpLink")
     String customizeKeyboardHelpLink();
 
@@ -1070,7 +834,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Masked by RStudio command: "
      */
-    @DefaultStringValue("Masked by RStudio command: ")
+    @DefaultMessage("Masked by RStudio command: ")
     @Key("addMaskedCommandStylesText")
     String addMaskedCommandStylesText();
 
@@ -1079,7 +843,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Conflicts with command: "
      */
-    @DefaultStringValue("Conflicts with command: ")
+    @DefaultMessage("Conflicts with command: ")
     @Key("addConflictCommandStylesText")
     String addConflictCommandStylesText();
 
@@ -1088,7 +852,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Refresh Automatically"
      */
-    @DefaultStringValue("Refresh Automatically")
+    @DefaultMessage("Refresh Automatically")
     @Key("refreshAutomaticallyLabel")
     String refreshAutomaticallyLabel();
 
@@ -1097,70 +861,25 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Manual Refresh Only"
      */
-    @DefaultStringValue("Manual Refresh Only")
+    @DefaultMessage("Manual Refresh Only")
     @Key("manualRefreshOnlyLabel")
     String manualRefreshOnlyLabel();
-
-    /**
-     * Translated "must be a valid number."
-     *
-     * @return translated "must be a valid number."
-     */
-    @DefaultStringValue("must be a valid number.")
-    @Key("rStudioGinjectorErrorMessage")
-    String rStudioGinjectorErrorMessage();
-
-    /**
-     * Translated "must be greater than or equal to "
-     *
-     * @return translated "must be greater than or equal to "
-     */
-    @DefaultStringValue("must be greater than or equal to ")
-    @Key("rStudioGinjectorGreaterThanError")
-    String rStudioGinjectorGreaterThanError();
-
-    /**
-     * Translated "must be less than or equal to "
-     *
-     * @return translated "must be less than or equal to  "
-     */
-    @DefaultStringValue("must be less than or equal to ")
-    @Key("rStudioGinjectorLessThanError")
-    String rStudioGinjectorLessThanError();
 
     /**
      * Translated "Stop"
      *
      * @return translated "Stop"
      */
-    @DefaultStringValue("Stop")
+    @DefaultMessage("Stop")
     @Key("stopButtonText")
     String stopButtonText();
-
-    /**
-     * Translated "Operation completed"
-     *
-     * @return translated "Operation completed"
-     */
-    @DefaultStringValue("Operation completed")
-    @Key("operationCompletedText")
-    String operationCompletedText();
-
-    /**
-     * Translated "completed"
-     *
-     * @return translated "completed"
-     */
-    @DefaultStringValue("completed")
-    @Key("completedText")
-    String completedText();
 
     /**
      * Translated "Secondary Window"
      *
      * @return translated "Secondary Window"
      */
-    @DefaultStringValue("Secondary Window")
+    @DefaultMessage("Secondary Window")
     @Key("satelliteToolBarText")
     String satelliteToolBarText();
 
@@ -1169,7 +888,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Clear text"
      */
-    @DefaultStringValue("Clear text")
+    @DefaultMessage("Clear text")
     @Key("searchWidgetClearText")
     String searchWidgetClearText();
 
@@ -1178,7 +897,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "(None)"
      */
-    @DefaultStringValue("(None)")
+    @DefaultMessage("(None)")
     @Key("selectWidgetListBoxNone")
     String selectWidgetListBoxNone();
 
@@ -1187,7 +906,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Keyboard Shortcut Quick Reference"
      */
-    @DefaultStringValue("Keyboard Shortcut Quick Reference")
+    @DefaultMessage("Keyboard Shortcut Quick Reference")
     @Key("shortcutHeaderText")
     String shortcutHeaderText();
 
@@ -1196,7 +915,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Tabs"
      */
-    @DefaultStringValue("Tabs")
+    @DefaultMessage("Tabs")
     @Key("tabsGroupName")
     String tabsGroupName();
 
@@ -1205,7 +924,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Panes"
      */
-    @DefaultStringValue("Panes")
+    @DefaultMessage("Panes")
     @Key("panesGroupName")
     String panesGroupName();
 
@@ -1214,7 +933,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Files"
      */
-    @DefaultStringValue("Files")
+    @DefaultMessage("Files")
     @Key("filesGroupName")
     String filesGroupName();
 
@@ -1223,7 +942,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Main Menu (Server)"
      */
-    @DefaultStringValue("Main Menu (Server)")
+    @DefaultMessage("Main Menu (Server)")
     @Key("mainMenuGroupName")
     String mainMenuGroupName();
 
@@ -1232,7 +951,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Source Navigation"
      */
-    @DefaultStringValue("Source Navigation")
+    @DefaultMessage("Source Navigation")
     @Key("sourceNavigationGroupName")
     String sourceNavigationGroupName();
 
@@ -1241,7 +960,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Execute"
      */
-    @DefaultStringValue("Execute")
+    @DefaultMessage("Execute")
     @Key("executeGroupName")
     String executeGroupName();
 
@@ -1250,7 +969,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Source Editor"
      */
-    @DefaultStringValue("Source Editor")
+    @DefaultMessage("Source Editor")
     @Key("sourceEditorGroupName")
     String sourceEditorGroupName();
 
@@ -1259,7 +978,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Debug"
      */
-    @DefaultStringValue("Debug")
+    @DefaultMessage("Debug")
     @Key("debugGroupName")
     String debugGroupName();
 
@@ -1268,7 +987,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Accessibility"
      */
-    @DefaultStringValue("Accessibility")
+    @DefaultMessage("Accessibility")
     @Key("accessibilityGroupName")
     String accessibilityGroupName();
 
@@ -1277,7 +996,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Source Control"
      */
-    @DefaultStringValue("Source Control")
+    @DefaultMessage("Source Control")
     @Key("sourceControlGroupName")
     String sourceControlGroupName();
 
@@ -1286,7 +1005,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Build"
      */
-    @DefaultStringValue("Build")
+    @DefaultMessage("Build")
     @Key("buildGroupName")
     String buildGroupName();
 
@@ -1295,7 +1014,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Console"
      */
-    @DefaultStringValue("Console")
+    @DefaultMessage("Console")
     @Key("consoleGroupName")
     String consoleGroupName();
 
@@ -1304,7 +1023,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Terminal"
      */
-    @DefaultStringValue("Terminal")
+    @DefaultMessage("Terminal")
     @Key("terminalGroupName")
     String terminalGroupName();
 
@@ -1313,7 +1032,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Other"
      */
-    @DefaultStringValue("Other")
+    @DefaultMessage("Other")
     @Key("otherGroupName")
     String otherGroupName();
 
@@ -1322,7 +1041,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Add Shift to zoom (maximize) pane."
      */
-    @DefaultStringValue("Add Shift to zoom (maximize) pane.")
+    @DefaultMessage("Add Shift to zoom (maximize) pane.")
     @Key("addShiftPTag")
     String addShiftPTag();
 
@@ -1331,7 +1050,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Invalid usage, cannot provide both label and existingLabel"
      */
-    @DefaultStringValue("Invalid usage, cannot provide both label and existingLabel")
+    @DefaultMessage("Invalid usage, cannot provide both label and existingLabel")
     @Key("existingLabelMessage")
     String existingLabelMessage();
 
@@ -1340,7 +1059,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "[Use Default]"
      */
-    @DefaultStringValue("[Use Default]")
+    @DefaultMessage("[Use Default]")
     @Key("useDefaultPrefix")
     String useDefaultPrefix();
 
@@ -1349,7 +1068,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "You must enter a value."
      */
-    @DefaultStringValue("You must enter a value.")
+    @DefaultMessage("You must enter a value.")
     @Key("validateMessage")
     String validateMessage();
 
@@ -1358,7 +1077,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Not a valid number."
      */
-    @DefaultStringValue("Not a valid number.")
+    @DefaultMessage("Not a valid number.")
     @Key("notValidNumberMessage")
     String notValidNumberMessage();
 
@@ -1367,7 +1086,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Vim Keyboard Shortcuts"
      */
-    @DefaultStringValue("Vim Keyboard Shortcuts")
+    @DefaultMessage("Vim Keyboard Shortcuts")
     @Key("vimKeyboardShortcutsText")
     String vimKeyboardShortcutsText();
 
@@ -1376,7 +1095,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Next"
      */
-    @DefaultStringValue("Next")
+    @DefaultMessage("Next")
     @Key("nextButtonText")
     String nextButtonText();
 
@@ -1385,7 +1104,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Back"
      */
-    @DefaultStringValue("Back")
+    @DefaultMessage("Back")
     @Key("backButtonText")
     String backButtonText();
 
@@ -1394,7 +1113,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Info"
      */
-    @DefaultStringValue("Info")
+    @DefaultMessage("Info")
     @Key("dialogInfoText")
     String dialogInfoText();
 
@@ -1403,7 +1122,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Directory Contents"
      */
-    @DefaultStringValue("Directory Contents")
+    @DefaultMessage("Directory Contents")
     @Key("directoryContentsLabel")
     String directoryContentsLabel();
 
@@ -1412,7 +1131,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "New Folder"
      */
-    @DefaultStringValue("New Folder")
+    @DefaultMessage("New Folder")
     @Key("newFolderTitle")
     String newFolderTitle();
 
@@ -1421,7 +1140,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Folder name"
      */
-    @DefaultStringValue("Folder name")
+    @DefaultMessage("Folder name")
     @Key("folderNameLabel")
     String folderNameLabel();
 
@@ -1430,7 +1149,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "for"
      */
-    @DefaultStringValue("for")
+    @DefaultMessage("for")
     @Key("forAttributeName")
     String forAttributeName();
 
@@ -1439,7 +1158,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "spellcheck"
      */
-    @DefaultStringValue("spellcheck")
+    @DefaultMessage("spellcheck")
     @Key("spellCheckAttribute")
     String spellCheckAttribute();
 
@@ -1448,7 +1167,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Warning"
      */
-    @DefaultStringValue("Warning")
+    @DefaultMessage("Warning")
     @Key("dialogWarningText")
     String dialogWarningText();
 
@@ -1457,7 +1176,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Question"
      */
-    @DefaultStringValue("Question")
+    @DefaultMessage("Question")
     @Key("dialogQuestionText")
     String dialogQuestionText();
 
@@ -1466,7 +1185,7 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Popup Blocked"
      */
-    @DefaultStringValue("Popup Blocked")
+    @DefaultMessage("Popup Blocked")
     @Key("dialogPopupBlockedText")
     String dialogPopupBlockedText();
 
@@ -1475,26 +1194,16 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Error"
      */
-    @DefaultStringValue("Error")
+    @DefaultMessage("Error")
     @Key("dialogErrorText")
     String dialogErrorText();
-
-
-    /**
-     * Translated "minimized"
-     *
-     * @return translated "minimized"
-     */
-    @DefaultStringValue("minimized")
-    @Key("minimizedTabListRole")
-    String minimizedTabListRole();
 
     /**
      * Translated "No potentially focusable controls found in modal dialog"
      *
      * @return translated "No potentially focusable controls found in modal dialog"
      */
-    @DefaultStringValue("No potentially focusable controls found in modal dialog")
+    @DefaultMessage("No potentially focusable controls found in modal dialog")
     @Key("noFocusableControlsLog")
     String noFocusableControlsLog();
 
@@ -1503,16 +1212,16 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Manual Refresh Only"
      */
-    @DefaultStringValue("Manual Refresh Only")
+    @DefaultMessage("Manual Refresh Only")
     @Key("manualRefreshLabel")
     String manualRefreshLabel();
 
     /**
-     * Translated "Can't create progress spinner (no HTML5 canvas support)"
+     * Translated "Can''t create progress spinner (no HTML5 canvas support)"
      *
-     * @return translated "Can't create progress spinner (no HTML5 canvas support)"
+     * @return translated "Can''t create progress spinner (no HTML5 canvas support)"
      */
-    @DefaultStringValue("Can't create progress spinner (no HTML5 canvas support)")
+    @DefaultMessage("Can''t create progress spinner (no HTML5 canvas support)")
     @Key("progressSpinnerLog")
     String progressSpinnerLog();
 
@@ -1521,37 +1230,224 @@ public interface CoreClientConstants extends com.google.gwt.i18n.client.Constant
      *
      * @return translated "Busy"
      */
-    @DefaultStringValue("Busy")
+    @DefaultMessage("Busy")
     @Key("busyLabel")
     String busyLabel();
-
-    /**
-     * Translated "Request: "
-     *
-     * @return translated "Request: "
-     */
-    @DefaultStringValue("Request: ")
-    @Key("requestDebugLog")
-    String requestDebugLog();
 
     /**
      * Translated "[REDACTED]"
      *
      * @return translated "[REDACTED]"
      */
-    @DefaultStringValue("[REDACTED]")
+    @DefaultMessage("[REDACTED]")
     @Key("redactedText")
     String redactedText();
 
+
     /**
-     * Translated "Response: "
+     * Translated "Vim keyboard shortcut help not screen reader accessible. Press any key to close."
      *
-     * @return translated "Response: "
+     * @return translated "Vim keyboard shortcut help not screen reader accessible. Press any key to close."
      */
-    @DefaultStringValue("Response: ")
-    @Key("responseText")
-    String responseText();
+    @DefaultMessage("Vim keyboard shortcut help not screen reader accessible. Press any key to close.")
+    @Key("vimKeyboardShortcutHelpMessage")
+    String vimKeyboardShortcutHelpMessage();
 
+    /**
+     * Translated "We attempted to open an external browser window, but the action was prevented by your popup blocker. You can attempt to open the window again by pressing the "Try Again" button below. NOTE: To prevent seeing this message in the future, you should configure your browser to allow popup windows for {0}."
+     *
+     * @return translated "We attempted to open an external browser window, but the action was prevented by your popup blocker. You can attempt to open the window again by pressing the "Try Again" button below. NOTE: To prevent seeing this message in the future, you should configure your browser to allow popup windows for {0}."
+     */
+    @DefaultMessage("We attempted to open an external browser window, but the action was prevented by your popup blocker. You can attempt to open the window again by pressing the \"Try Again\" button below. NOTE: To prevent seeing this message in the future, you should configure your browser to allow popup windows for {0}.")
+    @Key("showPopupBlockMessage")
+    String showPopupBlockMessage(String hostName);
 
+    /**
+     * Translated "Status code {0} returned by {1} when executing ''{2}''"
+     *
+     * @return translated "Status code {0} returned by {1} when executing ''{2}''"
+     */
+    @DefaultMessage("Status code {0} returned by {1} when executing ''{2}''")
+    @Key("rpcErrorMessage")
+    String rpcErrorMessage(String statusCode, String desktop, String method);
 
+    /**
+     * Translated "Unable to establish connection with {0} when executing ''{1}''"
+     *
+     * @return translated "Unable to establish connection with {0} when executing ''{1}''"
+     */
+    @DefaultMessage("Unable to establish connection with {0} when executing ''{1}''")
+    @Key("rpcOverrideErrorMessage")
+    String rpcOverrideErrorMessage(String desktop, String method);
+
+    /**
+     * Translated "You need to restart RStudio in order for these changes to take effect. Do you want to do this now?"
+     *
+     * @return translated "You need to restart RStudio in order for these changes to take effect. Do you want to do this now?"
+     */
+    @DefaultMessage("You need to restart RStudio in order for these changes to take effect. Do you want to do this now?")
+    @Key("restartRequiredMessage")
+    String restartRequiredMessage();
+
+    /**
+     * Translated "{0} minimized"
+     *
+     * @return translated "{0} minimized"
+     */
+    @DefaultMessage("{0} minimized")
+    @Key("minimizedTabListRole")
+    String minimizedTabListRole(String accessibleName);
+
+    /**
+     * Translated "Close"
+     *
+     * @return translated "Close"
+     */
+    @DefaultMessage("Close")
+    @Key("closeText")
+    String closeText();
+
+    /**
+     * Translated "Close {0} tab"
+     *
+     * @return translated "Close {0} tab"
+     */
+    @DefaultMessage("Close {0} tab")
+    @Key("closeButtonText")
+    String closeButtonText(String title);
+
+    /**
+     * Translated "Minimize {0}"
+     *
+     * @return translated "Minimize {0}"
+     */
+    @DefaultMessage("Minimize {0}")
+    @Key("minimizeState")
+    String minimizeState(String name);
+
+    /**
+     * Translated "Maximize {0}"
+     *
+     * @return translated "Maximize {0}"
+     */
+    @DefaultMessage("Maximize {0}")
+    @Key("maximizeState")
+    String maximizeState(String name);
+
+    /**
+     * Translated "Restore {0}"
+     *
+     * @return translated "Restore {0}"
+     */
+    @DefaultMessage("Restore {0}")
+    @Key("normalState")
+    String normalState(String name);
+
+    /**
+     * Translated "Hide {0}"
+     *
+     * @return translated "Hide {0}"
+     */
+    @DefaultMessage("Hide {0}")
+    @Key("hideState")
+    String hideState(String name);
+
+    /**
+     * Translated "Exclusive {0}"
+     *
+     * @return translated "Exclusive {0}"
+     */
+    @DefaultMessage("Exclusive {0}")
+    @Key("exclusiveState")
+    String exclusiveState(String name);
+
+    /**
+     * Translated "Package {0} required but is not installed."
+     *
+     * @return translated "Package {0} required but is not installed."
+     */
+    @DefaultMessage("Package {0} required but is not installed.")
+    @Key("package1Message")
+    String package1Message(String packages);
+
+    /**
+     * Translated "Package {0} and {1} required but are not installed."
+     *
+     * @return translated "Package {0} and {1} required but are not installed."
+     */
+    @DefaultMessage("Package {0} and {1} required but are not installed.")
+    @Key("packages2Message")
+    String packages2Message(String package0, String package1);
+
+    /**
+     * Translated "Packages {0} , {1} , and {2} required but are not installed."
+     *
+     * @return translated "Packages {0} , {1} , and {2} required but are not installed."
+     */
+    @DefaultMessage("Packages {0} , {1} , and {2} required but are not installed.")
+    @Key("packages3Message")
+    String packages3Message(String package0, String package1, String package2);
+
+    /**
+     * Translated "Packages {0} , {1} , and {2} others required but are not installed."
+     *
+     * @return translated "Packages {0} , {1} , and {2} others required but are not installed."
+     */
+    @DefaultMessage("Packages {0} , {1} , and {2} others required but are not installed.")
+    @Key("otherPackagesMessage")
+    String otherPackagesMessage(String package0, String package1, String package2);
+
+    /**
+     * Translated "Are you sure you want to reset keyboard shortcuts to their default values? This action cannot be undone."
+     *
+     * @return translated "Are you sure you want to reset keyboard shortcuts to their default values? This action cannot be undone."
+     */
+    @DefaultMessage("Are you sure you want to reset keyboard shortcuts to their default values? This action cannot be undone.")
+    @Key("resetKeyboardShortcutsMessage")
+    String resetKeyboardShortcutsMessage();
+
+    /**
+     * Translated "{0} must be a valid number."
+     *
+     * @return translated "{0} must be a valid number."
+     */
+    @DefaultMessage("{0} must be a valid number.")
+    @Key("rStudioGinjectorErrorMessage")
+    String rStudioGinjectorErrorMessage(String label);
+
+    /**
+     * Translated "{0} must be greater than or equal to {1}."
+     *
+     * @return translated "{0} must be greater than or equal to {1}."
+     */
+    @DefaultMessage("{0} must be greater than or equal to {1}.")
+    @Key("rStudioGinjectorGreaterThanError")
+    String rStudioGinjectorGreaterThanError(String label, int minValue);
+
+    /**
+     * Translated "{0} must be less than or equal to {1}."
+     *
+     * @return translated "{0} must be less than or equal to {1}."
+     */
+    @DefaultMessage("{0} must be less than or equal to {1}.")
+    @Key("rStudioGinjectorLessThanError")
+    String rStudioGinjectorLessThanError(String label, int maxValue);
+
+    /**
+     * Translated "Operation completed "
+     *
+     * @return translated "Operation completed "
+     */
+    @DefaultMessage("Operation completed ")
+    @Key("operationCompletedText")
+    String operationCompletedText();
+
+    /**
+     * Translated "{0} completed"
+     *
+     * @return translated "{0} completed"
+     */
+    @DefaultMessage("{0} completed")
+    @Key("completedText")
+    String completedText(String labelText);
 }

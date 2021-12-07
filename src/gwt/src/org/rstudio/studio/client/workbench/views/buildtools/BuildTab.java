@@ -14,6 +14,7 @@
  */
 package org.rstudio.studio.client.workbench.views.buildtools;
 
+import com.google.gwt.core.client.GWT;
 import com.google.inject.Inject;
 
 import org.rstudio.core.client.command.CommandBinder;
@@ -72,7 +73,8 @@ public class BuildTab extends DelayLoadWorkbenchTab<BuildPresenter>
                    EventBus eventBus,
                    UserPrefs uiPrefs)
    {
-      super("Build", shim); // i18n?
+      super(constants_.buildText(),  shim);
+      
       session_ = session;
       binder.bind(commands, shim);
 
@@ -103,4 +105,5 @@ public class BuildTab extends DelayLoadWorkbenchTab<BuildPresenter>
    }
 
    private final Session session_;
+   private static final ViewBuildtoolsConstants constants_ = GWT.create(ViewBuildtoolsConstants.class);
 }

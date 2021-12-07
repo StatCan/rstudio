@@ -43,7 +43,7 @@ public class PanmirrorEditCodeBlockDialog extends ModalDialog<PanmirrorCodeBlock
                String[] languages,
                OperationWithInput<PanmirrorCodeBlockProps> operation)
    {
-      super(_constants.codeBlockText(), Roles.getDialogRole(), operation, () -> {
+      super(constants_.codeBlockText(), Roles.getDialogRole(), operation, () -> {
          // cancel returns null
          operation.execute(null);
       });
@@ -52,10 +52,10 @@ public class PanmirrorEditCodeBlockDialog extends ModalDialog<PanmirrorCodeBlock
       VerticalTabPanel langTab = new VerticalTabPanel(ElementIds.VISUAL_MD_CODE_BLOCK_TAB_LANGUAGE);
       langTab.addStyleName(RES.styles().dialog());
       HorizontalPanel labelPanel = new HorizontalPanel();
-      FormLabel labelLanguage = new FormLabel(_constants.languageFormLabel());
+      FormLabel labelLanguage = new FormLabel(constants_.languageFormLabel());
       labelLanguage.setElementId(ElementIds.getElementId(ElementIds.VISUAL_MD_CODE_BLOCK_LANG_LABEL1));
       labelPanel.add(labelLanguage);
-      FormLabel langInfo = new FormLabel(_constants.optionalFormLabel());
+      FormLabel langInfo = new FormLabel(constants_.optionalFormLabel());
       langInfo.setElementId(ElementIds.getElementId(ElementIds.VISUAL_MD_CODE_BLOCK_LANG_LABEL2));
       langInfo.addStyleName(RES.styles().inlineInfoLabel());
 
@@ -79,10 +79,10 @@ public class PanmirrorEditCodeBlockDialog extends ModalDialog<PanmirrorCodeBlock
 
       if (attributes)
       {
-         DialogTabLayoutPanel tabPanel = new DialogTabLayoutPanel(_constants.codeBlockText());
+         DialogTabLayoutPanel tabPanel = new DialogTabLayoutPanel(constants_.codeBlockText());
          tabPanel.addStyleName(RES.styles().linkDialogTabs());
-         tabPanel.add(langTab, _constants.languageFormLabel(), langTab.getBasePanelId());
-         tabPanel.add(attributesTab, _constants.attributesText(), attributesTab.getBasePanelId());
+         tabPanel.add(langTab, constants_.languageFormLabel(), langTab.getBasePanelId());
+         tabPanel.add(attributesTab, constants_.attributesText(), attributesTab.getBasePanelId());
          tabPanel.selectTab(0);
 
          mainWidget_ = tabPanel;
@@ -131,5 +131,5 @@ public class PanmirrorEditCodeBlockDialog extends ModalDialog<PanmirrorCodeBlock
 
    private SuggestBox lang_;
    private PanmirrorEditAttrWidget editAttr_;
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 }

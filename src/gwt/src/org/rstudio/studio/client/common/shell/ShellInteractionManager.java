@@ -81,7 +81,7 @@ public class ShellInteractionManager implements ShellOutputWriter
    {
       // show the error in the console then re-prompt
       display_.consoleWriteError(
-            constants_.consoleWriteError() + error + "\n");
+              constants_.consoleWriteError(error));
       if (lastPromptText_ != null)
          consolePrompt(lastPromptText_, false);
    }
@@ -179,7 +179,6 @@ public class ShellInteractionManager implements ShellOutputWriter
    private boolean showInputForPrompt(String prompt)
    {
       String promptLower = prompt.trim().toLowerCase();
-      // i18n: How to handle this?  is this monitoring something that is i18n'd or not?  Below mentions subversion
       boolean hasPassword = promptLower.contains("password") ||
                             promptLower.contains("passphrase");
 
@@ -193,7 +192,6 @@ public class ShellInteractionManager implements ShellOutputWriter
       {
          // detect yes/no prompt and make that an exception (subversion
          // does a yes/no for asking whether to store the password unencrypted)
-         // i18n: How to handle this?  is this monitoring something that is i18n'd or not?  subversion is mentioned
          boolean hasYesNo = promptLower.endsWith("(yes/no)?") ||
                             promptLower.endsWith("(y/n)?");
          return hasYesNo;
@@ -246,7 +244,7 @@ public class ShellInteractionManager implements ShellOutputWriter
             event.stopPropagation();
 
             if (display_.isPromptEmpty())
-               display_.consoleWriteOutput("^C"); //$NON-NLS-1$
+               display_.consoleWriteOutput("^C");
 
             inputHandler_.execute(ShellInput.createInterrupt());
          }

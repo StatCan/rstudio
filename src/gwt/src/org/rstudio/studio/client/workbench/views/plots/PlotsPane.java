@@ -51,8 +51,7 @@ public class PlotsPane extends WorkbenchPane implements Plots.Display,
    public PlotsPane(Commands commands, EventBus events, PlotsServerOperations server,
          DependencyManager dependencies)
    {
-      // i18n: Is this enum, user, or both?
-      super("Plots", events);
+      super(constants_.plotsTitle(), events);
       commands_ = commands;
       server_ = server;
       dependencies_ = dependencies;
@@ -69,14 +68,14 @@ public class PlotsPane extends WorkbenchPane implements Plots.Display,
          @Override
          public String getTitle()
          {
-            return "Current Plot";
+            return constants_.currentPlotTitle();
          }
 
          @Override
          public void generatePublishHtml(
                final CommandWithArg<String> onComplete)
          {
-            dependencies_.withRMarkdown("Publishing plots", new Command()
+            dependencies_.withRMarkdown(constants_.publishingPlotsLabel(), new Command()
             {
                @Override
                public void execute()
@@ -86,7 +85,7 @@ public class PlotsPane extends WorkbenchPane implements Plots.Display,
                        new Size(400, 350),
                        new Size(800, 700));
                   server_.plotsCreateRPubsHtml(
-                     "Plot",
+                     constants_.plotText(),
                      "",
                      size.width,
                      size.height,
@@ -114,10 +113,10 @@ public class PlotsPane extends WorkbenchPane implements Plots.Display,
       panel_.setSize("100%", "100%");
 
       frame_ = new ImageFrame("Plots Pane");
-      frame_.setStyleName("rstudio-HelpFrame"); //$NON-NLS-1$
+      frame_.setStyleName("rstudio-HelpFrame");
       frame_.setMarginWidth(0);
       frame_.setMarginHeight(0);
-      frame_.setUrl("about:blank"); //$NON-NLS-1$
+      frame_.setUrl("about:blank");
       frame_.setSize("100%", "100%");
       ElementIds.assignElementId(frame_.getElement(),
                                  ElementIds.PLOT_IMAGE_FRAME);
@@ -250,5 +249,6 @@ public class PlotsPane extends WorkbenchPane implements Plots.Display,
          plotsToolbar_.removeCustomToolbar();
       }
    };
+   private static final PlotsConstants constants_ = com.google.gwt.core.client.GWT.create(PlotsConstants.class);
 
 }

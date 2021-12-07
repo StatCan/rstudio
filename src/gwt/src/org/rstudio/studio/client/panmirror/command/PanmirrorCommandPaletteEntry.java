@@ -48,7 +48,7 @@ public class PanmirrorCommandPaletteEntry extends CommandPaletteCommand
    @Override
    public String getContext()
    {
-      return _constants.visualEditorText();
+      return constants_.visualEditorText();
    }
 
    @Override
@@ -67,5 +67,5 @@ public class PanmirrorCommandPaletteEntry extends CommandPaletteCommand
          keys.add(keySequence);
       return keys;
    }
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 }

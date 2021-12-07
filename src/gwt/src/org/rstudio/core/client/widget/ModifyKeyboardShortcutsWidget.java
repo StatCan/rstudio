@@ -61,7 +61,14 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.inject.Inject;
 
-import org.rstudio.core.client.*;
+import org.rstudio.core.client.CommandWithArg;
+import org.rstudio.core.client.CoreClientConstants;
+import org.rstudio.core.client.ElementIds;
+import org.rstudio.core.client.Pair;
+import org.rstudio.core.client.ParallelCommandList;
+import org.rstudio.core.client.SerializedCommand;
+import org.rstudio.core.client.SerializedCommandQueue;
+import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.command.*;
 import org.rstudio.core.client.command.EditorCommandManager.EditorKeyBinding;
 import org.rstudio.core.client.command.EditorCommandManager.EditorKeyBindings;
@@ -85,7 +92,6 @@ import org.rstudio.studio.client.workbench.addins.AddinsCommandManager;
 import org.rstudio.studio.client.workbench.addins.AddinsKeyBindingsChangedEvent;
 import org.rstudio.studio.client.workbench.addins.AddinsServerOperations;
 import org.rstudio.studio.client.workbench.commands.Commands;
-import org.rstudio.studio.client.workbench.prefs.views.PreferencesPaneConstants;
 import org.rstudio.studio.client.workbench.views.console.shell.assist.PopupPositioner;
 import org.rstudio.studio.client.workbench.views.source.editors.text.ace.AceCommand;
 
@@ -141,8 +147,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
       public String getDisplayType()
       {
          if (commandType_ == TYPE_EDITOR_COMMAND)
-            // i18n: Is this shown to user or just an enum?
-            return "Editor"; //NON-NLS
+            return "Editor";
          
          return context_.toString();
       }
@@ -368,7 +373,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
       });
 
       ElementIds.assignElementId(filterWidget_, ElementIds.KYBRD_SHRTCTS_FILTER_WIDGET);
-
+      
       filterWidget_.addValueChangeHandler(new ValueChangeHandler<String>()
       {
          @Override
@@ -388,8 +393,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
             globalDisplay_.showYesNoMessage(
                   GlobalDisplay.MSG_QUESTION,
                   constants_.resetKeyboardShortcutsCaption(),
-                  constants_.resetKeyboardShortcutsMessage() +
-                  constants_.cannotUndoShortcutsMessage(),
+                  constants_.resetKeyboardShortcutsMessage(),
                   new ProgressOperation()
                   {
                      @Override
@@ -581,7 +585,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
             // element (thereby committing the current selection) and ensure
             // that selection has been appropriately reset in an earlier preview
             // handler.
-            if (event.getType()    == "keyup" && //NON-NLS
+            if (event.getType()    == "keyup" &&
                 event.getKeyCode() == KeyCodes.KEY_ESCAPE)
             {
                parent.getFirstChildElement().blur();
@@ -771,11 +775,11 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
    {
       NativeEvent event = preview.getNativeEvent();
       String type = event.getType();
-      if (type == "blur") //$NON-NLS-1$
+      if (type == "blur")
       {
          buffer_.clear();
       }
-      else if (type == "keydown") //$NON-NLS-1$
+      else if (type == "keydown")
       {
          int keyCode = event.getKeyCode();
          int modifiers = KeyboardShortcut.getModifierValue(event);
@@ -811,7 +815,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
       NativeEvent event = preview.getNativeEvent();
       String type = event.getType();
       
-      if (type == "keydown") //$NON-NLS-1$
+      if (type == "keydown")
       {
          int keyCode = event.getKeyCode();
          int modifiers = KeyboardShortcut.getModifierValue(event);
@@ -1224,7 +1228,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
       }, false);
       
       // start running everything by executing the getAddins command
-      getAddins.execute();
+      getAddins.execute(); 
    }
    
    private void updateData(List<KeyboardShortcutEntry> bindings)
@@ -1468,7 +1472,7 @@ public class ModifyKeyboardShortcutsWidget extends ModalDialogBase
 
    private ThemedButton resetButton_;
    private ThemedButton applyButton_;
-
+   
    // Columns ----
    private TextColumn<KeyboardShortcutEntry> nameColumn_;
    private Column<KeyboardShortcutEntry, String> shortcutColumn_;

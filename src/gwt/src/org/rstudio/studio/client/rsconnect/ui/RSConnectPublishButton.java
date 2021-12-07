@@ -16,6 +16,7 @@ package org.rstudio.studio.client.rsconnect.ui;
 
 import java.util.ArrayList;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.CommandWithArg;
 import org.rstudio.core.client.Debug;
 import org.rstudio.core.client.ElementIds;
@@ -43,6 +44,7 @@ import org.rstudio.studio.client.rmarkdown.model.RMarkdownServerOperations;
 import org.rstudio.studio.client.rmarkdown.model.RmdOutputInfo;
 import org.rstudio.studio.client.rmarkdown.model.RmdPreviewParams;
 import org.rstudio.studio.client.rsconnect.RSConnect;
+import org.rstudio.studio.client.rsconnect.RsconnectConstants;
 import org.rstudio.studio.client.rsconnect.events.RSConnectActionEvent;
 import org.rstudio.studio.client.rsconnect.events.RSConnectDeployInitiatedEvent;
 import org.rstudio.studio.client.rsconnect.events.RSConnectDeploymentCompletedEvent;
@@ -120,7 +122,7 @@ public class RSConnectPublishButton extends Composite
       
       // create drop menu of previous deployments/other commands
       publishMenu_ = new DeploymentPopupMenu();
-      publishMenuButton_ = new ToolbarMenuButton(ToolbarButton.NoText, "Publish options", publishMenu_, true);
+      publishMenuButton_ = new ToolbarMenuButton(ToolbarButton.NoText, constants_.publishOptions(), publishMenu_, true);
       panel.add(publishMenuButton_);
       
       // initialize composite widget
@@ -131,7 +133,7 @@ public class RSConnectPublishButton extends Composite
       
       // compute initial visible state
       applyVisibility();
-      applyCaption("Publish");
+      applyCaption(constants_.publish());
       setPreviousDeployments(null);
       
       // give ourselves some breathing room on the right
@@ -233,7 +235,7 @@ public class RSConnectPublishButton extends Composite
       applyVisibility();
    }
 
-
+   
    public void setShinyPreview(ShinyApplicationParams params)
    {
       String ext = params.getPath() == null ? "" :
@@ -269,7 +271,7 @@ public class RSConnectPublishButton extends Composite
       setContentPath(qmd, "");
 
       // Determine whether or not this Quarto file is part of a website; we
-      // presume it to be if it's inside the current project and the current project is a
+      // presume it to be if it's inside the current project and the current project is a 
       // Quarto website project or book
       boolean isWebsite = false;
       if (!StringUtil.isNullOrEmpty(qmd))
@@ -287,7 +289,7 @@ public class RSConnectPublishButton extends Composite
 
       applyVisibility();
    }
-
+   
    public void setQuartoDocPreview(String qmd, String outputFile)
    {
       setContentPath(qmd, outputFile);
@@ -502,14 +504,8 @@ public class RSConnectPublishButton extends Composite
             host = StringUtil.getAuthorityFromUrl(previous.getHostUrl());
 
          display_.showMessage(GlobalDisplay.MSG_WARNING, 
-               host + " Not Registered",
-               // i18n: Concatenation/Message
-               "This copy of the content has been published to the server " +
-               "'" + host + "', " +
-               "but you currently do not have any accounts registered on that server. \n\n" +
-               "Connect an account on the server " +
-               "'" + host + "' " + 
-               "to update the application, or publish the content to a different server.");
+               constants_.hostNotRegistered(host),
+               constants_.hostNotRegisteredMessage(host));
       }
       
       switch (contentType_)
@@ -518,8 +514,8 @@ public class RSConnectPublishButton extends Composite
       case RSConnect.CONTENT_TYPE_PRES:
          if (publishHtmlSource_ == null) 
          {
-            display_.showErrorMessage("Content Publish Failed",
-                  "No HTML could be generated for the content.");
+            display_.showErrorMessage(constants_.contentPublishFailed(),
+                  constants_.noHTMLGenerated());
             return;
          }
          publishHtmlSource_.generatePublishHtml(
@@ -568,10 +564,8 @@ public class RSConnectPublishButton extends Composite
          // All R Markdown variants (single/multiple and static/Shiny)
          if (docPreview_.getSourceFile() == null)
          {
-            display_.showErrorMessage("Unsaved Document",
-                  // i18n: Concatenation/Message
-                  "Unsaved documents cannot be published. Save the document " +
-                  "before publishing it.");
+            display_.showErrorMessage(constants_.unsavedDocument(),
+                  constants_.unsavedDocumentPublishMessage());
             break;
          }
          fireDeployDocEvent(previous);
@@ -580,13 +574,9 @@ public class RSConnectPublishButton extends Composite
          events_.fireEvent(RSConnectActionEvent.DeployAPIEvent(contentPath_, contentType_, previous));
          break;
       default: 
-         // should never happen
-         // i18n: Concatenation/Message
-         display_.showErrorMessage("Can't publish " + 
-            RSConnect.contentTypeDesc(contentType_), 
-            "The content type '" + 
-            RSConnect.contentTypeDesc(contentType_) + 
-            "' is not currently supported for publishing.");
+         // should never happen 
+         display_.showErrorMessage(constants_.cantPublishContent(RSConnect.contentTypeDesc(contentType_)),
+            constants_.contentNotSupportedForPublishing(RSConnect.contentTypeDesc(contentType_)));
       }
    }
    
@@ -600,7 +590,7 @@ public class RSConnectPublishButton extends Composite
       // republish
       if (recs != null && recs.length() > 0)
       {
-         applyCaption("Republish");
+         applyCaption(constants_.republish());
 
          // find the default (last deployed record)--this needs to be done as
          // a first pass so we can identify the associated menu item in one
@@ -633,7 +623,7 @@ public class RSConnectPublishButton extends Composite
          }
          
          publishMenu_.addItem(new MenuItem(
-               AppCommand.formatMenuLabel(null, "Clear List", null),
+               AppCommand.formatMenuLabel(null, constants_.clearList(), null),
                true,
                new Scheduler.ScheduledCommand()
                {
@@ -641,13 +631,13 @@ public class RSConnectPublishButton extends Composite
                   public void execute()
                   {
                      String appLabel = StringUtil.isNullOrEmpty(applicationPath_)
-                           ? "this application"
+                           ? constants_.thisApplication()
                            : "'" + applicationPath_ + "'";
                      
                      display_.showYesNoMessage(
                            GlobalDisplay.MSG_INFO,
-                           "Clear List",
-                           "Are you sure you want to remove all local deployment history for " + appLabel + "?",
+                           constants_.clearList(),
+                           constants_.removeLocalDeploymentMessage(appLabel),
                            false,
                            () -> { forgetDeployment(); },
                            null,
@@ -660,7 +650,7 @@ public class RSConnectPublishButton extends Composite
          publishMenu_.addItem(new MenuItem(
                AppCommand.formatMenuLabel(
                      commands_.rsconnectDeploy().getImageResource(), 
-                     "Other Destination...", null),
+                     constants_.otherDestination(), null),
                true,
                new Scheduler.ScheduledCommand()
                {
@@ -674,15 +664,14 @@ public class RSConnectPublishButton extends Composite
       else
       {
          // show first-time publish button caption
-         applyCaption("Publish");
+         applyCaption(constants_.publish());
 
          // no existing deployments to redeploy to, so just offer to make a new
          // one
          publishMenu_.addItem(new MenuItem(
                AppCommand.formatMenuLabel(
                      commands_.rsconnectDeploy().getImageResource(), 
-                     "Publish " + RSConnect.contentTypeDesc(contentType_) + 
-                     "...", null),
+                     constants_.publishContent(RSConnect.contentTypeDesc(contentType_)), null),
                true,
                new Scheduler.ScheduledCommand()
                {
@@ -724,7 +713,7 @@ public class RSConnectPublishButton extends Composite
                   {
                      RSConnectPublishSource source = 
                            new RSConnectPublishSource(htmlFile, null, 
-                                 true, true, false, false, "Plot", contentType_);
+                                 true, true, false, false, constants_.plot(), contentType_);
                      ArrayList<String> deployFiles = new ArrayList<>();
                      deployFiles.add(FilePathUtils.friendlyFileName(htmlFile));
                      RSConnectPublishSettings settings = 
@@ -884,7 +873,7 @@ public class RSConnectPublishButton extends Composite
       // via parent path)
       if ((contentType_ == RSConnect.CONTENT_TYPE_APP || 
             contentType_ == RSConnect.CONTENT_TYPE_PLUMBER_API) &&
-          StringUtil.getExtension(contentPath_).equalsIgnoreCase("r")) //$NON-NLS-1$
+          StringUtil.getExtension(contentPath_).equalsIgnoreCase("r")) 
          parent = true;
       
       if (contentType_ == RSConnect.CONTENT_TYPE_WEBSITE)
@@ -950,14 +939,13 @@ public class RSConnectPublishButton extends Composite
                   populateDeployments(true);
                   
                   String appLabel = StringUtil.isNullOrEmpty(applicationPath_)
-                        ? "this application"
+                        ? constants_.thisApplication()
                         : "'" + applicationPath_ + "'";
                   
                   display_.showMessage(
                         GlobalDisplay.MSG_INFO,
-                        "Clear List",
-                        // i18n: Concatenation/Message
-                        "Local deployment history for " + appLabel + " successfully removed.");
+                        constants_.clearList(),
+                        constants_.clearListMessage(appLabel));
                }
 
                @Override
@@ -995,10 +983,8 @@ public class RSConnectPublishButton extends Composite
                   public void onError(ServerError error)
                   {
                      Debug.logError(error);
-                     display_.showErrorMessage("Content Publish Failed",
-                           // i18n: Concatenation/Message
-                           "Unable to determine file to be published. Click Knit or Preview " +
-                           "to render it again, then click the Publish button above the rendered document.");
+                     display_.showErrorMessage(constants_.contentPublishFailed(),
+                           constants_.contentPublishFailedMessage());
                      rmdInfoPending_ = false;
                   }
                });
@@ -1009,16 +995,16 @@ public class RSConnectPublishButton extends Composite
       }
    }
    
-   public final static String HOST_EDITOR = "editor"; //$NON-NLS-1$
-   public final static String HOST_PLOTS = "plots_pane"; //$NON-NLS-1$
-   public final static String HOST_PRESENTATION = "presentation"; //$NON-NLS-1$
+   public final static String HOST_EDITOR = "editor";
+   public final static String HOST_PLOTS = "plots_pane";
+   public final static String HOST_PRESENTATION = "presentation";
    public final static String HOST_PRESENTATION2 = "presentation2";
-   public final static String HOST_PROFILER = "profiler"; //$NON-NLS-1$
-   public final static String HOST_RMD_OUTPUT = "rmd_output"; //$NON-NLS-1$
-   public final static String HOST_SHINY_APP = "shiny_app"; //$NON-NLS-1$
-   public final static String HOST_HTML_PREVIEW = "html_preview"; //$NON-NLS-1$
-   public final static String HOST_VIEWER = "viewer"; //$NON-NLS-1$
-   public final static String HOST_PLUMBER_API = "plumber_api"; //$NON-NLS-1$
+   public final static String HOST_PROFILER = "profiler";
+   public final static String HOST_RMD_OUTPUT = "rmd_output";
+   public final static String HOST_SHINY_APP = "shiny_app";
+   public final static String HOST_HTML_PREVIEW = "html_preview";
+   public final static String HOST_VIEWER = "viewer";
+   public final static String HOST_PLUMBER_API = "plumber_api";
    
    private final ToolbarButton publishButton_;
    private final DeploymentPopupMenu publishMenu_;
@@ -1055,4 +1041,5 @@ public class RSConnectPublishButton extends Composite
    private RSConnectDeploymentRecord defaultRec_;
    private final String host_;   
    private static boolean anyRmdRenderPending_ = false;
+   private static final RsconnectConstants constants_ = GWT.create(RsconnectConstants.class);
 }

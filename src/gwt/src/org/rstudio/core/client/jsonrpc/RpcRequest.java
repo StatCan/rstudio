@@ -74,9 +74,9 @@ public class RpcRequest
       JSONObject request = new JSONObject();
       request.put("method", new JSONString(method_));
       if ( params_ != null )
-         request.put("params", params_); //$NON-NLS-1$
+         request.put("params", params_);  
       if ( kwparams_ != null)
-         request.put("kwparams", kwparams_); //$NON-NLS-1$
+         request.put("kwparams", kwparams_);
       
       // add src window if we have it
       if (sourceWindow_ != null)
@@ -91,31 +91,29 @@ public class RpcRequest
       
       // configure request builder
       RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, url_);
-      builder.setHeader("Content-Type", "application/json"); //$NON-NLS-1$
-      builder.setHeader("Accept", "application/json"); //$NON-NLS-1$
+      builder.setHeader("Content-Type", "application/json");
+      builder.setHeader("Accept", "application/json");
       String requestId = Integer.toString(Random.nextInt());
-      builder.setHeader("X-RS-RID", requestId); //$NON-NLS-1$
+      builder.setHeader("X-RS-RID", requestId);
       
       // in server mode, append a CSRF token for request validation
       if (!Desktop.isDesktop())
       {
-         builder.setHeader("X-RS-CSRF-Token", ApplicationCsrfToken.getCsrfToken()); //$NON-NLS-1$
+         builder.setHeader("X-RS-CSRF-Token", ApplicationCsrfToken.getCsrfToken());
       }
 
       // inform the server if we should not refresh auth creds
       if (!refreshCredentials_)
-         builder.setHeader("X-RStudio-Refresh-Auth-Creds", "0"); //$NON-NLS-1$
+         builder.setHeader("X-RStudio-Refresh-Auth-Creds", "0");
       
       // send request
       try
       {
          String requestString = request.toString();
          if (TRACE)
-            Debug.log(constants_.requestDebugLog() + requestString);
+            Debug.log("Request: " + requestString);
 
          requestLogEntry_ = RequestLog.log(requestId,
-                                           // i18n: I think something similar is used elsewhere - is this shown to user
-                                           //       or an enumerator?
                                            redactLog_ ? constants_.redactedText()
                                                       : requestString);
 
@@ -145,7 +143,7 @@ public class RpcRequest
                   {
                      String responseText = response.getText();
                      if (TRACE)
-                        Debug.log(constants_.responseText() + responseText);
+                        Debug.log("Response: " + responseText);
                      requestLogEntry_.logResponse(ResponseType.Normal,
                                                  responseText);
                      rpcResponse = RpcResponse.parseUnsafe(responseText);
@@ -168,21 +166,14 @@ public class RpcRequest
                   // ERROR: Non-200 response from server
                   
                   // default error message
-                  // i18n: Concatenation/Message
-                  String message = constants_.onResponseStatusCodeMessage() +
-                                   Integer.toString(status) + 
-                                   " " + constants_.onResponseReturnedBy() +
-                                   (Desktop.isDesktop() ? constants_.rSessionMessage() : constants_.rStudioServerMessage()) +
-                                   " " + constants_.whenExecutingMessage() +
-                                   getMethod() + "'";
+                  String message = constants_.rpcErrorMessage(Integer.toString(status),
+                          Desktop.isDesktop() ? constants_.rSessionMessage() : constants_.rStudioServerMessage(),
+                          getMethod());
                   
                   // override error message for status code 0
                   if (status == 0)
                   {
-                     // i18n: Concatenation/Message
-                     message = constants_.statusCodeMessage() +
-                        (Desktop.isDesktop() ? constants_.rSessionMessage() : constants_.rStudioServerMessage()) +
-                        " " + constants_.whenExecutingMessage() + getMethod() + "'";
+                     message = constants_.rpcOverrideErrorMessage((Desktop.isDesktop() ? constants_.rSessionMessage() : constants_.rStudioServerMessage()), getMethod());
                   }
 
                   requestLogEntry_.logResponse(ResponseType.Unknown,
@@ -220,7 +211,7 @@ public class RpcRequest
       
       if (requestLogEntry_ != null)
       {
-         requestLogEntry_.logResponse(ResponseType.Cancelled, "Cancelled"); //NON-NLS
+         requestLogEntry_.logResponse(ResponseType.Cancelled, "Cancelled");
          requestLogEntry_ = null;
       }
    }

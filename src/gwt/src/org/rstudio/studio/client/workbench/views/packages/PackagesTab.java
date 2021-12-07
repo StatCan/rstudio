@@ -52,8 +52,7 @@ public class PackagesTab extends DelayLoadWorkbenchTab<Packages>
                       UserPrefs uiPrefs,
                       Session session)
    {
-      // i18n: Enum, screen text, both, or neither?
-      super("Packages", shim);
+      super(constants_.packagesTitle(), shim);
       binder.bind(commands, shim);
       events.addHandler(LoadedPackageUpdatesEvent.TYPE, shim);
       events.addHandler(RaisePackagePaneEvent.TYPE, shim);
@@ -71,4 +70,5 @@ public class PackagesTab extends DelayLoadWorkbenchTab<Packages>
 
    private final UserPrefs uiPrefs_;
    private final Session session_;
+   private static final PackagesConstants constants_ = com.google.gwt.core.client.GWT.create(PackagesConstants.class);
 }

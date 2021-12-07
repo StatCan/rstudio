@@ -42,6 +42,7 @@ import org.rstudio.studio.client.workbench.commands.Commands;
 import org.rstudio.studio.client.workbench.ui.WorkbenchPane;
 import org.rstudio.studio.client.workbench.views.history.HasHistory;
 import org.rstudio.studio.client.workbench.views.history.History.SearchBoxDisplay;
+import org.rstudio.studio.client.workbench.views.history.HistoryConstants;
 import org.rstudio.studio.client.workbench.views.history.events.FetchCommandsEvent;
 import org.rstudio.studio.client.workbench.views.history.model.HistoryEntry;
 import org.rstudio.studio.client.workbench.views.history.view.HistoryEntryItemCodec.TimestampMode;
@@ -86,8 +87,7 @@ public class HistoryPane extends WorkbenchPane
    @Inject
    public HistoryPane(Commands commands, EventBus events)
    {
-      // i18n: See note about HelpTab.java.  What does this title affect (this a key, on screen, both, or neither?)
-      super("History", events);
+      super(constants_.historyTitle(), events);
       commands_ = commands;
       ensureWidget();
    }
@@ -140,8 +140,7 @@ public class HistoryPane extends WorkbenchPane
       VerticalPanel vpanel = new VerticalPanel();
       vpanel.setSize("100%", "100%");
 
-      loadMore_ = new Anchor("Load more entries...",
-         "javascript:return false"); //$NON-NLS-1$
+      loadMore_ = new Anchor(constants_.loadMoreEntriesText(), "javascript:return false");
       loadMore_.setWidth("100%");
       loadMore_.setVisible(false);
       loadMore_.setStyleName(styles_.loadMore());
@@ -415,7 +414,7 @@ public class HistoryPane extends WorkbenchPane
       else
       {
          loadMore_.setVisible(true);
-         loadMore_.setText("Load " + moreCommands + " more entries");
+         loadMore_.setText(constants_.setMoreCommandsText(moreCommands));
       }
    }
 
@@ -512,7 +511,7 @@ public class HistoryPane extends WorkbenchPane
    public void showSearchResults(String query,
                                  ArrayList<HistoryEntry> entries)
    {
-      searchLabel_.setText("Search results: " + query);
+      searchLabel_.setText(constants_.searchResultsText(query));
       setMode(Mode.SearchResults);
       contextResults_.clear();
       searchResults_.clear();
@@ -553,7 +552,7 @@ public class HistoryPane extends WorkbenchPane
                            long highlightOffset,
                            long highlightLength)
    {
-      contextLabel_.setText("Showing command in context");
+      contextLabel_.setText(constants_.showingCommandInContext());
       setMode(Mode.CommandContext);
       contextResults_.clear();
       contextResults_.addItems(entries, true);
@@ -568,7 +567,7 @@ public class HistoryPane extends WorkbenchPane
    @Override
    protected Toolbar createMainToolbar()
    {
-      searchWidget_ = new SearchWidget("Filter command history", new SuggestOracle()
+      searchWidget_ = new SearchWidget(constants_.filterCommandHistoryLabel(), new SuggestOracle()
       {
          @Override
          public void requestSuggestions(Request request,
@@ -620,7 +619,7 @@ public class HistoryPane extends WorkbenchPane
 
       ElementIds.assignElementId(searchWidget_, ElementIds.SW_HISTORY);
 
-      Toolbar toolbar = new Toolbar("History Tab");
+      Toolbar toolbar = new Toolbar(constants_.historyTabLabel());
       toolbar.addLeftWidget(commands_.loadHistory().createToolbarButton());
       toolbar.addLeftWidget(commands_.saveHistory().createToolbarButton());
       toolbar.addLeftSeparator();
@@ -655,5 +654,6 @@ public class HistoryPane extends WorkbenchPane
    private Styles styles_ = ((Resources) GWT.create(Resources.class)).styles();
    private LayoutPanel mainPanel_;
    private Mode mode_ = Mode.Recent;
+   private static final HistoryConstants constants_ = GWT.create(HistoryConstants.class);
 
 }

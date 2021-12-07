@@ -25,8 +25,7 @@ public class RPresentationFileType extends RWebContentFileType
 {
    public RPresentationFileType()
    {
-      super("r_presentation", //$NON-NLS-1$
-            // i18n: Enumerator, user facing text, or both?
+      super("r_presentation", 
             constants_.rPresentationLabel(),
             EditorLanguage.LANG_RMARKDOWN,
             ".Rpres", 

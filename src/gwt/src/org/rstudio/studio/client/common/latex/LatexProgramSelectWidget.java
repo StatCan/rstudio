@@ -26,10 +26,7 @@ public class LatexProgramSelectWidget extends SelectWidget
    {
       super(constants_.typesetLatexLabel(), latexProgramRegistry_.getTypeNames());
          
-      HelpButton.addHelpButton(this,
-              "latex_program", //$NON-NLS-1$
-              constants_.latexHelpLinkLabel()
-      );
+      HelpButton.addHelpButton(this, "latex_program", constants_.latexHelpLinkLabel());
    }
    
    

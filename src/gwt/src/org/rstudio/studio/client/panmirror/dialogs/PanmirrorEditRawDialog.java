@@ -48,7 +48,7 @@ public class PanmirrorEditRawDialog extends ModalDialog<PanmirrorRawFormatResult
                boolean inline,
                OperationWithInput<PanmirrorRawFormatResult> operation)
    {
-      super(_constants.modelDialogCaption(inline ? _constants.inlineText() : _constants.blockText()), Roles.getDialogRole(), operation, () -> {
+      super(constants_.modelDialogCaption(inline ? constants_.inlineText() : constants_.blockText()), Roles.getDialogRole(), operation, () -> {
          // cancel returns null
          operation.execute(null);
       });
@@ -74,11 +74,11 @@ public class PanmirrorEditRawDialog extends ModalDialog<PanmirrorRawFormatResult
       // make remove button available if we are editing an existing format
       if (!rawFormatSelect_.getValue().equals("")) 
       {
-         ThemedButton removeFormatButton = new ThemedButton(_constants.removeFormatText());
+         ThemedButton removeFormatButton = new ThemedButton(constants_.removeFormatText());
          addLeftButton(removeFormatButton, ElementIds.VISUAL_MD_RAW_FORMAT_REMOVE_BUTTON); 
          removeFormatButton.addClickHandler((event) -> {
             PanmirrorRawFormatResult input = collectInput();
-            input.action = "remove"; //$NON-NLS-1$
+            input.action = "remove";
             validateAndGo(input, new Command()
             {
                @Override
@@ -126,7 +126,7 @@ public class PanmirrorEditRawDialog extends ModalDialog<PanmirrorRawFormatResult
       result.raw = new PanmirrorRawFormatProps();
       result.raw.format = rawFormatSelect_.getValue();
       result.raw.content = rawContent();
-      result.action = "edit"; //$NON-NLS-1$
+      result.action = "edit";
       return result;
    }
 
@@ -137,8 +137,8 @@ public class PanmirrorEditRawDialog extends ModalDialog<PanmirrorRawFormatResult
       if (inline_ && rawContent().length() == 0)
       {
          globalDisplay_.showErrorMessage(
-               _constants.validateCaption(),
-               _constants.validateMessage(),
+               constants_.validateCaption(),
+               constants_.validateMessage(),
                rawContent_);
          
          return false;
@@ -154,7 +154,7 @@ public class PanmirrorEditRawDialog extends ModalDialog<PanmirrorRawFormatResult
       return rawContent_.getValue().trim();
    }
 
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 
    private final boolean inline_;
 

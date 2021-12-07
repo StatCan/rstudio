@@ -3413,6 +3413,7 @@ See `/src/gwt/tools/i18n-helpers/README.md`.
 
    <cmd id="viewerEditSource"
         desc="Edit source file"
+        buttonLabel="Edit"
         rebindable="false"
         context="viewer"/>
 

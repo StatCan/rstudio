@@ -80,8 +80,7 @@ public class ShortcutInfoPanel extends Composite
       SafeHtmlBuilder sb = new SafeHtmlBuilder();
       List<ShortcutInfo> shortcuts = 
             ShortcutManager.INSTANCE.getActiveShortcutInfo();
-      // i18n: Not sure what to do with this part.  Are these accessed by order or by name?
-      String[][] groupNames = {
+      String[][] groupNames = { 
             new String[] { constants_.tabsGroupName(), constants_.panesGroupName(), constants_.filesGroupName(), constants_.mainMenuGroupName() },
             new String[] { constants_.sourceNavigationGroupName(), constants_.executeGroupName() },
             new String[] { constants_.sourceEditorGroupName(), constants_.debugGroupName(), constants_.accessibilityGroupName() },
@@ -114,7 +113,7 @@ public class ShortcutInfoPanel extends Composite
                sb.appendHtmlConstant("</td></tr>");
             }
             sb.appendHtmlConstant("</table>");
-            if (colGroupName == "Panes") //NON-NLS
+            if (colGroupName == "Panes")
             {
                sb.appendHtmlConstant("<p>"+ constants_.addShiftPTag() + "</p>");
             }

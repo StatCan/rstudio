@@ -16,9 +16,6 @@ package org.rstudio.studio.client.common.rnw;
 
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
-import com.google.inject.Inject;
 import org.rstudio.core.client.Debug;
 import org.rstudio.core.client.widget.HelpButton;
 import org.rstudio.core.client.widget.MessageDialog;
@@ -33,16 +30,18 @@ import org.rstudio.studio.client.workbench.model.Session;
 import org.rstudio.studio.client.workbench.model.TexCapabilities;
 import org.rstudio.studio.client.workbench.views.source.model.TexServerOperations;
 
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
+
+import com.google.inject.Inject;
+
 public class RnwWeaveSelectWidget extends SelectWidget
 {
    public RnwWeaveSelectWidget()
    { 
-      super("Weave Rnw files using:", rnwWeaveRegistry_.getTypeNames());
+      super(constants_.weaveRnwLabel(), rnwWeaveRegistry_.getTypeNames());
   
-      HelpButton.addHelpButton(this,
-              "rnw_weave_method", //NON-NLS
-              "Help on weaving Rnw files"
-      );
+      HelpButton.addHelpButton(this, "rnw_weave_method", constants_.weaveRnwHelpTitle());
       
       RStudioGinjector.INSTANCE.injectMembers(this);
       
@@ -74,12 +73,7 @@ public class RnwWeaveSelectWidget extends SelectWidget
                globalDisplay_.showYesNoMessage(
                   MessageDialog.QUESTION,
                   constants_.confirmChangeCaption(),
-                  constants_.theMessage() + weave.getPackageName() + " " + constants_.packageRequiredMessage() +
-                  constants_.forMessage() + weave.getName() + " " + constants_.weavingMessage() +
-                  constants_.notCurrentlyInstalledMessage() +
-                  constants_.ensureThatMessage() + weave.getPackageName() + " " + constants_.isInstalledMessage() +
-                  constants_.compilingPDFMessage() +
-                  "\n\n" + constants_.changeOptionMessage(),
+                  constants_.packageRequiredMessage(weave.getPackageName(), weave.getName()),
                   false,
                   new Operation() { 
                      @Override

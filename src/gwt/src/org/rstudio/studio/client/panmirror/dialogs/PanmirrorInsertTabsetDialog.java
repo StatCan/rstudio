@@ -43,7 +43,7 @@ public class PanmirrorInsertTabsetDialog extends ModalDialog<PanmirrorInsertTabs
 {
    public PanmirrorInsertTabsetDialog(OperationWithInput<PanmirrorInsertTabsetResult> operation)
    {
-      super(_constants.insertTabsetCaption(), Roles.getDialogRole(), operation, () -> {
+      super(constants_.insertTabsetCaption(), Roles.getDialogRole(), operation, () -> {
          // cancel returns null
          operation.execute(null);
       });
@@ -51,7 +51,7 @@ public class PanmirrorInsertTabsetDialog extends ModalDialog<PanmirrorInsertTabs
       // tabs tab
       VerticalTabPanel tabsTab = new VerticalTabPanel(ElementIds.VISUAL_MD_INSERT_TABSET_TABS);
       tabsTab.addStyleName(RES.styles().dialog());
-      tabsTab.add(new FormLabel(_constants.tabNamesFormLabel()));
+      tabsTab.add(new FormLabel(constants_.tabNamesFormLabel()));
       tabs_.add(addTabCaptionInput(tabsTab, 1, true, false));
       tabs_.add(addTabCaptionInput(tabsTab, 2, true, false));
       tabs_.add(addTabCaptionInput(tabsTab, 3, false));
@@ -62,7 +62,7 @@ public class PanmirrorInsertTabsetDialog extends ModalDialog<PanmirrorInsertTabs
       // attributes tab
       PanmirrorAttrProps attr = new PanmirrorAttrProps();
       attr.id = "";
-      attr.classes = new String[] { "panel-tabset" }; //NON-NLS
+      attr.classes = new String[] { "panel-tabset" };
       attr.keyvalue = new String[][] {};
       editAttr_ =  new PanmirrorEditAttrWidget();
       editAttr_.setAttr(attr, null);
@@ -71,10 +71,10 @@ public class PanmirrorInsertTabsetDialog extends ModalDialog<PanmirrorInsertTabs
       attributesTab.add(editAttr_);
 
       // create tab panel and set as main widget
-      DialogTabLayoutPanel tabPanel = new DialogTabLayoutPanel(_constants.imageTabListLabel());
+      DialogTabLayoutPanel tabPanel = new DialogTabLayoutPanel(constants_.imageTabListLabel());
       tabPanel.addStyleName(RES.styles().insertTabsetDialogTabs());
-      tabPanel.add(tabsTab, _constants.tabsText(), tabsTab.getBasePanelId());
-      tabPanel.add(attributesTab, _constants.attributesText(), attributesTab.getBasePanelId());
+      tabPanel.add(tabsTab, constants_.tabsText(), tabsTab.getBasePanelId());
+      tabPanel.add(attributesTab, constants_.attributesText(), attributesTab.getBasePanelId());
       tabPanel.selectTab(0);
       mainWidget_ = tabPanel;
    }
@@ -109,7 +109,7 @@ public class PanmirrorInsertTabsetDialog extends ModalDialog<PanmirrorInsertTabs
       if (input.tabs.length < 2)
       {
          RStudioGinjector.INSTANCE.getGlobalDisplay().showErrorMessage(
-               _constants.insertTabsetCaption(), _constants.tabSetErrorMessage(), tabs_.get(0));
+               constants_.insertTabsetCaption(), constants_.tabSetErrorMessage(), tabs_.get(0));
          return false;
       } 
       else
@@ -128,12 +128,12 @@ public class PanmirrorInsertTabsetDialog extends ModalDialog<PanmirrorInsertTabs
    {
       TextBox textBox = PanmirrorDialogsUtil.addTextBox(tabsTab, ElementIds.VISUAL_MD_INSERT_TABSET_TAB + "_" + index, "");
       if (placeholder)
-         DomUtils.setPlaceholder(textBox,_constants.addTabCaptionInput(index, (!required ? " " + _constants.optionalText() : "")));
+         DomUtils.setPlaceholder(textBox,constants_.addTabCaptionInput(index, (!required ? " " + constants_.optionalText() : "")));
       return textBox;
    }
 
    private static PanmirrorDialogsResources RES = PanmirrorDialogsResources.INSTANCE;
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
    
    private final Widget mainWidget_; 
    private final PanmirrorEditAttrWidget editAttr_;

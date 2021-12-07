@@ -48,17 +48,17 @@ public class PanmirrorEditCalloutDialog extends ModalDialog<PanmirrorCalloutEdit
                                      PanmirrorCalloutEditProps props, 
                                      OperationWithInput<PanmirrorCalloutEditResult> operation)
    {
-      super(_constants.calloutCaption(), Roles.getDialogRole(), operation, () -> {
+      super(constants_.calloutCaption(), Roles.getDialogRole(), operation, () -> {
          // cancel returns null
          operation.execute(null);
       });
       
       if (removeEnabled)
       {
-         ThemedButton removeAttributesButton = new ThemedButton(_constants.unwrapDivTitle());
+         ThemedButton removeAttributesButton = new ThemedButton(constants_.unwrapDivTitle());
          removeAttributesButton.addClickHandler((event) -> {
             PanmirrorCalloutEditResult result = collectInput();
-            result.action = _constants.removeActionText();
+            result.action = constants_.removeActionText();
             validateAndGo(result, new Command()
             {
                @Override
@@ -89,8 +89,8 @@ public class PanmirrorEditCalloutDialog extends ModalDialog<PanmirrorCalloutEdit
       
       // type
       calloutType_ = new SelectWidget(
-         _constants.typeLabel(),
-         new String[]{_constants.noteLabel(), _constants.tipLabel(), _constants.importantLabel(), _constants.cautionLabel(), _constants.warningLabel()}
+         constants_.typeLabel(),
+         new String[]{constants_.noteLabel(), constants_.tipLabel(), constants_.importantLabel(), constants_.cautionLabel(), constants_.warningLabel()}
       );
       calloutType_.setValue(props.callout.type);
       calloutType_.getLabel().getElement().getStyle().setMarginLeft(0, Unit.PX);
@@ -101,14 +101,14 @@ public class PanmirrorEditCalloutDialog extends ModalDialog<PanmirrorCalloutEdit
       
       // appearance
       calloutAppearance_ = new SelectWidget(
-        _constants.appearanceLabel(),
-        new String[] {_constants.defaultLabel(), _constants.simpleLabel(), _constants.minimalLabel()}
+        constants_.appearanceLabel(),
+        new String[] {constants_.defaultLabel(), constants_.simpleLabel(), constants_.minimalLabel()}
       );
       calloutAppearance_.setValue(props.callout.appearance);
       calloutAppearance_.getElement().getStyle().setMarginRight(10, Unit.PX);
       calloutPanel.add(calloutAppearance_);
       
-      calloutCheckBox_ = new FormCheckBox(_constants.showIconLabel(), ElementIds.VISUAL_MD_CALLOUT_ICON);
+      calloutCheckBox_ = new FormCheckBox(constants_.showIconLabel(), ElementIds.VISUAL_MD_CALLOUT_ICON);
       calloutCheckBox_.setValue(props.callout.icon);
       calloutPanel.add(calloutCheckBox_);
       
@@ -118,17 +118,17 @@ public class PanmirrorEditCalloutDialog extends ModalDialog<PanmirrorCalloutEdit
       calloutCaption_  = PanmirrorDialogsUtil.addTextBox(
          calloutTab, 
          ElementIds.VISUAL_MD_CALLOUT_CAPTION, 
-         _constants.captionLabel(),
+         constants_.captionLabel(),
          props.callout.caption
       );
-      DomUtils.setPlaceholder(calloutCaption_, _constants.optionalPlaceholder());
+      DomUtils.setPlaceholder(calloutCaption_, constants_.optionalPlaceholder());
       
 
       
-      DialogTabLayoutPanel tabPanel = new DialogTabLayoutPanel(_constants.divTabList());
+      DialogTabLayoutPanel tabPanel = new DialogTabLayoutPanel(constants_.divTabList());
       tabPanel.addStyleName(RES.styles().divDialogTabs());
-      tabPanel.add(calloutTab, _constants.calloutText(), calloutTab.getBasePanelId());
-      tabPanel.add(attributesTab, _constants.attributesText(), attributesTab.getBasePanelId());
+      tabPanel.add(calloutTab, constants_.calloutText(), calloutTab.getBasePanelId());
+      tabPanel.add(attributesTab, constants_.attributesText(), attributesTab.getBasePanelId());
       tabPanel.selectTab(0);
 
       mainWidget_ = tabPanel;
@@ -151,7 +151,7 @@ public class PanmirrorEditCalloutDialog extends ModalDialog<PanmirrorCalloutEdit
    {
       PanmirrorCalloutEditResult result = new PanmirrorCalloutEditResult();
       result.attr = editAttr_.getAttr();
-      result.action = "edit"; //NON-NLS
+      result.action = "edit";
       result.callout = new PanmirrorCalloutProps();
       result.callout.type = calloutType_.getValue();
       result.callout.appearance = calloutAppearance_.getValue();
@@ -177,6 +177,6 @@ public class PanmirrorEditCalloutDialog extends ModalDialog<PanmirrorCalloutEdit
    private SelectWidget calloutAppearance_;
    private TextBox calloutCaption_;
    private CheckBox calloutCheckBox_;
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 
 }

@@ -344,7 +344,7 @@ public class PanmirrorOutlineWidget extends Composite
          if (StringUtil.equals(item.type, PanmirrorOutlineItemType.RmdChunk) &&
              StringUtil.equals(item.title, PanmirrorOutlineItemType.RmdChunk))
          {
-            text = _constants.chunkText(item.sequence);
+            text = constants_.chunkText(item.sequence);
          }
        
          if (label_ == null)
@@ -409,5 +409,5 @@ public class PanmirrorOutlineWidget extends Composite
    private final DocumentOutlineWidget.EmptyPlaceholder emptyPlaceholder_;
     
    private final HandlerManager handlers_ = new HandlerManager(this);
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 }

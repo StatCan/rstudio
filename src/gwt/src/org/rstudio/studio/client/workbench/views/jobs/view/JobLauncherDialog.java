@@ -15,10 +15,12 @@
 package org.rstudio.studio.client.workbench.views.jobs.view;
 
 import com.google.gwt.aria.client.Roles;
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.files.FileSystemItem;
 import org.rstudio.core.client.widget.ModalDialog;
 import org.rstudio.core.client.widget.OperationWithInput;
+import org.rstudio.studio.client.workbench.views.jobs.JobsConstants;
 import org.rstudio.studio.client.workbench.views.jobs.model.JobLaunchSpec;
 
 import com.google.gwt.user.client.ui.Widget;
@@ -62,7 +64,7 @@ public class JobLauncherDialog extends ModalDialog<JobLaunchSpec>
       code_ = code;
       source_ = source;
 
-      setOkButtonCaption("Start");
+      setOkButtonCaption(constants_.startButtonCaption());
    }
 
    @Override
@@ -83,7 +85,7 @@ public class JobLauncherDialog extends ModalDialog<JobLaunchSpec>
       {
          return JobLaunchSpec.create(jobName,
                controls_.scriptPath(), 
-               "unknown", // encoding unknown (will try to look it up later) //$NON-NLS-1$
+               "unknown", // encoding unknown (will try to look it up later)
                controls_.workingDir(),
                controls_.importEnv(),
                controls_.exportEnv());
@@ -116,15 +118,16 @@ public class JobLauncherDialog extends ModalDialog<JobLaunchSpec>
    {
       if (StringUtil.isNullOrEmpty(path))
       {
-         return "Current selection"; //$NON-NLS-1$
+         return constants_.currentSelectionText();
       }
       else
       {
-         return FileSystemItem.getNameFromPath(path) + " selection"; //$NON-NLS-1$
+         return constants_.selectionText(FileSystemItem.getNameFromPath(path));
       }
    }
    
    private final String code_;
    private final JobSource source_;
    private JobLauncherControls controls_;
+   private static final JobsConstants constants_ = GWT.create(JobsConstants.class);
 }

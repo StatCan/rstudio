@@ -481,7 +481,15 @@ private:
    {
       Error error;
       json::Object dataJson;
-      getOutputFormat(targetFile_.getAbsolutePath(), encoding, &outputFormat_);
+      if (format == "revealjs")
+      {
+         outputFormat_["format_name"] = "revealjs";
+         outputFormat_["self_contained"] = false;
+      }
+      else
+      {
+         getOutputFormat(targetFile_.getAbsolutePath(), encoding, &outputFormat_);
+      }
       dataJson["output_format"] = outputFormat_;
       dataJson["target_file"] = module_context::createAliasedPath(targetFile_);
       ClientEvent event(client_events::kRmdRenderStarted, dataJson);
@@ -587,7 +595,7 @@ private:
       if (renderFunc != kStandardRenderFunc && renderFunc != kShinyRenderFunc)
       {
          std::string extraArgs;
-         if (isQuarto_)
+         if (isQuarto_ && !isShiny_)
          {
             std::string to = format;
             if (to.empty())

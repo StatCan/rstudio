@@ -214,10 +214,8 @@ public class Packages
             else
             {
                globalDisplay_.showYesNoMessage(MessageDialog.QUESTION,
-                 "Create Package Library",
-                 "Would you like to create a personal library '" +
-                 installContext.getDefaultUserLibraryPath() + "' " +
-                 "to install packages into?",
+                       constants_.createPackageLibraryCaption(),
+                 constants_.createPackageLibraryMessage(installContext.getDefaultUserLibraryPath()),
                  false,
                  new Operation() // Yes operation
                  {
@@ -226,7 +224,7 @@ public class Packages
                     {
                        ProgressIndicator indicator =
                              globalDisplay_.getProgressIndicator(
-                                                  "Error Creating Library");
+                                                  constants_.errorCreatingLibraryCaption());
                         server_.initDefaultUserLibrary(
                               new VoidServerRequestCallback(indicator) {
                                  @Override
@@ -247,10 +245,8 @@ public class Packages
                      {
                         globalDisplay_.showMessage(
                               MessageDialog.WARNING,
-                              "Install Packages",
-                              "Unable to install packages (default library '" +
-                              installContext.getDefaultLibraryPath() + "' is " +
-                              "not writeable)");
+                              constants_.installPackagesCaption(),
+                              constants_.unableToInstallPackagesMessage(installContext.getDefaultLibraryPath()));
 
                      }
                  },
@@ -383,8 +379,8 @@ public class Packages
             if (installContext.getWriteableLibraryPaths().length() == 0)
             {
                globalDisplay_.showMessage(MessageDialog.INFO,
-                                          "Check for Updates",
-                                          "All packages are up to date.");
+                                          constants_.checkForUpdatesCaption(),
+                                          constants_.checkForUpdatesMessage());
 
             }
 
@@ -524,7 +520,7 @@ public class Packages
             public void requestData(
                   ServerRequestCallback<JsArray<PackratPackageAction>> requestCallback)
             {
-               packratServer_.getPendingActions("clean", //$NON-NLS-1$
+               packratServer_.getPendingActions("clean",
                      session_.getSessionInfo().getActiveProjectDir().getPath(),
                      requestCallback);
             }
@@ -551,7 +547,7 @@ public class Packages
    public void onPackratBundle()
    {
       pFileDialogs_.get().saveFile(
-         "Export Project Bundle to Gzipped Tarball",
+         constants_.exportProjectBundleCaption(),
          fsContext_,
          workbenchContext_.getCurrentWorkingDir(),
          ".tar.gz",
@@ -604,33 +600,27 @@ public class Packages
             }
             else if (actions.getRestoreActions().length() > 0)
             {
-               confirmPackratActions(
-                  actions.getRestoreActions(),
-                  "Restore",
-                  "restore" //$NON-NLS-1$
-               );
+               confirmPackratActions(actions.getRestoreActions(),
+                                     "Restore", "restore");
             }
             else if (actions.getSnapshotActions().length() > 0)
             {
-               confirmPackratActions(
-                  actions.getSnapshotActions(),
-                  "Snapshot",
-                  "snapshot" //$NON-NLS-1$
-               );
+               confirmPackratActions(actions.getSnapshotActions(),
+                                     "Snapshot", "snapshot");
             }
             else
             {
                // no restore actions or snapshot actions
                globalDisplay_.showMessage(GlobalDisplay.MSG_INFO,
-                     "Up to Date",
-                     "The Packrat library is up to date.");
+                     constants_.upToDateCaption(),
+                     constants_.packratLibraryUpToDate());
             }
          }
 
          @Override
          public void onError(ServerError error)
          {
-            globalDisplay_.showErrorMessage("Error checking Packrat library status",
+            globalDisplay_.showErrorMessage(constants_.errorCheckingPackrat(),
                   error.getMessage());
          }
       });
@@ -640,11 +630,11 @@ public class Packages
 
    private void renvAction(final String action)
    {
-      String errorMessage = "Error during " + action;
+      String errorMessage = constants_.errorCheckingPackrat(action);
       ProgressIndicator indicator =
             globalDisplay_.getProgressIndicator(errorMessage);
 
-      indicator.onProgress("Performing " + action.toLowerCase() + "...");
+      indicator.onProgress(constants_.renvActionOnProgressMessage(action.toLowerCase()));
 
       renvServer_.renvActions(action, new ServerRequestCallback<JsArray<RenvAction>>()
       {
@@ -657,14 +647,14 @@ public class Packages
             {
                globalDisplay_.showMessage(
                      GlobalDisplay.MSG_INFO,
-                     "Up to Date",
-                     "The project is already up to date.");
+                     constants_.upToDateCaption(),
+                     constants_.projectUpToDateMessage());
                return;
             }
 
             final OperationWithInput<Void> operation = (Void input) -> {
 
-               String code = "renv::" + action.toLowerCase() + "(confirm = FALSE)"; //$NON-NLS-1$
+               String code = "renv::" + action.toLowerCase() + "(confirm = FALSE)";
                events_.fireEvent(new SendToConsoleEvent(code, true));
             };
 
@@ -713,19 +703,16 @@ public class Packages
                                        installContext.getDefaultLibraryPath();
 
             StringBuilder message = new StringBuilder();
-            message.append("Are you sure you wish to permanently uninstall the '");
-            message.append(packageInfo.getName() + "' package");
+            message.append(constants_.uninstallPackage(packageInfo.getName()));
             if (!usingDefaultLibrary)
             {
-               message.append(" from library '");
-               message.append(packageInfo.getLibrary());
-               message.append("'");
+               message.append(" " + constants_.libraryMessage(packageInfo.getLibrary()));
             }
-            message.append("? This action cannot be undone.");
+            message.append(constants_.actionCannotBeUndoneMessage());
 
             globalDisplay_.showYesNoMessage(
                MessageDialog.WARNING,
-               "Uninstall Package ",
+               constants_.uninstallPackageCaption(),
                message.toString(),
                new Operation()
                {
@@ -945,8 +932,8 @@ public class Packages
          final OperationWithInput<PackageInstallContext> operation)
    {
       final ProgressIndicator indicator =
-         globalDisplay_.getProgressIndicator("Error");
-      indicator.onProgress("Retrieving package installation context...");
+         globalDisplay_.getProgressIndicator(constants_.errorCaption());
+      indicator.onProgress(constants_.retrievingPackageInstallationMessage());
 
       server_.getPackageInstallContext(
          new SimpleRequestCallback<PackageInstallContext>() {
@@ -1027,19 +1014,13 @@ public class Packages
 
    private void restartForInstallWithConfirmation(final String installCmd)
    {
-      // i18n: Concat constant before i18n
-      String msg =
-            "One or more of the packages to be updated are currently loaded. " +
-            "Restarting R prior to install is highly recommended.\n\n" +
-            "RStudio can restart R before installing the requested packages. " +
-            "All work and data will be preserved during restart.\n\n" +
-            "Do you want to restart R prior to install?";
+      String msg = constants_.restartForInstallWithConfirmation();
 
       final boolean haveInstallCmd = installCmd.startsWith("install.packages");
 
       globalDisplay_.showYesNoMessage(
             MessageDialog.WARNING,
-            "Updating Loaded Packages",
+            constants_.updatingLoadedPackagesCaption(),
             msg,
             true,
             () ->
@@ -1066,7 +1047,7 @@ public class Packages
    {
       public PackageStateUpdater()
       {
-         super("Error Listing Packages");
+         super(constants_.errorListingPackagesCaption());
       }
 
       @Override
@@ -1129,7 +1110,7 @@ public class Packages
                public void execute(Void input)
                {
                   packratUtil_.executePackratFunction(packratFunction,
-                        "prompt = FALSE"); //$NON-NLS-1$
+                        "prompt = FALSE");
                }
             }).showModal();
    }
@@ -1147,14 +1128,13 @@ public class Packages
                {
                   if (input == PackratConflictResolution.Library)
                   {
-                     packratUtil_.executePackratFunction(
-                        "restore", //$NON-NLS-1$
-                        "prompt = FALSE"); //$NON-NLS-1$
+                     packratUtil_.executePackratFunction("restore",
+                           "prompt = FALSE");
                   }
                   else if (input == PackratConflictResolution.Snapshot)
                   {
-                     packratUtil_.executePackratFunction("snapshot", //$NON-NLS-1$
-                           "prompt = FALSE"); //$NON-NLS-1$
+                     packratUtil_.executePackratFunction("snapshot",
+                           "prompt = FALSE");
                   }
                }
             }).showModal();
@@ -1291,4 +1271,5 @@ public class Packages
    private final Session session_;
    private PackageInstallOptions installOptions_ =
                                   PackageInstallOptions.create(true, "", true);
+   private static final PackagesConstants constants_ = com.google.gwt.core.client.GWT.create(PackagesConstants.class);
 }

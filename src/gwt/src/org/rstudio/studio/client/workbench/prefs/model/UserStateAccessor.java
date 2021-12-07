@@ -28,9 +28,6 @@ import com.google.gwt.core.client.JsArray;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.core.client.GWT;
-import org.rstudio.studio.client.workbench.prefs.model.UserPrefsAccessorConstants;
-
 /**
  * Accessor class for user state.
  */ 
@@ -48,9 +45,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<String> contextId()
    {
       return string(
-         "context_id", // $NON-NLS-1$
-         _constants.contextIdTitle(),
-         _constants.contextIdDescription(),
+         "context_id",
+         "", 
+         "A unique identifier representing the user and machine.", 
          "");
    }
 
@@ -61,8 +58,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "auto_created_profile",
-         _constants.autoCreatedProfileTitle(),
-         _constants.autoCreatedProfileDescription(),
+         "", 
+         "Whether we have automatically created an .Rprofile for this user.", 
          false);
    }
 
@@ -72,9 +69,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<Theme> theme()
    {
       return object(
-         "theme", // $NON-NLS-1$
-         _constants.themeTitle(),
-         _constants.themeDescription(),
+         "theme",
+         "", 
+         "The color theme to apply.", 
          null);
    }
 
@@ -102,9 +99,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<String> defaultProjectLocation()
    {
       return string(
-         "default_project_location", // $NON-NLS-1$
-         _constants.defaultProjectLocationTitle(),
-         _constants.defaultProjectLocationDescription(),
+         "default_project_location",
+         "", 
+         "The directory path under which to place new projects by default. Shadows a uipref.", 
          "");
    }
 
@@ -115,8 +112,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "clear_hidden",
-         _constants.clearHiddenTitle(),
-         _constants.clearHiddenDescription(),
+         "", 
+         "Whether to clear hidden objects along with visible objects when clearing the workspace. Set automatically to remember last action.", 
          true);
    }
 
@@ -126,9 +123,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<ExportPlotOptions> exportPlotOptions()
    {
       return object(
-         "export_plot_options", // $NON-NLS-1$
-         _constants.exportPlotOptionsTitle(),
-         _constants.exportPlotOptionsDescription(),
+         "export_plot_options",
+         "", 
+         "The most recently used plot export options.", 
          null);
    }
 
@@ -168,9 +165,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<ExportViewerOptions> exportViewerOptions()
    {
       return object(
-         "export_viewer_options", // $NON-NLS-1$
-         _constants.exportViewerOptionsTitle(),
-         _constants.exportViewerOptionsDescription(),
+         "export_viewer_options",
+         "", 
+         "The most recently used viewer export options.", 
          null);
    }
 
@@ -210,9 +207,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<SavePlotAsPdfOptions> savePlotAsPdfOptions()
    {
       return object(
-         "save_plot_as_pdf_options", // $NON-NLS-1$
-         _constants.savePlotAsPdfOptionsTitle(),
-         _constants.savePlotAsPdfOptionsDescription(),
+         "save_plot_as_pdf_options",
+         "", 
+         "The most recently used options for saving a plot as a PDF.", 
          null);
    }
 
@@ -248,9 +245,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<CompileRNotebookPrefs> compileRNotebookPrefs()
    {
       return object(
-         "compile_r_notebook_prefs", // $NON-NLS-1$
-         _constants.compileRNotebookPrefsTitle(),
-         _constants.compileRNotebookPrefsDescription(),
+         "compile_r_notebook_prefs",
+         "", 
+         "Most recently used settings for compiling a notebook from an R script.", 
          null);
    }
 
@@ -274,9 +271,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<CompileRMarkdownNotebookPrefs> compileRMarkdownNotebookPrefs()
    {
       return object(
-         "compile_r_markdown_notebook_prefs", // $NON-NLS-1$
-         _constants.compileRMarkdownNotebookPrefsTitle(),
-         _constants.compileRMarkdownNotebookPrefsDescription(),
+         "compile_r_markdown_notebook_prefs",
+         "", 
+         "Most recently used settings for compiling a notebook using R Markdown.", 
          null);
    }
 
@@ -297,8 +294,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "show_publish_ui",
-         _constants.showPublishUiTitle(),
-         _constants.showPublishUiDescription(),
+         "", 
+         "Whether to show UI for publishing content.", 
          true);
    }
 
@@ -309,8 +306,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "enable_rsconnect_publish_ui",
-         _constants.enableRsconnectPublishUiTitle(),
-         _constants.enableRsconnectPublishUiDescription(),
+         "", 
+         "Whether to show UI for publishing content to RStudio Connect.", 
          true);
    }
 
@@ -320,9 +317,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<PublishAccount> publishAccount()
    {
       return object(
-         "publish_account", // $NON-NLS-1$
-         _constants.publishAccountTitle(),
-         _constants.publishAccountDescription(),
+         "publish_account",
+         "", 
+         "The default (last) account used for publishing", 
          null);
    }
 
@@ -346,9 +343,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<Integer> documentOutlineWidth()
    {
       return integer(
-         "document_outline_width", // $NON-NLS-1$
-         _constants.documentOutlineWidthTitle(),
-         _constants.documentOutlineWidthDescription(),
+         "document_outline_width",
+         "", 
+         "The preferred width, in pixels, of the document outline pane.", 
          110);
    }
 
@@ -358,9 +355,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<String> connectVia()
    {
       return enumeration(
-         "connect_via", // $NON-NLS-1$
-         _constants.connectViaTitle(),
-         _constants.connectViaDescription(),
+         "connect_via",
+         "", 
+         "How to create new connections to data sources.", 
          new String[] {
             CONNECT_VIA_CONNECT_R_CONSOLE,
             CONNECT_VIA_CONNECT_NEW_R_SCRIPT,
@@ -381,9 +378,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<String> errorHandlerType()
    {
       return enumeration(
-         "error_handler_type", // $NON-NLS-1$
-         _constants.errorHandlerTypeTitle(),
-         _constants.errorHandlerTypeDescription(),
+         "error_handler_type",
+         "", 
+         "The kind of handler to invoke when errors occur.", 
          new String[] {
             ERROR_HANDLER_TYPE_MESSAGE,
             ERROR_HANDLER_TYPE_TRACEBACK,
@@ -407,8 +404,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "using_mingw_gcc49",
-         _constants.usingMingwGcc49Title(),
-         _constants.usingMingwGcc49Description(),
+         "", 
+         "Whether or not the MinGW compiler with GCC 4.9 is used.", 
          false);
    }
 
@@ -419,8 +416,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "visual_mode_confirmed",
-         _constants.visualModeConfirmedTitle(),
-         _constants.visualModeConfirmedDescription(),
+         "", 
+         "Whether or not the use of Visual Mode has been confirmed.", 
          false);
    }
 
@@ -430,9 +427,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<String> bibliographyDefaultType()
    {
       return enumeration(
-         "bibliography_default_type", // $NON-NLS-1$
-         _constants.bibliographyDefaultTypeTitle(),
-         _constants.bibliographyDefaultTypeDescription(),
+         "bibliography_default_type",
+         "", 
+         "The default type for new bibliographies.", 
          new String[] {
             BIBLIOGRAPHY_DEFAULT_TYPE_BIB,
             BIBLIOGRAPHY_DEFAULT_TYPE_YAML,
@@ -452,8 +449,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "citation_default_in_text",
-         _constants.citationDefaultInTextTitle(),
-         _constants.citationDefaultInTextDescription(),
+         "", 
+         "The default style for inserting citations.", 
          false);
    }
 
@@ -463,9 +460,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<String> zoteroConnectionType()
    {
       return enumeration(
-         "zotero_connection_type", // $NON-NLS-1$
-         _constants.zoteroConnectionTypeTitle(),
-         _constants.zoteroConnectionTypeDescription(),
+         "zotero_connection_type",
+         "Zotero connection type", 
+         "Zotero connection type (local or web)", 
          new String[] {
             ZOTERO_CONNECTION_TYPE_AUTO,
             ZOTERO_CONNECTION_TYPE_NONE,
@@ -487,8 +484,8 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "zotero_use_better_bibtex",
-         _constants.zoteroUseBetterBibtexTitle(),
-         _constants.zoteroUseBetterBibtexDescription(),
+         "Use Better BibTeX for citation keys and BibTeX export", 
+         "Whether to use Better BibTeX when suggesting citation keys and writing citations to BibTeX bibliographies", 
          false);
    }
 
@@ -498,9 +495,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<String> zoteroApiKey()
    {
       return string(
-         "zotero_api_key", // $NON-NLS-1$
-         _constants.zoteroApiKeyTitle(),
-         _constants.zoteroApiKeyDescription(),
+         "zotero_api_key",
+         "Zotero API Key", 
+         "Key for making Zotero API calls", 
          "");
    }
 
@@ -510,9 +507,9 @@ public class UserStateAccessor extends Prefs
    public PrefValue<String> zoteroDataDir()
    {
       return string(
-         "zotero_data_dir", // $NON-NLS-1$
-         _constants.zoteroDataDirTitle(),
-         _constants.zoteroDataDirDescription(),
+         "zotero_data_dir",
+         "Zotero Data Directory", 
+         "Directory containing Zotero data files", 
          "");
    }
 
@@ -523,63 +520,77 @@ public class UserStateAccessor extends Prefs
    {
       return bool(
          "quarto_website_sync_editor",
-         "Quarto Website Sync Editor",
-         "Sync source editor to Quarto website preview navigation.",
+         "Quarto Website Sync Editor", 
+         "Sync source editor to Quarto website preview navigation.", 
+         false);
+   }
+
+   /**
+    * Build Quarto editor tools (yaml.js) on the fly when requested.
+    */
+   public PrefValue<Boolean> quartoBuildEditorTools()
+   {
+      return bool(
+         "quarto_build_editor_tools",
+         "Build Quarto Editor Tools", 
+         "Build Quarto editor tools (yaml.js) on the fly when requested.", 
          false);
    }
 
    public void syncPrefs(String layer, JsObject source)
    {
-      if (source.hasKey("context_id")) //$NON-NLS-1$
-         contextId().setValue(layer, source.getString("context_id")); //$NON-NLS-1$
-      if (source.hasKey("auto_created_profile")) //$NON-NLS-1$
-         autoCreatedProfile().setValue(layer, source.getBool("auto_created_profile")); //$NON-NLS-1$
-      if (source.hasKey("theme")) //$NON-NLS-1$
-         theme().setValue(layer, source.getObject("theme")); //$NON-NLS-1$
-      if (source.hasKey("default_project_location")) //$NON-NLS-1$
-         defaultProjectLocation().setValue(layer, source.getString("default_project_location")); //$NON-NLS-1$
-      if (source.hasKey("clear_hidden")) //$NON-NLS-1$
-         clearHidden().setValue(layer, source.getBool("clear_hidden")); //$NON-NLS-1$
-      if (source.hasKey("export_plot_options")) //$NON-NLS-1$
-         exportPlotOptions().setValue(layer, source.getObject("export_plot_options")); //$NON-NLS-1$
-      if (source.hasKey("export_viewer_options")) //$NON-NLS-1$
-         exportViewerOptions().setValue(layer, source.getObject("export_viewer_options")); //$NON-NLS-1$
-      if (source.hasKey("save_plot_as_pdf_options")) //$NON-NLS-1$
-         savePlotAsPdfOptions().setValue(layer, source.getObject("save_plot_as_pdf_options")); //$NON-NLS-1$
-      if (source.hasKey("compile_r_notebook_prefs")) //$NON-NLS-1$
-         compileRNotebookPrefs().setValue(layer, source.getObject("compile_r_notebook_prefs")); //$NON-NLS-1$
-      if (source.hasKey("compile_r_markdown_notebook_prefs")) //$NON-NLS-1$
-         compileRMarkdownNotebookPrefs().setValue(layer, source.getObject("compile_r_markdown_notebook_prefs")); //$NON-NLS-1$
-      if (source.hasKey("show_publish_ui")) //$NON-NLS-1$
-         showPublishUi().setValue(layer, source.getBool("show_publish_ui")); //$NON-NLS-1$
-      if (source.hasKey("enable_rsconnect_publish_ui")) //$NON-NLS-1$
-         enableRsconnectPublishUi().setValue(layer, source.getBool("enable_rsconnect_publish_ui")); //$NON-NLS-1$
-      if (source.hasKey("publish_account")) //$NON-NLS-1$
-         publishAccount().setValue(layer, source.getObject("publish_account")); //$NON-NLS-1$
-      if (source.hasKey("document_outline_width")) //$NON-NLS-1$
-         documentOutlineWidth().setValue(layer, source.getInteger("document_outline_width")); //$NON-NLS-1$
-      if (source.hasKey("connect_via")) //$NON-NLS-1$
-         connectVia().setValue(layer, source.getString("connect_via")); //$NON-NLS-1$
-      if (source.hasKey("error_handler_type")) //$NON-NLS-1$
-         errorHandlerType().setValue(layer, source.getString("error_handler_type")); //$NON-NLS-1$
-      if (source.hasKey("using_mingw_gcc49")) //$NON-NLS-1$
-         usingMingwGcc49().setValue(layer, source.getBool("using_mingw_gcc49")); //$NON-NLS-1$
-      if (source.hasKey("visual_mode_confirmed")) //$NON-NLS-1$
-         visualModeConfirmed().setValue(layer, source.getBool("visual_mode_confirmed")); //$NON-NLS-1$
-      if (source.hasKey("bibliography_default_type")) //$NON-NLS-1$
-         bibliographyDefaultType().setValue(layer, source.getString("bibliography_default_type")); //$NON-NLS-1$
-      if (source.hasKey("citation_default_in_text")) //$NON-NLS-1$
-         citationDefaultInText().setValue(layer, source.getBool("citation_default_in_text")); //$NON-NLS-1$
-      if (source.hasKey("zotero_connection_type")) //$NON-NLS-1$
-         zoteroConnectionType().setValue(layer, source.getString("zotero_connection_type")); //$NON-NLS-1$
-      if (source.hasKey("zotero_use_better_bibtex")) //$NON-NLS-1$
-         zoteroUseBetterBibtex().setValue(layer, source.getBool("zotero_use_better_bibtex")); //$NON-NLS-1$
-      if (source.hasKey("zotero_api_key")) //$NON-NLS-1$
-         zoteroApiKey().setValue(layer, source.getString("zotero_api_key")); //$NON-NLS-1$
-      if (source.hasKey("zotero_data_dir")) //$NON-NLS-1$
-         zoteroDataDir().setValue(layer, source.getString("zotero_data_dir")); //$NON-NLS-1$
-      if (source.hasKey("quarto_website_sync_editor")) //$NON-NLS-1$
-         quartoWebsiteSyncEditor().setValue(layer, source.getBool("quarto_website_sync_editor")); //$NON-NLS-1$
+      if (source.hasKey("context_id"))
+         contextId().setValue(layer, source.getString("context_id"));
+      if (source.hasKey("auto_created_profile"))
+         autoCreatedProfile().setValue(layer, source.getBool("auto_created_profile"));
+      if (source.hasKey("theme"))
+         theme().setValue(layer, source.getObject("theme"));
+      if (source.hasKey("default_project_location"))
+         defaultProjectLocation().setValue(layer, source.getString("default_project_location"));
+      if (source.hasKey("clear_hidden"))
+         clearHidden().setValue(layer, source.getBool("clear_hidden"));
+      if (source.hasKey("export_plot_options"))
+         exportPlotOptions().setValue(layer, source.getObject("export_plot_options"));
+      if (source.hasKey("export_viewer_options"))
+         exportViewerOptions().setValue(layer, source.getObject("export_viewer_options"));
+      if (source.hasKey("save_plot_as_pdf_options"))
+         savePlotAsPdfOptions().setValue(layer, source.getObject("save_plot_as_pdf_options"));
+      if (source.hasKey("compile_r_notebook_prefs"))
+         compileRNotebookPrefs().setValue(layer, source.getObject("compile_r_notebook_prefs"));
+      if (source.hasKey("compile_r_markdown_notebook_prefs"))
+         compileRMarkdownNotebookPrefs().setValue(layer, source.getObject("compile_r_markdown_notebook_prefs"));
+      if (source.hasKey("show_publish_ui"))
+         showPublishUi().setValue(layer, source.getBool("show_publish_ui"));
+      if (source.hasKey("enable_rsconnect_publish_ui"))
+         enableRsconnectPublishUi().setValue(layer, source.getBool("enable_rsconnect_publish_ui"));
+      if (source.hasKey("publish_account"))
+         publishAccount().setValue(layer, source.getObject("publish_account"));
+      if (source.hasKey("document_outline_width"))
+         documentOutlineWidth().setValue(layer, source.getInteger("document_outline_width"));
+      if (source.hasKey("connect_via"))
+         connectVia().setValue(layer, source.getString("connect_via"));
+      if (source.hasKey("error_handler_type"))
+         errorHandlerType().setValue(layer, source.getString("error_handler_type"));
+      if (source.hasKey("using_mingw_gcc49"))
+         usingMingwGcc49().setValue(layer, source.getBool("using_mingw_gcc49"));
+      if (source.hasKey("visual_mode_confirmed"))
+         visualModeConfirmed().setValue(layer, source.getBool("visual_mode_confirmed"));
+      if (source.hasKey("bibliography_default_type"))
+         bibliographyDefaultType().setValue(layer, source.getString("bibliography_default_type"));
+      if (source.hasKey("citation_default_in_text"))
+         citationDefaultInText().setValue(layer, source.getBool("citation_default_in_text"));
+      if (source.hasKey("zotero_connection_type"))
+         zoteroConnectionType().setValue(layer, source.getString("zotero_connection_type"));
+      if (source.hasKey("zotero_use_better_bibtex"))
+         zoteroUseBetterBibtex().setValue(layer, source.getBool("zotero_use_better_bibtex"));
+      if (source.hasKey("zotero_api_key"))
+         zoteroApiKey().setValue(layer, source.getString("zotero_api_key"));
+      if (source.hasKey("zotero_data_dir"))
+         zoteroDataDir().setValue(layer, source.getString("zotero_data_dir"));
+      if (source.hasKey("quarto_website_sync_editor"))
+         quartoWebsiteSyncEditor().setValue(layer, source.getBool("quarto_website_sync_editor"));
+      if (source.hasKey("quarto_build_editor_tools"))
+         quartoBuildEditorTools().setValue(layer, source.getBool("quarto_build_editor_tools"));
    }
    public List<PrefValue<?>> allPrefs()
    {
@@ -609,6 +620,7 @@ public class UserStateAccessor extends Prefs
       prefs.add(zoteroApiKey());
       prefs.add(zoteroDataDir());
       prefs.add(quartoWebsiteSyncEditor());
+      prefs.add(quartoBuildEditorTools());
       return prefs;
    }
    
@@ -627,6 +639,4 @@ public class UserStateAccessor extends Prefs
    public static final int LAYER_DEFAULT  = 0;
    public static final int LAYER_COMPUTED = 1;
    public static final int LAYER_USER     = 2;
-
-   private UserStateAccessorConstants _constants = GWT.create(UserStateAccessorConstants.class);
 }

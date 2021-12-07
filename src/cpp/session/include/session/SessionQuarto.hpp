@@ -71,6 +71,7 @@ core::Error quartoInspect(const std::string& path,
 core::json::Object quartoConfigJSON(bool refresh = false);
 
 core::json::Value quartoCapabilities();
+void quartoBuildjs();
 
 // see if quarto wants to handle the preview
 bool handleQuartoPreview(const core::FilePath& sourceFile,
@@ -81,6 +82,7 @@ bool handleQuartoPreview(const core::FilePath& sourceFile,
 std::string quartoDefaultFormat(const core::FilePath& sourceFile);
 
 bool isFileInSessionQuartoProject(const core::FilePath& file);
+std::string urlPathForQuartoProjectOutputFile(const core::FilePath& outputFile);
 
 core::FilePath quartoBinary();
 

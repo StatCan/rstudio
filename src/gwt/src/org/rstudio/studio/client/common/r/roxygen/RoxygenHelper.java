@@ -104,8 +104,7 @@ public class RoxygenHelper
       {
          globalDisplay_.showErrorMessage(
              constants_.insertRoxygenSkeletonMessage(),
-             constants_.unableToInsertSkeletonMessage() +
-             constants_.rFunctionDefinitionMessage());
+             constants_.unableToInsertSkeletonMessage());
       }
    }
    
@@ -160,7 +159,7 @@ public class RoxygenHelper
                            response.getClassName(),
                            response.getFieldNames(),
                            response.getFieldTypes(),
-                           "field", // $NON-NLS-1$
+                           "field",
                            RE_ROXYGEN_FIELD);
                   }
                   else
@@ -169,8 +168,8 @@ public class RoxygenHelper
                            response.getClassName(),
                            response.getFieldNames(),
                            response.getFieldTypes(),
-                           "field", // $NON-NLS-1$
-                           "reference class", // $NON-NLS-1$
+                           "field",
+                           "reference class",
                            startPos);
                   }
                }
@@ -205,7 +204,7 @@ public class RoxygenHelper
                            response.getGeneric(),
                            response.getParameters(),
                            null,
-                           "param", // $NON-NLS-1$
+                           "param",
                            RE_ROXYGEN_PARAM);
                   }
                   else
@@ -214,8 +213,8 @@ public class RoxygenHelper
                            response.getGeneric(),
                            response.getParameters(),
                            null,
-                           "param", // $NON-NLS-1$
-                           "generic function", //$NON-NLS-1$
+                           "param",
+                           "generic function",
                            startPos);
                   }
                }
@@ -250,7 +249,7 @@ public class RoxygenHelper
                            response.getGeneric(),
                            response.getParameterNames(),
                            response.getParameterTypes(),
-                           "param", // $NON-NLS-1$
+                           "param",
                            RE_ROXYGEN_PARAM);
                   }
                   else
@@ -259,8 +258,8 @@ public class RoxygenHelper
                            response.getGeneric(),
                            response.getParameterNames(),
                            response.getParameterTypes(),
-                           "param", // $NON-NLS-1$
-                           "method", //$NON-NLS-1$
+                           "param",
+                           "method",
                            startPos);
                   }
                }
@@ -296,7 +295,7 @@ public class RoxygenHelper
                            response.getClassName(),
                            response.getSlots(),
                            null,
-                           "slot", //$NON-NLS-1$
+                           "slot",
                            RE_ROXYGEN_SLOT);
                   }
                   else
@@ -305,8 +304,8 @@ public class RoxygenHelper
                            response.getClassName(),
                            response.getSlots(),
                            response.getTypes(),
-                           "slot", //$NON-NLS-1$
-                           "S4 class", //$NON-NLS-1$
+                           "slot",
+                           "S4 class",
                            startPos);
                   }
                }
@@ -366,7 +365,7 @@ public class RoxygenHelper
                getFunctionName(scope),
                getFunctionArgs(scope),
                null,
-               "param", // $NON-NLS-1$
+               "param",
                RE_ROXYGEN_PARAM);
       }
       else
@@ -375,8 +374,8 @@ public class RoxygenHelper
                getFunctionName(scope),
                getFunctionArgs(scope),
                null,
-               "param", // $NON-NLS-1$
-               "function", // $NON-NLS-1$
+               "param",
+               "function",
                scope.getPreamble());
       }
    }
@@ -404,10 +403,8 @@ public class RoxygenHelper
       {
          if (RE_ROXYGEN_NONLOCAL.test(block.get(i)))
          {
-            // i18n: Concatenation/Message
             view_.showWarningBar(
-                  constants_.cannotUpdateRoxygenMessage() +
-                  constants_.notSelfContainedMessage());
+                  constants_.cannotUpdateRoxygenMessage());
             return;
          }
       }
@@ -685,8 +682,7 @@ public class RoxygenHelper
       // if there were one or more arguments.
       if (argNames.length() != 0)
          roxygenParams += "\n#'\n";
-
-      // i18n: Is this a template shown to users (eg: i18n the "title") or something internal?
+      
       String block = 
                   "#' Title\n" +
                   "#'\n" +
@@ -778,33 +774,33 @@ public class RoxygenHelper
    private RoxygenServerOperations server_;
    
    private static final Pattern RE_ROXYGEN =
-         Pattern.create("^(\\s*#+')", ""); //$NON-NLS-1$
+         Pattern.create("^(\\s*#+')", "");
    
    private static final Pattern RE_ROXYGEN_EMPTY =
-         Pattern.create("^\\s*#+'\\s*$", ""); //$NON-NLS-1$
+         Pattern.create("^\\s*#+'\\s*$", "");
    
    private static final Pattern RE_ROXYGEN_PARAM =
-         Pattern.create("^\\s*#+'\\s*@param\\s+([^\\s]+)", ""); //$NON-NLS-1$
+         Pattern.create("^\\s*#+'\\s*@param\\s+([^\\s]+)", "");
    
    private static final Pattern RE_ROXYGEN_FIELD =
-         Pattern.create("^\\s*#+'\\s*@field\\s+([^\\s]+)", ""); //$NON-NLS-1$
+         Pattern.create("^\\s*#+'\\s*@field\\s+([^\\s]+)", "");
    
    private static final Pattern RE_ROXYGEN_SLOT =
-         Pattern.create("^\\s*#+'\\s*@slot\\s+([^\\s]+)", ""); //$NON-NLS-1$
+         Pattern.create("^\\s*#+'\\s*@slot\\s+([^\\s]+)", "");
    
    private static final Pattern RE_ROXYGEN_WITH_TAG =
-         Pattern.create("^\\s*#+'\\s*@[^@]", ""); //$NON-NLS-1$
+         Pattern.create("^\\s*#+'\\s*@[^@]", "");
    
    private static final ArrayList<String> ROXYGEN_ANNOTATABLE_CALLS =
       new ArrayList<>(
             Arrays.asList(new String[] {
-            "setClass", //$NON-NLS-1$
-            "setRefClass", //$NON-NLS-1$
-            "setMethod", //$NON-NLS-1$
-            "setGeneric" //$NON-NLS-1$
+            "setClass",
+            "setRefClass",
+            "setMethod",
+            "setGeneric"
       }));
    
    private static final Pattern RE_ROXYGEN_NONLOCAL =
-         Pattern.create("^\\s*#+'\\s*@(?:inheritParams|template)", ""); //$NON-NLS-1$
+         Pattern.create("^\\s*#+'\\s*@(?:inheritParams|template)", "");
    private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 }

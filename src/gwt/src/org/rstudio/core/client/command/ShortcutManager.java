@@ -25,7 +25,11 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.gwt.core.client.GWT;
-import org.rstudio.core.client.*;
+import org.rstudio.core.client.BrowseCap;
+import org.rstudio.core.client.CoreClientConstants;
+import org.rstudio.core.client.ElementIds;
+import org.rstudio.core.client.Pair;
+import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.command.KeyMap.CommandBinding;
 import org.rstudio.core.client.command.KeyMap.KeyMapType;
 import org.rstudio.core.client.dom.DomUtils;
@@ -290,16 +294,16 @@ public class ShortcutManager implements NativePreviewHandler,
       String[] splat = disableModes.split(",");
       for (String item : splat)
       {
-         if (item == "default") //$NON-NLS-1$
+         if (item == "default")
             mode |= KeyboardShortcut.MODE_DEFAULT;
-         else if (item == "vim") //$NON-NLS-1$
+         else if (item == "vim")
             mode |= KeyboardShortcut.MODE_VIM;
-         else if (item == "emacs") //$NON-NLS-1$
+         else if (item == "emacs")
             mode |= KeyboardShortcut.MODE_EMACS;
-         else if (item == "sublime") //$NON-NLS-1$
+         else if (item == "sublime")
             mode |= KeyboardShortcut.MODE_SUBLIME;
          else
-            assert false: "Unrecognized 'disableModes' value '" + item + "'"; //$NON-NLS-1$
+            assert false: "Unrecognized 'disableModes' value '" + item + "'";
       }
 
       return mode;
@@ -760,13 +764,12 @@ public class ShortcutManager implements NativePreviewHandler,
       reportShortcutBinding_ = report;
    }
 
-   private final String REPORT_SHORTCUTS_MESSAGE = constants_.reportShortCutMessage();
 
    @Handler
    void onShowShortcutCommand()
    {
       setReportShortcutBinding(true);
-      events_.fireEvent(new ShowWarningBarEvent(false /*severe*/, REPORT_SHORTCUTS_MESSAGE));
+      events_.fireEvent(new ShowWarningBarEvent(false /*severe*/, constants_.reportShortCutMessage()));
    }
 
    @Override
@@ -780,7 +783,7 @@ public class ShortcutManager implements NativePreviewHandler,
       keyBuffer_.clear();
       if (reportedPending_)
       {
-         reportShortcutBinding(REPORT_SHORTCUTS_MESSAGE);
+         reportShortcutBinding(constants_.reportShortCutMessage());
          reportedPending_ = false;
       }
    }

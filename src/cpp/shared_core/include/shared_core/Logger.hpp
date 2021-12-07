@@ -70,6 +70,7 @@ struct RefreshParams
     *        changing process running user to ensure logs can still be written to.
     */
    boost::optional<core::system::User> newUser;
+   bool chownLogDir;
 #endif
 };
 

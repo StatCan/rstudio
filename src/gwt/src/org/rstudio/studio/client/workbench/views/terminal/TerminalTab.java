@@ -106,8 +106,7 @@ public class TerminalTab extends DelayLoadWorkbenchTab<TerminalTabPresenter>
                       Provider<ConsoleProcessFactory> pConsoleProcessFactory,
                       final Session session)
    {
-      // i18n: Enumerator, user facing text, or both?
-      super("Terminal", shim);
+      super(constants_.terminalTitle(), shim);
       shim_ = shim;
       pConsoleProcessFactory_ = pConsoleProcessFactory;
 
@@ -165,7 +164,6 @@ public class TerminalTab extends DelayLoadWorkbenchTab<TerminalTabPresenter>
       int newSequence = procInfo.getTerminalSequence();
       if (newSequence < 1)
       {
-         // i18n: Concatenation/Message.  Is this seen by users or just developers?
          Debug.logWarning("Invalid terminal sequence " + newSequence +
                ", killing unrecognized process");
          pConsoleProcessFactory_.get().interruptAndReap(procInfo.getHandle());
@@ -178,7 +176,6 @@ public class TerminalTab extends DelayLoadWorkbenchTab<TerminalTabPresenter>
 
          if (newSequence == currentSequence)
          {
-            // i18n: Concatenation/Message.  Is this seen by users or just developers?
             Debug.logWarning("Duplicate terminal sequence " + newSequence +
                   ", killing duplicate process");
             pConsoleProcessFactory_.get().interruptAndReap(procInfo.getHandle());
@@ -197,4 +194,5 @@ public class TerminalTab extends DelayLoadWorkbenchTab<TerminalTabPresenter>
    private final Shim shim_;
 
    private final Provider<ConsoleProcessFactory> pConsoleProcessFactory_;
+   private static final TerminalConstants constants_ = com.google.gwt.core.client.GWT.create(TerminalConstants.class);
 }

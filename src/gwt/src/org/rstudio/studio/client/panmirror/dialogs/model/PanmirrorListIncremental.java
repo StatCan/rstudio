@@ -22,9 +22,9 @@ import org.rstudio.studio.client.panmirror.PanmirrorConstants;
 
 public class PanmirrorListIncremental
 {
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 
-   public static String Default = _constants.defaultLabel();
-   public static String Incremental = _constants.incrementalLabel();
-   public static String Nonincremental = _constants.nonincrementalLabel();
+   public static String Default = constants_.defaultLabel();
+   public static String Incremental = constants_.incrementalLabel();
+   public static String Nonincremental = constants_.nonincrementalLabel();
 }

@@ -25,14 +25,15 @@ import org.rstudio.core.client.widget.Wizard;
 import org.rstudio.core.client.widget.WizardNavigationPage;
 import org.rstudio.core.client.widget.WizardPage;
 import org.rstudio.studio.client.common.GlobalDisplay;
+import org.rstudio.studio.client.rsconnect.RsconnectConstants;
 import org.rstudio.studio.client.rsconnect.model.NewRSConnectAccountInput;
 import org.rstudio.studio.client.rsconnect.model.NewRSConnectAccountResult;
 import org.rstudio.studio.client.rsconnect.model.RSConnectServerOperations;
-import org.rstudio.studio.client.workbench.prefs.views.PublishingPreferencesPaneConstants;
 
 public class RSConnectAccountWizard 
    extends Wizard<NewRSConnectAccountInput,NewRSConnectAccountResult>
 {
+   private static final RsconnectConstants constants_ = GWT.create(RsconnectConstants.class);
    public RSConnectAccountWizard(
          RSConnectServerOperations server,
          GlobalDisplay display,
@@ -40,7 +41,7 @@ public class RSConnectAccountWizard
          boolean showCloudPage,
          ProgressOperationWithInput<NewRSConnectAccountResult> operation)
    {
-      super(constants_.connectAccountCaption(), constants_.connectAccountOkCaption(), Roles.getDialogRole(),
+      super(constants_.connectAccount(), constants_.connectAccount(), Roles.getDialogRole(),
             new NewRSConnectAccountInput(server, display), 
             forFirstAccount ? 
                createIntroPage(showCloudPage) : 
@@ -83,8 +84,8 @@ public class RSConnectAccountWizard
                                NewRSConnectAccountResult> createIntroPage(
                                      boolean showCloudPage)
    {
-      return new NewRSConnectAccountPage(constants_.newRSConnectAccountPageTitle(),
-            constants_.newRSConnectAccountPageSubTitle(), constants_.newRSConnectAccountPageCaption(),
+      return new NewRSConnectAccountPage(constants_.connectPublishingAccount(),
+            constants_.pickAnAccount(), constants_.connectPublishingAccount(),
             new ImageResource2x(RSConnectResources.INSTANCE.publishIcon2x()),
             new ImageResource2x(RSConnectResources.INSTANCE.publishIconLarge2x()),
             createSelectorPage(showCloudPage));
@@ -97,9 +98,9 @@ public class RSConnectAccountWizard
       if (showCloudPage)
       {
          return new WizardNavigationPage<>(
-                  constants_.wizardNavigationPageTitle(),
-                  constants_.wizardNavigationPageSubTitle(),
-                  constants_.wizardNavigationPageCaption(),
+                  constants_.chooseAccountType(),
+                  constants_.chooseAccountType(),
+                  constants_.connectAccount(),
                   null, 
                   null, 
                   createPages());
@@ -117,10 +118,7 @@ public class RSConnectAccountWizard
       pages.add(new NewRSConnectLocalPage());
       return pages;
    }
-   private static final PublishingPreferencesPaneConstants constants_ = GWT.create(PublishingPreferencesPaneConstants.class);
-   public static final String SERVICE_NAME =  "RStudio Connect";
-   public static final String SERVICE_DESCRIPTION =
-           constants_.serviceDescription() +
-           constants_.serviceMessageDescription();
-
+   
+   public static final String SERVICE_NAME =  constants_.rStudioConnect();
+   public static final String SERVICE_DESCRIPTION = constants_.rStudioConnectServiceDescription();
 }

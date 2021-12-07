@@ -102,23 +102,23 @@ public class StringUtil
       Date now = new Date();
 
       String format = "";
-      // i18n: Do date formats need ot be internationalized?
-      if (DateTimeFormat.getFormat("MMM d").format(date) == // $NON-NLS-1$
-          DateTimeFormat.getFormat("MMM d").format(now)) // $NON-NLS-1$
+
+      if (DateTimeFormat.getFormat("MMM d").format(date) ==
+          DateTimeFormat.getFormat("MMM d").format(now))
       {
          // it's today, so just show the time
-         format = "h:mm a"; // $NON-NLS-1$
+         format = "h:mm a";
       }
-      else if (DateTimeFormat.getFormat("yyyy").format(date) == // $NON-NLS-1$
-               DateTimeFormat.getFormat("yyyy").format(now)) // $NON-NLS-1$
+      else if (DateTimeFormat.getFormat("yyyy").format(date) ==
+               DateTimeFormat.getFormat("yyyy").format(now))
       {
          // it's not today, but in the last year, so show the date too
-         format = "MMM d, h:mm a"; // $NON-NLS-1$
+         format = "MMM d, h:mm a";
       }
       else
       {
          // happened last year, probably don't care about the time
-         format = "MMM d, yyyy"; // $NON-NLS-1$
+         format = "MMM d, yyyy";
       }
 
       return DateTimeFormat.getFormat(format).format(date);
@@ -133,11 +133,11 @@ public class StringUtil
    public static String formatElapsedTime(int seconds)
    {
       if (seconds < 60)
-         return seconds + " " + constants_.secondLabel() + (seconds == 1 ? "" : "s"); //NON-NLS
+         return (seconds == 1 ? constants_.secondLabel(seconds)  : constants_.secondPluralLabel(seconds));
       else if (seconds < 3600)
-         return (seconds / 60) + " " + constants_.minuteLabel() + ((seconds / 60) == 1 ? "" : "s"); //NON-NLS
+         return (seconds / 60) == 1 ? constants_.minuteLabel(seconds / 60) : constants_.minutePluralLabel(seconds / 60);
       else
-         return (seconds / 3600) + " " + constants_.hourLabel() + ((seconds / 3600) == 1 ? "" : "s"); //NON-NLS
+         return (seconds / 3600) == 1 ? constants_.hourLabel(seconds / 3600) : constants_.hourPluralLabel(seconds / 3600);
    }
 
    /**
@@ -250,13 +250,13 @@ public class StringUtil
 
    public static String textToRLiteral(String value)
    {
-      String escaped = value.replaceAll("([\"\\n\\r\\t\\b\\f\\\\])", "\\\\$1"); // $NON-NLS-1$
+      String escaped = value.replaceAll("([\"\\n\\r\\t\\b\\f\\\\])", "\\\\$1");
       return '"' + escaped + '"';
    }
 
    private static String toHex(char c)
    {
-      String table = "0123456789ABCDEF"; //$NON-NLS-1$
+      String table = "0123456789ABCDEF";
       return table.charAt((c >> 8) & 0xF) + "" + table.charAt(c & 0xF);
    }
 
@@ -270,7 +270,7 @@ public class StringUtil
 
    private static boolean isRKeyword(String identifier)
    {
-      String ALL_KEYWORDS = "|NULL|NA|TRUE|FALSE|T|F|Inf|NaN|NA_integer_|NA_real_|NA_character_|NA_complex_|function|while|repeat|for|if|in|else|next|break|...|"; //$NON-NLS-1$
+      String ALL_KEYWORDS = "|NULL|NA|TRUE|FALSE|T|F|Inf|NaN|NA_integer_|NA_real_|NA_character_|NA_complex_|function|while|repeat|for|if|in|else|next|break|...|";
 
       if (identifier.length() > 20 || identifier.contains("|"))
          return false;
@@ -403,19 +403,19 @@ public class StringUtil
     */
    public static String trimBlankLines(String data)
    {
-      data = Pattern.create("^[\\r\\n\\t ]*\\n", "g").replaceAll(data, ""); //$NON-NLS-1$
-      data = Pattern.create("\\r?\\n[\\r\\n\\t ]*$", "g").replaceAll(data, ""); //$NON-NLS-1$
+      data = Pattern.create("^[\\r\\n\\t ]*\\n", "g").replaceAll(data, "");
+      data = Pattern.create("\\r?\\n[\\r\\n\\t ]*$", "g").replaceAll(data, "");
       return data;
    }
 
    public static String trimLeft(String str)
    {
-      return str.replaceFirst("^\\s+", ""); //$NON-NLS-1$
+      return str.replaceFirst("^\\s+", "");
    }
 
    public static String trimRight(String str)
    {
-      return str.replaceFirst("\\s+$", ""); //$NON-NLS-1$
+      return str.replaceFirst("\\s+$", "");
    }
 
    /**
@@ -1040,11 +1040,11 @@ public class StringUtil
    }
 
    private static final String[] LABELS = {
-         "B", //$NON-NLS-1$
-         "KB", //$NON-NLS-1$
-         "MB", //$NON-NLS-1$
-         "GB", //$NON-NLS-1$
-         "TB" //$NON-NLS-1$
+         "B",
+         "KB",
+         "MB",
+         "GB",
+         "TB"
    };
 
    public static boolean isComplementOf(String self, String other)
@@ -1095,7 +1095,7 @@ public class StringUtil
       if (string.equals(string.toUpperCase()))
          return string;
 
-      String result = string.replaceAll("\\s*([A-Z])", " $1"); // $NON-NLS-1$
+      String result = string.replaceAll("\\s*([A-Z])", " $1");
       return result.substring(0, 1).toUpperCase() +
              result.substring(1);
    }
@@ -1160,7 +1160,7 @@ public class StringUtil
 
    public static String makeRandomId(int length)
    {
-      String alphanum = "0123456789abcdefghijklmnopqrstuvwxyz"; //$NON-NLS-1$
+      String alphanum = "0123456789abcdefghijklmnopqrstuvwxyz";
       String id = "";
       for (int i = 0; i < length; i++)
       {
@@ -1486,10 +1486,9 @@ public class StringUtil
 
    private static final NumberFormat FORMAT = NumberFormat.getFormat("0.#");
    private static final NumberFormat PRETTY_NUMBER_FORMAT = NumberFormat.getFormat("#,##0.#####");
-   // i18n: Does this date format need i18n?
    private static final DateTimeFormat DATE_FORMAT
-                          = DateTimeFormat.getFormat("MMM d, yyyy, h:mm a"); // $NON-NLS-1$
-   private static final Pattern RE_INDENT = Pattern.create("^\\s*", ""); //$NON-NLS-1$
+                          = DateTimeFormat.getFormat("MMM d, yyyy, h:mm a");
+   private static final Pattern RE_INDENT = Pattern.create("^\\s*", "");
    private static final Pattern BASH_RESERVED_CHAR = Pattern.create("[^a-zA-Z0-9,._+@%/-]");
    private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
 }

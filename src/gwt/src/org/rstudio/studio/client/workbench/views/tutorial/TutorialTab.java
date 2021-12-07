@@ -27,12 +27,12 @@ public class TutorialTab extends DelayLoadWorkbenchTab<TutorialPresenter>
    @Inject
    public TutorialTab(Shim shim)
    {
-      // i18n: Enumerator, user facing text, or both?
-      super("Tutorial", shim);
+      super(constants_.tutorialTitle(), shim);
       shim_ = shim;
    }
    
    
    @SuppressWarnings("unused")
    private final Shim shim_;
+   private static final TutorialConstants constants_ = com.google.gwt.core.client.GWT.create(TutorialConstants.class);
 }

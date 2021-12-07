@@ -85,9 +85,6 @@ import org.rstudio.studio.client.workbench.views.help.search.HelpSearch;
 public class HelpPane extends WorkbenchPane
                       implements Help.Display
 {
-   /**
-    * Defines the Help pane that can be included in the main UI
-    */
    @Inject
    public HelpPane(Provider<HelpSearch> searchProvider,
                    GlobalDisplay globalDisplay,
@@ -95,10 +92,7 @@ public class HelpPane extends WorkbenchPane
                    EventBus events,
                    UserPrefs prefs)
    {
-      // i18n: Is this an enumeration (eg, other tools might ask for the Pane of title "Help") or does it reach users?
-      //       Hard to tell.  See notes in PaneConfig.getAllTabs()
-      //       At minimum, this DOES NOT set the on-screen title of the pane.  That is
-      super("Help", events);
+      super(constants_.helpText(), events);
 
       searchProvider_ = searchProvider;
       globalDisplay_ = globalDisplay;
@@ -118,8 +112,7 @@ public class HelpPane extends WorkbenchPane
       });
 
       frame_ = new RStudioThemedFrame(
-         // i18n: Same as above.  Is this enumerator, on screen, neither, or both?
-         "Help Pane",
+         constants_.helpPaneTitle(),
          null,
          RES.editorStyles().getText(),
          null,
@@ -342,16 +335,13 @@ public class HelpPane extends WorkbenchPane
       }
    }
 
-   /**
-    * Object used by the display of the history of pages navigated through in the Help pane to parse a single document
-    */
    private void helpNavigated(Document doc)
    {
       NodeList<Element> elements = doc.getElementsByTagName("a");
       for (int i = 0; i < elements.getLength(); i++)
       {
          ElementEx a = (ElementEx) elements.getItem(i);
-         String href = a.getAttribute("href", 2); //$NON-NLS-1$
+         String href = a.getAttribute("href", 2);
          if (href == null)
             continue;
 
@@ -359,7 +349,7 @@ public class HelpPane extends WorkbenchPane
          {
             // external links
             AnchorElement aElement = a.cast();
-            aElement.setTarget("_blank"); //$NON-NLS-1$
+            aElement.setTarget("_blank");
          }
          else
          {
@@ -383,7 +373,7 @@ public class HelpPane extends WorkbenchPane
       String docUrl = StringUtil.notNull(doc.getURL());
       String docTitle = doc.getTitle();
 
-      String previewPrefix = new String("/help/preview?file="); //$NON-NLS-1$
+      String previewPrefix = new String("/help/preview?file=");
       int previewLoc = docUrl.indexOf(previewPrefix);
       if (previewLoc != -1)
       {
@@ -409,18 +399,10 @@ public class HelpPane extends WorkbenchPane
       title_.setText("");
    }
 
-   /**
-    * Defines the primary (upper) toolbar in the Help Pane
-    *
-    * @return Toolbar object
-    */
    @Override
    protected Toolbar createMainToolbar()
    {
-      // i18n: Don't think this shows to user, not sure if it is used as an enumerator elsewhere.  "Help Tab" feels
-      //       user-formatted, but the below "Help Tab Second" definitely does not.  There are also no pointers to
-      //       "Help Tab" or "Help Tab Second" in the code
-      Toolbar toolbar = new Toolbar("Help Tab"); //$NON-NLS-1$
+      Toolbar toolbar = new Toolbar(constants_.helpTabLabel());
 
       toolbar.addLeftWidget(commands_.helpBack().createToolbarButton());
       toolbar.addLeftWidget(commands_.helpForward().createToolbarButton());
@@ -447,15 +429,10 @@ public class HelpPane extends WorkbenchPane
       return toolbar;
    }
 
-   /**
-    * Defines the secondary toolbar in the Help Pane
-    *
-    * @return SecondaryToolbar object
-    */
    @Override
    protected SecondaryToolbar createSecondaryToolbar()
    {
-      SecondaryToolbar toolbar = new SecondaryToolbar("Help Tab Second"); //$NON-NLS-1$
+      SecondaryToolbar toolbar = new SecondaryToolbar(constants_.helpTabSecondLabel());
 
       title_ = new Label();
       title_.addStyleName(RES.styles().topicTitle());
@@ -465,7 +442,7 @@ public class HelpPane extends WorkbenchPane
       toolbar.getWrapper().addStyleName(styles.tallerToolbarWrapper());
 
       final SmallButton btnNext = new SmallButton("&gt;", true);
-      btnNext.setTitle("Find next (Enter)");
+      btnNext.setTitle(constants_.findNextLabel());
       btnNext.addStyleName(RES.styles().topicNavigationButton());
       btnNext.setVisible(false);
       btnNext.addClickHandler(new ClickHandler() {
@@ -477,7 +454,7 @@ public class HelpPane extends WorkbenchPane
       });
 
       final SmallButton btnPrev = new SmallButton("&lt;", true);
-      btnPrev.setTitle("Find previous");
+      btnPrev.setTitle(constants_.findPreviousLabel());
       btnPrev.addStyleName(RES.styles().topicNavigationButton());
       btnPrev.setVisible(false);
       btnPrev.addClickHandler(new ClickHandler() {
@@ -489,7 +466,7 @@ public class HelpPane extends WorkbenchPane
       });
 
 
-      findTextBox_ = new FindTextBox("Find in Topic");
+      findTextBox_ = new FindTextBox(constants_.findInTopicLabel());
       findTextBox_.addStyleName(RES.styles().findTopicTextbox());
       findTextBox_.setOverrideWidth(90);
       ElementIds.assignElementId(findTextBox_, ElementIds.SW_HELP_FIND_IN_TOPIC);
@@ -842,8 +819,8 @@ public class HelpPane extends WorkbenchPane
       if (!contentWindow.find(term, false, false, true, false))
       {
          globalDisplay_.showMessage(MessageDialog.INFO,
-               "Find in Topic",
-               "No occurrences found",
+               constants_.findInTopicLabel(),
+               constants_.noOccurrencesFoundMessage(),
                findInputSource);
       }
    }
@@ -908,4 +885,5 @@ public class HelpPane extends WorkbenchPane
    private boolean selected_;
    private static int popoutCount_ = 0;
    private SearchDisplay searchWidget_;
+   private static final HelpConstants constants_ = GWT.create(HelpConstants.class);
 }

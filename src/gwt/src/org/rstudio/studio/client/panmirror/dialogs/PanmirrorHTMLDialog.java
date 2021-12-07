@@ -113,7 +113,7 @@ public class PanmirrorHTMLDialog extends ModalDialog<Boolean>
       String error = validate_.validate();
       if (error != null)
       {
-         RStudioGinjector.INSTANCE.getGlobalDisplay().showErrorMessage(_constants.errorCaption(), error,
+         RStudioGinjector.INSTANCE.getGlobalDisplay().showErrorMessage(constants_.errorCaption(), error,
                new CanFocus()
                {
                   @Override
@@ -162,6 +162,6 @@ public class PanmirrorHTMLDialog extends ModalDialog<Boolean>
 
    private JsVoidFunction focus_;
    private ValidateFn validate_;
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 
 }

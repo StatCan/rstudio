@@ -48,11 +48,11 @@ public class PanmirrorDOIServer
       return new Promise<>((ResolveCallbackFn<JavaScriptObject> resolve, RejectCallbackFn reject) -> {
          server_.doiFetchCSL(
             doi,
-            new PromiseServerRequestCallback<>(resolve, reject, _constants.lookingUpDOIProgress(), delayMs)
+            new PromiseServerRequestCallback<>(resolve, reject, constants_.lookingUpDOIProgress(), delayMs)
          );
       });
    }
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 
 
    PanmirrorDOIServerOperations server_;

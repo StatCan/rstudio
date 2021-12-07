@@ -318,9 +318,18 @@ add_definitions(-DRSTUDIO_BOOST_SIGNALS_VERSION=2)
 # add boost as system include directory
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 
-if(NOT DEFINED RSTUDIO_CRASHPAD_ENABLED AND APPLE AND UNAME_M STREQUAL arm64)
-   message(STATUS "Crashpad not yet supported on M1 macOS machines; disabling Crashpad")
-   set(RSTUDIO_CRASHPAD_ENABLED FALSE)
+if(NOT DEFINED RSTUDIO_CRASHPAD_ENABLED)
+   
+   if(APPLE AND UNAME_M STREQUAL arm64)
+      message(STATUS "Crashpad not yet supported on M1 macOS machines; disabling Crashpad")
+      set(RSTUDIO_CRASHPAD_ENABLED FALSE)
+   endif()
+
+   if(LINUX AND UNAME_M STREQUAL aarch64)
+      message(STATUS "Crashpad not yet supported on aarch64 Linux machines; disabling Crashpad")
+      set(RSTUDIO_CRASHPAD_ENABLED FALSE)
+   endif()
+
 endif()
 
 # Crashpad
@@ -638,9 +647,13 @@ else()
       # processing which we do in desktop
       add_subdirectory(session)
 
-      # configure desktop files
-      if(RSTUDIO_DESKTOP OR RSTUDIO_ELECTRON)
+      # desktop conf file used for dev-mode for both Qt desktop and Electron desktop
+      if(RSTUDIO_DESKTOP OR RSTUDIO_ELECTRON OR RSTUDIO_DEVELOPMENT)
          configure_file(conf/rdesktop-dev.conf ${CMAKE_CURRENT_BINARY_DIR}/conf/rdesktop-dev.conf)
+      endif()
+
+      # configure desktop files
+      if(RSTUDIO_DESKTOP)
          if(NOT WIN32)
             if(NOT APPLE)
                configure_file(rstudio-dev.in ${CMAKE_CURRENT_BINARY_DIR}/rstudio-dev)

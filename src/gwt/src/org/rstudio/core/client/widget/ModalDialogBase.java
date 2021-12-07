@@ -40,7 +40,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import elemental2.dom.DomGlobal;
-import org.rstudio.core.client.*;
+import org.rstudio.core.client.CoreClientConstants;
+import org.rstudio.core.client.Debug;
+import org.rstudio.core.client.ElementIds;
+import org.rstudio.core.client.Point;
+import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.command.ShortcutManager;
 import org.rstudio.core.client.command.ShortcutManager.Handle;
 import org.rstudio.core.client.dom.DomUtils;
@@ -50,7 +54,6 @@ import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.application.events.AriaLiveStatusEvent.Severity;
 import org.rstudio.studio.client.application.ui.RStudioThemes;
 import org.rstudio.studio.client.common.Timers;
-import org.rstudio.studio.client.workbench.prefs.views.PreferencesPaneConstants;
 
 import java.util.ArrayList;
 
@@ -565,7 +568,7 @@ public abstract class ModalDialogBase extends DialogBox
          NativeEvent nativeEvent = event.getNativeEvent();
          switch (nativeEvent.getKeyCode())
          {
-
+         
          case KeyCodes.KEY_ENTER:
          {
 
@@ -574,21 +577,21 @@ public abstract class ModalDialogBase extends DialogBox
 
             // allow Enter on textareas, buttons, or anchors (including custom links)
             Element e = DomUtils.getActiveElement();
-
+            
             boolean enterAllowed =
                   e.hasTagName("TEXTAREA") ||
                   e.hasTagName("A") ||
                   e.hasTagName("BUTTON") ||
                   e.hasClassName(ALLOW_ENTER_KEY_CLASS) ||
-                  (e.hasAttribute("role") && StringUtil.equals(e.getAttribute("role"), "link")); // $NON-NLS-1$
-
-            if (enterAllowed) //$NON-NLS-1$
+                  (e.hasAttribute("role") && StringUtil.equals(e.getAttribute("role"), "link"));
+            
+            if (enterAllowed)
                return;
 
             ThemedButton defaultButton = defaultOverrideButton_ == null
                   ? okButton_
                   : defaultOverrideButton_;
-
+            
             if ((defaultButton != null) && defaultButton.isEnabled())
             {
                nativeEvent.preventDefault();
@@ -596,24 +599,24 @@ public abstract class ModalDialogBase extends DialogBox
                event.cancel();
                defaultButton.click();
             }
-
+            
             break;
          }
-
+            
          case KeyCodes.KEY_ESCAPE:
          {
-
+            
             if (escapeDisabled_)
                break;
-
+            
             Element e = DomUtils.getActiveElement();
             if (e.hasClassName(ALLOW_ESCAPE_KEY_CLASS))
                break;
-
+            
             onEscapeKeyDown(event);
             break;
          }
-
+         
          case KeyCodes.KEY_TAB:
          {
             if (nativeEvent.getShiftKey() && focus_.isFirst(DomUtils.getActiveElement()))
@@ -632,7 +635,7 @@ public abstract class ModalDialogBase extends DialogBox
             }
             break;
          }
-
+         
          }
       }
    }
@@ -782,7 +785,7 @@ public abstract class ModalDialogBase extends DialogBox
       ArrayList<Element> focusable = getFocusableElements();
       if (focusable.size() == 0)
       {
-         Debug.logWarning(constants_.noFocusableControlsLog()); //$NON-NLS-1$
+         Debug.logWarning("No potentially focusable controls found in modal dialog");
          return;
       }
       focus_.setFirst(focusable.get(0));
@@ -845,7 +848,7 @@ public abstract class ModalDialogBase extends DialogBox
    private final AriaLiveStatusWidget ariaLiveStatusWidget_;
    private final FocusHelper focus_;
    
-   public static final String ALLOW_ENTER_KEY_CLASS = "__rstudio_modal_allow_enter_key"; //NON-NLS
-   public static final String ALLOW_ESCAPE_KEY_CLASS = "__rstudio_modal_allow_escape_key"; //NON-NLS
+   public static final String ALLOW_ENTER_KEY_CLASS = "__rstudio_modal_allow_enter_key";
+   public static final String ALLOW_ESCAPE_KEY_CLASS = "__rstudio_modal_allow_escape_key";
    private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
 }

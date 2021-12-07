@@ -42,8 +42,7 @@ public class PresentationFrame extends AnchorableFrame
                             boolean allowFullScreen,
                             final HasText titleWidget)
    {
-      // i18n: Is this enum or user text?
-      super("Presentation Frame", autoFocus);
+      super(constants_.presentationFrameTitle(), autoFocus);
       
       // allow full-screen view of iframe
       if (allowFullScreen)
@@ -76,7 +75,7 @@ public class PresentationFrame extends AnchorableFrame
    
    public void clear()
    {
-      getWindow().replaceLocationHref("about:blank"); //$NON-NLS-1$
+      getWindow().replaceLocationHref("about:blank");
    }
    
    public void home()
@@ -128,5 +127,5 @@ public class PresentationFrame extends AnchorableFrame
    
    
    private String title_ = "";
-
+   private static final PresentationConstants constants_ = com.google.gwt.core.client.GWT.create(PresentationConstants.class);
 }

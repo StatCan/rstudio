@@ -59,7 +59,7 @@ public class LocalRepositoriesWidget extends Composite
       hp.add(buttonPanel);
       
       panel.add(new LabelWithHelp(constants_.localReposText(),
-            "packrat_local_repos", constants_.localReposTitle(), //NON-NLS
+            "packrat_local_repos", constants_.localReposTitle(),
             listBox_));
       panel.add(hp);
       

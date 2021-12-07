@@ -69,12 +69,32 @@ namespace log {
 namespace {
 
 // pick default log path location
+
+FilePath defaultLogPathImpl()
+{
 #ifdef RSTUDIO_SERVER
-const FilePath kDefaultLogPath("/var/log/rstudio/rstudio-server");
+   if (core::system::effectiveUserIsRoot())
+   {
+      // server: root uses default documented logging directory
+      return FilePath("/var/log/rstudio/rstudio-server");
+   }
+   else
+   {
+      // server: prefer user data directory if we're not running as root
+      return core::system::xdg::userDataDir().completePath("log");
+   }
 #else
-// desktop - store logs under user dir
-const FilePath kDefaultLogPath = core::system::xdg::userDataDir().completePath("log");
+   // desktop: always stored in user data directory
+   return core::system::xdg::userDataDir().completePath("log");
 #endif
+}
+
+FilePath& defaultLogPath()
+{
+   static FilePath instance = defaultLogPathImpl();
+   return instance;
+}
+
 
 std::string logLevelToString(LogLevel logLevel)
 {
@@ -164,7 +184,7 @@ struct LoggerOptionsVisitor : boost::static_visitor<>
 
    void setDefaultFileLoggerOptions()
    {
-      FileLogOptions defaultOptions(kDefaultLogPath);
+      FileLogOptions defaultOptions(defaultLogPath());
       profile_.addParams(
          kLogDir, defaultOptions.getDirectory().getAbsolutePath(),
          kLogFileMode, defaultOptions.getFileMode(),
@@ -205,6 +225,47 @@ struct LoggerOptionsVisitor : boost::static_visitor<>
    ConfigProfile& profile_;
 };
 
+// used to determine if file log directory has been programmatically forced
+// the logging directory can be forced programmatically, but all other
+// fields could still be overrideable via logging configuration
+struct ForcedFileLogOptionsVisitor : boost::static_visitor<bool>
+{
+   bool operator()(const StdErrLogOptions& options)
+   {
+      return false;
+   }
+
+   bool operator()(const SysLogOptions& options)
+   {
+      return false;
+   }
+
+   bool operator()(const FileLogOptions& options)
+   {
+      return options.getForceDirectory();
+   }
+};
+
+// if force log directory is set, we use this visitor to determine
+// which directory to force it to
+struct LogDirVisitor : boost::static_visitor<FilePath>
+{
+   FilePath operator()(const StdErrLogOptions& options)
+   {
+      return FilePath(defaultLogPath());
+   }
+
+   FilePath operator()(const SysLogOptions& options)
+   {
+      return FilePath(defaultLogPath());
+   }
+
+   FilePath operator()(const FileLogOptions& options)
+   {
+      return options.getDirectory();
+   }
+};
+
 } // anonymous namespace
 
 
@@ -236,7 +297,7 @@ LogOptions::LogOptions(const std::string& executableName,
 
 FilePath LogOptions::defaultLogDirectory()
 {
-   return kDefaultLogPath;
+   return defaultLogPath();
 }
 
 void LogOptions::initProfile()
@@ -400,7 +461,6 @@ LoggerOptions LogOptions::loggerOptions(const std::string& loggerName) const
          double maxSizeMb;
          int rotateDays, maxRotations, deleteDays;
 
-         profile_.getParam(kLogDir, &logDir, levels);
          profile_.getParam(kRotate, &rotate, levels);
          profile_.getParam(kMaxSizeMb, &maxSizeMb, levels);
          profile_.getParam(kLogFileIncludePid, &includePid, levels);
@@ -410,11 +470,26 @@ LoggerOptions LogOptions::loggerOptions(const std::string& loggerName) const
          profile_.getParam(kDeleteDays, &deleteDays, levels);
          profile_.getParam(kWarnSyslog, &warnSyslog, levels);
 
+         profile_.getParam(kLogDir, &logDir, levels);
+         FilePath loggingDir(logDir);
+
+         // determine if the log directory should be programatically forced, preventing
+         // it from being overrideable via conf file - note we still allow it to be overridden
+         // via environment variable as an escape hatch
+         ForcedFileLogOptionsVisitor forceVisitor;
+         bool forceLogDir = boost::apply_visitor(forceVisitor, defaultLoggerOptions_);
+         if (forceLogDir)
+         {
+            LogDirVisitor dirVisitor;
+            loggingDir = boost::apply_visitor(dirVisitor, defaultLoggerOptions_);
+         }
+
+         // override log dir via env var if present
          std::string logDirOverride = core::system::getenv(kLogDirEnvVar);
          if (!logDirOverride.empty())
-            logDir = logDirOverride;
+            loggingDir = FilePath(logDirOverride);
 
-         return FileLogOptions(FilePath(logDir), fileMode, maxSizeMb, rotateDays, maxRotations, deleteDays, rotate, includePid, warnSyslog);
+         return FileLogOptions(loggingDir, fileMode, maxSizeMb, rotateDays, maxRotations, deleteDays, rotate, includePid, warnSyslog, forceLogDir);
       }
 
       case LoggerType::kStdErr:

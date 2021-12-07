@@ -39,7 +39,7 @@ public class PanmirrorImageChooser extends TextBoxWithButton {
    
    public PanmirrorImageChooser(PanmirrorUIContext uiContext, RMarkdownServerOperations server)
    {
-      super(_constants.imageChooserLabel(), "", _constants.browseLabel(), null, TextBoxButtonId.CHOOSE_IMAGE, false, null);
+      super(constants_.imageChooserLabel(), "", constants_.browseLabel(), null, TextBoxButtonId.CHOOSE_IMAGE, false, null);
       PanmirrorDialogsUtil.setFullWidthStyles(this);
       disableSpellcheck();
       
@@ -56,7 +56,7 @@ public class PanmirrorImageChooser extends TextBoxWithButton {
             );
                
             RStudioGinjector.INSTANCE.getFileDialogs().openFile(
-               _constants.chooseImageCaption(),
+               constants_.chooseImageCaption(),
                RStudioGinjector.INSTANCE.getRemoteFileSystemContext(),
                initialDir,
                new ProgressOperationWithInput<FileSystemItem>()
@@ -82,7 +82,7 @@ public class PanmirrorImageChooser extends TextBoxWithButton {
                         JsArrayString images = JsArrayString.createArray().cast();
                         images.push(input.getPath());
                         FileSystemItem defaultDir = FileSystemItem.createDir(uiContext.getDefaultResourceDir.get());
-                        String imagesDir = defaultDir.completePath("images"); //$NON-NLS-1$
+                        String imagesDir = defaultDir.completePath("images");
                         server.rmdImportImages(images, imagesDir, new SimpleRequestCallback<JsArrayString>() {
                            @Override
                            public void onResponseReceived(JsArrayString resolvedImages)
@@ -104,5 +104,5 @@ public class PanmirrorImageChooser extends TextBoxWithButton {
    }
    
    private static HashMap<String,String> previousImageDirs_ = new HashMap<String,String>();
-   private static final PanmirrorConstants _constants = GWT.create(PanmirrorConstants.class);
+   private static final PanmirrorConstants constants_ = GWT.create(PanmirrorConstants.class);
 }

@@ -108,7 +108,7 @@ public class NewQuartoProjectPage extends NewDirectoryPage
       HorizontalPanel panel = new HorizontalPanel();     
       
       engineSelect_ = new SelectWidget(constants_.engineLabel(),
-            new String[] {constants_.engineSelectNone(), "Knitr", "Jupyter"}, //NON-NLS
+            new String[] {constants_.engineSelectNone(), "Knitr", "Jupyter"},
             new String[] {
               QuartoConstants.ENGINE_MARKDOWN, 
               QuartoConstants.ENGINE_KNITR, 
@@ -225,7 +225,7 @@ public class NewQuartoProjectPage extends NewDirectoryPage
             projectTypeSelect_.getValue(), 
             engineSelect_.getValue(), 
             kernelSelect_.getValue(), 
-            chkUseVenv_.getValue() ? "venv" : "",  //NON-NLS
+            chkUseVenv_.getValue() ? "venv" : "",
             txtVenvPackages_.getText().trim(),
             chkVisualEditor_.getValue() ? QuartoConstants.EDITOR_VISUAL : ""
       );
@@ -257,7 +257,7 @@ public class NewQuartoProjectPage extends NewDirectoryPage
       public ClientStateValue()
       {
          super("quarto",
-               "quarto-new-proj-defaults", //NON-NLS
+               "quarto-new-proj",
                ClientState.PERSISTENT,
                session_.getSessionInfo().getClientState(),
                false);
