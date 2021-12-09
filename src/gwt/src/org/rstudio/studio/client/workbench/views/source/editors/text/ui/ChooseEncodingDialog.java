@@ -30,11 +30,11 @@ import org.rstudio.core.client.widget.ModalDialog;
 import org.rstudio.core.client.widget.OperationWithInput;
 import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.workbench.model.Session;
-import org.rstudio.studio.client.workbench.prefs.model.UserPrefsAccessorConstants;
+import org.rstudio.studio.client.workbench.views.source.ViewsSourceConstants;
 
 public class ChooseEncodingDialog extends ModalDialog<String>
 {
-   // TODO: i18n
+   private static final ViewsSourceConstants constants_ = GWT.create(ViewsSourceConstants.class);
    public ChooseEncodingDialog(JsArrayString commonEncodings,
                                JsArrayString allEncodings,
                                String currentEncoding,
@@ -42,7 +42,7 @@ public class ChooseEncodingDialog extends ModalDialog<String>
                                boolean includeSaveAsDefault,
                                OperationWithInput<String> operation)
    {
-      super(_constants.chooseEncodingDialogCaption(), Roles.getDialogRole(), operation);
+      super(constants_.chooseEncoding(), Roles.getDialogRole(), operation);
       commonEncodings_ = commonEncodings;
       allEncodings_ = allEncodings;
       currentEncoding_ = currentEncoding;
@@ -93,11 +93,11 @@ public class ChooseEncodingDialog extends ModalDialog<String>
       listBox_ = new ListBox();
       listBox_.setVisibleItemCount(15);
       listBox_.setWidth("350px");
-      Roles.getListboxRole().setAriaLabelProperty(listBox_.getElement(), "Encodings");
+      Roles.getListboxRole().setAriaLabelProperty(listBox_.getElement(), constants_.encodingsCapitalized());
 
       setEncodings(commonEncodings_, currentEncoding_);
 
-      CheckBox showAll = new FormCheckBox(_constants.showAllEncodings(), ElementIds.ENC_SHOW_ALL);
+      CheckBox showAll = new FormCheckBox(constants_.showAllEncodings(), ElementIds.ENC_SHOW_ALL);
       showAll.addValueChangeHandler(valueChangeEvent ->
       {
          if (valueChangeEvent.getValue())
@@ -113,7 +113,7 @@ public class ChooseEncodingDialog extends ModalDialog<String>
 
       if (includeSaveAsDefault_)
       {
-         saveAsDefault_ = new FormCheckBox(_constants.saveAsDefaultLabel(),
+         saveAsDefault_ = new FormCheckBox(constants_.setAsDefaultEncodingSourceFiles(),
                                            ElementIds.ENC_SET_DEFAULT);
          setCheckBoxMargins(showAll, 8, 0);
          setCheckBoxMargins(saveAsDefault_, 3, 12);
@@ -157,7 +157,7 @@ public class ChooseEncodingDialog extends ModalDialog<String>
                                           : listBox_.getValue(sysIndex);
          if (sysIndex >= 0)
             listBox_.removeItem(sysIndex);
-         listBox_.insertItem(sysEncName + " (System default)",
+         listBox_.insertItem(constants_.sysEncNameDefault(sysEncName),
                              systemEncoding_,
                              0);
       }
@@ -201,6 +201,5 @@ public class ChooseEncodingDialog extends ModalDialog<String>
    private CheckBox saveAsDefault_;
    private final String systemEncoding_;
    private final String systemEncodingNormalized_;
-   public static final String ASK_LABEL = "[Ask]";
-   private static final UserPrefsAccessorConstants _constants = GWT.create(UserPrefsAccessorConstants.class);
+   public static final String ASK_LABEL = constants_.askSquareBrackets();
 }

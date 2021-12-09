@@ -69,7 +69,6 @@ import org.rstudio.core.client.widget.ToolbarButton;
 import org.rstudio.studio.client.application.Desktop;
 import org.rstudio.studio.client.application.events.EventBus;
 import org.rstudio.studio.client.application.events.MouseNavigateEvent;
-import org.rstudio.studio.client.application.ui.RStudioThemes;
 import org.rstudio.studio.client.common.AutoGlassPanel;
 import org.rstudio.studio.client.common.GlobalDisplay;
 import org.rstudio.studio.client.common.GlobalDisplay.NewWindowOptions;
@@ -92,7 +91,7 @@ public class HelpPane extends WorkbenchPane
                    EventBus events,
                    UserPrefs prefs)
    {
-      super(constants_.helpText(), events);
+      super("Help", events);
 
       searchProvider_ = searchProvider;
       globalDisplay_ = globalDisplay;

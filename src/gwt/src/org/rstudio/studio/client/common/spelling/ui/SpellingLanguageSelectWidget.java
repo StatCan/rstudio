@@ -19,6 +19,7 @@ import org.rstudio.core.client.widget.HelpButton;
 import org.rstudio.core.client.widget.ProgressIndicator;
 import org.rstudio.core.client.widget.SelectWidget;
 import org.rstudio.studio.client.RStudioGinjector;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 import org.rstudio.studio.client.common.spelling.SpellingService;
 import org.rstudio.studio.client.common.spelling.model.SpellingLanguage;
 import org.rstudio.studio.client.server.ServerError;
@@ -54,12 +55,7 @@ public class SpellingLanguageSelectWidget extends SelectWidget
       
       getLabel().getElement().getStyle().setMarginBottom(4, Unit.PX);
       
-      HelpButton.addHelpButton(
-              this,
-              "spelling_dictionaries", //$NON-NLS-1$
-              constants_.addHelpButtonLabel(),
-              0
-      );
+      HelpButton.addHelpButton(this, "spelling_dictionaries", constants_.addHelpButtonLabel(), 0);
       
       getListBox().addChangeHandler(new ChangeHandler() {
 
@@ -191,6 +187,6 @@ public class SpellingLanguageSelectWidget extends SelectWidget
    private boolean allLanguagesInstalled_ = false;
    private JsArray<SpellingLanguage> languages_;
    private ProgressIndicator progressIndicator_;
-   private static final SpellingConstants constants_ = GWT.create(SpellingConstants.class);
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 
 }

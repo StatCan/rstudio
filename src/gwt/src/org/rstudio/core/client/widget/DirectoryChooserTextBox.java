@@ -22,7 +22,7 @@ import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.common.FileDialogs;
 
 import com.google.gwt.user.client.ui.Focusable;
-import org.rstudio.studio.client.workbench.prefs.views.GeneralPreferencesPaneConstants;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 
 public class DirectoryChooserTextBox extends TextBoxWithButton
 {
@@ -128,6 +128,6 @@ public class DirectoryChooserTextBox extends TextBoxWithButton
             })
       );
    }
-   private static final GeneralPreferencesPaneConstants constants_ = GWT.create(GeneralPreferencesPaneConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
 
 }

@@ -26,7 +26,7 @@ import org.rstudio.core.client.Size;
 import org.rstudio.core.client.dom.DomMetrics;
 import org.rstudio.core.client.widget.*;
 import org.rstudio.studio.client.common.filetypes.FileTypeRegistry;
-import org.rstudio.studio.client.workbench.prefs.views.SpellingPreferencesPaneConstants;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.views.source.editors.text.AceEditor;
 
 public class EditDialog extends ModalDialogBase
@@ -135,5 +135,6 @@ public class EditDialog extends ModalDialogBase
    private final boolean lineWrapping_;
    private final AceEditor editor_;
    private Size minimumSize_;
-   private static final SpellingPreferencesPaneConstants constants_ = GWT.create(SpellingPreferencesPaneConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
+
 }

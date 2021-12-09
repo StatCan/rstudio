@@ -14,6 +14,7 @@
  */
 package org.rstudio.studio.client.workbench.views.vcs;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -47,12 +48,12 @@ public class HistoryBranchToolbarButton extends BranchToolbarButton
    protected void onBeforePopulateMenu(ToolbarPopupMenu rootMenu)
    {
       super.onBeforePopulateMenu(rootMenu);
-
-      String label = "(all branches)";
+      
+      String label = constants_.allBranchesParentheses();
       rootMenu.addItem(
-            new MenuItem(label, new SwitchBranchCommand(label, "--all"))); // $NON-NLS-1$ (git flag syntax to list all branches)
+            new MenuItem(label, new SwitchBranchCommand(label, "--all")));
    }
 
    private boolean initialized_ = false;
-
+   private static final ViewVcsConstants constants_ = GWT.create(ViewVcsConstants.class);
 }

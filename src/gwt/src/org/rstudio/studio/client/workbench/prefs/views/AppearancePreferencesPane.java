@@ -48,6 +48,7 @@ import org.rstudio.studio.client.common.dependencies.DependencyManager;
 import org.rstudio.studio.client.server.ServerError;
 import org.rstudio.studio.client.server.ServerRequestCallback;
 import org.rstudio.studio.client.workbench.WorkbenchContext;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
 import org.rstudio.studio.client.workbench.prefs.model.UserState;
 import org.rstudio.studio.client.workbench.views.source.editors.text.themes.AceTheme;
@@ -84,14 +85,15 @@ public class AppearancePreferencesPane extends PreferencesPane
       relaunchRequired_ = false;
 
       // dark-grey theme and classic themes no longer exist; map them to defaults
-      if (StringUtil.equals(userPrefs_.globalTheme().getValue(), "dark-grey") || //NON-NLS
-          StringUtil.equals(userPrefs_.globalTheme().getValue(), "classic")) //$NON-NLS-1$
+      if (StringUtil.equals(userPrefs_.globalTheme().getValue(), "dark-grey") ||
+          StringUtil.equals(userPrefs_.globalTheme().getValue(), "classic"))
         userPrefs_.globalTheme().setGlobalValue(UserPrefs.GLOBAL_THEME_DEFAULT);
 
+      @SuppressWarnings("unused")
       final String originalTheme = userPrefs_.globalTheme().getValue();
 
       flatTheme_ = new SelectWidget(constants_.appearanceRStudioThemeLabel(),
-                                new String[]{"Modern", "Sky"}, //NON-NLS //NON-NLS
+                                new String[]{"Modern", "Sky"},
                                 new String[]{
                                       UserPrefs.GLOBAL_THEME_DEFAULT,
                                       UserPrefs.GLOBAL_THEME_ALTERNATE
@@ -154,7 +156,7 @@ public class AppearancePreferencesPane extends PreferencesPane
          if (fontList.isEmpty())
             registerFontListReadyCallback();
          else
-            fonts = fontList.split("\\n"); //$NON-NLS-1$
+            fonts = fontList.split("\\n");
       }
       else
       {
@@ -439,11 +441,7 @@ public class AppearancePreferencesPane extends PreferencesPane
             if (!themeList_.containsKey(currentTheme.getName()))
             {
                StringBuilder warningMsg = new StringBuilder();
-               warningMsg.append(constants_.setThemeWarningMessage())
-                  .append(currentTheme.getName())
-                  .append(constants_.themeWarningMessage())
-                  .append(currentTheme.isDark() ? constants_.themeWarningMessageDarkLabel() : constants_.themeWarningMessageLightLabel()) // TODO: How to handle this in i18n?  Are these human-namable, or enums?  I think they're human, so maybe it is just whatever it is?
-                  .append(constants_.themeWarningMessageDefaultLabel());
+               warningMsg.append(constants_.setThemeWarningMessage(currentTheme.getName(), currentTheme.isDark() ? constants_.themeWarningMessageDarkLabel() : constants_.themeWarningMessageLightLabel()));
 
                currentTheme = AceTheme.createDefault(currentTheme.isDark());
                userState_.theme().setGlobalValue(currentTheme);
@@ -471,7 +469,7 @@ public class AppearancePreferencesPane extends PreferencesPane
             String themeName = focusedThemeName;
             if (!themeList.containsKey(themeName))
             {
-               Debug.logWarning(constants_.updateThemeLogWarning() + focusedThemeName + constants_.updateThemeLogWarningLabel());
+               Debug.logWarning("The theme \"" + focusedThemeName + "\" does not exist. It may have been manually deleted outside the context of RStudio.");
                themeName = AceTheme.createDefault().getName();
             }
             AceTheme focusedTheme = themeList.get(themeName);
@@ -497,10 +495,7 @@ public class AppearancePreferencesPane extends PreferencesPane
    private void showThemeExistsDialog(String inputFileName, Operation continueOperation)
    {
       StringBuilder msg = new StringBuilder();
-      msg.append(constants_.showThemeExistsDialogLabel())
-         .append(inputFileName)
-         .append(constants_.showThemeExistsExistsLabel())
-         .append(constants_.showThemeExistsOverWriteLabel());
+      msg.append(constants_.showThemeExistsDialogLabel(inputFileName));
       globalDisplay_.showYesNoMessage(
          GlobalDisplay.MSG_WARNING,
          constants_.globalDisplayThemeExistsCaption(),
@@ -523,10 +518,7 @@ public class AppearancePreferencesPane extends PreferencesPane
    private void showCantRemoveThemeDialog(String themeName, String errorMessage)
    {
       StringBuilder msg = new StringBuilder();
-      msg.append(constants_.showCantRemoveThemeDialogMessage())
-         .append(themeName)
-         .append("': ")
-         .append(errorMessage);
+      msg.append(constants_.showCantRemoveThemeDialogMessage(themeName, errorMessage));
 
       globalDisplay_.showErrorMessage(constants_.showCantRemoveErrorMessage(), msg.toString());
    }
@@ -534,10 +526,7 @@ public class AppearancePreferencesPane extends PreferencesPane
    private void showCantRemoveActiveThemeDialog(String themeName)
    {
       StringBuilder msg = new StringBuilder();
-      msg.append(constants_.showCantRemoveActiveThemeDialog())
-         .append(themeName)
-         .append(constants_.showCantRemoveActiveThemeMessage())
-         .append(constants_.showCantRemoveActiveThemeRetryMessage());
+      msg.append(constants_.showCantRemoveActiveThemeDialog(themeName));
 
       globalDisplay_.showErrorMessage(constants_.showCantRemoveThemeCaption(), msg.toString());
    }
@@ -545,9 +534,7 @@ public class AppearancePreferencesPane extends PreferencesPane
    private void showRemoveThemeWarning(String themeName, Operation continueOperation)
    {
       StringBuilder msg = new StringBuilder();
-      msg.append(constants_.showRemoveThemeWarningMessage())
-         .append(themeName)
-         .append(constants_.showRemoveThemeWarningQuestionMessage());
+      msg.append(constants_.showRemoveThemeWarningMessage(themeName));
 
       globalDisplay_.showYesNoMessage(
          GlobalDisplay.MSG_WARNING,
@@ -560,10 +547,7 @@ public class AppearancePreferencesPane extends PreferencesPane
    private void showDuplicateThemeError(String themeName, Operation continueOperation)
    {
       StringBuilder msg = new StringBuilder();
-      msg.append(constants_.showDuplicateThemeErrorMessage() + " ")
-         .append(constants_.showDuplicateThemeErrorQuestionMessage())
-         .append(themeName)
-         .append(constants_.showDuplicateThemeErrorAddThemeMessage());
+      msg.append(constants_.showDuplicateThemeErrorMessage(themeName));
 
       globalDisplay_.showYesNoMessage(
          GlobalDisplay.MSG_ERROR,
@@ -576,11 +560,7 @@ public class AppearancePreferencesPane extends PreferencesPane
    private void showDuplicateThemeWarning(String themeName, Operation continueOperation)
    {
       StringBuilder msg = new StringBuilder();
-      msg.append(constants_.showDuplicateThemeWarningMessage())
-         .append(themeName)
-         .append(constants_.showDuplicateThemeExistingMessage() + " ")
-         .append(constants_.showDuplicateThemeQuestionMessage() + " ")
-         .append(constants_.showDuplicateContinueThemeMessage());
+      msg.append(constants_.showDuplicateThemeWarningMessage(themeName));
 
       globalDisplay_.showYesNoMessage(
          GlobalDisplay.MSG_WARNING,
@@ -666,7 +646,7 @@ public class AppearancePreferencesPane extends PreferencesPane
    @Override
    public String getName()
    {
-      return constants_.appearanceLabel(); //$NON-NLS-1$
+      return constants_.appearanceLabel();
    }
 
    private final native void registerFontListReadyCallback()
@@ -698,7 +678,7 @@ public class AppearancePreferencesPane extends PreferencesPane
             if (fonts.isEmpty())
                return true;
 
-            String[] fontList = fonts.split("\\n"); //$NON-NLS-1$
+            String[] fontList = fonts.split("\\n");
             populateFontList(fontList);
             return false;
          }
@@ -786,16 +766,16 @@ public class AppearancePreferencesPane extends PreferencesPane
    private String initialZoomLevel_;
    private final SelectWidget flatTheme_;
    private Boolean relaunchRequired_;
-   private static String previewDefaultHeight_ = "533px"; //$NON-NLS-1$
+   private static String previewDefaultHeight_ = "533px";
    private HashMap<String, AceTheme> themeList_;
    private final GlobalDisplay globalDisplay_;
    private final DependencyManager dependencyManager_;
    private final ThemeServerOperations server_;
    private int renderPass_ = 1;
 
-   private final static String DEFAULT_FONT_NAME = "(Default)"; //$NON-NLS-1$
-   private final static String DEFAULT_FONT_VALUE = "__default__"; //$NON-NLS-1$
-   private final AppearancePreferencesPaneConstants constants_ = GWT.create(AppearancePreferencesPaneConstants.class);
+   private final static String DEFAULT_FONT_NAME = "(Default)";
+   private final static String DEFAULT_FONT_VALUE = "__default__";
+   private final static PrefsConstants constants_ = GWT.create(PrefsConstants.class);
    private static final String CODE_SAMPLE =
          "# plotting of R objects\n" +
          "plot <- function (x, y, ...)\n" +

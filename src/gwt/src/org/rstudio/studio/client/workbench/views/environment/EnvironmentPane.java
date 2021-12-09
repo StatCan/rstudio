@@ -18,6 +18,7 @@ package org.rstudio.studio.client.workbench.views.environment;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import org.rstudio.core.client.Debug;
@@ -39,7 +40,6 @@ import org.rstudio.studio.client.application.events.EventBus;
 import org.rstudio.studio.client.application.events.SessionSerializationEvent;
 import org.rstudio.studio.client.application.events.SuspendAndRestartEvent;
 import org.rstudio.studio.client.application.model.SessionSerializationAction;
-import org.rstudio.studio.client.application.ui.RStudioThemes;
 import org.rstudio.studio.client.common.GlobalDisplay;
 import org.rstudio.studio.client.common.ImageMenuItem;
 import org.rstudio.studio.client.common.SimpleRequestCallback;
@@ -147,7 +147,7 @@ public class EnvironmentPane extends WorkbenchPane
    @Override
    protected Toolbar createMainToolbar()
    {
-      Toolbar toolbar = new Toolbar("Environment Tab");
+      Toolbar toolbar = new Toolbar(constants_.environmentTab());
       toolbar.addLeftWidget(commands_.loadWorkspace().createToolbarButton());
       toolbar.addLeftWidget(commands_.saveWorkspace().createToolbarButton());
       toolbar.addLeftSeparator();
@@ -181,11 +181,11 @@ public class EnvironmentPane extends WorkbenchPane
       refreshMenu.addSeparator();
 
       refreshMenu.addItem(new MenuItem(
-            AppCommand.formatMenuLabel(null, "Refresh Now", null),
+            AppCommand.formatMenuLabel(null, constants_.refreshNow(), null),
             true, // as HTML
             () -> commands_.refreshEnvironment().execute()));
       ToolbarMenuButton refreshMenuBtn =
-         new ToolbarMenuButton(ToolbarButton.NoText, "Refresh options", refreshMenu, false);
+         new ToolbarMenuButton(ToolbarButton.NoText, constants_.refreshOptions(), refreshMenu, false);
       ElementIds.assignElementId(refreshMenuBtn, ElementIds.MB_REFRESH_OPTS);
       toolbar.addRightWidget(refreshMenuBtn);
 
@@ -201,7 +201,7 @@ public class EnvironmentPane extends WorkbenchPane
 
    private void initSecondaryToolbar()
    {
-      SecondaryToolbar toolbar = new SecondaryToolbar("Environment Tab Second");
+      SecondaryToolbar toolbar = new SecondaryToolbar(constants_.environmentTabSecond());
 
       languageMenu_ = new ToolbarPopupMenu();
       toolbar.addHandler(new ResizeHandler()
@@ -213,20 +213,20 @@ public class EnvironmentPane extends WorkbenchPane
          }
       }, ResizeEvent.getType());
 
-      MenuItem rMenuItem = new MenuItem("R", () -> setActiveLanguage("R", true)); //$NON-NLS-1$ //$NON-NLS-1$
+      MenuItem rMenuItem = new MenuItem("R", () -> setActiveLanguage("R", true));
       languageMenu_.addItem(rMenuItem);
 
-      MenuItem pyMenuItem = new MenuItem("Python", () -> //$NON-NLS-1$
+      MenuItem pyMenuItem = new MenuItem("Python", () ->
       {
          dependencyManager_.withReticulate(
-               "Viewing Python Objects",
-               "Viewing Python objects",
-               () -> setActiveLanguage("Python", true)); //$NON-NLS-1$
+               constants_.viewingPythonObjectsCapitalized(),
+               constants_.viewingPythonObjects(),
+               () -> setActiveLanguage("Python", true));
       });
       languageMenu_.addItem(pyMenuItem);
 
       languageButton_ = new ToolbarMenuButton(
-            "R", //$NON-NLS-1$
+            "R",
             ToolbarButton.NoTitle,
             (ImageResource) null,
             languageMenu_);
@@ -250,7 +250,7 @@ public class EnvironmentPane extends WorkbenchPane
       ThemeStyles styles = ThemeStyles.INSTANCE;
       toolbar.getWrapper().addStyleName(styles.tallerToolbarWrapper());
 
-      SearchWidget searchWidget = new SearchWidget("Search environment", new SuggestOracle() {
+      SearchWidget searchWidget = new SearchWidget(constants_.searchEnvironment(), new SuggestOracle() {
          @Override
          public void requestSuggestions(Request request, Callback callback)
          {
@@ -281,10 +281,10 @@ public class EnvironmentPane extends WorkbenchPane
       objects_ = new EnvironmentObjects(this);
 
       EnvironmentContextData data = session_.getSessionInfo().getEnvironmentState();
-      if (StringUtil.equals(data.language(), "Python")) //$NON-NLS-1$
+      if (StringUtil.equals(data.language(), "Python"))
       {
          setPythonEnabled(true);
-         setActiveLanguage("Python", false); //$NON-NLS-1$
+         setActiveLanguage("Python", false);
       }
 
       return objects_;
@@ -415,7 +415,7 @@ public class EnvironmentPane extends WorkbenchPane
    {
       server_.setContextDepth(
             newDepth,
-            new SimpleRequestCallback<>("Error opening call frame"));
+            new SimpleRequestCallback<>(constants_.errorOpeningCallFrame()));
    }
 
    public boolean clientStateDirty()
@@ -566,7 +566,7 @@ public class EnvironmentPane extends WorkbenchPane
       menu.addItem(commands_.importDatasetFromStata().createMenuItem(false));
 
       dataImportButton_ = new ToolbarMenuButton(
-              "Import Dataset",
+              constants_.importDataset(),
               ToolbarButton.NoTitle,
               new ImageResource2x(StandardIcons.INSTANCE.import_dataset2x()),
               menu);
@@ -584,21 +584,21 @@ public class EnvironmentPane extends WorkbenchPane
    private String friendlyNameOfEnvironment(String name)
    {
       boolean isGlobalEnv =
-            StringUtil.equals(name, ".GlobalEnv") || //$NON-NLS-1$
-            StringUtil.equals(name, "R_GlobalEnv"); //$NON-NLS-1$
+            StringUtil.equals(name, ".GlobalEnv") ||
+            StringUtil.equals(name, "R_GlobalEnv");
 
       if (isGlobalEnv)
          return GLOBAL_ENVIRONMENT_NAME;
 
       boolean isBase =
-            StringUtil.equals(name, "base"); //$NON-NLS-1$
+            StringUtil.equals(name, "base");
 
       if (isBase)
          return "package:base";
 
       boolean isPythonMain =
-            StringUtil.equals(name, "main") || //$NON-NLS-1$
-            StringUtil.equals(name, "__main__"); //$NON-NLS-1$
+            StringUtil.equals(name, "main") ||
+            StringUtil.equals(name, "__main__");
 
       if (isPythonMain)
          return "Main Module";
@@ -610,10 +610,10 @@ public class EnvironmentPane extends WorkbenchPane
    {
       if (name.endsWith("()"))
          return new ImageResource2x(EnvironmentResources.INSTANCE.functionEnvironment2x());
-      else if (name.equals(".GlobalEnv") || name.equals("R_GlobalEnv")) //$NON-NLS-1$
+      else if (name.equals(".GlobalEnv") || name.equals("R_GlobalEnv"))
          return new ImageResource2x(EnvironmentResources.INSTANCE.globalEnvironment2x());
-      else if (name.startsWith("package:") || //$NON-NLS-1$
-               name.equals("base") || //$NON-NLS-1$
+      else if (name.startsWith("package:") ||
+               name.equals("base") ||
                local)
          return new ImageResource2x(EnvironmentResources.INSTANCE.packageEnvironment2x());
       else
@@ -820,7 +820,7 @@ public class EnvironmentPane extends WorkbenchPane
             public void onError(ServerError error)
             {
                globalDisplay_.showErrorMessage(
-                     "Could not change monitoring state",
+                     constants_.couldNotChangeMonitoringState(),
                      error.getMessage());
             }
          });
@@ -870,16 +870,13 @@ public class EnvironmentPane extends WorkbenchPane
       {
          setEnvironmentName("R_GlobalEnv", false);
       }
-      else if (StringUtil.equals(language, "Python")) //$NON-NLS-1$
+      else if (StringUtil.equals(language, "Python"))
       {
          setEnvironmentName("__main__", false);
       }
       else
       {
-         // i18n: Are debug warnings in- or out-of-scope for i18n?  If the Env pane's language dropdown is misconfigured
-         //       and we select a language that has nothing behind it, this text will print to screen... is that
-         //       developer specific, or general public?
-//         Debug.logWarning("Unknown language '" + language + "'");
+         Debug.logWarning("Unknown language '" + language + "'");
       }
 
       Scheduler.get().scheduleDeferred(() -> commands_.refreshEnvironment().execute());
@@ -905,12 +902,12 @@ public class EnvironmentPane extends WorkbenchPane
       if (width > 400)
       {
          // Full width: show full label for data import
-         dataImportButton_.setText("Import Dataset");
+         dataImportButton_.setText(constants_.importDataset());
       }
       else if (width > 350)
       {
          // Reduced width: shorten label
-         dataImportButton_.setText("Import");
+         dataImportButton_.setText(constants_.importCapitalized());
       }
       else if (width > 325)
       {
@@ -964,5 +961,6 @@ public class EnvironmentPane extends WorkbenchPane
    private JsArray<EnvironmentFrame> environments_;
    private String environmentName_;
    private boolean environmentIsLocal_;
-   private String activeLanguage_ = "R"; //$NON-NLS-1$
+   private String activeLanguage_ = "R";
+   private static final ViewEnvironmentConstants constants_ = GWT.create(ViewEnvironmentConstants.class);
 }

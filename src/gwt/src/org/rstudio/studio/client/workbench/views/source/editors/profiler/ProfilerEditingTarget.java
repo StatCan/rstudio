@@ -68,6 +68,7 @@ import org.rstudio.studio.client.workbench.commands.Commands;
 import org.rstudio.studio.client.workbench.model.RemoteFileSystemContext;
 import org.rstudio.studio.client.workbench.views.source.SourceColumn;
 import org.rstudio.studio.client.workbench.views.source.SourceWindowManager;
+import org.rstudio.studio.client.workbench.views.source.ViewsSourceConstants;
 import org.rstudio.studio.client.workbench.views.source.editors.EditingTarget;
 import org.rstudio.studio.client.workbench.views.source.editors.EditingTargetSource.EditingTargetNameProvider;
 import org.rstudio.studio.client.workbench.views.source.editors.profiler.model.ProfileOperationResponse;
@@ -189,7 +190,7 @@ public class ProfilerEditingTarget implements EditingTarget,
 
    public String getTabTooltip()
    {
-      return "R Profiler";
+      return constants_.rProfiler();
    }
 
    public HashSet<AppCommand> getSupportedCommands()
@@ -569,12 +570,11 @@ public class ProfilerEditingTarget implements EditingTarget,
          @Override
          public String getTitle()
          {
-            // i18n: I think this should be translated?  Not sure where it surfaces in UI
-            return "Profile";
+            return constants_.profileCapitalized();
          }
       };
-      // i18n: Enum, user text, or both?
-      view_ = new ProfilerEditingTargetWidget("Profiler", commands_, publishHtmlSource, column_);
+
+      view_ = new ProfilerEditingTargetWidget(constants_.profilerCapitalized(), commands_, publishHtmlSource, column_);
       defaultNameProvider_ = defaultNameProvider;
 
       getName().setValue(getAndSetInitialName());
@@ -675,19 +675,15 @@ public class ProfilerEditingTarget implements EditingTarget,
       globalDisplay_.showHtmlFile(htmlLocalPath_);
    }
 
-   /**
-    * Default name to prefix on new Profiler runs.  Text may be viewed by users
-    */
    public String getDefaultNamePrefix()
    {
-      // i18n: This SHOULD be translated - it is the default name to call new Profiler runs and language specific
-      return "Profile";
+      return constants_.profileCapitalized();
    }
 
    @Override
    public String getCurrentStatus()
    {
-      return "Code Profile results displayed";
+      return constants_.codeProfileResultsDisplayed();
    }
 
    private void savePropertiesWithPath(String path)
@@ -713,7 +709,7 @@ public class ProfilerEditingTarget implements EditingTarget,
       sourceServer_.modifyDocumentProperties(
          doc_.getId(),
          props,
-         new SimpleRequestCallback<Void>("Error")
+         new SimpleRequestCallback<Void>(constants_.errorCapitalized())
          {
             @Override
             public void onResponseReceived(Void response)
@@ -724,7 +720,7 @@ public class ProfilerEditingTarget implements EditingTarget,
             public void onError(ServerError error)
             {
                Debug.logError(error);
-               globalDisplay_.showErrorMessage("Failed to Save Profile Properties",
+               globalDisplay_.showErrorMessage(constants_.failedToSaveProfileProperties(),
                      error.getMessage());
             }
       });
@@ -739,7 +735,7 @@ public class ProfilerEditingTarget implements EditingTarget,
          fsi = workbenchContext_.getDefaultFileDialogDir();
 
       fileDialogs_.saveFile(
-            "Save File - " + getName().getValue(),
+            constants_.saveFileName(getName().getValue()),
             fileContext_,
             fsi,
             fileType_.getDefaultExtension(),
@@ -765,7 +761,7 @@ public class ProfilerEditingTarget implements EditingTarget,
                         {
                            savePropertiesWithPath(saveItem.getPath());
 
-                           persistDocumentProperty("isUserSaved", "saved"); //$NON-NLS-1$
+                           persistDocumentProperty("isUserSaved", "saved");
                            isUserSaved_ = true;
 
                            indicator.onCompleted();
@@ -776,7 +772,7 @@ public class ProfilerEditingTarget implements EditingTarget,
                         {
                            Debug.logError(error);
                            indicator.onCompleted();
-                           globalDisplay_.showErrorMessage("Failed to Save Profile",
+                           globalDisplay_.showErrorMessage(constants_.failedToSaveProfile(),
                                  error.getMessage());
                         }
                   });
@@ -806,7 +802,7 @@ public class ProfilerEditingTarget implements EditingTarget,
                           final String details,
                           final int line)
    {
-      if (message == "sourcefile") //$NON-NLS-1$
+      if (message == "sourcefile")
       {
          server_.profileSources(file, normPath, new ServerRequestCallback<String>()
          {
@@ -819,7 +815,7 @@ public class ProfilerEditingTarget implements EditingTarget,
 
                commands_.gotoProfileSource().setEnabled(hasValidPath_);
 
-               if (details == "open") //$NON-NLS-1$
+               if (details == "open")
                {
                   if (hasValidPath_)
                   {
@@ -830,11 +826,11 @@ public class ProfilerEditingTarget implements EditingTarget,
                            FileSystemItem.createFile(navigationTarget.getFile()),
                            filePosition);
                   }
-                  else if (selectedPath_.indexOf("<expr>") == -1) //$NON-NLS-1$
+                  else if (selectedPath_.indexOf("<expr>") == -1)
                   {
                      globalDisplay_.showMessage(GlobalDisplay.MSG_ERROR,
-                           "Error while opening profiler source",
-                           "The source file " + selectedPath_ + " does not exist.");
+                           constants_.errorOpeningProfilerSource(),
+                           constants_.sourceFileAtPathDoesNotExist(selectedPath_));
                   }
                }
             }
@@ -935,4 +931,5 @@ public class ProfilerEditingTarget implements EditingTarget,
    private String selectedPath_;
    private int selectedLine_;
    private Boolean hasValidPath_ = false;
+   private static final ViewsSourceConstants constants_ = GWT.create(ViewsSourceConstants.class);
 }

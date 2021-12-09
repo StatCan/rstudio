@@ -57,7 +57,6 @@ import org.rstudio.core.client.theme.WindowFrame;
 import org.rstudio.core.client.theme.res.ThemeResources;
 import org.rstudio.core.client.widget.ToolbarButton;
 import org.rstudio.studio.client.application.events.EventBus;
-import org.rstudio.studio.client.application.ui.RStudioThemes;
 import org.rstudio.studio.client.common.GlobalDisplay;
 import org.rstudio.studio.client.common.filetypes.FileTypeRegistry;
 import org.rstudio.studio.client.workbench.commands.Commands;
@@ -1726,7 +1725,7 @@ public class PaneManager
 
    private LogicalWindow createConsole()
    {
-      String frameName = constants_.consoleText();
+      String frameName = "Console";
       
       PrimaryWindowFrame frame = new PrimaryWindowFrame(frameName, null);
       frame.setTitleWidget(new ConsoleInterpreterVersion());

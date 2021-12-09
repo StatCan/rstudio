@@ -50,7 +50,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import com.google.inject.Inject;
-import org.rstudio.studio.client.workbench.prefs.views.PackagesPreferencesPaneConstants;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 
 public class SecondaryReposDialog extends ModalDialog<CRANMirror>
 {
@@ -259,7 +259,7 @@ public class SecondaryReposDialog extends ModalDialog<CRANMirror>
                   }
                   
                   if (!StringUtil.isNullOrEmpty(repo.getName()) &&
-                      !repo.getName().toLowerCase().equals("cran") && //NON-NLS
+                      !repo.getName().toLowerCase().equals("cran") &&
                       !repoUrl.equals(cranRepoUrl_))
                   {
                      repos_.add(repo);
@@ -345,5 +345,6 @@ public class SecondaryReposDialog extends ModalDialog<CRANMirror>
 
    private MirrorsServerOperations mirrorOperations_;
    private ProgressIndicator progressIndicator_;
-   private static final PackagesPreferencesPaneConstants constants_ = GWT.create(PackagesPreferencesPaneConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
+
 }

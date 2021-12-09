@@ -25,6 +25,7 @@ import org.rstudio.core.client.widget.ProgressOperationWithInput;
 import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.common.GlobalDisplay;
 import org.rstudio.studio.client.common.HelpLink;
+import org.rstudio.studio.client.workbench.views.environment.ViewEnvironmentConstants;
 import org.rstudio.studio.client.workbench.views.environment.dataimport.model.DataImportAssembleResponse;
 import org.rstudio.studio.client.workbench.views.source.model.SourceServerOperations;
 
@@ -46,13 +47,13 @@ import com.google.inject.Inject;
 
 public class DataImportOptionsUiCsv extends DataImportOptionsUi
 {
-
+   private static final ViewEnvironmentConstants constants_ = GWT.create(ViewEnvironmentConstants.class);
    private static DataImportOptionsCsvUiBinder uiBinder = GWT
          .create(DataImportOptionsCsvUiBinder.class);
 
-   private final String escapeBoth_ = "both"; //$NON-NLS-1$
-   private final String escapeBackslash_ = "backslash"; //$NON-NLS-1$
-   private final String escapeDouble_ = "double"; //$NON-NLS-1$
+   private final String escapeBoth_ = "both";
+   private final String escapeBackslash_ = "backslash";
+   private final String escapeDouble_ = "double";
 
    private DataImportOptionsCsvLocale localeInfo_ = null;
    private int lastDelimiterListBoxIndex_ = 0;
@@ -135,29 +136,29 @@ public class DataImportOptionsUiCsv extends DataImportOptionsUi
       trimSpacesCheckBox_.setValue(true);
       openDataViewerCheckBox_.setValue(true);
       
-      escapeListBox_.addItem("None", "");
-      escapeListBox_.addItem("Backslash", escapeBackslash_);
-      escapeListBox_.addItem("Double", escapeDouble_);
-      escapeListBox_.addItem("Both", escapeBoth_);
+      escapeListBox_.addItem(constants_.noneCapitalized(), "");
+      escapeListBox_.addItem(constants_.backslashCapitalized(), escapeBackslash_);
+      escapeListBox_.addItem(constants_.doubleCapitalized(), escapeDouble_);
+      escapeListBox_.addItem(constants_.bothCapitalized(), escapeBoth_);
       
-      delimiterListBox_.addItem("Comma", ",");
-      delimiterListBox_.addItem("Semicolon", ";");
-      delimiterListBox_.addItem("Tab", "\t");
-      delimiterListBox_.addItem("Whitespace", " ");
-      delimiterListBox_.addItem("Other...", "other");
+      delimiterListBox_.addItem(constants_.commaCapitalized(), ",");
+      delimiterListBox_.addItem(constants_.semicolonCapitalized(), ";");
+      delimiterListBox_.addItem(constants_.tabCapitalized(), "\t");
+      delimiterListBox_.addItem(constants_.whitespaceCapitalized(), " ");
+      delimiterListBox_.addItem(constants_.otherEllipses(), "other");
       
-      quotesListBox_.addItem("Default", "");
-      quotesListBox_.addItem("Single (')", "'");
-      quotesListBox_.addItem("Double (\")", "\\\"");
-      quotesListBox_.addItem("None", "");
+      quotesListBox_.addItem(constants_.defaultCapitalized(), "");
+      quotesListBox_.addItem(constants_.singleQuoteParentheses(), "'");
+      quotesListBox_.addItem(constants_.doubleQuotesParentheses(), "\\\"");
+      quotesListBox_.addItem(constants_.noneCapitalized(), "");
       
-      naListBox_.addItem("Default", "");
-      naListBox_.addItem("NA", "NA");
-      naListBox_.addItem("null", "null");
+      naListBox_.addItem(constants_.defaultCapitalized(), "");
+      naListBox_.addItem(constants_.notApplicableAbbreviation(), "NA");
+      naListBox_.addItem(constants_.nullWord(), "null");
       naListBox_.addItem("0", "0");
-      naListBox_.addItem("empty", "empty");
+      naListBox_.addItem(constants_.empty(), "empty");
       
-      commentListBox_.addItem("Default", "");
+      commentListBox_.addItem(constants_.defaultCapitalized(), "");
       commentListBox_.addItem("#", "#");
       commentListBox_.addItem("%", "%");
       commentListBox_.addItem("//", "//");
@@ -201,11 +202,11 @@ public class DataImportOptionsUiCsv extends DataImportOptionsUi
          @Override
          public void onChange(ChangeEvent arg0)
          {
-            if (delimiterListBox_.getSelectedValue() == "other") //$NON-NLS-1$  //i18n: use enum instead?
+            if (delimiterListBox_.getSelectedValue() == "other")
             {
                globalDisplay_.promptForTextWithOption(
-                  "Other Delimiter",
-                  "Please enter a single character delimiter.",
+                  constants_.otherDelimiter(),
+                  constants_.enterSingleCharacterDelimiter(),
                   "",
                   MessageDisplay.INPUT_REQUIRED_TEXT,
                   "",
@@ -230,7 +231,7 @@ public class DataImportOptionsUiCsv extends DataImportOptionsUi
                         String otherDelimiter = result.input;
                         
                         if (otherDelimiter.length() != 1) {
-                           globalDisplay_.showErrorMessage("Incorrect Delimiter", "The specified delimiter is not valid.");
+                           globalDisplay_.showErrorMessage(constants_.incorrectDelimiter(), constants_.specifiedDelimiterNotValid());
                         }
                         else {
                            for (int idxDelimiter = 0; idxDelimiter < delimiterListBox_.getItemCount(); idxDelimiter++) {
@@ -241,7 +242,7 @@ public class DataImportOptionsUiCsv extends DataImportOptionsUi
                            }
 
                            int selectedIndex = delimiterListBox_.getSelectedIndex();
-                           delimiterListBox_.insertItem("Character " + otherDelimiter, otherDelimiter, selectedIndex - 1);
+                           delimiterListBox_.insertItem(constants_.characterOtherDelimiter(otherDelimiter), otherDelimiter, selectedIndex - 1);
                            
                            dismissAndUpdate(indicator, selectedIndex - 1);
                         }
@@ -289,7 +290,7 @@ public class DataImportOptionsUiCsv extends DataImportOptionsUi
       commentListBox_.addChangeHandler(changeHandler);
       skipTextBox_.addValueChangeHandler(valueChangeHandler);
 
-      Roles.getButtonRole().setAriaLabelProperty(localeButton_.getElement(), "Configure Locale");
+      Roles.getButtonRole().setAriaLabelProperty(localeButton_.getElement(), constants_.configureLocale());
       localeButton_.addClickHandler(new ClickHandler() {
          public void onClick(ClickEvent event) {
             new DataImportOptionsUiCsvLocale(
@@ -320,7 +321,7 @@ public class DataImportOptionsUiCsv extends DataImportOptionsUi
       else
       {
          trimSpacesCheckBox_.setEnabled(false);
-         escapeListBox_.getElement().removeAttribute("disabled"); // same as above name references.  Needs to be translated?
+         escapeListBox_.getElement().removeAttribute("disabled");
          quotesListBox_.getElement().removeAttribute("disabled");
       }
    }
@@ -329,8 +330,8 @@ public class DataImportOptionsUiCsv extends DataImportOptionsUi
    public HelpLink getHelpLink()
    {
       return new HelpLink(
-         "Reading rectangular data using readr",
-         "import_readr", //$NON-NLS-1$
+         constants_.readingRectangularDataUsingReadr(),
+         "import_readr",
          false,
          true);
    }

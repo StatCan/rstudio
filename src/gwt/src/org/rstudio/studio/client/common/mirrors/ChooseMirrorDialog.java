@@ -44,7 +44,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.rstudio.studio.client.workbench.prefs.views.PackagesPreferencesPaneConstants;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 
 public class ChooseMirrorDialog extends ModalDialog<CRANMirror>
 {
@@ -198,7 +198,7 @@ public class ChooseMirrorDialog extends ModalDialog<CRANMirror>
                for(int i=0; i<mirrors.length(); i++)
                {
                   CRANMirror mirror = mirrors.get(i);
-                  if (mirrorSource_.getLabel(mirror).startsWith("0-Cloud")) //$NON-NLS-1$
+                  if (mirrorSource_.getLabel(mirror).startsWith("0-Cloud"))
                      continue;
                   mirrors_.add(mirror);
                   String item = mirrorSource_.getLabel(mirror);
@@ -270,6 +270,6 @@ public class ChooseMirrorDialog extends ModalDialog<CRANMirror>
    private TextBox customTextBox_ = null;
    private final MirrorsServerOperations mirrorOperations_;
    private final ProgressIndicator progressIndicator_;
-   private static final PackagesPreferencesPaneConstants constants_ = GWT.create(PackagesPreferencesPaneConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
 
 }

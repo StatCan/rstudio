@@ -17,15 +17,13 @@ package org.rstudio.studio.client.common.vcs;
 
 import org.rstudio.studio.client.common.HelpLink;
 import com.google.gwt.core.client.GWT;
-import org.rstudio.studio.client.workbench.prefs.views.SourceControlPreferencesPaneConstants;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 
 public class VcsHelpLink extends HelpLink
 {
    public VcsHelpLink()
    {
-      // i18n: Enumerator, user facing text, or both?
       super(constants_.vCSHelpLink(), "using_version_control");
    }
-   private static final SourceControlPreferencesPaneConstants constants_ = GWT.create(SourceControlPreferencesPaneConstants.class);
-
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 }

@@ -21,6 +21,7 @@ import org.rstudio.core.client.ClassIds;
 import org.rstudio.core.client.resources.CoreResources;
 import org.rstudio.core.client.resources.ImageResource2x;
 import org.rstudio.core.client.theme.res.ThemeStyles;
+import org.rstudio.studio.client.workbench.views.environment.ViewEnvironmentConstants;
 import org.rstudio.studio.client.workbench.views.environment.view.RObjectEntry.Categories;
 
 import com.google.gwt.cell.client.ClickableTextCell;
@@ -197,19 +198,19 @@ public class EnvironmentObjectList extends EnvironmentObjectDisplay
                             new ImageResource2x(EnvironmentResources.INSTANCE.expandIcon2x());
 
                   imageUri = expandImage.getSafeUri().asString();
-                  imageAlt = object.expanded ? "Collapse Object" : "Expand Object";
+                  imageAlt = object.expanded ? constants_.collapseObject() : constants_.expandObject();
                }
                else if (object.hasTraceInfo())
                {
                   imageUri = new ImageResource2x(EnvironmentResources.INSTANCE
                         .tracedFunction2x()).getSafeUri().asString();
                   imageStyle += (" " + style_.unclickableIcon());
-                  imageAlt = "Has Trace";
+                  imageAlt = constants_.hasTrace();
                }
                if (imageUri.length() > 0)
                {
-                  return "<input type=\"image\" src=\"" + imageUri + "\" " + //$NON-NLS-1$
-                         "class=\"" + imageStyle + "\" alt=\"" + imageAlt + "\" />"; //$NON-NLS-1$
+                  return "<input type=\"image\" src=\"" + imageUri + "\" " +
+                         "class=\"" + imageStyle + "\" alt=\"" + imageAlt + "\" />";
                }
                return "";
             }
@@ -250,10 +251,10 @@ public class EnvironmentObjectList extends EnvironmentObjectDisplay
             {
                // We don't have ready access to the DOM (still under
                // construction at this point), so we use a window method here.
-               return "<div class=\"" + style_.colResizer() + "\" " + //$NON-NLS-1$
-                      "onmousedown=\"rstudio_beginResize(this, event, " + //$NON-NLS-1$
+               return "<div class=\"" + style_.colResizer() + "\" " +
+                      "onmousedown=\"rstudio_beginResize(this, event, " +
                       "\'" + style_.nameCol() + "'" +
-                      ");\"></div>"; //$NON-NLS-1$
+                      ");\"></div>";
             }
          };
    }
@@ -400,12 +401,11 @@ public class EnvironmentObjectList extends EnvironmentObjectDisplay
 
          }
          String size = rowValue.rObject.getSize() > 0 ?
-                              ", " + rowValue.rObject.getSize() + " bytes" : //$NON-NLS-1$
+                              constants_.sizeBytes(rowValue.rObject.getSize()) :
                               "";
          nameCol.className(styleName);
-         nameCol.title(
-                 rowValue.rObject.getName() +
-                 " (" + rowValue.rObject.getType() + size + ")");
+         nameCol.title(constants_.buildNameColumnTitle(rowValue.rObject.getName(),
+                 rowValue.rObject.getType(),size));
          renderCell(nameCol, createContext(1), objectNameColumn_, rowValue);
          nameCol.endTD();
       }
@@ -423,7 +423,7 @@ public class EnvironmentObjectList extends EnvironmentObjectDisplay
          {
             if (rowValue.isPromise())
             {
-               title += " (unevaluated promise)";
+               title += constants_.unevaluatedPromise("");
             }
             descCol.title(title);
          }
@@ -488,15 +488,15 @@ public class EnvironmentObjectList extends EnvironmentObjectDisplay
             switch (rowValue.getCategory())
             {
                case RObjectEntry.Categories.Data:
-                  categoryTitle = "Data";
+                  categoryTitle = constants_.dataCapitalized();
                   categoryClass = ClassIds.ENV_LIST_DATA_HDR;
                   break;
                case RObjectEntry.Categories.Function:
-                  categoryTitle = "Functions";
+                  categoryTitle = constants_.functionsCapitalized();
                   categoryClass = ClassIds.ENV_LIST_FUNCTIONS_HDR;
                   break;
                default:
-                  categoryTitle = "Values";
+                  categoryTitle = constants_.valuesCapitalized();
                   categoryClass = ClassIds.ENV_LIST_VALUES_HDR;
                   break;
             }
@@ -504,7 +504,7 @@ public class EnvironmentObjectList extends EnvironmentObjectDisplay
                     style_.categoryHeaderRow());
             TableCellBuilder objectHeader = leaderRow.startTD();
             objectHeader.colSpan(4)
-                    .className(style_.categoryHeaderText() + " rstudio-themes-background" + " " + //$NON-NLS-1$
+                    .className(style_.categoryHeaderText() + " rstudio-themes-background" + " " +
                        ClassIds.getClassId(categoryClass))
                     .text(categoryTitle)
                     .endTD();
@@ -542,4 +542,5 @@ public class EnvironmentObjectList extends EnvironmentObjectDisplay
    private Column<RObjectEntry, String> objectNameColumn_;
    private Column<RObjectEntry, String> objectResizeColumn_;
    private Column<RObjectEntry, String> objectDescriptionColumn_;
+   private static final ViewEnvironmentConstants constants_ = com.google.gwt.core.client.GWT.create(ViewEnvironmentConstants.class);
 }

@@ -190,9 +190,10 @@ public class TextEditingTargetWidget
 
       panel_ = new PanelWithToolbars(
             toolbar_ = createToolbar(fileType),
+            initMarkdownToolbar(),
             editorContainer_,
             statusBar_);
-
+      
       Roles.getTabpanelRole().set(panel_.getElement());
       setAccessibleName(null);
       adaptToFileType(fileType);
@@ -277,7 +278,12 @@ public class TextEditingTargetWidget
    @Override
    public void toggleRmdVisualMode()
    {
-      toggleRmdVisualModeButton_.click();
+      boolean visible = !isVisualMode();
+      target_.recordCurrentNavigationPosition();
+      docUpdateSentinel_.setBoolProperty(TextEditingTarget.RMD_VISUAL_MODE, visible);
+      markdownToolbar_.setVisualMode(visible);
+      if (visible)
+         onUserSwitchingToVisualMode();
    }
 
    private StatusBarWidget statusBar_;
@@ -369,7 +375,7 @@ public class TextEditingTargetWidget
          mgr.getSourceCommand(commands_.knitDocument(), column_).createUnsyncedToolbarButton();
       knitDocumentButton_.getElement().getStyle().setMarginRight(0, Unit.PX);
       toolbar.addLeftWidget(knitDocumentButton_);
-
+      
       toolbar.addLeftWidget(
          mgr.getSourceCommand(commands_.runDocumentFromServerDotR(), column_).createToolbarButton());
 
@@ -586,7 +592,7 @@ public class TextEditingTargetWidget
       toggleDocOutlineButton_ = new LatchingToolbarButton(
             ToolbarButton.NoText,
             ToolbarButton.NoTitle,
-            true, /* textIndicatesState */
+            false, /* textIndicatesState */
             new ImageResource2x(StandardIcons.INSTANCE.outline2x()),
             event -> {
                final double initialSize = editorPanel_.getWidgetSize(docOutlineWidget_);
@@ -608,12 +614,13 @@ public class TextEditingTargetWidget
 
                setDocOutlineLatchState(destination != 0);
 
-               int duration = (userPrefs_.reducedMotion().getValue() ? 0 : 500);
+               int duration = (userPrefs_.reducedMotion().getValue() ? 0 : 400);
                new Animation()
                {
                   @Override
                   protected void onUpdate(double progress)
                   {
+                     progress = interpolate(progress);
                      double size =
                            destination * progress +
                            initialSize * (1 - progress);
@@ -652,10 +659,6 @@ public class TextEditingTargetWidget
 
       toolbar.addRightSeparator();
       toolbar.addRightWidget(toggleDocOutlineButton_);
-      addVisualModeOutlineButton(toolbar);
-
-      toolbar.addRightSeparator();
-      toolbar.addRightWidget(createVisualModeToggleButton());
 
       showWhitespaceCharactersCheckbox_ = new CheckBox(constants_.showWhitespace());
       showWhitespaceCharactersCheckbox_.setVisible(false);
@@ -675,38 +678,23 @@ public class TextEditingTargetWidget
 
       return toolbar;
    }
-
-   private ToolbarButton createVisualModeToggleButton()
+   
+   private MarkdownToolbar initMarkdownToolbar()
    {
-      toggleRmdVisualModeButton_ = new LatchingToolbarButton(
-         ToolbarButton.NoText,
-         commands_.toggleRmdVisualMode().getTooltip(),
-         false, /* textIndicatesState */
-         new ImageResource2x(StandardIcons.INSTANCE.visual_mode2x()), event -> {
-            boolean visible = !isVisualMode();
-            target_.recordCurrentNavigationPosition();
-            docUpdateSentinel_.setBoolProperty(TextEditingTarget.RMD_VISUAL_MODE, visible);
-            setToggleRmdVisualModeButtonLatched(visible);
-            if (visible)
-               onUserSwitchingToVisualMode();
-         });
+      markdownToolbar_ = new MarkdownToolbar(commands_, event -> {
+         toggleRmdVisualMode();
+      });
       docUpdateSentinel_.addPropertyValueChangeHandler(TextEditingTarget.RMD_VISUAL_MODE, (value) -> {
-         setToggleRmdVisualModeButtonLatched(isVisualMode());
+         markdownToolbar_.setVisualMode(isVisualMode());
          if (isVisualMode())
             findReplace_.hideFindReplace();
       });
-      setToggleRmdVisualModeButtonLatched(isVisualMode());
-      toggleRmdVisualModeButton_.addStyleName("rstudio-themes-inverts");
-      return toggleRmdVisualModeButton_;
-   }
-   
-   private void setToggleRmdVisualModeButtonLatched(boolean latched)
-   {
-      toggleRmdVisualModeButton_.setLatched(latched);
-      if (!latched)
-         toggleRmdVisualModeButton_.setTitle(constants_.switchToVisualMarkdownEditor());
-      else
-         toggleRmdVisualModeButton_.setTitle(constants_.switchToSourceEditor());
+      markdownToolbar_.setVisualMode(isVisualMode());
+      
+      addVisualModeOutlineButton(markdownToolbar_);
+      
+      
+      return markdownToolbar_;
    }
 
    private void addVisualModeOutlineButton(Toolbar toolbar)
@@ -715,8 +703,9 @@ public class TextEditingTargetWidget
       // logic for the standard one is tied up in DOM visibility, and we didn't
       // want to refactor that code in a conservative release (v1.4). it's
       // expected that the whole 'visual mode' concept will go away in v1.5
-      toggleVisualModeOutlineButton_ = new LatchingToolbarButton(ToolbarButton.NoText,
-            ToolbarButton.NoTitle, true, /* textIndicatesState */
+      AppCommand cmdOutline = commands_.toggleDocumentOutline();
+      toggleVisualModeOutlineButton_ = new LatchingToolbarButton(cmdOutline.getButtonLabel(),
+            ToolbarButton.NoTitle, false, /* textIndicatesState */
             new ImageResource2x(StandardIcons.INSTANCE.outline2x()), event -> {
                target_.setPreferredOutlineWidgetVisibility(
                      !target_.getPreferredOutlineWidgetVisibility());
@@ -829,7 +818,7 @@ public class TextEditingTargetWidget
       boolean canCompileNotebook = fileType.canCompileNotebook();
       boolean canSource = fileType.canSource();
       boolean canSourceWithEcho = fileType.canSourceWithEcho();
-      boolean isQuarto = extendedType_ != null &&
+      boolean isQuarto = extendedType_ != null && 
             extendedType_.equals(SourceDocument.XT_QUARTO_DOCUMENT);
       boolean canSourceOnSave = fileType.canSourceOnSave() &&
             !userPrefs_.autoSaveEnabled();
@@ -848,6 +837,8 @@ public class TextEditingTargetWidget
       boolean isMarkdown = editor_.getFileType().isMarkdown();
       boolean canPreviewFromR = fileType.canPreviewFromR();
       boolean terminalAllowed = session_.getSessionInfo().getAllowShell();
+      
+      panel_.showSecondaryToolbar(isMarkdown);
 
       if (isScript && !terminalAllowed)
       {
@@ -894,8 +885,6 @@ public class TextEditingTargetWidget
       notebookSeparatorWidget_.setVisible(canCompileNotebook);
       notebookToolbarButton_.setVisible(canCompileNotebook);
 
-      findReplaceButton_.setVisible(!visualRmdMode);
-
       knitDocumentButton_.setVisible(canKnitToHTML && !isQuarto);
       previewHTMLButton_.setVisible(fileType.canPreviewHTML() && !isQuarto);
       quartoRenderButton_.setVisible(isQuarto);
@@ -906,8 +895,6 @@ public class TextEditingTargetWidget
 
 
       commands_.enableProsemirrorDevTools().setVisible(isMarkdown);
-
-      toggleRmdVisualModeButton_.setVisible(isMarkdown);
 
       if (isShinyFile() || isTestFile() || isPlumberFile())
       {
@@ -966,8 +953,26 @@ public class TextEditingTargetWidget
          editorPanel_.setWidgetSize(docOutlineWidget_, 0);
          setDocOutlineLatchState(false);
       }
+      // relocate source outline button if necessary
+      if (isMarkdown)
+      {
+         if (toolbar_.removeRightWidget(toggleDocOutlineButton_))
+         {
+            markdownToolbar_.addRightWidget(toggleDocOutlineButton_);
+         }
+         toggleDocOutlineButton_.setText(commands_.toggleDocumentOutline().getButtonLabel());         
+      }
+      else
+      {
+         if (markdownToolbar_.removeRightWidget(toggleDocOutlineButton_))
+         {
+            toolbar_.addRightWidget(toggleDocOutlineButton_);
+            toggleDocOutlineButton_.setText(ToolbarButton.NoText);
+         }
+      }
 
       toggleVisualModeOutlineButton_.setVisible(visualRmdMode);
+      
       
       // update modes for filetype
       syncWrapMode();
@@ -1049,6 +1054,25 @@ public class TextEditingTargetWidget
       int width = getOffsetWidth();
       if (width == 0)
          return;
+
+      
+      if (editor_.getFileType().isMarkdown())
+      {
+         toggleDocOutlineButton_.setText(
+          (!isVisualMode() || width >= 675) 
+             ? commands_.toggleDocumentOutline().getButtonLabel() 
+             : ToolbarButton.NoText
+         );
+         toggleVisualModeOutlineButton_.setText(width > 675 
+             ? commands_.toggleDocumentOutline().getButtonLabel() 
+             : ToolbarButton.NoText
+         );
+      }
+      else
+      {
+         toggleDocOutlineButton_.setText(ToolbarButton.NoText);
+         toggleVisualModeOutlineButton_.setText(ToolbarButton.NoText);
+      }
       
       
       texToolbarButton_.setText(width >= 520, constants_.format());
@@ -1061,12 +1085,12 @@ public class TextEditingTargetWidget
       String action = getSourceOnSaveAction();
       srcOnSaveLabel_.setText(width < 450 ? action : constants_.actionOnSave(action));
       sourceButton_.setText(width >= 400, sourceCommandText_);
-
+      
       goToNextButton_.setVisible(commands_.goToNextChunk().isVisible() && width >= 650);
       goToPrevButton_.setVisible(commands_.goToPrevChunk().isVisible() && width >= 650);
       toolbar_.invalidateSeparators();
    }
-
+   
    private String getSourceOnSaveAction()
    {
       TextFileType fileType = editor_.getFileType();
@@ -1074,7 +1098,7 @@ public class TextEditingTargetWidget
       {
          return fileType.getPreviewButtonText();
       }
-      else if (extendedType_ != null &&
+      else if (extendedType_ != null && 
             (extendedType_.startsWith(SourceDocument.XT_RMARKDOWN_PREFIX) || extendedType_.equals(SourceDocument.XT_QUARTO_DOCUMENT)) )
       {
          boolean isQuarto = extendedType_.equals(SourceDocument.XT_QUARTO_DOCUMENT);
@@ -1086,7 +1110,7 @@ public class TextEditingTargetWidget
          return constants_.source();
       }
    }
-
+   
 
 
    private void showWarningImpl(final Command command)
@@ -1342,7 +1366,6 @@ public class TextEditingTargetWidget
       {
          String ext = extensions.get(i);
          ImageResource img = ext != null ?
-               // i18n for next two?
                fileTypeRegistry_.getIconForFilename("output." + ext).getImageResource() :
                fileTypeRegistry_.getIconForFilename("Makefile").getImageResource();
          final String valueName = values.get(i);
@@ -1402,9 +1425,9 @@ public class TextEditingTargetWidget
       if (publishButton_ != null)
          publishButton_.setIsStatic(true);
    }
-
+   
    @Override
-   public void setQuartoFormatOptions(TextFileType fileType,
+   public void setQuartoFormatOptions(TextFileType fileType, 
                                       boolean showRmdFormatMenu,
                                       List<String> formats,
                                       boolean isBook)
@@ -1413,7 +1436,7 @@ public class TextEditingTargetWidget
       setRmdFormatButtonVisible(showRmdFormatMenu);
       rmdFormatButton_.setEnabled(showRmdFormatMenu);
       rmdFormatButton_.clearMenu();
-
+      
       for (int i = 0; i < formats.size(); i++)
       {
          String format = formats.get(i);
@@ -1472,7 +1495,7 @@ public class TextEditingTargetWidget
                   commands_.knitDocument().getShortcutPrettyHtml())));
       knitDocumentButton_.setText(knitCommandText_);
       knitDocumentButton_.setLeftImage(new ImageResource2x(StandardIcons.INSTANCE.run2x()));
-
+      
       quartoCommandText_ = knitCommandText_;
       quartoRenderButton_.setTitle(knitDocumentButton_.getTitle());
       quartoRenderButton_.setText(quartoCommandText_);
@@ -1605,7 +1628,7 @@ public class TextEditingTargetWidget
       previewCommandText_ = constants_.setFormatTextPreviewCommandText(text);
       previewHTMLButton_.setText(previewCommandText_);
    }
-
+   
    private void setSourceButtonFromScriptState(TextFileType fileType,
                                                boolean canPreviewFromR,
                                                String previewButtonText)
@@ -1693,7 +1716,24 @@ public class TextEditingTargetWidget
    @Override
    public void addVisualModeFindReplaceButton(ToolbarButton findReplaceButton)
    {
-      toolbar_.insertWidget(findReplaceButton, findReplaceButton_);
+      visualModeFindReplaceButton_ = findReplaceButton;
+      visualModeFindReplaceButton_.setVisible(false);
+      toolbar_.insertWidget(visualModeFindReplaceButton_, findReplaceButton_);
+   }
+   
+   @Override
+   public void showVisualModeFindReplaceButton(boolean show)
+   {
+      if (visualModeFindReplaceButton_ != null)
+         visualModeFindReplaceButton_.setVisible(show);
+      if (findReplaceButton_ != null)
+         findReplaceButton_.setVisible(!show);
+   }
+   
+   @Override
+   public MarkdownToolbar getMarkdownToolbar()
+   {
+      return markdownToolbar_;
    }
 
    public HandlerRegistration addEnsureVisibleHandler(EnsureVisibleEvent.Handler handler)
@@ -1725,7 +1765,7 @@ public class TextEditingTargetWidget
       return handlerManager_.addHandler(
             RmdOutputFormatChangedEvent.TYPE, handler);
    }
-
+   
    @Override
    public SourceColumn getSourceColumn()
    {
@@ -1984,8 +2024,10 @@ public class TextEditingTargetWidget
    private DocumentOutlineWidget docOutlineWidget_;
    private PanelWithToolbars panel_;
    private Toolbar toolbar_;
+   private MarkdownToolbar markdownToolbar_;
    private InfoBar warningBar_;
    private final TextEditingTargetFindReplace findReplace_;
+   private ToolbarButton visualModeFindReplaceButton_;
    private ToolbarButton findReplaceButton_;
    private ToolbarMenuButton codeTransform_;
    private ToolbarButton compilePdfButton_;
@@ -2010,7 +2052,6 @@ public class TextEditingTargetWidget
    private ToolbarMenuButton shinyLaunchButton_;
    private ToolbarMenuButton plumberLaunchButton_;
    private ToolbarMenuButton rmdOptionsButton_;
-   private LatchingToolbarButton toggleRmdVisualModeButton_;
    private LatchingToolbarButton toggleDocOutlineButton_;
    private LatchingToolbarButton toggleVisualModeOutlineButton_;
    private CheckBox showWhitespaceCharactersCheckbox_;
@@ -2035,5 +2076,5 @@ public class TextEditingTargetWidget
    private String quartoCommandText_ = constants_.render();
    private String previewCommandText_ = constants_.preview();
 
-
+  
 }

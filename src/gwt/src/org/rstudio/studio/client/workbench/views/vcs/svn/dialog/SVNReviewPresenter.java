@@ -14,6 +14,7 @@
  */
 package org.rstudio.studio.client.workbench.views.vcs.svn.dialog;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.NativeEvent;
@@ -49,6 +50,7 @@ import org.rstudio.studio.client.workbench.model.ClientState;
 import org.rstudio.studio.client.workbench.model.Session;
 import org.rstudio.studio.client.workbench.model.helper.IntStateValue;
 import org.rstudio.studio.client.workbench.views.files.events.FileChangeEvent;
+import org.rstudio.studio.client.workbench.views.vcs.ViewVcsConstants;
 import org.rstudio.studio.client.workbench.views.vcs.common.ChangelistTable;
 import org.rstudio.studio.client.workbench.views.vcs.common.ProcessCallback;
 import org.rstudio.studio.client.workbench.views.vcs.common.VCSFileOpener;
@@ -111,7 +113,7 @@ public class SVNReviewPresenter implements ReviewPresenter
          ArrayList<String> paths = view_.getSelectedPaths();
 
          server_.svnRevert(paths,
-                           new ProcessCallback("Revert"));
+                           new ProcessCallback(constants_.revertCapitalized()));
 
          view_.getChangelistTable().moveSelectionDown();
       }
@@ -274,17 +276,15 @@ public class SVNReviewPresenter implements ReviewPresenter
          @Override
          public void onClick(ClickEvent event)
          {
-            String which = view_.getLineTableDisplay()
+            String message = view_.getLineTableDisplay()
                                  .getSelectedLines()
                                  .size() == 0
-                           ? "All "
-                           : "The selected";
+                           ? constants_.allChangesInFileWillBeLost()
+                           : constants_.selectedChangesInFileWillBeLost();
             globalDisplay.showYesNoMessage(
                   GlobalDisplay.MSG_WARNING,
-                  "Discard All",
-                  // i18n: Concatenation/Message
-                  which + " changes in this file will be " +
-                  "lost.\n\nAre you sure you want to continue?",
+                  constants_.discardAllCapitalized(),
+                  message,
                   new Operation()
                   {
                      @Override
@@ -393,7 +393,7 @@ public class SVNReviewPresenter implements ReviewPresenter
             item.getPath(),
             view_.getContextLines().getValue(),
             overrideSizeWarning_,
-            new SimpleRequestCallback<DiffResult>("Diff Error")
+            new SimpleRequestCallback<DiffResult>(constants_.diffError())
             {
                @Override
                public void onResponseReceived(DiffResult diffResult)
@@ -514,11 +514,12 @@ public class SVNReviewPresenter implements ReviewPresenter
    private String currentFilename_;
    private SVNState svnState_;
    private boolean initialized_;
-   private static final String MODULE_SVN = "vcs_svn"; //$NON-NLS-1$
-   private static final String KEY_CONTEXT_LINES = "context_lines"; //$NON-NLS-1$
+   private static final String MODULE_SVN = "vcs_svn";
+   private static final String KEY_CONTEXT_LINES = "context_lines";
 
    private final HashSet<String> undiffableStatuses_ = new HashSet<>();
 
    private boolean overrideSizeWarning_ = false;
+   private static final ViewVcsConstants constants_ = GWT.create(ViewVcsConstants.class);
 
 }

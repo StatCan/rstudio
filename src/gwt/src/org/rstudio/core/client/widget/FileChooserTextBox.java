@@ -15,6 +15,7 @@
 package org.rstudio.core.client.widget;
 
 import com.google.gwt.core.client.GWT;
+import org.rstudio.core.client.CoreClientConstants;
 import org.rstudio.core.client.ElementIds;
 import org.rstudio.core.client.files.FileSystemItem;
 import org.rstudio.studio.client.RStudioGinjector;
@@ -121,6 +122,6 @@ public class FileChooserTextBox extends TextBoxWithButton
       });
       
    }
-   private static final FileChooserTextBoxConstants constants_ = GWT.create(FileChooserTextBoxConstants.class);
+   private static final CoreClientConstants constants_ = GWT.create(CoreClientConstants.class);
 
 }

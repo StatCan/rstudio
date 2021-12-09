@@ -14,6 +14,7 @@
  */
 package org.rstudio.studio.client.workbench.views.source.editors.profiler;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.Debug;
 import org.rstudio.core.client.HandlerRegistrations;
 import org.rstudio.core.client.command.CommandBinder;
@@ -36,6 +37,7 @@ import org.rstudio.studio.client.workbench.WorkbenchContext;
 import org.rstudio.studio.client.workbench.commands.Commands;
 import org.rstudio.studio.client.workbench.model.RemoteFileSystemContext;
 import org.rstudio.studio.client.workbench.views.source.SourceWindowManager;
+import org.rstudio.studio.client.workbench.views.source.ViewsSourceConstants;
 import org.rstudio.studio.client.workbench.views.source.editors.profiler.model.ProfileOperationRequest;
 import org.rstudio.studio.client.workbench.views.source.editors.profiler.model.ProfileOperationResponse;
 import org.rstudio.studio.client.workbench.views.source.editors.profiler.model.ProfilerContents;
@@ -166,7 +168,7 @@ public class ProfilerPresenter implements RprofEvent.Handler
                {
                   if (response.getErrorMessage() != null)
                   {
-                     globalDisplay_.showErrorMessage("Profiler Error",
+                     globalDisplay_.showErrorMessage(constants_.profilerError(),
                            response.getErrorMessage());
                      return;
                   }
@@ -183,7 +185,7 @@ public class ProfilerPresenter implements RprofEvent.Handler
                            null,
                            null,
                            true).cast(),
-                     new SimpleRequestCallback<SourceDocument>("Show Profiler")
+                     new SimpleRequestCallback<SourceDocument>(constants_.showProfiler())
                      {
                         @Override
                         public void onResponseReceived(SourceDocument response)
@@ -203,7 +205,7 @@ public class ProfilerPresenter implements RprofEvent.Handler
                public void onError(ServerError error)
                {
                   Debug.logError(error);
-                  globalDisplay_.showErrorMessage("Failed to Stop Profiler",
+                  globalDisplay_.showErrorMessage(constants_.failedToStopProfiler(),
                         error.getMessage());
                }
             });
@@ -226,7 +228,7 @@ public class ProfilerPresenter implements RprofEvent.Handler
                {
                   if (response.getErrorMessage() != null)
                   {
-                     globalDisplay_.showErrorMessage("Profiler Error",
+                     globalDisplay_.showErrorMessage(constants_.profilerError(),
                            response.getErrorMessage());
                      return;
                   }
@@ -236,7 +238,7 @@ public class ProfilerPresenter implements RprofEvent.Handler
                public void onError(ServerError error)
                {
                   Debug.logError(error);
-                  globalDisplay_.showErrorMessage("Failed to Stop Profiler",
+                  globalDisplay_.showErrorMessage(constants_.failedToStopProfiler(),
                         error.getMessage());
                }
             });
@@ -246,7 +248,7 @@ public class ProfilerPresenter implements RprofEvent.Handler
    public void onOpenProfile()
    {
       fileDialogs_.openFile(
-         "Open File",
+         constants_.openFile(),
          fileContext_,
          workbenchContext_.getDefaultFileDialogDir(),
          "Profvis Profiles (*.Rprofvis)",
@@ -293,7 +295,7 @@ public class ProfilerPresenter implements RprofEvent.Handler
          {
             if (response.getErrorMessage() != null)
             {
-               globalDisplay_.showErrorMessage("Profiler Error",
+               globalDisplay_.showErrorMessage(constants_.profilerError(),
                      response.getErrorMessage());
                onError.execute();
                return;
@@ -306,7 +308,7 @@ public class ProfilerPresenter implements RprofEvent.Handler
          public void onError(ServerError error)
          {
             Debug.logError(error);
-            globalDisplay_.showErrorMessage("Failed to Open Profile",
+            globalDisplay_.showErrorMessage(constants_.failedToOpenProfile(),
                   error.getMessage());
             onError.execute();
          }
@@ -324,4 +326,5 @@ public class ProfilerPresenter implements RprofEvent.Handler
       commands_.startProfiler().setEnabled(true);
       commands_.stopProfiler().setEnabled(false);
    }
+   private static final ViewsSourceConstants constants_ = GWT.create(ViewsSourceConstants.class);
 }

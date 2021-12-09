@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.Pair;
 import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.files.FileSystemItem;
@@ -40,6 +41,7 @@ import org.rstudio.studio.client.workbench.WorkbenchContext;
 import org.rstudio.studio.client.workbench.model.BlogdownConfig;
 import org.rstudio.studio.client.workbench.model.Session;
 import org.rstudio.studio.client.workbench.model.SessionInfo;
+import org.rstudio.studio.client.workbench.views.source.ViewsSourceConstants;
 import org.rstudio.studio.client.workbench.views.source.editors.text.DocDisplay;
 import org.rstudio.studio.client.workbench.views.source.editors.text.TextEditingTarget;
 import org.rstudio.studio.client.workbench.views.source.editors.text.TextEditingTargetRMarkdownHelper;
@@ -86,7 +88,7 @@ public class VisualModePanmirrorFormat
             
             // see if we have a format comment
             PanmirrorPandocFormatConfig formatComment = formatTools.parseFormatConfig(getEditorCode(), true);
-
+            
             // doctypes
             if (formatComment.doctypes != null)
             {
@@ -100,7 +102,7 @@ public class VisualModePanmirrorFormat
                   quartoDocTypes.add(PanmirrorExtendedDocType.hugo);
                if (isQuartoPresentation())
                   quartoDocTypes.add(PanmirrorExtendedDocType.presentation);
-               format.docTypes = quartoDocTypes.toArray(new String[] {});
+               format.docTypes = quartoDocTypes.toArray(new String[] {}); 
             }
             else if (formatComment.doctypes == null || formatComment.doctypes.length == 0)
             {
@@ -137,16 +139,16 @@ public class VisualModePanmirrorFormat
             }
             else
             {
-               format.pandocMode = "markdown"; //$NON-NLS-1$
+               format.pandocMode = "markdown";
                if (!isQuartoDocument())
-               {
-                  format.pandocExtensions = "+autolink_bare_uris"; //$NON-NLS-1$
+               { 
+                  format.pandocExtensions = "+autolink_bare_uris+tex_math_single_backslash";
                }
                if (formatComment.extensions != null)
                   format.pandocExtensions += formatComment.extensions;
             }
               
-
+            
             // rmdExtensions
             
             // get any rmd extensions declared by the user in the format comment
@@ -186,7 +188,7 @@ public class VisualModePanmirrorFormat
             // blogdown files be opened within projects). this idiom is obscure 
             // enough that it's vanishingly unlikely to affect non-blogdown docs
             format.hugoExtensions.shortcodes = true;
-
+            
             // return format
             return format;
          }
@@ -197,20 +199,20 @@ public class VisualModePanmirrorFormat
    {
       return target_.getExtendedFileType() == SourceDocument.XT_QUARTO_DOCUMENT;
    }
-
+   
    public boolean isQuartoBookDocument()
    {
-      return isQuartoDocument() &&
+      return isQuartoDocument() && 
              QuartoHelper.isQuartoBookDoc(docUpdateSentinel_.getPath(), sessionInfo_.getQuartoConfig());
    }
-
+   
    public boolean isQuartoPresentation()
    {
       if (isQuartoDocument())
       {
          List<String> formats = getOutputFormats();
          final ArrayList<String> presentationFormats = new ArrayList<String>(Arrays.asList(
-               "beamer",
+               "beamer", 
                "pptx",
                "revealjs",
                "slidy"
@@ -221,17 +223,17 @@ public class VisualModePanmirrorFormat
                return true;
          }
       }
-
+     
       return false;
    }
-
+   
    public boolean isRmdPresentation()
    {
       if (isRMarkdownDocument() && !isQuartoDocument())
       {
          List<String> formats = getOutputFormats();
          final ArrayList<String> presentationFormats = new ArrayList<String>(Arrays.asList(
-            RmdOutputFormat.OUTPUT_BEAMER_PRESENTATION,
+            RmdOutputFormat.OUTPUT_BEAMER_PRESENTATION, 
             RmdOutputFormat.OUTPUT_PPT_PRESENTATION,
             RmdOutputFormat.OUTPUT_REVEALJS_PRESENTATION,
             RmdOutputFormat.OUTPUT_SLIDY_PRESENTATION
@@ -244,8 +246,8 @@ public class VisualModePanmirrorFormat
       }
       return false;
    }
-
-
+   
+   
    public boolean isRMarkdownDocument()
    {
       if (target_.canExecuteChunks()) 
@@ -276,13 +278,11 @@ public class VisualModePanmirrorFormat
       
       if (isXaringanDocument())
       {
-         invalid = "Xaringan presentations cannot be edited in visual mode.";
+         invalid = constants_.xaringanPresentationsVisualMode();
       }
       else if (hasVcsConflictMarkers())
       {
-         // i18n: Concatenation/Message
-         invalid = "Version control conflict markers detected. " +
-                   "Please resolve them before editing in visual mode.";
+         invalid = constants_.versionControlConflict();
       }
       
       return invalid;
@@ -298,7 +298,7 @@ public class VisualModePanmirrorFormat
       }
       else
       {
-         List<String> formats = isQuartoDocument()
+         List<String> formats = isQuartoDocument() 
             ? TextEditingTargetRMarkdownHelper.getQuartoOutputFormats(yaml)
             : TextEditingTargetRMarkdownHelper.getOutputFormats(yaml);
          if (formats == null)
@@ -307,14 +307,14 @@ public class VisualModePanmirrorFormat
             return formats;   
       }
    }
-
+   
    private PanmirrorRmdExtensions rmdExtensionsFromFormatConfig(PanmirrorPandocFormatConfig config)
    {
       PanmirrorRmdExtensions rmdExtensions = new PanmirrorRmdExtensions();
       if (config.rmdExtensions != null)
       {
-         rmdExtensions.bookdownXRefUI = config.rmdExtensions.contains("+bookdown_cross_references"); //$NON-NLS-1$
-         rmdExtensions.blogdownMathInCode = config.rmdExtensions.contains("+tex_math_dollars_in_code"); //$NON-NLS-1$
+         rmdExtensions.bookdownXRefUI = config.rmdExtensions.contains("+bookdown_cross_references");
+         rmdExtensions.blogdownMathInCode = config.rmdExtensions.contains("+tex_math_dollars_in_code");
       }
       return rmdExtensions;
    }
@@ -328,15 +328,15 @@ public class VisualModePanmirrorFormat
   
    private boolean isHugodownDocument()
    {
-      return getOutputFormats().contains("hugodown::md_document"); //$NON-NLS-1$
+      return getOutputFormats().contains("hugodown::md_document");
    }
    
    private boolean isGitHubDocument()
    {
       List<String> formats = getOutputFormats();
-      return formats.contains("github_document") ||
+      return formats.contains("github_document") || 
              formats.contains("gfm") ||
-             isGitREADME(); //$NON-NLS-1$
+             isGitREADME();
    }
    
    private boolean isGitREADME()
@@ -350,13 +350,13 @@ public class VisualModePanmirrorFormat
    
    private boolean isGitRepo()
    {
-      return sessionInfo_.getVcsName().equalsIgnoreCase("git"); //$NON-NLS-1$
+      return sessionInfo_.getVcsName().equalsIgnoreCase("git");
    }
    
    private boolean isDistillDocument()
    {
       return (sessionInfo_.getIsDistillProject() && isDocInProject()) ||
-             getOutputFormats().contains("distill::distill_article"); //$NON-NLS-1$
+             getOutputFormats().contains("distill::distill_article");
    }
    
    private boolean isXaringanDocument()
@@ -364,7 +364,7 @@ public class VisualModePanmirrorFormat
       List<String> formats = getOutputFormats();
       for (String format : formats)
       {
-         if (format.startsWith("xaringan")) //$NON-NLS-1$
+         if (format.startsWith("xaringan"))
             return true;
       }
       return false;
@@ -383,7 +383,7 @@ public class VisualModePanmirrorFormat
       List<String> formats = getOutputFormats();
       for (String format : formats) 
       {
-         boolean isBookdown = format.startsWith("bookdown::") && format.endsWith("2"); //$NON-NLS-1$
+         boolean isBookdown = format.startsWith("bookdown::") && format.endsWith("2");
          if (isBookdown)
             return true;
       }
@@ -393,7 +393,7 @@ public class VisualModePanmirrorFormat
    private boolean hasBlogdownMathInCode(PanmirrorPandocFormatConfig config, String[] docTypes)
    {
       if (alternateMarkdownEngine(docTypes) != null && getBlogdownConfig().rmd_extensions != null)
-         return getBlogdownConfig().rmd_extensions.contains("+tex_math_dollars_in_code") && //$NON-NLS-1$
+         return getBlogdownConfig().rmd_extensions.contains("+tex_math_dollars_in_code") &&
                 !this.disableBlogdownMathInCode(config);
       else
          return false;
@@ -402,7 +402,7 @@ public class VisualModePanmirrorFormat
    private boolean disableBlogdownMathInCode(PanmirrorPandocFormatConfig config)
    {
       return config.rmdExtensions != null && 
-             config.rmdExtensions.contains("-tex_math_dollars_in_code"); //$NON-NLS-1$
+             config.rmdExtensions.contains("-tex_math_dollars_in_code");
    }
    
    private boolean hasVcsConflictMarkers()
@@ -459,12 +459,12 @@ public class VisualModePanmirrorFormat
          // other valid ways of having a hugo document
          else if (isHugodownDocument() || hasHugoDocType(docTypes))
          {
-            return new Pair<>("goldmark", ""); //$NON-NLS-1$
+            return new Pair<>("goldmark", "");
          }
          // github document
          else if (isGitHubDocument())
          {
-            return new Pair<>("gfm", ""); //$NON-NLS-1$
+            return new Pair<>("gfm", "");
          }
       }
    
@@ -505,5 +505,6 @@ public class VisualModePanmirrorFormat
    private final TextEditingTarget.Display view_;
 
    private final static Pattern VCS_CONFLICT_PATTERN = 
-         Pattern.create("^[\\+\\-]?([\\<\\>|=])\\1{6}.*?$", "gm"); //$NON-NLS-1$
+         Pattern.create("^[\\+\\-]?([\\<\\>|=])\\1{6}.*?$", "gm");
+   private static final ViewsSourceConstants constants_ = GWT.create(ViewsSourceConstants.class);
 }

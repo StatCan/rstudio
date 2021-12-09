@@ -16,7 +16,7 @@
 package org.rstudio.studio.client.common;
 
 import com.google.gwt.core.client.GWT;
-import org.rstudio.studio.client.workbench.prefs.views.PackagesPreferencesPaneConstants;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 
 public class PackagesHelpLink extends HelpLink
 {
@@ -24,5 +24,5 @@ public class PackagesHelpLink extends HelpLink
    {
       super(constants_.developingPkgHelpLink(), "building_packages");
    }
-   private static final PackagesPreferencesPaneConstants constants_ = GWT.create(PackagesPreferencesPaneConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
 }

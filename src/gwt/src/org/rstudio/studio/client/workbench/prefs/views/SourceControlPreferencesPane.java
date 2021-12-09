@@ -46,6 +46,7 @@ import org.rstudio.studio.client.workbench.commands.Commands;
 import org.rstudio.studio.client.workbench.model.RemoteFileSystemContext;
 import org.rstudio.studio.client.workbench.model.Session;
 import org.rstudio.studio.client.workbench.model.SessionInfo;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
 
 public class SourceControlPreferencesPane extends PreferencesPane
@@ -71,11 +72,9 @@ public class SourceControlPreferencesPane extends PreferencesPane
          {
             manageControlVisibility();
 
-            // i18n: Concatenation/Message
-            // i18n: Is Enable/Disable an enumerator or constant?
             globalDisplay.showMessage(
                MessageDialog.INFO,
-               (event.getValue() ? constants_.globalDisplayEnable() : constants_.globalDisplayDisable()) + constants_.globalDisplayVC(),
+               constants_.globalDisplayVC(event.getValue() ? constants_.globalDisplayEnable() : constants_.globalDisplayDisable()),
                constants_.globalDisplayVCMessage());
          }
       });
@@ -92,10 +91,7 @@ public class SourceControlPreferencesPane extends PreferencesPane
                String gitExePath = gitExePathChooser_.getText();
                if (!gitExePath.endsWith("git.exe"))
                {
-                  // i18n: Concatenation/Message
-                  String message = constants_.gitExePathMessage() + gitExePath + "' " +
-                     constants_.gitExePath() +
-                     constants_.gitExeSelectPathMessage();
+                  String message = constants_.gitExePathMessage(gitExePath);
 
                   globalDisplay.showMessage(
                         GlobalDisplay.MSG_WARNING,
@@ -140,7 +136,7 @@ public class SourceControlPreferencesPane extends PreferencesPane
          addTextBoxChooser(terminalPathLabel_, terminalPathChooser_);
 
       // ssh key widget
-      sshKeyWidget_ = new SshKeyWidget(server, "330px"); //$NON-NLS-1$
+      sshKeyWidget_ = new SshKeyWidget(server, "330px");
       sshKeyWidget_.addStyleName(res_.styles().sshKeyWidget());
       nudgeRight(sshKeyWidget_);
       add(sshKeyWidget_);
@@ -256,6 +252,5 @@ public class SourceControlPreferencesPane extends PreferencesPane
    private FormLabel terminalPathLabel_;
    private TextBoxWithButton terminalPathChooser_;
    private SshKeyWidget sshKeyWidget_;
-   private final SourceControlPreferencesPaneConstants constants_ = GWT.create(SourceControlPreferencesPaneConstants.class);
-
+   private final static PrefsConstants constants_ = GWT.create(PrefsConstants.class);
 }

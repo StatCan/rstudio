@@ -23,6 +23,7 @@ import com.google.gwt.aria.client.ExpandedValue;
 import com.google.gwt.aria.client.Roles;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.SpanElement;
@@ -46,6 +47,7 @@ import org.rstudio.studio.client.panmirror.ui.PanmirrorUIChunkEditor;
 import org.rstudio.studio.client.server.ServerRequestCallback;
 import org.rstudio.studio.client.workbench.views.output.lint.LintManager;
 import org.rstudio.studio.client.workbench.views.output.lint.model.LintItem;
+import org.rstudio.studio.client.workbench.views.source.ViewsSourceConstants;
 import org.rstudio.studio.client.workbench.views.source.editors.EditingTargetCodeExecution;
 import org.rstudio.studio.client.workbench.views.source.editors.text.AceEditor;
 import org.rstudio.studio.client.workbench.views.source.editors.text.ChunkOutputWidget;
@@ -108,6 +110,7 @@ public class VisualModeChunk
    public VisualModeChunk(Element element,
                           int index,
                           boolean isExpanded,
+                          JsArrayString classes,
                           PanmirrorUIChunkCallbacks chunkCallbacks,
                           DocUpdateSentinel sentinel,
                           TextEditingTarget target,
@@ -124,6 +127,7 @@ public class VisualModeChunk
       releaseOnDismiss_ = new ArrayList<>();
       destroyHandlers_ = new ArrayList<>();
       lint_ = JsArray.createArray().cast();
+      classes_ = classes;
 
       // Instantiate CSS style
       ChunkStyle style = GWT.create(ChunkStyle.class);
@@ -1055,6 +1059,15 @@ public class VisualModeChunk
       String engine = "R";
       String label = "";
 
+      // By convention, the first class in a non-executable chunk is its language.
+      // Use that as the "engine" unless another is explicitly specified.
+      if (classes_ != null &&
+         classes_.length() > 0 &&
+         !StringUtil.isNullOrEmpty(classes_.get(0)))
+      {
+         engine = StringUtil.capitalize(classes_.get(0));
+      }
+
       // Quarto chunks use this syntax, which must be parsed separately
       String quartoLabel = "#| label:";
 
@@ -1073,7 +1086,8 @@ public class VisualModeChunk
             {
                // This is the first line in the chunk (its header). Parse it, reintroducing
                // the backticks since they aren't present in the embedded editor.
-               Map<String, String> options = RChunkHeaderParser.parse("```" + line);
+               Map<String, String> options = new HashMap<>();
+               RChunkHeaderParser.parse("```" + line, engine, options);
 
                // Check for the "engine" (language) option; extract it if specified
                String optionEngine = options.get("engine");
@@ -1115,7 +1129,8 @@ public class VisualModeChunk
       }
 
       // Summarize engine and line count
-      summary += engine + ", " + lines + " line" + (lines > 1 ? "s" : "");
+      summary += (lines > 1 ? constants_.visualModeChunkSummaryPlural(engine, lines) :
+              constants_.visualModeChunkSummary(engine, lines));
 
       SpanElement spanSummary = Document.get().createSpanElement();
       spanSummary.setInnerText(summary);
@@ -1156,6 +1171,7 @@ public class VisualModeChunk
    private Scope scope_;
    private ChunkContextPanmirrorUi toolbar_;
    private boolean active_;
+   private JsArrayString classes_;
    private PanmirrorUIChunkCallbacks chunkCallbacks_;
    private Styles style_;
    private JsArray<LintItem> lint_;
@@ -1175,9 +1191,11 @@ public class VisualModeChunk
    private final VisualModeEditorSync sync_;
    private final EditingTargetCodeExecution codeExecution_;
    private final VisualModeCollapseToggle collapse_;
+   @SuppressWarnings("unused")
    private final LintManager lintManager_;
    private final DivElement summary_;
    private final Map<Integer,VisualModeChunkRowState> rowState_;
    private final TextEditingTarget target_;
    private final int markdownIndex_;
+   private static final ViewsSourceConstants constants_ = GWT.create(ViewsSourceConstants.class);
 }

@@ -17,6 +17,7 @@
 package org.rstudio.studio.client.workbench.views.source.editors.text.visualmode.dialogs;
 
 import com.google.gwt.aria.client.Roles;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
@@ -33,6 +34,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import org.rstudio.studio.client.workbench.views.source.ViewsSourceConstants;
 
 public class VisualModeLineWrappingDialog extends ModalDialog<VisualModeLineWrappingDialog.Result>
 {   
@@ -69,7 +71,7 @@ public class VisualModeLineWrappingDialog extends ModalDialog<VisualModeLineWrap
       OperationWithInput<Result> onConfirm,
       Operation onCancel)
    {
-      super("Line Wrapping", 
+      super(constants_.lineWrapping(),
             Roles.getDialogRole(), 
             onConfirm, 
             onCancel);
@@ -79,35 +81,24 @@ public class VisualModeLineWrappingDialog extends ModalDialog<VisualModeLineWrap
       mainWidget_ = new VerticalPanel();
      
       mainWidget_.addStyleName(RES.styles().confirmLineWrappingDialog());
-
-      // i18n: Enumerator, user facing text, or both?
-      String current = isProjectConfig ? "project default" : "global default";
-
-      // i18n: Concatenation/Message
+      
+      String current = isProjectConfig ? constants_.projectDefault() : constants_.globalDefault();
+      
       Label mismatch = new Label(
-         "Line wrapping in this document differs from the " + 
-         current + ":"
+         constants_.lineWrappingDiffersFromCurrent(current)
       );
       mainWidget_.add(mismatch);
-
-      // i18n: Concatenation/Message
+      
       SafeHtmlBuilder builder = new SafeHtmlBuilder();
       builder.appendHtmlConstant("<ul>");
       builder.appendHtmlConstant("<li style=\"margin-bottom: 10px;\">");
-      builder.appendEscaped("The document uses ");
-      builder.appendEscaped(detectedLineWrapping);
-      builder.appendEscaped("-based line wrapping"); 
+      builder.appendEscaped(constants_.documentUsesBasedLineWrapping(detectedLineWrapping));
       builder.appendHtmlConstant("</li>");
       builder.appendHtmlConstant("<li style=\"margin-bottom: 3px;\">");
-      if (isProjectConfig)
-         builder.appendEscaped("The " + current + " is ");
-      else
-         builder.appendEscaped("The " + current + " is ");
       if (configuredLineWrapping.equals(UserPrefsAccessor.VISUAL_MARKDOWN_EDITING_WRAP_NONE))
-         builder.appendEscaped("no");
+         builder.appendEscaped(constants_.defaultNoLineWrapping(current));
       else 
-         builder.appendEscaped(configuredLineWrapping + "-based");
-      builder.appendEscaped(" line wrapping");
+         builder.appendEscaped(constants_.defaultConfiguredBasedLineWrapping(current, configuredLineWrapping));
       builder.appendHtmlConstant("</li>");
       builder.appendHtmlConstant("</ul>");
       
@@ -115,22 +106,21 @@ public class VisualModeLineWrappingDialog extends ModalDialog<VisualModeLineWrap
       mainWidget_.add(new HTML(builder.toSafeHtml()));
       
      
-      Label choiceLabel = new Label("Select how you'd like to handle line wrapping below:");
+      Label choiceLabel = new Label(constants_.selectHandleLineWrapping());
       mainWidget_.add(choiceLabel);
          
-      // i18n: Concatenation/Message
+      
       chkConfigureFile_ = lineWrappingRadio( 
-         "Use " + detectedLineWrapping + "-based line wrapping for this document"
+         constants_.useBasedLineWrapping(detectedLineWrapping)
       );
       chkConfigureFile_.setValue(true);
       mainWidget_.add(chkConfigureFile_);
       
       numFileColumn_ = createColumnInput(defaultColumnBreak);
       mainWidget_.add(numFileColumn_);
-
-      // i18n: Concatenation/Message
+      
       chkConfigureProject_= lineWrappingRadio(
-         "Use " + detectedLineWrapping + "-based line wrapping for this project"
+         constants_.useBasedLineWrapping(detectedLineWrapping)
       );
       numProjectColumn_ = createColumnInput(defaultColumnBreak);
 
@@ -139,17 +129,16 @@ public class VisualModeLineWrappingDialog extends ModalDialog<VisualModeLineWrap
          mainWidget_.add(chkConfigureProject_);
          mainWidget_.add(numProjectColumn_);
       }
-
-      // i18n: Concatenation/Message
+      
       chkConfigureNone_ = lineWrappingRadio(
-         "Use the current " + (isProjectConfig ? "project" : "global") + " default line wrapping for this document"
+         constants_.useDefaultLinewrapping((isProjectConfig ? constants_.project() : constants_.global()))
       );
       mainWidget_.add(chkConfigureNone_);
       
       
       HelpLink lineWrappingHelp = new HelpLink(
-         "Learn more about visual mode line wrapping options",
-         "visual_markdown_editing-line-wrapping", //$NON-NLS-1$
+         constants_.learnAboutVisualModeLineWrapping(),
+         "visual_markdown_editing-line-wrapping",
          false
       );
       lineWrappingHelp.addStyleName(RES.styles().lineWrappingHelp());
@@ -204,7 +193,7 @@ public class VisualModeLineWrappingDialog extends ModalDialog<VisualModeLineWrap
   
    private RadioButton lineWrappingRadio(String caption)
    {
-      final String kRadioGroup = "DDFEDF81-87F7-45E8-B5FC-E021FC41FC69"; //$NON-NLS-1$
+      final String kRadioGroup = "DDFEDF81-87F7-45E8-B5FC-E021FC41FC69";
       RadioButton radio = new RadioButton(kRadioGroup, caption);
       radio.addStyleName(RES.styles().lineWrappingRadio());
       return radio;
@@ -212,7 +201,7 @@ public class VisualModeLineWrappingDialog extends ModalDialog<VisualModeLineWrap
    
    private NumericValueWidget createColumnInput(int defaultValue)
    {
-      NumericValueWidget num = new NumericValueWidget("Wrap at column:", 1, UserPrefs.MAX_WRAP_COLUMN);
+      NumericValueWidget num = new NumericValueWidget(constants_.wrapAtColumnColon(), 1, UserPrefs.MAX_WRAP_COLUMN);
       num.addStyleName(RES.styles().wrapAtColumn());
       num.setValue(Integer.toString(defaultValue));
       return num;
@@ -228,5 +217,5 @@ public class VisualModeLineWrappingDialog extends ModalDialog<VisualModeLineWrap
    
    
    private static VisualModeDialogsResources RES = VisualModeDialogsResources.INSTANCE;
-   
+   private static final ViewsSourceConstants constants_ = GWT.create(ViewsSourceConstants.class);
 }

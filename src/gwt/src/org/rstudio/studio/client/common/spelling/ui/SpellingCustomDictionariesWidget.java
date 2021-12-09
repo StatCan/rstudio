@@ -25,6 +25,7 @@ import org.rstudio.core.client.widget.SmallButton;
 import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.common.FileDialogs;
 import org.rstudio.studio.client.common.GlobalDisplay;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 import org.rstudio.studio.client.common.spelling.SpellingService;
 import org.rstudio.studio.client.server.ServerError;
 import org.rstudio.studio.client.server.ServerRequestCallback;
@@ -67,7 +68,7 @@ public class SpellingCustomDictionariesWidget extends Composite
       dictionariesPanel.add(buttonPanel);
       
       panel.add(new LabelWithHelp(constants_.labelWithHelpText(),
-            "custom_dictionaries", //$NON-NLS-1$
+            "custom_dictionaries",
             constants_.labelWithHelpTitle(),
             listBox_));
       panel.add(dictionariesPanel);
@@ -147,8 +148,7 @@ public class SpellingCustomDictionariesWidget extends Composite
             globalDisplay_.showYesNoMessage(
                   MessageDialog.WARNING, 
                   constants_.removeDictionaryCaption(),
-                  constants_.removeDictionaryMessage() + dictionary +
-                  " " + constants_.removeCustomDictionaryMessage(),
+                  constants_.removeDictionaryMessage(dictionary),
                   new Operation() {
                      @Override
                      public void execute()
@@ -224,6 +224,6 @@ public class SpellingCustomDictionariesWidget extends Composite
    {
       RES.styles().ensureInjected();
    }
-   private static final SpellingConstants constants_ = GWT.create(SpellingConstants.class);
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 
 }

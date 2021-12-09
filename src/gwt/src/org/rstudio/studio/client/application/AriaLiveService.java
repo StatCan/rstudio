@@ -25,7 +25,6 @@ import org.rstudio.studio.client.application.events.AriaLiveStatusEvent.Severity
 import org.rstudio.studio.client.application.events.AriaLiveStatusEvent.Timing;
 import org.rstudio.studio.client.application.events.EventBus;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
-import org.rstudio.studio.client.workbench.prefs.views.AccessibilityPreferencesPaneConstants;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -38,24 +37,25 @@ public class AriaLiveService
    // Unique identifiers for aria-live announcements. Use the same text for the
    // value as the constant name to ensure uniqueness. Add here and in the constructor below to
    // associate description for preferences UI.
-   public static final String CONSOLE_CLEARED = "console_cleared"; //$NON-NLS-1$
-   public static final String CONSOLE_LOG = "console_log"; //$NON-NLS-1$
-   public static final String CONSOLE_COMMAND = "console_command"; //$NON-NLS-1$
-   public static final String FILTERED_LIST = "filtered_list"; //$NON-NLS-1$
-   public static final String GIT_MESSAGE_LENGTH = "git_message_length"; //$NON-NLS-1$
-   public static final String INACCESSIBLE_FEATURE = "inaccessible_feature"; //$NON-NLS-1$
-   public static final String INFO_BAR = "info_bar"; //$NON-NLS-1$
-   public static final String PROGRESS_COMPLETION = "progress_completion"; //$NON-NLS-1$
-   public static final String PROGRESS_LOG = "progress_log"; //$NON-NLS-1$
-   public static final String SCREEN_READER_NOT_ENABLED = "screen_reader_not_enabled"; //$NON-NLS-1$
-   public static final String SESSION_STATE = "session_state"; //$NON-NLS-1$
-   public static final String TAB_KEY_MODE = "tab_key_mode"; //$NON-NLS-1$
-   public static final String TOOLBAR_VISIBILITY = "toolbar_visibility"; //$NON-NLS-1$
-   public static final String WARNING_BAR = "warning_bar"; //$NON-NLS-1$
+   public static final String CONSOLE_CLEARED = "console_cleared";
+   public static final String CONSOLE_LOG = "console_log";
+   public static final String CONSOLE_COMMAND = "console_command";
+   public static final String FILTERED_LIST = "filtered_list";
+   public static final String GIT_MESSAGE_LENGTH = "git_message_length";
+   public static final String INACCESSIBLE_FEATURE = "inaccessible_feature";
+   public static final String INFO_BAR = "info_bar";
+   public static final String PROGRESS_COMPLETION = "progress_completion";
+   public static final String PROGRESS_LOG = "progress_log";
+   public static final String SCREEN_READER_NOT_ENABLED = "screen_reader_not_enabled";
+   public static final String SESSION_STATE = "session_state";
+   public static final String TAB_KEY_MODE = "tab_key_mode";
+   public static final String TOOLBAR_VISIBILITY = "toolbar_visibility";
+   public static final String WARNING_BAR = "warning_bar";
+   public static final String SESSION_SUSPENDED = "session_suspended";
 
    // Announcement requested by a user, not controlled by a preference since it is on-demand.
    // Do not include in the announcements_ map.
-   public static final String ON_DEMAND = "on_demand"; //$NON-NLS-1$
+   public static final String ON_DEMAND = "on_demand";
 
    // Milliseconds to wait before making an announcement at session load
    public static final int STARTUP_ANNOUNCEMENT_DELAY = 3000;
@@ -84,6 +84,7 @@ public class AriaLiveService
       announcements_.put(TAB_KEY_MODE, constants_.tabKeyFocusAnnouncement());
       announcements_.put(TOOLBAR_VISIBILITY, constants_.toolBarVisibilityAnnouncement());
       announcements_.put(WARNING_BAR, constants_.warningBarsAnnouncement());
+      announcements_.put(SESSION_SUSPENDED, constants_.sessionSuspendAnnouncement());
 
       alwaysEnabledAnnouncements_ = new HashSet<>();
       alwaysEnabledAnnouncements_.add(ON_DEMAND);

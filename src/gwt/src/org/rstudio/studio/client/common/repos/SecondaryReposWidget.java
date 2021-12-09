@@ -36,7 +36,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.inject.Inject;
-import org.rstudio.studio.client.workbench.prefs.views.PackagesPreferencesPaneConstants;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 
 public class SecondaryReposWidget extends Composite
 {
@@ -152,9 +152,8 @@ public class SecondaryReposWidget extends Composite
             final String repo = listBox_.getValue(index);
             globalDisplay_.showYesNoMessage(
                MessageDialog.WARNING, 
-               "Confirm Remove",
-               // i18n: Concatenation/Message
-               "Are you sure you want to remove the " + repo + " repository?",
+               constants_.confirmRemoveCaption(),
+               constants_.confirmRemoveMessage(repo),
                new Operation() {
                   @Override
                   public void execute()
@@ -239,5 +238,6 @@ public class SecondaryReposWidget extends Composite
    {
       RES.styles().ensureInjected();
    }
-   private final PackagesPreferencesPaneConstants constants_ = GWT.create(PackagesPreferencesPaneConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
+
 }

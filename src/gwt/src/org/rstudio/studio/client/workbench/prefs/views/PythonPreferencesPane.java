@@ -17,6 +17,7 @@ package org.rstudio.studio.client.workbench.prefs.views;
 import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.StringUtil;
 import org.rstudio.core.client.prefs.RestartRequirement;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
 
 import com.google.gwt.user.client.ui.Label;
@@ -29,11 +30,7 @@ public class PythonPreferencesPane extends PythonPreferencesPaneBase<UserPrefs>
                                 PythonServerOperations server)
    {
 
-      super(
-              "420px", //$NON-NLS-1$
-              constants_.pythonPreferencesText(),
-              false
-      );
+      super("420px", constants_.pythonPreferencesText(), false);
 
       
       overrideLabel_ = new Label();
@@ -51,11 +48,8 @@ public class PythonPreferencesPane extends PythonPreferencesPaneBase<UserPrefs>
       boolean hasProjectOverride = !StringUtil.isNullOrEmpty(projectPythonPath);
       if (hasProjectOverride)
       {
-         // i18n: concatenate
          String text =
-                 constants_.overrideText() +
-                 constants_.overrideInterpreterText() +
-                 constants_.overrideChangeVersionText();
+                 constants_.overrideText();
          
          overrideLabel_.setText(text);
          overrideLabel_.setVisible(true);
@@ -89,6 +83,6 @@ public class PythonPreferencesPane extends PythonPreferencesPaneBase<UserPrefs>
    }
    
    private final Label overrideLabel_;
-   private static final PythonPreferencesPaneConstants constants_ = GWT.create(PythonPreferencesPaneConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
 
 }

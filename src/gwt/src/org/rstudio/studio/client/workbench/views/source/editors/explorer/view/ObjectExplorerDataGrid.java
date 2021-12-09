@@ -37,6 +37,7 @@ import org.rstudio.studio.client.application.events.EventBus;
 import org.rstudio.studio.client.server.ServerError;
 import org.rstudio.studio.client.server.ServerRequestCallback;
 import org.rstudio.studio.client.workbench.views.console.events.SendToConsoleEvent;
+import org.rstudio.studio.client.workbench.views.source.ViewsSourceConstants;
 import org.rstudio.studio.client.workbench.views.source.editors.explorer.ObjectExplorerServerOperations;
 
 /*
@@ -344,7 +345,7 @@ public class ObjectExplorerDataGrid
       public NameCell()
       {
          super();
-         String moreButtonCell = "<td><input type='button' value='More...' data-action='open'></input></td>";
+         String moreButtonCell = constants_.moreButtonCell();
          moreButtonCellHtml_ = SafeHtmlUtils.fromTrustedString(moreButtonCell);
       }
 
@@ -452,7 +453,7 @@ public class ObjectExplorerDataGrid
 
          String name = data.getDisplayName();
          if (name == null)
-            name = "<unknown>"; // i18n: ?
+            name = "<unknown>";
          divBuilder.text(name);
          builder.append(divBuilder.asSafeHtml());
 
@@ -533,12 +534,9 @@ public class ObjectExplorerDataGrid
                                   SafeHtmlBuilder builder)
       {
          SafeHtml extractTag = SafeHtmlUtil.createDiv(
-            "class",
-            CLASS + " " + RES.dataGridStyle().spriteExtractCodeIcon(),
-            "style",
-            "visibility: hidden", //$NON-NLS-1$
-            "data-action", //$NON-NLS-1$
-            ACTION_EXTRACT);
+               "class",       CLASS + " " + RES.dataGridStyle().spriteExtractCodeIcon(),
+               "style",       "visibility: hidden",
+               "data-action", ACTION_EXTRACT);
          builder.append(extractTag);
          builder.appendHtmlConstant("</div>");
       }
@@ -547,12 +545,9 @@ public class ObjectExplorerDataGrid
                                SafeHtmlBuilder builder)
       {
          SafeHtml viewTag = SafeHtmlUtil.createDiv(
-            "class",
-            CLASS + " " + RES.dataGridStyle().spriteViewObjectIcon(),
-            "style",
-            "visibility: hidden", //$NON-NLS-1$
-            "data-action", //$NON-NLS-1$
-            ACTION_VIEW);
+               "class",       CLASS + " " + RES.dataGridStyle().spriteViewObjectIcon(),
+               "style",       "visibility: hidden",
+               "data-action", ACTION_VIEW);
          builder.append(viewTag);
          builder.appendHtmlConstant("</div>");
       }
@@ -560,8 +555,8 @@ public class ObjectExplorerDataGrid
       private static final String CLASS = RES.dataGridStyle().clickableIcon();
 
       private static final String[] VIEWABLE_CLASSES = new String[] {
-            "data.frame", //$NON-NLS-1$
-            "function" //$NON-NLS-1$
+            "data.frame",
+            "function"
       };
    }
 
@@ -578,13 +573,13 @@ public class ObjectExplorerDataGrid
 
       // add columns
       nameColumn_ = new IdentityColumn<>(new NameCell());
-      addColumn(nameColumn_, new TextHeader("Name"));
+      addColumn(nameColumn_, new TextHeader(constants_.name()));
 
       typeColumn_ = new IdentityColumn<>(new TypeCell());
-      addColumn(typeColumn_, new ResizableHeader(this, "Type"));
+      addColumn(typeColumn_, new ResizableHeader(this, constants_.type()));
 
       valueColumn_ = new IdentityColumn<>(new ValueCell());
-      addColumn(valueColumn_, new ResizableHeader(this, "Value"));
+      addColumn(valueColumn_, new ResizableHeader(this, constants_.value()));
 
       initializeColumnWidths();
 
@@ -1085,7 +1080,7 @@ public class ObjectExplorerDataGrid
       Data data = getData().get(row);
       String code = generateExtractingCode(data);
       String language = handle_.getLanguage();
-      code = "View(" + code + ")"; //$NON-NLS-1$
+      code = constants_.viewCode(code);
       events_.fireEvent(new SendToConsoleEvent(code, language, true));
    }
 
@@ -1397,13 +1392,13 @@ public class ObjectExplorerDataGrid
    // SessionObjectExplorer.R
    private static final int DEFAULT_ROW_LIMIT = 1000;
 
-   private static final String ACTION_OPEN    = "open"; //$NON-NLS-1$
-   private static final String ACTION_CLOSE   = "close"; //$NON-NLS-1$
-   private static final String ACTION_EXTRACT = "extract"; //$NON-NLS-1$
-   private static final String ACTION_VIEW    = "view"; //$NON-NLS-1$
+   private static final String ACTION_OPEN    = "open";
+   private static final String ACTION_CLOSE   = "close";
+   private static final String ACTION_EXTRACT = "extract";
+   private static final String ACTION_VIEW    = "view";
 
-   private static final String TAG_ATTRIBUTES = "attributes"; //$NON-NLS-1$
-   private static final String TAG_VIRTUAL    = "virtual"; //$NON-NLS-1$
+   private static final String TAG_ATTRIBUTES = "attributes";
+   private static final String TAG_VIRTUAL    = "virtual";
 
    // Resources, etc ----
    public interface Resources extends RStudioDataGridResources
@@ -1411,28 +1406,28 @@ public class ObjectExplorerDataGrid
       @Source({RStudioDataGridStyle.RSTUDIO_DEFAULT_CSS, "ObjectExplorerDataGrid.css"})
       Styles dataGridStyle();
 
-      @Source("images/expandIcon.png") //$NON-NLS-1$
+      @Source("images/expandIcon.png")
       ImageResource expandIcon();
 
-      @Source("images/expandIcon_2x.png") //$NON-NLS-1$
+      @Source("images/expandIcon_2x.png")
       ImageResource expandIcon2x();
 
-      @Source("images/collapseIcon.png") //$NON-NLS-1$
+      @Source("images/collapseIcon.png")
       ImageResource collapseIcon();
 
-      @Source("images/collapseIcon_2x.png") //$NON-NLS-1$
+      @Source("images/collapseIcon_2x.png")
       ImageResource collapseIcon2x();
 
-      @Source("images/extractCode.png") //$NON-NLS-1$
+      @Source("images/extractCode.png")
       ImageResource extractCode();
 
-      @Source("images/extractCode_2x.png") //$NON-NLS-1$
+      @Source("images/extractCode_2x.png")
       ImageResource extractCode2x();
 
-      @Source("images/viewObject.png") //$NON-NLS-1$
+      @Source("images/viewObject.png")
       ImageResource viewObject();
 
-      @Source("images/viewObject_2x.png") //$NON-NLS-1$
+      @Source("images/viewObject_2x.png")
       ImageResource viewObject2x();
    }
 
@@ -1460,4 +1455,5 @@ public class ObjectExplorerDataGrid
    static {
       RES.dataGridStyle().ensureInjected();
    }
+   private static final ViewsSourceConstants constants_ = GWT.create(ViewsSourceConstants.class);
 }

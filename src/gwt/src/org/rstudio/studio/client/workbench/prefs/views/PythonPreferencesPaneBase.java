@@ -31,6 +31,7 @@ import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.server.ServerError;
 import org.rstudio.studio.client.server.ServerRequestCallback;
 import org.rstudio.studio.client.workbench.model.Session;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
 import org.rstudio.studio.client.workbench.prefs.views.python.PythonInterpreterListEntryUi;
 import org.rstudio.studio.client.workbench.prefs.views.python.PythonInterpreterSelectionDialog;
@@ -59,7 +60,7 @@ public abstract class PythonPreferencesPaneBase<T> extends PreferencesDialogPane
                                     boolean isProjectOptions)
    {
       RStudioGinjector.INSTANCE.injectMembers(this);
-
+      
       add(headerLabel(constants_.headerPythonLabel()));
       
       mismatchWarningBar_ = new InfoBar(InfoBar.WARNING);
@@ -67,17 +68,17 @@ public abstract class PythonPreferencesPaneBase<T> extends PreferencesDialogPane
             constants_.mismatchWarningBarText());
       mismatchWarningBar_.setVisible(false);
       add(mismatchWarningBar_);
-
+      
       tbPythonInterpreter_ = new TextBoxWithButton(
-              constants_.tbPythonInterpreterText(),
-              null,
-              placeholderText,
-              constants_.tbPythonActionText(),
-              new HelpButton("using_python", constants_.helpButtonLabel()), //NON-NLS
-              ElementIds.TextBoxButtonId.PYTHON_PATH,
-              true,
-              true,
-              new ClickHandler()
+            constants_.tbPythonInterpreterText(),
+            null,
+            placeholderText,
+            constants_.tbPythonActionText(),
+            new HelpButton("using_python", constants_.helpRnwButtonLabel()),
+            ElementIds.TextBoxButtonId.PYTHON_PATH,
+            true,
+            true,
+            new ClickHandler()
             {
                @Override
                public void onClick(ClickEvent event)
@@ -111,7 +112,7 @@ public abstract class PythonPreferencesPaneBase<T> extends PreferencesDialogPane
                      public void onError(ServerError error)
                      {
                         String message =
-                              constants_.onErrorMessage() +
+                              constants_.onDependencyErrorMessage() +
                               error.getUserMessage();
                         getProgressIndicator().onError(message);
                         
@@ -177,8 +178,7 @@ public abstract class PythonPreferencesPaneBase<T> extends PreferencesDialogPane
          cbAutoUseProjectInterpreter_.setValue(initialAutoUseProjectInterpreter_);
          
          cbAutoUseProjectInterpreter_.getElement().setTitle(
-               constants_.cbAutoUseProjectInterpreterMessage() +
-               constants_.cbAutoUseProjectInterpreterMsg());
+               constants_.cbAutoUseProjectInterpreterMessage());
 
          add(lessSpaced(cbAutoUseProjectInterpreter_));
       }
@@ -271,19 +271,19 @@ public abstract class PythonPreferencesPaneBase<T> extends PreferencesDialogPane
          
          if (type == null)
          {
-            type = "[Unknown]"; //NON-NLS
+            type = constants_.unknownType();
          }
-         else if (type == "virtualenv") //NON-NLS
+         else if (type == "virtualenv")
          {
-            type = "Virtual Environment"; //NON-NLS
-         } //NON-NLS
-         else if (type == "conda") //NON-NLS
-         { //NON-NLS
-            type = "Conda Environment"; //NON-NLS
+            type = constants_.virtualEnvironmentType();
+         }
+         else if (type == "conda")
+         {
+            type = constants_.condaEnvironmentType();
          }
          else if (type == "system")
          {
-            type = "System Interpreter"; //NON-NLS
+            type = constants_.systemInterpreterType();
          }
          
          ui.getPath().setText("[" + type + "]");
@@ -467,5 +467,6 @@ public abstract class PythonPreferencesPaneBase<T> extends PreferencesDialogPane
    {
       RES.styles().ensureInjected();
    }
-   private final PythonPreferencesPaneConstants constants_ = GWT.create(PythonPreferencesPaneConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
+
 }

@@ -29,6 +29,7 @@ import org.rstudio.core.client.widget.SelectWidget;
 import org.rstudio.studio.client.common.latex.LatexProgramSelectWidget;
 import org.rstudio.studio.client.common.rnw.RnwWeaveSelectWidget;
 import org.rstudio.studio.client.common.synctex.SynctexUtils;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
 
 public class CompilePdfPreferencesPane extends PreferencesPane
@@ -54,9 +55,7 @@ public class CompilePdfPreferencesPane extends PreferencesPane
       add(defaultLatexProgram_);
 
       Label perProjectLabel = new Label(
-            constants_.perProjectNoteLabel() +
-            constants_.perProjectHelpLabel() +
-            constants_.perProjectIconsAboveLabel());
+            constants_.perProjectNoteLabel());
 
       perProjectLabel.addStyleName(baseRes.styles().infoLabel());
       nudgeRight(perProjectLabel);
@@ -106,7 +105,7 @@ public class CompilePdfPreferencesPane extends PreferencesPane
             true,
             false);
 
-         HelpButton.addHelpButton(this, "pdf_preview", constants_.pdfPreviewHelpButtonTitle()); //NON-NLS
+         HelpButton.addHelpButton(this, "pdf_preview", constants_.pdfPreviewHelpButtonTitle());
       }
    }
 
@@ -189,5 +188,6 @@ public class CompilePdfPreferencesPane extends PreferencesPane
    private CheckBox chkCleanTexi2DviOutput_;
    private CheckBox chkEnableShellEscape_;
    private PdfPreviewSelectWidget pdfPreview_;
-   private final CompiledPdfPreferencesPaneConstants constants_ = GWT.create(CompiledPdfPreferencesPaneConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
+
 }

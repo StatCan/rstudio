@@ -29,11 +29,11 @@ public class RChunkHeaderParser
    public static Map<String, String> parse(String line)
    {
       Map<String, String> options = new HashMap<>();
-      parse(line, options);
+      parse(line, "r", options);
       return options;
    }
    
-   public static final void parse(String line, Map<String, String> options)
+   public static final void parse(String line, String defaultEngine, Map<String, String> options)
    {
       // set up state
       Mutable<String> key = new Mutable<>();
@@ -71,9 +71,9 @@ public class RChunkHeaderParser
       
       TextCursor cursor = new TextCursor(line);
       
-      // force default R engine
-      options.put("engine", ensureQuoted("r")); //$NON-NLS-1$
-      
+      // force default engine
+      options.put("engine", ensureQuoted(defaultEngine));
+
       // for R Markdown documents, we need to also parse
       // an engine and an optional label, which adds a bit
       // of extra work for the parser
@@ -84,7 +84,7 @@ public class RChunkHeaderParser
             return;
 
          // consume whitespace and commas
-         if (!cursor.consumeUntilRegex("[^\\s,]")) //$NON-NLS-1$
+         if (!cursor.consumeUntilRegex("[^\\s,]"))
             return;
 
          // consume next token -- need to determine
@@ -97,7 +97,7 @@ public class RChunkHeaderParser
          // found, this must have been a label
          if (!cursor.consumeUntilRegex("[,=]"))
          {
-            options.put("label", ensureQuoted(key.get().trim())); //$NON-NLS-1$
+            options.put("label", ensureQuoted(key.get().trim()));
             return;
          }
 
@@ -105,7 +105,7 @@ public class RChunkHeaderParser
          if (ch == ',')
          {
             // found a comma -- this must have been a label
-            options.put("label", ensureQuoted(key.get().trim())); //$NON-NLS-1$
+            options.put("label", ensureQuoted(key.get().trim()));
          }
          else
          {
@@ -114,7 +114,7 @@ public class RChunkHeaderParser
                return;
 
             // eat whitespace
-            if (!cursor.consumeUntilRegex("\\S")) //$NON-NLS-1$
+            if (!cursor.consumeUntilRegex("\\S"))
                return;
 
             // consume value
@@ -133,7 +133,7 @@ public class RChunkHeaderParser
       do
       {
          // eat whitespace and commas
-         if (!cursor.consumeUntilRegex("[^\\s,]")) //$NON-NLS-1$
+         if (!cursor.consumeUntilRegex("[^\\s,]"))
             return;
          
          // consume key
@@ -141,7 +141,7 @@ public class RChunkHeaderParser
             return;
          
          // eat whitespace
-         if (!cursor.consumeUntilRegex("\\S")) //$NON-NLS-1$
+         if (!cursor.consumeUntilRegex("\\S"))
             return;
          
          // check '='
@@ -149,7 +149,7 @@ public class RChunkHeaderParser
             return;
          
          // eat whitespace
-         if (!cursor.consumeUntilRegex("\\S")) //$NON-NLS-1$
+         if (!cursor.consumeUntilRegex("\\S"))
             return;
          
          // consume value
@@ -178,11 +178,11 @@ public class RChunkHeaderParser
          @Override
          public void consume(String value)
          {
-            options.put("engine", ensureQuoted(value)); //$NON-NLS-1$
+            options.put("engine", ensureQuoted(value));
          }
       };
       
-      if (consumeUntilRegex(cursor, "(?:$|[\\s,])", consumer)) //$NON-NLS-1$
+      if (consumeUntilRegex(cursor, "(?:$|[\\s,])", consumer))
          return true;
       
       return false;
@@ -234,7 +234,7 @@ public class RChunkHeaderParser
       if (isQuote(cursor.peek()) && consumeQuotedItem(cursor, consumer))
          return true;
       
-      return consumeUntilRegex(cursor, "(?:$|[^a-zA-Z0-9_.])", consumer); //$NON-NLS-1$
+      return consumeUntilRegex(cursor, "(?:$|[^a-zA-Z0-9_.])", consumer);
    }
    
    private static final boolean consumeValue(TextCursor cursor,

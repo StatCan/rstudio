@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
 import org.rstudio.core.client.CommandWithArg;
 import org.rstudio.core.client.Debug;
 import org.rstudio.core.client.JsArrayUtil;
@@ -59,6 +60,7 @@ import org.rstudio.studio.client.workbench.views.console.model.ConsoleServerOper
 import org.rstudio.studio.client.workbench.views.console.shell.ConsoleLanguageTracker;
 import org.rstudio.studio.client.workbench.views.source.Source;
 import org.rstudio.studio.client.workbench.views.source.SourceWindowManager;
+import org.rstudio.studio.client.workbench.views.source.ViewsSourceConstants;
 import org.rstudio.studio.client.workbench.views.source.editors.text.ChunkOutputWidget;
 import org.rstudio.studio.client.workbench.views.source.editors.text.ChunkRowExecState;
 import org.rstudio.studio.client.workbench.views.source.editors.text.DocDisplay;
@@ -409,11 +411,8 @@ public class TextEditingTargetNotebook
       if (queue_.isExecuting())
       {
          RStudioGinjector.INSTANCE.getGlobalDisplay().showErrorMessage(
-               // i18n: Concatenation/Message
-            jobDesc + ": Chunks Currently Executing",
-               "RStudio cannot execute '" + jobDesc + "' because this " +
-               "notebook is already executing code. Interrupt R, or wait " +
-               "for execution to complete.");
+               constants_.jobChunkCurrentlyExecuting(jobDesc),
+               constants_.rStudioCannotExecuteJob(jobDesc));
          return;
       }
       docUpdateSentinel_.withSavedDoc(new Command()
@@ -472,7 +471,7 @@ public class TextEditingTargetNotebook
                      NotebookQueueUnit.EXEC_MODE_BATCH));
                chunks.add(new ChunkExecUnit(chunk,
                      NotebookQueueUnit.EXEC_MODE_SINGLE));
-               queue_.executeChunks("Run Chunks", chunks);
+               queue_.executeChunks(constants_.runChunks(), chunks);
             }
             else
             {
@@ -568,10 +567,8 @@ public class TextEditingTargetNotebook
       {
          RStudioGinjector.INSTANCE.getGlobalDisplay().showYesNoMessage(
                GlobalDisplay.MSG_INFO,
-               "Chunks Currently Running",
-               // i18n: Concatenation/Message
-               "Output can't be cleared because there are still chunks " +
-               "running. Do you want to interrupt them?",
+               constants_.chunksCurrentlyRunning(),
+               constants_.outputCantBeClearedBecauseChunks(),
                false,
                new Operation()
                {
@@ -588,8 +585,8 @@ public class TextEditingTargetNotebook
                },
                null,
                null,
-               "Interrupt and Clear Output",
-               "Cancel",
+               constants_.interruptAndClearOutput(),
+               constants_.cancel(),
                false);
       }
    }
@@ -637,7 +634,7 @@ public class TextEditingTargetNotebook
       ChunkOutputWidget.cacheEditorStyle(
          editorStyle_.getColor(),
          editorStyle_.getBackgroundColor(),
-         DomUtils.extractCssValue("ace_editor", "color") //$NON-NLS-1$
+         DomUtils.extractCssValue("ace_editor", "color")
       );
 
       for (ChunkOutputUi output: outputs().values())
@@ -650,7 +647,7 @@ public class TextEditingTargetNotebook
             docUpdateSentinel_.getId(),
             editorStyle_.getColor(),
             editorStyle_.getBackgroundColor(),
-            DomUtils.extractCssValue("ace_editor", "color") //$NON-NLS-1$
+            DomUtils.extractCssValue("ace_editor", "color")
          )
       );
 
@@ -681,7 +678,7 @@ public class TextEditingTargetNotebook
                NotebookQueueUnit.EXEC_MODE_BATCH));
          chunks.add(new ChunkExecUnit(event.getScope(), event.getRange(),
                NotebookQueueUnit.EXEC_MODE_SINGLE, event.getExecScope()));
-         queue_.executeChunks("Run Chunks", chunks);
+         queue_.executeChunks(constants_.runChunks(), chunks);
       }
       else
       {
@@ -970,7 +967,7 @@ public class TextEditingTargetNotebook
             docId,
             editorStyle_.getColor(),
             editorStyle_.getBackgroundColor(),
-            DomUtils.extractCssValue("ace_editor", "color") //$NON-NLS-1$
+            DomUtils.extractCssValue("ace_editor", "color")
          )
       );
 
@@ -993,7 +990,7 @@ public class TextEditingTargetNotebook
          // update that silently if needed
          if (initialChunkDefs_.length() > 0)
          {
-            dependencyManager_.withRMarkdown("R Notebook",
+            dependencyManager_.withRMarkdown(constants_.rNotebook(),
                null, new CommandWithArg<Boolean>()
                {
                   @Override
@@ -1228,7 +1225,7 @@ public class TextEditingTargetNotebook
             pos++;
       }
 
-      return "unnamed-chunk-" + pos; //$NON-NLS-1$
+      return "unnamed-chunk-" + pos;
    }
 
    public String getRowChunkId(int preambleRow)
@@ -1358,7 +1355,7 @@ public class TextEditingTargetNotebook
          return false;
       if (scope.getChunkLabel() == null)
          return false;
-      return scope.getChunkLabel().toLowerCase() == "setup"; //$NON-NLS-1$
+      return scope.getChunkLabel().toLowerCase() == "setup";
    }
 
    public void dequeueChunk(int preambleRow)
@@ -1421,7 +1418,7 @@ public class TextEditingTargetNotebook
    public void syncOutputMode()
    {
       String outputType = docUpdateSentinel_.getProperty(CHUNK_OUTPUT_TYPE);
-      if (!StringUtil.isNullOrEmpty(outputType) && outputType != "undefined") //$NON-NLS-1$
+      if (!StringUtil.isNullOrEmpty(outputType) && outputType != "undefined")
       {
          // if the document property is set, apply it directly
          docDisplay_.setShowChunkOutputInline(
@@ -1431,7 +1428,7 @@ public class TextEditingTargetNotebook
       {
          // otherwise, use the global preference to set the value
          docDisplay_.setShowChunkOutputInline(
-            docDisplay_.getModeId() == "mode/rmarkdown" && //$NON-NLS-1$
+            docDisplay_.getModeId() == "mode/rmarkdown" &&
             RStudioGinjector.INSTANCE.getUserPrefs()
                                      .rmdChunkOutputInline().getValue());
       }
@@ -1762,10 +1759,8 @@ public class TextEditingTargetNotebook
       // if we do have inline output, offer to clean it up
       RStudioGinjector.INSTANCE.getGlobalDisplay().showYesNoMessage(
             GlobalDisplay.MSG_QUESTION,
-            "Remove Inline Chunk Output",
-            // i18n: Concatenation/Message
-            "Do you want to clear all the existing chunk output from your " +
-            "notebook?", false,
+            constants_.removeInlineChunkOutput(),
+            constants_.clearExistingChunkOutputMessage(), false,
             new Operation()
             {
                @Override
@@ -1783,8 +1778,8 @@ public class TextEditingTargetNotebook
                }
             },
             null,
-            "Remove Output",
-            "Keep Output",
+            constants_.removeOutput(),
+            constants_.keepOutput(),
             false);
    }
 
@@ -2158,20 +2153,21 @@ public class TextEditingTargetNotebook
    // chunk state synchronized
    public final static int STATE_INITIALIZED = 2;
 
-   private final static String LAST_SETUP_CRC32 = "last_setup_crc32"; //$NON-NLS-1$
-   public final static String SETUP_CHUNK_ID = "csetup_chunk"; //$NON-NLS-1$
+   private final static String LAST_SETUP_CRC32 = "last_setup_crc32";
+   public final static String SETUP_CHUNK_ID = "csetup_chunk";
 
    // stored document properties/values
-   public final static String CHUNK_OUTPUT_TYPE    = "chunk_output_type"; //$NON-NLS-1$
-   public final static String CHUNK_OUTPUT_INLINE  = "inline"; //$NON-NLS-1$
-   public final static String CHUNK_OUTPUT_CONSOLE = "console"; //$NON-NLS-1$
+   public final static String CHUNK_OUTPUT_TYPE    = "chunk_output_type";
+   public final static String CHUNK_OUTPUT_INLINE  = "inline";
+   public final static String CHUNK_OUTPUT_CONSOLE = "console";
 
    public final static String CONTENT_PREVIEW_ENABLED  =
-         "content_preview_enabled"; //$NON-NLS-1$
+         "content_preview_enabled";
    public final static String CONTENT_PREVIEW_INLINE   =
-         "content_preview_inline"; //$NON-NLS-1$
+         "content_preview_inline";
 
    public final static int MODE_COMMITTED   = 0;
    public final static int MODE_UNCOMMITTED = 1;
+   private static final ViewsSourceConstants constants_ = GWT.create(ViewsSourceConstants.class);
 }
 

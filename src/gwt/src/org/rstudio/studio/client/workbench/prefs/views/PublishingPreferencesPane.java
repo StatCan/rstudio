@@ -51,6 +51,7 @@ import org.rstudio.studio.client.rsconnect.ui.RSConnectAccountList;
 import org.rstudio.studio.client.server.ServerError;
 import org.rstudio.studio.client.server.ServerRequestCallback;
 import org.rstudio.studio.client.server.Void;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
 import org.rstudio.studio.client.workbench.prefs.model.UserState;
 
@@ -159,8 +160,7 @@ public class PublishingPreferencesPane extends PreferencesPane
       final VerticalPanel missingPkgPanel = new VerticalPanel();
       missingPkgPanel.setVisible(false);
       missingPkgPanel.add(new Label(
-            constants_.missingPkgPanelMessage() +
-            constants_.missingPkgRequiredMessage()));
+            constants_.missingPkgPanelMessage()));
       ThemedButton installPkgs = new ThemedButton(constants_.installPkgsMessage());
       installPkgs.addClickHandler(new ClickHandler()
       {
@@ -195,7 +195,7 @@ public class PublishingPreferencesPane extends PreferencesPane
             userState_.enableRsconnectPublishUi());
       final HorizontalPanel rsconnectPanel = HelpButton.checkBoxWithHelp(
          chkEnableRSConnect,
-         new HelpButton("rstudio_connect", constants_.checkBoxWithHelpTitle())); //NON-NLS
+         new HelpButton("rstudio_connect", constants_.checkBoxWithHelpTitle()));
       lessSpaced(rsconnectPanel);
 
       add(headerLabel(constants_.settingsHeaderLabel()));
@@ -298,18 +298,14 @@ public class PublishingPreferencesPane extends PreferencesPane
       final RSConnectAccount account = accountList_.getSelectedAccount();
       if (account == null)
       {
-         display_.showErrorMessage(constants_.showErrorCaption(),
-               constants_.showErrorMessage());
+         display_.showErrorMessage(constants_.showDisconnectErrorCaption(),
+               constants_.showDisconnectErrorMessage());
          return;
       }
       display_.showYesNoMessage(
             GlobalDisplay.MSG_QUESTION,
             constants_.removeAccountGlobalDisplay(),
-            constants_.removeAccountMessage() +
-              account.getName() +
-            constants_.removeAccountOnMessage() +
-              account.getServer() + "'" +
-            constants_.willNotDeleteMessage(),
+            constants_.removeAccountMessage(account.getName(), account.getServer()),
             false,
             new Operation()
             {
@@ -423,6 +419,6 @@ public class PublishingPreferencesPane extends PreferencesPane
    private ThemedButton reconnectButton_;
    private FileChooserTextBox caBundlePath_;
    private boolean reloadRequired_;
-   private final PublishingPreferencesPaneConstants constants_ = GWT.create(PublishingPreferencesPaneConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
 
 }

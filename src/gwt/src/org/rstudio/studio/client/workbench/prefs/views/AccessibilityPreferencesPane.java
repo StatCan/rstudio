@@ -35,6 +35,7 @@ import org.rstudio.core.client.widget.CheckBoxList;
 import org.rstudio.core.client.widget.NumericValueWidget;
 import org.rstudio.studio.client.application.AriaLiveService;
 import org.rstudio.studio.client.common.HelpLink;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
 
 import java.util.Map;
@@ -217,6 +218,6 @@ public class AccessibilityPreferencesPane extends PreferencesPane
 
    private final PreferencesDialogResources res_;
    private final AriaLiveService ariaLive_;
-   private final AccessibilityPreferencesPaneConstants constants_ = GWT.create(AccessibilityPreferencesPaneConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
 
 }

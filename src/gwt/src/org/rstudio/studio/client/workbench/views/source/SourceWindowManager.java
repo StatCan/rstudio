@@ -18,6 +18,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.FocusEvent;
@@ -274,7 +275,7 @@ public class SourceWindowManager implements PopoutDocEvent.Handler,
 
    public static String getSourceWindowId()
    {
-      return sourceWindowId(Window.Location.getParameter("view")); //$NON-NLS-1$
+      return sourceWindowId(Window.Location.getParameter("view"));
    }
 
    public String getLastFocusedSourceWindowId()
@@ -992,7 +993,7 @@ public class SourceWindowManager implements PopoutDocEvent.Handler,
 
    private String createSourceWindowId()
    {
-      return "w" + StringUtil.makeRandomId(12); //$NON-NLS-1$
+      return "w" + StringUtil.makeRandomId(12);
    }
 
    private static String sourceWindowId(String input)
@@ -1204,11 +1205,8 @@ public class SourceWindowManager implements PopoutDocEvent.Handler,
                @Override
                public void onError(ServerError error)
                {
-                  display_.showErrorMessage("Can't Move Doc",
-                        // i18n: Concatenation/Message
-                        "The document could not be " +
-                        "moved to a different window: \n" +
-                        error.getMessage());
+                  display_.showErrorMessage(constants_.cantMoveDoc(),
+                        constants_.cantMoveDocMessage(error.getMessage()));
                }
             });
    }
@@ -1445,5 +1443,6 @@ public class SourceWindowManager implements PopoutDocEvent.Handler,
    private String mostRecentSourceWindow_ = "";
    private boolean mainWindowFocused_ = true;
 
-   public final static String SOURCE_WINDOW_ID = "source_window_id"; //$NON-NLS-1$
+   public final static String SOURCE_WINDOW_ID = "source_window_id";
+   private static final ViewsSourceConstants constants_ = GWT.create(ViewsSourceConstants.class);
 }

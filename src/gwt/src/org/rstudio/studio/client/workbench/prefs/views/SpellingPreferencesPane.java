@@ -40,6 +40,7 @@ import org.rstudio.studio.client.common.spelling.ui.SpellingCustomDictionariesWi
 import org.rstudio.studio.client.common.spelling.ui.SpellingLanguageSelectWidget;
 import org.rstudio.studio.client.workbench.WorkbenchList;
 import org.rstudio.studio.client.workbench.WorkbenchListManager;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.SpellingPrefsContext;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
 import org.rstudio.studio.client.workbench.views.edit.ui.EditDialog;
@@ -75,7 +76,7 @@ public class SpellingPreferencesPane extends PreferencesPane
 
       
       add(headerLabel(constants_.checkingHeader()));
-
+      
       realtimeSpellcheckingCheckbox_ = checkboxPref(constants_.realTimeSpellcheckingCheckboxLabel(), prefs.realTimeSpellchecking(), false);
       spaced(realtimeSpellcheckingCheckbox_);
       add(realtimeSpellcheckingCheckbox_);
@@ -91,7 +92,7 @@ public class SpellingPreferencesPane extends PreferencesPane
       final String kUserDictionary = constants_.kUserDictionaryLabel();
       final Label userDictLabel = new Label(kUserDictionary);
       final Consumer<Integer> setUserDictLabel = (Integer entries) -> {
-         userDictLabel.setText(kUserDictionary + StringUtil.formatGeneralNumber(entries) +" "+ constants_.kUserDictionaryWordsLabel());
+         userDictLabel.setText(constants_.kUserDictionaryWordsLabel(kUserDictionary,StringUtil.formatGeneralNumber(entries)));
       };
       
       final ArrayList<String> userDictWords = new ArrayList<>();
@@ -201,5 +202,5 @@ public class SpellingPreferencesPane extends PreferencesPane
    private final SpellingLanguageSelectWidget languageWidget_;
    private final SpellingCustomDictionariesWidget customDictsWidget_;
    private final CheckBox realtimeSpellcheckingCheckbox_;
-   private final SpellingPreferencesPaneConstants constants_ = GWT.create(SpellingPreferencesPaneConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
 }

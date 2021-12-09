@@ -49,6 +49,7 @@ import org.rstudio.studio.client.common.mirrors.model.MirrorsServerOperations;
 import org.rstudio.studio.client.common.repos.SecondaryReposWidget;
 import org.rstudio.studio.client.server.ServerError;
 import org.rstudio.studio.client.workbench.model.Session;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
 
 public class PackagesPreferencesPane extends PreferencesPane
@@ -227,7 +228,6 @@ public class PackagesPreferencesPane extends PreferencesPane
    @Override
    public String getName()
    {
-      // i18n: This is what displays on screen in the Global Options left hand bar and must be translated.
       return constants_.tabPackagesPanelTitle();
    }
 
@@ -257,8 +257,7 @@ public class PackagesPreferencesPane extends PreferencesPane
       useInternet2_.addValueChangeHandler(event -> globalDisplay_.showMessage(
             MessageDialog.INFO,
             constants_.cranMirrorTextBoxRestartCaption(),
-            constants_.cranMirrorTextBoxRestartMessage() +
-            constants_.cranMirrorTextBoxMessage())
+            constants_.cranMirrorTextBoxRestartMessage())
       );
 
       cleanupAfterCheckSuccess_.setEnabled(true);
@@ -353,7 +352,7 @@ public class PackagesPreferencesPane extends PreferencesPane
 
       boolean cranRepoChanged = !mirrorTextValue.equals(cranMirrorStored_);
       boolean cranRepoChangedToUrl = cranRepoChanged &&
-                                      mirrorTextValue.startsWith("http"); //$NON-NLS-1$
+                                      mirrorTextValue.startsWith("http");
 
       if (cranRepoChanged || secondaryReposHasChanged())
       {
@@ -398,5 +397,5 @@ public class PackagesPreferencesPane extends PreferencesPane
    private boolean reloadRequired_ = false;
    private String cranMirrorStored_;
    private final SecondaryReposWidget secondaryReposWidget_;
-   private final PackagesPreferencesPaneConstants constants_ = GWT.create(PackagesPreferencesPaneConstants.class);
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);
 }

@@ -98,8 +98,8 @@ public class NewPlumberAPI extends ModalDialog<NewPlumberAPI.Result>
    {
       public PlumberAPIClientState()
       {
-         super("plumber", //$NON-NLS-1$
-               "new-plumber-application", //$NON-NLS-1$
+         super("plumber",
+               "new-plumber-application",
                ClientState.PERSISTENT,
                session_.getSessionInfo().getClientState(),
                false);
@@ -111,8 +111,8 @@ public class NewPlumberAPI extends ModalDialog<NewPlumberAPI.Result>
          result_ = (value == null) ?
                Result.create() :
                   Result.create(
-                        value.getString("name"), //$NON-NLS-1$
-                        value.getString("dir")); //$NON-NLS-1$
+                        value.getString("name"),
+                        value.getString("dir"));
       }
 
       @Override
@@ -166,7 +166,7 @@ public class NewPlumberAPI extends ModalDialog<NewPlumberAPI.Result>
       super(caption, Roles.getDialogRole(), operation);
       RStudioGinjector.INSTANCE.injectMembers(this);
 
-      setOkButtonCaption("Create");
+      setOkButtonCaption(constants_.create());
 
       loadAndPersistClientState();
 
@@ -177,12 +177,12 @@ public class NewPlumberAPI extends ModalDialog<NewPlumberAPI.Result>
       apiNameTextBox_.addStyleName(RES.styles().apiNameTextBox());
       DomUtils.setPlaceholder(apiNameTextBox_, "Name");
       addTextFieldValidator(apiNameTextBox_);
-      FormLabel apiNameLabel = new FormLabel("API name:", apiNameTextBox_);
+      FormLabel apiNameLabel = new FormLabel(constants_.apiNameColon(), apiNameTextBox_);
       apiNameLabel.addStyleName(RES.styles().label());
       controls.add(apiNameLabel);
       controls.add(apiNameTextBox_);
       directoryChooserTextBox_ = new DirectoryChooserTextBox(
-         "Create within directory:",
+         constants_.createWithinDirectoryColon(),
          ElementIds.TextBoxButtonId.PLUMBER_DIR,
          null);
       directoryChooserTextBox_.setText(defaultParentDirectory());
@@ -199,8 +199,8 @@ public class NewPlumberAPI extends ModalDialog<NewPlumberAPI.Result>
       container_.add(controls);
 
       HelpLink plumberHelpLink_ = new HelpLink(
-         "Plumber APIs",
-         "about_plumber", //$NON-NLS-1$
+         constants_.plumberAPIs(),
+         "about_plumber",
          false);
       plumberHelpLink_.getElement().getStyle().setMarginTop(4, Unit.PX);
       addLeftWidget(plumberHelpLink_);
@@ -213,11 +213,11 @@ public class NewPlumberAPI extends ModalDialog<NewPlumberAPI.Result>
       if (!isValidAPIName(appName))
       {
          String message = appName.isEmpty()
-               ? "The API name must not be empty"
-               : "Invalid application name";
+               ? constants_.apiNameMustNotBeEmpty()
+               : constants_.invalidApplicationName();
 
          globalDisplay_.showErrorMessage(
-               "Invalid API Name",
+               constants_.invalidApiName(),
                message,
                apiNameTextBox_);
          return false;
@@ -263,10 +263,10 @@ public class NewPlumberAPI extends ModalDialog<NewPlumberAPI.Result>
    private static PlumberAPIClientState clientStateValue_;
 
    private static final Pattern RE_VALID_API_NAME = Pattern.create(
-         "^\\s*" + //$NON-NLS-1$
+         "^\\s*" +
          "[" + RegexUtil.wordCharacter() + "]" +
          "[" + RegexUtil.wordCharacter() + "._-]*" +
-         "\\s*$", ""); //$NON-NLS-1$
+         "\\s*$", "");
 
    // Injected ----
    private Session session_;
@@ -293,4 +293,5 @@ public class NewPlumberAPI extends ModalDialog<NewPlumberAPI.Result>
    static {
       RES.styles().ensureInjected();
    }
+   private static final ViewsSourceConstants constants_ = GWT.create(ViewsSourceConstants.class);
 }

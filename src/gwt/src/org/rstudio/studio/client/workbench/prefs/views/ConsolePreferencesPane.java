@@ -23,6 +23,7 @@ import org.rstudio.core.client.resources.ImageResource2x;
 import org.rstudio.core.client.widget.NumericValueWidget;
 import org.rstudio.core.client.widget.SelectWidget;
 import org.rstudio.studio.client.workbench.model.Session;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
 
 
@@ -73,6 +74,8 @@ public class ConsolePreferencesPane extends PreferencesPane
       spacedBefore(otherLabel);
       add(otherLabel);
       add(spaced(checkboxPref(constants_.otherDoubleClickLabel(), prefs_.consoleDoubleClickSelect())));
+      add(spaced(checkboxPref(constants_.warnAutoSuspendPausedLabel(), prefs_.consoleSuspendBlockedNotice())));
+      add(indent(numericPref(constants_.numSecondsToDelayWarningLabel(), prefs_.consoleSuspendBlockedNoticeDelay())));
    }
 
    @Override
@@ -130,5 +133,5 @@ public class ConsolePreferencesPane extends PreferencesPane
    // Injected
    private final UserPrefs prefs_;
    private final PreferencesDialogResources res_;
-   private final ConsolePreferencesPaneConstants constants_ = GWT.create(ConsolePreferencesPaneConstants.class);
+   private final static PrefsConstants constants_ = GWT.create(PrefsConstants.class);
 }

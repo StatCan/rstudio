@@ -47,6 +47,7 @@ import org.rstudio.studio.client.server.ServerError;
 import org.rstudio.studio.client.server.ServerRequestCallback;
 import org.rstudio.studio.client.workbench.model.RemoteFileSystemContext;
 import org.rstudio.studio.client.workbench.model.Session;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefsAccessor;
 import org.rstudio.studio.client.workbench.prefs.model.UserState;
@@ -170,12 +171,11 @@ public class RMarkdownPreferencesPane extends PreferencesPane
 
       // hide console when executing notebook chunks
       final CheckBox notebookHideConsole = checkboxPref(
-              constants_.notebookHideConsoleLabel() +
-            constants_.notebookHideConsoleChunksLabel(),
+            constants_.notebookHideConsoleLabel(),
             prefs_.hideConsoleOnChunkExecute());
       basic.add(notebookHideConsole);
 
-      basic.add(spacedBefore(new HelpLink(constants_.helpLinkLabel(), "using_notebooks")));
+      basic.add(spacedBefore(new HelpLink(constants_.helpRStudioLinkLabel(), "using_notebooks")));
 
       VerticalTabPanel advanced = new VerticalTabPanel(ElementIds.RMARKDOWN_ADVANCED_PREFS);
       advanced.add(headerLabel(constants_.advancedHeaderLabel()));
@@ -230,7 +230,7 @@ public class RMarkdownPreferencesPane extends PreferencesPane
 
       // line numbers
       CheckBox visualEditorShowLineNumbers = checkboxPref(
-         "Show line numbers in code blocks", //NON-NLS
+         constants_.showLinkNumbersLabel(),
          prefs_.visualMarkdownCodeEditorLineNumbers(),
          false);
       lessSpaced(visualEditorShowLineNumbers);
@@ -250,7 +250,7 @@ public class RMarkdownPreferencesPane extends PreferencesPane
       visualModeOptions.add(nudgeRightPlus(visualModeContentWidth_));
 
       // font size
-      final String kDefault = "(Default)"; //NON-NLS
+      final String kDefault = "(Default)";
       String[] labels = {kDefault, "8", "9", "10", "11", "12",};
       String[] values = new String[labels.length];
       for (int i = 0; i < labels.length; i++)
@@ -293,7 +293,7 @@ public class RMarkdownPreferencesPane extends PreferencesPane
       visualModeWrap_ = new SelectWidget(constants_.visualModeWrapLabel(), wrapValues, wrapValues, false, true, false);
       if (!visualModeWrap_.setValue(prefs_.visualMarkdownEditingWrap().getGlobalValue()))
          visualModeWrap_.getListBox().setSelectedIndex(0);
-      HelpButton.addHelpButton(visualModeWrap_, "visual_markdown_editing-line-wrapping", constants_.visualModeWrapHelpLabel(), 0); //NON-NLS
+      HelpButton.addHelpButton(visualModeWrap_, "visual_markdown_editing-line-wrapping", constants_.visualModeWrapHelpLabel(), 0);
       visualModeWrap_.addStyleName(res.styles().visualModeWrapSelectWidget());
       visualModeOptions.add(visualModeWrap_);
       
@@ -339,10 +339,7 @@ public class RMarkdownPreferencesPane extends PreferencesPane
             RStudioGinjector.INSTANCE.getGlobalDisplay().showYesNoMessage(
                MessageDisplay.MSG_WARNING, 
                constants_.visualModeCanonicalMessageCaption(),
-                    constants_.visualModeCanonicalPreferenceMessage()+"\n\n" +
-                            constants_.visualModeCanonicalMessageDesc() +
-               constants_.visualModeCanonicalMessageRewrite()+"\n\n" +
-               constants_.visualModeCanonicalChangeMessage(),
+               constants_.visualModeCanonicalPreferenceMessage(),
                false, 
                new Operation() {
                   @Override
@@ -391,7 +388,7 @@ public class RMarkdownPreferencesPane extends PreferencesPane
       spaced(zoteroConnection_);
       citations.add(zoteroConnection_);
      
-      zoteroApiKey_ = new ZoteroApiKeyWidget(zoteroServer, "240px"); //$NON-NLS-1$
+      zoteroApiKey_ = new ZoteroApiKeyWidget(zoteroServer, "240px");
       zoteroApiKey_.getElement().getStyle().setMarginLeft(4, Unit.PX);
       spaced(zoteroApiKey_);
       zoteroApiKey_.setKey(state_.zoteroApiKey().getValue());
@@ -616,5 +613,5 @@ public class RMarkdownPreferencesPane extends PreferencesPane
    private final CheckBox zoteroUseBetterBibtex_;
    private PanmirrorZoteroLocalConfig zoteroLocalConfig_ = new PanmirrorZoteroLocalConfig();
    private boolean zoteroIsAuto_ = false;
-   private final RMarkdownPreferencesPaneConstants constants_ = GWT.create(RMarkdownPreferencesPaneConstants.class);
+   private final static PrefsConstants constants_ = GWT.create(PrefsConstants.class);
 }

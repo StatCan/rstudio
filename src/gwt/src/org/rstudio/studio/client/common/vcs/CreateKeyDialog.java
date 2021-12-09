@@ -29,6 +29,7 @@ import org.rstudio.core.client.widget.ProgressOperationWithInput;
 import org.rstudio.core.client.widget.ShowContentDialog;
 import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.common.GlobalDisplay;
+import org.rstudio.studio.client.common.StudioClientCommonConstants;
 import org.rstudio.studio.client.common.crypto.RSAEncrypt;
 import org.rstudio.studio.client.server.ServerError;
 import org.rstudio.studio.client.server.ServerRequestCallback;
@@ -41,7 +42,6 @@ import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import org.rstudio.studio.client.workbench.prefs.views.SourceControlPreferencesPaneConstants;
 
 public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
 {
@@ -153,7 +153,7 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
          return null;
       else
          return CreateKeyOptions.create(rsaSshKeyPath_.getPath(),
-                                        "rsa", //NON-NLS
+                                        "rsa",
                                         getPassphrase(),
                                         false);
    }
@@ -172,8 +172,8 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
          if (getPassphrase() != getConfirmPassphrase())
          {
             display.showErrorMessage(
-                  constants_.showErrorCaption(),
-                  constants_.showErrorMessage(),
+                  constants_.showValidateErrorCaption(),
+                  constants_.showValidateErrorMessage(),
                   txtConfirmPassphrase_);
          }
 
@@ -201,7 +201,7 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
       CaptionWithHelp pathCaption = new CaptionWithHelp(
                                  constants_.pathCaption(),
                                  constants_.pathHelpCaption(),
-                                 "rsa_key_help", //NON-NLS
+                                 "rsa_key_help",
                                  txtKeyPath);
       pathCaption.setIncludeVersionInfo(false);
       pathCaption.setWidth("100%");
@@ -249,8 +249,7 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
       RStudioGinjector.INSTANCE.getGlobalDisplay().showYesNoMessage(
             MessageDialog.WARNING,
             constants_.confirmOverwriteKeyCaption(),
-            constants_.confirmOverwriteKeyMessage() + path + ". " +
-            constants_.overwriteExistingKeyMessage(),
+            constants_.confirmOverwriteKeyMessage(path),
             onConfirmed,
             false);
    }
@@ -292,6 +291,6 @@ public class CreateKeyDialog extends ModalDialog<CreateKeyOptions>
    private TextBox txtConfirmPassphrase_;
 
    private final FileSystemItem rsaSshKeyPath_;
-   private static final SourceControlPreferencesPaneConstants constants_ = GWT.create(SourceControlPreferencesPaneConstants.class);
+   private static final StudioClientCommonConstants constants_ = GWT.create(StudioClientCommonConstants.class);
 
 }

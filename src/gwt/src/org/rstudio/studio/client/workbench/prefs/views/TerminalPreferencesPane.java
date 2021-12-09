@@ -40,6 +40,7 @@ import org.rstudio.studio.client.server.Server;
 import org.rstudio.studio.client.server.ServerError;
 import org.rstudio.studio.client.server.ServerRequestCallback;
 import org.rstudio.studio.client.workbench.model.Session;
+import org.rstudio.studio.client.workbench.prefs.PrefsConstants;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefs;
 import org.rstudio.studio.client.workbench.prefs.model.UserPrefsAccessor;
 import org.rstudio.studio.client.workbench.views.terminal.TerminalShellInfo;
@@ -107,15 +108,13 @@ public class TerminalPreferencesPane extends PreferencesPane
          public void execute()
          {
             managePythonIntegrationControlVisibility();
-
+            
             if (BrowseCap.isWindowsDesktop())
             {
                String shellExePath = customShellChooser_.getText();
                if (!shellExePath.endsWith(".exe"))
                {
-                  // i18n: Concatenation/Message
-                  String message = constants_.shellExePathMessage() + shellExePath + "' " +
-                     constants_.shellExeMessage();
+                  String message = constants_.shellExePathMessage(shellExePath);
 
                   globalDisplay.showMessage(
                         GlobalDisplay.MSG_WARNING,
@@ -126,7 +125,7 @@ public class TerminalPreferencesPane extends PreferencesPane
          }
       };
 
-      String textboxWidth = "250px"; //$NON-NLS-1$
+      String textboxWidth = "250px";
       customShellPathLabel_ = new FormLabel(constants_.customShellPathLabel());
       customShellChooser_ = new FileChooserTextBox(customShellPathLabel_,
                                                    constants_.customShellChooserEmptyLabel(),
@@ -144,15 +143,14 @@ public class TerminalPreferencesPane extends PreferencesPane
       customShellOptionsLabel_ = new FormLabel(constants_.customShellOptionsLabel(), customShellOptions_);
       general.add(spacedBefore(customShellOptionsLabel_));
       general.add(spaced(customShellOptions_));
-
-
+      
+      
       chkPythonIntegration_ = checkboxPref(
             constants_.chkPythonIntegration(),
             prefs_.terminalPythonIntegration());
-
+      
       chkPythonIntegration_.setTitle(
-            constants_.chkPythonIntegrationTitle() +
-            constants_.chkPythonIntegrationMessage());
+            constants_.chkPythonIntegrationTitle());
 
       general.add(chkPythonIntegration_);
 
@@ -190,7 +188,7 @@ public class TerminalPreferencesPane extends PreferencesPane
       chkWebLinks_ = new CheckBox(constants_.chkWebLinksLabel());
       general.add(chkWebLinks_);
 
-      HelpLink helpLink = new HelpLink(constants_.helpLinkLabel(), "rstudio_terminal", false);
+      HelpLink helpLink = new HelpLink(constants_.helpRStudioAccessibilityLinkLabel(), "rstudio_terminal", false);
       nudgeRight(helpLink);
       helpLink.addStyleName(res_.styles().newSection());
       general.add(helpLink);
@@ -430,31 +428,31 @@ public class TerminalPreferencesPane extends PreferencesPane
       customShellOptionsLabel_.setVisible(customEnabled);
       customShellOptions_.setVisible(customEnabled);
    }
-
+   
    private boolean pythonIntegrationSupported()
    {
       String shell = terminalShell_.getValue();
-      if (StringUtil.equals(shell, "bash") || //NON-NLS
-          StringUtil.equals(shell, "zsh")) //NON-NLS
+      if (StringUtil.equals(shell, "bash") ||
+          StringUtil.equals(shell, "zsh"))
       {
          return true;
       }
-
-      if (StringUtil.equals(shell, "custom")) //NON-NLS
+      
+      if (StringUtil.equals(shell, "custom"))
       {
          String shellPath = customShellChooser_.getText();
-         if (shellPath.endsWith("bash") || //NON-NLS //NON-NLS
-             shellPath.endsWith("zsh") || //NON-NLS
+         if (shellPath.endsWith("bash") ||
+             shellPath.endsWith("zsh") ||
              shellPath.endsWith("bash.exe") ||
              shellPath.endsWith("zsh.exe"))
          {
             return true;
          }
       }
-
+      
       return false;
    }
-
+   
    private void managePythonIntegrationControlVisibility()
    {
       if (pythonIntegrationSupported())
@@ -522,6 +520,4 @@ public class TerminalPreferencesPane extends PreferencesPane
    private final PreferencesDialogResources res_;
    private final Session session_;
    private final Server server_;
-   private final TerminalPreferencesPaneConstants constants_ = GWT.create(TerminalPreferencesPaneConstants.class);
-
-}
+   private static final PrefsConstants constants_ = GWT.create(PrefsConstants.class);}

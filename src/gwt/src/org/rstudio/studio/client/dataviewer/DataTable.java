@@ -15,6 +15,7 @@
 
 package org.rstudio.studio.client.dataviewer;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -49,7 +50,7 @@ public class DataTable
    public void initToolbar(Toolbar toolbar, boolean isPreview)
    {
       filterButton_ = new LatchingToolbarButton(
-              "Filter",
+              constants_.filterButtonText(),
               ToolbarButton.NoTitle,
               false, /* textIndicatesState */
               new ImageResource2x(DataViewerResources.INSTANCE.filterIcon2x()),
@@ -75,7 +76,7 @@ public class DataTable
       colsSeparator_.setVisible(false);
       addColumnControls(toolbar);
 
-      searchWidget_ = new SearchWidget("Search data table", new SuggestOracle() {
+      searchWidget_ = new SearchWidget(constants_.searchWidgetLabel(), new SuggestOracle() {
          @Override
          public void requestSuggestions(Request request, Callback callback)
          {
@@ -99,7 +100,7 @@ public class DataTable
       if (isPreview)
       {
          ToolbarLabel label = 
-            new ToolbarLabel("(Displaying up to 1,000 records)");
+            new ToolbarLabel(constants_.toolbarLabel());
          label.addStyleName(ThemeStyles.INSTANCE.toolbarInfoLabel());
          toolbar.addRightWidget(label);
       }
@@ -145,7 +146,7 @@ public class DataTable
    }
    private void addColumnControls(Toolbar toolbar)
    {
-      colsLabel_ = new ToolbarLabel("Cols:");
+      colsLabel_ = new ToolbarLabel(constants_.colsLabel());
       colsLabel_.addStyleName(ThemeStyles.INSTANCE.toolbarInfoLabel());
       colsLabel_.setVisible(false);
       toolbar.addLeftWidget(colsLabel_);
@@ -378,9 +379,11 @@ public class DataTable
    private boolean filtered_ = false;
 
    private static String COLUMN_VIEW_BUTTONS[] = {
-      "<i class=\"icon-angle-double-left \"></i>", //$NON-NLS-1$
-      "<i class=\"icon-angle-left \"></i>", //$NON-NLS-1$
-      "<i class=\"icon-angle-right \"></i>", //$NON-NLS-1$
-      "<i class=\"icon-angle-double-right \"></i>" //$NON-NLS-1$
+      "<i class=\"icon-angle-double-left \"></i>",
+      "<i class=\"icon-angle-left \"></i>",
+      "<i class=\"icon-angle-right \"></i>",
+      "<i class=\"icon-angle-double-right \"></i>"
    };
+
+   private static final DataViewerConstants constants_ = GWT.create(DataViewerConstants.class);
 }

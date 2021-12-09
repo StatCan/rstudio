@@ -24,6 +24,7 @@ import org.rstudio.core.client.widget.OperationWithInput;
 import org.rstudio.core.client.widget.RStudioDataGrid;
 import org.rstudio.studio.client.RStudioGinjector;
 import org.rstudio.studio.client.common.StyleUtils;
+import org.rstudio.studio.client.packrat.PackratConstants;
 import org.rstudio.studio.client.packrat.model.PackratConflictActions;
 import org.rstudio.studio.client.packrat.model.PackratConflictResolution;
 import org.rstudio.studio.client.workbench.views.packages.ui.PackagesDataGridCommon;
@@ -48,9 +49,9 @@ public class PackratResolveConflictDialog
                ArrayList<PackratConflictActions> conflictActions,
                OperationWithInput<PackratConflictResolution> onResolved)
    {
-      super("Resolve Conflict", Roles.getDialogRole(), onResolved);
+      super(constants_.packratResolveConflictDialogCaption(), Roles.getDialogRole(), onResolved);
       
-      setOkButtonCaption("Resolve");
+      setOkButtonCaption(constants_.okButtonCaption());
          
       // main widget
       mainWidget_ = new VerticalPanel();
@@ -62,12 +63,7 @@ public class PackratResolveConflictDialog
       final int kActionCol2Width = 200;
       
       // create label
-      // i18n: concatenate before translating
-      Label label = new Label(
-        "Packrat's packages are out of sync with the packages currently " +
-        "installed in your library. To resolve the conflict you need to " +
-        "either update Packrat to match your library or update your library " +
-        "to match Packrat.");
+      Label label = new Label(constants_.resolveConflictLabelText());
       label.addStyleName(RESOURCES.styles().conflictLabel());
       label.setWidth(kTableWidth + "px");
       mainWidget_.add(label);
@@ -87,7 +83,7 @@ public class PackratResolveConflictDialog
                return item.getPackage();
             } 
          },
-         "Package"
+         constants_.packageColumnHeaderLabel()
       );
       
       table_.addColumn(
@@ -97,7 +93,7 @@ public class PackratResolveConflictDialog
                return StringUtil.notNull(item.getSnapshotAction());
             } 
          },
-         "Packrat"
+         constants_.packratColumnHeaderLabel()
       );
         
       table_.addColumn(
@@ -107,7 +103,7 @@ public class PackratResolveConflictDialog
                return StringUtil.notNull(item.getLibraryAction());
             } 
          },
-         "Library"
+         constants_.libraryColumnHeaderLabel()
       );
       
       table_.setColumnWidth(0, kPackageColWidth + "px");
@@ -118,16 +114,14 @@ public class PackratResolveConflictDialog
       // create radio buttons
       Grid choiceGrid = new Grid(1, 3);
       choiceGrid.setWidth(kTableWidth + "px");
-      choiceGrid.getColumnFormatter().setWidth(0, (kPackageColWidth-3) + "px"); //$NON-NLS-1$
-      choiceGrid.getColumnFormatter().setWidth(1, (kActionCol1Width+3) + "px"); //$NON-NLS-1$
-      choiceGrid.getColumnFormatter().setWidth(2, kActionCol2Width + "px"); //$NON-NLS-1$
+      choiceGrid.getColumnFormatter().setWidth(0, (kPackageColWidth-3) + "px");
+      choiceGrid.getColumnFormatter().setWidth(1, (kActionCol1Width+3) + "px");
+      choiceGrid.getColumnFormatter().setWidth(2, kActionCol2Width + "px");
       choiceGrid.addStyleName(RESOURCES.styles().choicesGrid());
-      Label resolutionLabel =new Label("Resolution:");
+      Label resolutionLabel =new Label(constants_.resolutionLabel());
       resolutionLabel.addStyleName(RESOURCES.styles().resolutionLabel());
       choiceGrid.setWidget(0, 0, resolutionLabel);
-      snapshotChoice_ = new RadioButton(
-         "snapshot", //$NON-NLS-1$
-         "Update Packrat (Snapshot)");
+      snapshotChoice_ = new RadioButton("snapshot", constants_.snapshotChoiceRadioButtonLabel());
       snapshotChoice_.addStyleName(RESOURCES.styles().choiceButton());
       choiceGrid.setWidget(0, 1, snapshotChoice_);
       snapshotChoice_.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
@@ -137,9 +131,7 @@ public class PackratResolveConflictDialog
             libraryChoice_.setValue(!event.getValue(), false);
          }
       });
-      libraryChoice_ = new RadioButton(
-         "library", //$NON-NLS-1$
-         "Update Library (Restore)");
+      libraryChoice_ = new RadioButton("library", constants_.libraryChoiceRadioButton());
       libraryChoice_.addStyleName(RESOURCES.styles().choiceButton());
       choiceGrid.setWidget(0, 2, libraryChoice_);
       libraryChoice_.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
@@ -182,10 +174,8 @@ public class PackratResolveConflictDialog
       {
          RStudioGinjector.INSTANCE.getGlobalDisplay().showMessage(
                MessageDialog.ERROR, 
-               "No Selection Made",
-               // i18n: concatenate before translation
-               "You must choose to either update Packrat (snapshot) or " +
-               "update the project's private library (restore).");
+               constants_.noSelectionMadeText(),
+               constants_.noSelectionMadeMessage());
          return false;
       }
       else
@@ -226,4 +216,6 @@ public class PackratResolveConflictDialog
    private DataGrid<PackratConflictActions> table_;
    private RadioButton snapshotChoice_;
    private RadioButton libraryChoice_;
+
+   private static final PackratConstants constants_ = com.google.gwt.core.client.GWT.create(PackratConstants.class);
 }

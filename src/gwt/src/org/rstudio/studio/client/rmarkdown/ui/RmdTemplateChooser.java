@@ -27,6 +27,7 @@ import org.rstudio.core.client.widget.LabeledTextBox;
 import org.rstudio.core.client.widget.SimplePanelWithProgress;
 import org.rstudio.core.client.widget.WidgetListBox;
 import org.rstudio.studio.client.RStudioGinjector;
+import org.rstudio.studio.client.rmarkdown.RMarkdownConstants;
 import org.rstudio.studio.client.rmarkdown.model.RMarkdownServerOperations;
 import org.rstudio.studio.client.rmarkdown.model.RmdChosenTemplate;
 import org.rstudio.studio.client.rmarkdown.model.RmdDocumentTemplate;
@@ -72,7 +73,7 @@ public class RmdTemplateChooser extends Composite
             // template's preference, if any
             RmdDiscoveredTemplateItem item = listTemplates_.getSelectedItem();
             templateOptionsPanel_.setVisible(
-                  item.getTemplate().getCreateDir() == "true"); //$NON-NLS-1$
+                  item.getTemplate().getCreateDir() == "true");
          }
       });
       Roles.getListboxRole().setAriaLabelledbyProperty(listTemplates_.getElement(),
@@ -123,9 +124,8 @@ public class RmdTemplateChooser extends Composite
          public void onError(ServerError error)
          {
             RStudioGinjector.INSTANCE.getGlobalDisplay().showErrorMessage(
-                  "R Markdown Templates Not Found",
-                  "An error occurred while looking for R Markdown templates. " + 
-                  error.getMessage());
+                  constants_.templatesNotFoundErrorCaption(),
+                  constants_.templatesNotFoundErrorMsg(error.getMessage()));
             
          }
       });
@@ -161,8 +161,10 @@ public class RmdTemplateChooser extends Composite
    @UiFactory
    public CaptionWithHelp makeHelpCaption()
    {
-      return new CaptionWithHelp("Template:", "Using R Markdown Templates",
-                                 "using_rmarkdown_templates", null); //$NON-NLS-1$
+      return new CaptionWithHelp(constants_.helpCaptionTemplateText(),
+              constants_.helpCationTemplateMsg(),
+              "using_rmarkdown_templates",
+              null);
    }
    
    @UiFactory
@@ -194,7 +196,7 @@ public class RmdTemplateChooser extends Composite
          if (template != null)
          {
             templateOptionsPanel_.setVisible(
-                  template.getCreateDir() == "true"); //$NON-NLS-1$
+                  template.getCreateDir() == "true");
          }
       }
    }
@@ -221,7 +223,7 @@ public class RmdTemplateChooser extends Composite
    {
       RmdDiscoveredTemplateItem item = listTemplates_.getSelectedItem();
       if (item != null)
-         return item.getTemplate().getCreateDir() == "true"; //$NON-NLS-1$
+         return item.getTemplate().getCreateDir() == "true";
       return false;
    }
    
@@ -241,4 +243,6 @@ public class RmdTemplateChooser extends Composite
    public final static int STATE_EMPTY = 0;
    public final static int STATE_POPULATING = 1;
    public final static int STATE_POPULATED = 2;
+
+   private static final RMarkdownConstants constants_ = GWT.create(RMarkdownConstants.class);
 }
